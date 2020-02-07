@@ -19,6 +19,7 @@ import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.model.Message;
 
 
+
 public class MainActivity extends AppCompatActivity {
 
     private static EuroMobileManager euroMobileManager;
