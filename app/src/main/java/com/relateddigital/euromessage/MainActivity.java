@@ -22,6 +22,7 @@ import euromsg.com.euromobileandroid.model.Message;
 
 public class MainActivity extends AppCompatActivity {
 
+    //test
     private static EuroMobileManager euroMobileManager;
 
     public static String ENTEGRASYON_ID = "euromessage-android"; //Push uygulamları sekmesinde uygulamanızın entegrasyon id'si
