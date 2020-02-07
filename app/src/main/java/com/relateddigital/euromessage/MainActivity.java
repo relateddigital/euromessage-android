@@ -25,6 +25,7 @@ import euromsg.com.euromobileandroid.model.Message;
 
 public class MainActivity extends AppCompatActivity {
 
+    //test
     private static EuroMobileManager euroMobileManager;
     CarousalEventReceiver carousalEventReceiver;
 
