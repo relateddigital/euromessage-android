@@ -17,7 +17,7 @@ import euromsg.com.euromobileandroid.utils.Utils;
 
 public class EuroMobileManager {
 
-    private static EuroMobileManager instance;//TEST
+    private static EuroMobileManager instance;
 
     private Subscription subscription = new Subscription();
 
