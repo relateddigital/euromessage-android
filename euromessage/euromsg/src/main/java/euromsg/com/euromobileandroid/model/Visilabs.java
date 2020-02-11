@@ -1,8 +1,5 @@
 package euromsg.com.euromobileandroid.model;
 
-/**
- * Created by ozanuysal on 08/09/15.
- */
 public class Visilabs {
 
     private String visiUrl;
