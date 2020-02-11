@@ -1,16 +1,16 @@
 package euromsg.com.euromobileandroid.enums;
 
-public enum MessageStatus {
-    Read("O"), Received("D");
+public enum PushType {
+    Text("Text"), Image("Image"), Carousel("Carousel");
 
     private final String name;
 
-    private MessageStatus(String s) {
+    PushType(String s) {
         name = s;
     }
 
     public boolean equalsName(String otherName) {
-        return (otherName != null) && name.equals(otherName);
+        return name.equals(otherName);
     }
 
     public String toString() {
