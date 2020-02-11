@@ -15,5 +15,4 @@ public class EuroLogger {
             Log.d(Constants.LOG_TAG, message);
         }
     }
-
 }
