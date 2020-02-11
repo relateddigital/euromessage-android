@@ -22,6 +22,8 @@ import androidx.core.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,6 +32,7 @@ import euromsg.com.euromobileandroid.EuroMobileManager;
 
 import euromsg.com.euromobileandroid.connection.ConnectionManager;
 import euromsg.com.euromobileandroid.enums.PushType;
+import euromsg.com.euromobileandroid.model.CarouselElement;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.Utils;
@@ -56,7 +59,9 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
         if (!TextUtils.isEmpty(pushMessage.getMessage())) {
             if (pushMessage.getPushType() == PushType.Image) {
                 generateNotification(getApplicationContext(), data, ConnectionManager.getInstance().getBitmap(pushMessage.getMediaUrl()));
-            } else {
+            } else if (pushMessage.getPushType() == PushType.Carousel){
+                generateCarouselNotification(getApplicationContext(), data, pushMessage.getElements());
+            }else {
                 generateNotification(getApplicationContext(), data, null);
             }
         }
@@ -125,5 +130,11 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
         } catch (Exception e) {
             EuroLogger.debugLog("Generate notification : " + e.getMessage());
         }
+    }
+
+
+    private void generateCarouselNotification(Context applicationContext, Map<String, String> data, ArrayList<CarouselElement> carouselElementArrayList) {
+
+
     }
 }

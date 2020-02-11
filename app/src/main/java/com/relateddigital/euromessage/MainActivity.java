@@ -22,10 +22,9 @@ import euromsg.com.euromobileandroid.model.Message;
 
 public class MainActivity extends AppCompatActivity {
 
-    //test
     private static EuroMobileManager euroMobileManager;
 
-    public static String ENTEGRASYON_ID = "euromessage-android"; //Push uygulamları sekmesinde uygulamanızın entegrasyon id'si
+    public static String ENTEGRASYON_ID = TestConstant.ENTEGRASYON_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -64,10 +62,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if (!task.isSuccessful()) {
-                            Log.w("token", "getInstanceId failed", task.getException());
+                            Log.e("token", "getInstanceId failed", task.getException());
                             return;
                         }
                         String token = task.getResult().getToken();
+
                         Log.d("token", token);
                     }
                 });
@@ -75,9 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void syncExample() {
-
-
-        euroMobileManager.setEmail("test@testew.com", getApplicationContext());
+        euroMobileManager.setEmail("test@test.com", getApplicationContext());
         euroMobileManager.sync(getApplicationContext());
     }
 }

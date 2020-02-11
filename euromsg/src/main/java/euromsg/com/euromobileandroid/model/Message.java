@@ -4,14 +4,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import euromsg.com.euromobileandroid.enums.PushType;
 
-/**
- * Created by ozanuysal on 25/01/15.
- */
 public class Message {
 
     private String mediaUrl;
@@ -26,6 +24,7 @@ public class Message {
     private PushType pushType;
     private String collapseKey;
     private Map<String, String> params = new HashMap<String, String>();
+    private ArrayList<CarouselElement> elements = new ArrayList<>();
 
     public Message(@NonNull Map<String,String> bundle) {
         for (String key : bundle.keySet()) {
@@ -67,6 +66,7 @@ public class Message {
             pushType = PushType.valueOf(bundle.getString("pushType"));
         }
         collapseKey = bundle.getString("collapse_key");
+        elements = bundle.getParcelable("elements");
     }
 
     public String getAltUrl() {
@@ -115,5 +115,9 @@ public class Message {
 
     public String getSound() {
         return sound;
+    }
+
+    public ArrayList<CarouselElement> getElements() {
+        return elements;
     }
 }
