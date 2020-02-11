@@ -1,7 +1,7 @@
 package euromsg.com.euromobileandroid.utils;
 
 import android.Manifest;
-import android.app.Fragment;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -14,6 +14,7 @@ import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 
 import androidx.core.content.PermissionChecker;
+import androidx.fragment.app.Fragment;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -71,13 +72,12 @@ public final class Utils {
         out.close();
     }
 
-    public static String savePrefString(Context context, String key, String value) {
+    public static void savePrefString(Context context, String key, String value) {
         String appName = context.getPackageName();
         SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
         SharedPreferences.Editor spEditor = sp.edit();
         spEditor.putString(key, value);
         spEditor.apply();
-        return value;
     }
 
     public static void savePrefBoolean(Context context, String key,
@@ -136,28 +136,28 @@ public final class Utils {
         return null;
     }
 
+    @SuppressLint("WrongConstant")
     private static boolean hasReadPhoneStatePermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            boolean permissionRequest = PermissionChecker.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
-            return permissionRequest;
+            return PermissionChecker.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
         }
         return true;
     }
 
-    private static boolean askForReadPhoneStatePermission(Fragment fragment, int requestCode) {
+    private static void askForReadPhoneStatePermission(Fragment fragment, int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (hasReadPhoneStatePermission(fragment.getContext())) {
-                return true;
+                return;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 fragment.requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, requestCode);
             }
-            return false;
         }
-        return true;
     }
 
+    @SuppressLint("MissingPermission")
     public static String deviceUDID(Context context) {
+
         try {
             if (hasReadPhoneStatePermission(context)) {
                 TelephonyManager tm = (TelephonyManager) context
@@ -253,5 +253,4 @@ public final class Utils {
         }
         return (String) (lApplicationInfo != null ? lPackageManager.getApplicationLabel(lApplicationInfo) : defaultText);
     }
-
 }
