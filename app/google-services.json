@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "997416151473",
+    "firebase_url": "https://euromessage-android.firebaseio.com",
+    "project_id": "euromessage-android",
+    "storage_bucket": "euromessage-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997416151473:android:9838c8e0c2795ba999b590",
+        "android_client_info": {
+          "package_name": "com.relateddigital.euromessage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997416151473-18o7jejsfgfn88gq4uid7fbl272bqdf7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDObGE8ilq6ByIFIQrkj5Itn78kWpcRVTc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997416151473-18o7jejsfgfn88gq4uid7fbl272bqdf7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
