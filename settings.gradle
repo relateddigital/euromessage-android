@@ -1,2 +1,2 @@
 include ':app', ':euromobileandroid', 'euromsg'
-rootProject.name='euromessage'
+rootProject.name='euromessage-android'
