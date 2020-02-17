@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
+import euromsg.com.euromobileandroid.carousalnotification.CarousalEventReceiver;
 import euromsg.com.euromobileandroid.model.Message;
 
 
@@ -23,8 +26,19 @@ import euromsg.com.euromobileandroid.model.Message;
 public class MainActivity extends AppCompatActivity {
 
     private static EuroMobileManager euroMobileManager;
+    CarousalEventReceiver carousalEventReceiver;
 
     public static String ENTEGRASYON_ID = TestConstant.ENTEGRASYON_ID;
+
+
+    @Override
+    protected void onResume() {
+        this.carousalEventReceiver = new CarousalEventReceiver();
+        registerReceiver(
+                this.carousalEventReceiver,
+                new IntentFilter("in.mamga.CAROUSALNOTIFICATIONFIRED"));
+        super.onResume();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
