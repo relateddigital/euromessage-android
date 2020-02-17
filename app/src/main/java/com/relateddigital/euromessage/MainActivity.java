@@ -64,11 +64,7 @@ public class MainActivity extends AppCompatActivity {
                             Log.w("token", "getInstanceId failed", task.getException());
                             return;
                         }
-
-                        // Get new Instance ID token
                         String token = task.getResult().getToken();
-
-                        // Log and toast
                         Log.d("token", token);
                     }
                 });
