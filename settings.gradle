@@ -1,2 +1,2 @@
-include ':app', ':euromobileandroid', 'euromsg'
+include ':app', 'euromsg'
 rootProject.name='euromessage-android'
