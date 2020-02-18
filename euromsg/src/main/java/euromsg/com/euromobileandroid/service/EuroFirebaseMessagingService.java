@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -30,14 +31,31 @@ import java.util.Set;
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.EuroMobileManager;
 
+import euromsg.com.euromobileandroid.carousalnotification.Carousal;
+import euromsg.com.euromobileandroid.carousalnotification.CarousalItem;
 import euromsg.com.euromobileandroid.connection.ConnectionManager;
 import euromsg.com.euromobileandroid.enums.PushType;
 import euromsg.com.euromobileandroid.model.CarouselElement;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.Utils;
-
 public class EuroFirebaseMessagingService extends FirebaseMessagingService {
+
+    String carousel  = "{\n" +
+            "  \"pushType\": \"Carousel\",\n" +
+            "  \"url\": \"https://www.donanimhaber.com/cache/imgdh/20191212190731/31/3/1/0/haber/116815/twitter-artik-jpeg-dosyalarinin-goruntu-kalitesini-bozmayacak116815_0.jpg\",\n" +
+            "  \"mediaUrl\": \"https://www.donanimhaber.com/cache/imgdh/20191212190731/31/3/1/0/haber/116815/twitter-artik-jpeg-dosyalarinin-goruntu-kalitesini-bozmayacak116815_0.jpg\",\n" +
+            "  \"pushId\": \"770fe20d-5ca1-4b39-8ad3-3aseae24d78a6\",\n" +
+            "  \"altUrl\": \"[alturl]\",\n" +
+            "  \"sound\": \"ses\",\n" +
+            "  \"message\": \"body\",\n" +
+            "  \"title\": \"title\",\n" +
+            "  \"elements\": [\n" +
+            " {\"id\" : \"1\",  \"title\": \"t1\",  \"content\": \"t1\" ,  \"url\": \"http://www.1.com/\" ,  \"picture\": \"https://productimages.hepsiburada.net/s/22/280-413/9986363097138.jpg\"}" +
+            " ,{\"id\": \"2\",  \"title\": \"t2\",  \"content\": \"t2\" ,  \"url\": \"http://www.2.com/\" ,  \"picture\": \"https://productimages.hepsiburada.net/s/32/400-592/10352550510642.jpg\"}" +
+            " ,{\"id\": \"3\",  \"title\": \"t3\",  \"content\": \"t3\" ,  \"url\" : \"http://www.3.com/\",  \"picture\": \"https://productimages.hepsiburada.net/s/32/400-592/10352551526450.jpg\"}" +
+            "  ]\n" +
+            "}";
 
     @Override
     public void onNewToken(String token) {
@@ -53,14 +71,18 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+
         Map<String, String> data = remoteMessage.getData();
-        Message pushMessage = new Message(data);
+
+        Message pushMessage = new Gson().fromJson(carousel, Message.class); //TEST
+
+        // Message pushMessage = new Message(data);
         EuroLogger.debugLog("Message received : " + pushMessage.getMessage());
         if (!TextUtils.isEmpty(pushMessage.getMessage())) {
             if (pushMessage.getPushType() == PushType.Image) {
                 generateNotification(getApplicationContext(), data, ConnectionManager.getInstance().getBitmap(pushMessage.getMediaUrl()));
             } else if (pushMessage.getPushType() == PushType.Carousel){
-                generateCarouselNotification(getApplicationContext(), data, pushMessage.getElements());
+                generateCarouselNotification(pushMessage);
             }else {
                 generateNotification(getApplicationContext(), data, null);
             }
@@ -133,8 +155,16 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
     }
 
 
-    private void generateCarouselNotification(Context applicationContext, Map<String, String> data, ArrayList<CarouselElement> carouselElementArrayList) {
+    private void generateCarouselNotification(Message pushMessage) {
 
-
+        ArrayList<CarouselElement> carouselElements =  pushMessage.getElements();
+        Carousal carousal = Carousal.with(this).beginTransaction();
+        carousal.setContentTitle(pushMessage.getTitle()).setContentText(pushMessage.getMessage());
+        for (CarouselElement item : carouselElements) {
+            CarousalItem cItem = new CarousalItem(item.getId(), item.getTitle(), item.getContent(), item.getPicture());
+            carousal.addCarousalItem(cItem);
+        }
+        carousal.setOtherRegionClickable(true);
+        carousal.buildCarousal();
     }
 }
