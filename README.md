@@ -15,7 +15,7 @@ You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage
 For that :
 - Open your project which you want to use Euromessage
 - Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
-- Please do not forget to link euromessage module with adding implementation project(path: ':euromessage')to your build.gradle
+- Please do not forget to link euromessage module with adding implementation project(path: ':euromessage') to your build.gradle
 
 ### Using the SDK
 
