@@ -10,7 +10,7 @@ Also you can check  [Euromessage Demo Application](https://github.com/relateddig
 
 
 ### Note that: 
-You can use [euromessage] (https://github.com/relateddigital/euromessage-android/releases/tag/android-sdk-3.0.0)
+You can use [euromessage](https://github.com/relateddigital/euromessage-android/releases/tag/android-sdk-3.0.0)
  sdk directly.
  
 For that :
