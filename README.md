@@ -14,9 +14,9 @@ You can also use [Euromessage](https://github.com/relateddigital/euromessage-and
  Sdk directly.
  
 For that :
-Open your project which you want to use Euromessage
-Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
-Please do not forget to link visilabs module adding implementation project(path: ':euromessage')to your build.gradle
+- Open your project which you want to use Euromessage
+- Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
+- Please do not forget to link visilabs module adding implementation project(path: ':euromessage')to your build.gradle
 
 ### Using the SDK
 
