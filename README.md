@@ -10,8 +10,8 @@ Also you can check  [Euromessage Demo Application](https://github.com/relateddig
 
 
 ### Note that: 
-You can use [euromessage](https://github.com/relateddigital/euromessage-android/releases/tag/android-sdk-3.0.0)
- sdk directly.
+You can also use [Euromessage](https://github.com/relateddigital/euromessage-android/releases/tag/android-sdk-3.0.0)
+ Sdk directly.
  
 For that :
 Open your project which you want to use Euromessage
