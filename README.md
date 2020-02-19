@@ -16,9 +16,9 @@ You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage
 
 ### Note that: 
 
-If you do not use AndroidX, you may use  [Euromessage Module - (Support Library)](https://github.com/relateddigital/euromessage-android/releases/tag/support-3.0.1-module). But we will not contribute support library in the future. This is our last supported version. 
+If you do not use AndroidX, you may use  [Euromessage Module - (Support Library)](https://github.com/relateddigital/euromessage-android/tree/euromessage-support/euromsg) directly. But we will not contribute support library in the future. This is our last supported version. 
 
-Also you can check  [Euromessage Demo Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/releases/tag/support-3.0.1) for demo purpose. You can use its module too. 
+Also you can check  [Euromessage Demo Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support) for demo purpose. You can use its module too. 
 
 
 ### Using the SDK
