@@ -8,14 +8,17 @@ You can add ```implementation 'com.euromsg:euromsg:3.0.1' ``` to build.gradle fo
 
 Also you can check  [Euromessage Demo Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) for demo purpose. You may find demo application in master branch
 
-
-### Note that: 
 You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/releases/tag/android-sdk-3.0.1) directly.
- 
-For that :
+ For that :
 - Open your project which you want to use Euromessage
 - Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
-- Please do not forget to link euromessage module with adding implementation project(path: ':euromessage') to your build.gradle
+
+### Note that: 
+
+If you do not use AndroidX, you may use  [Euromessage Module - (Support Library)](https://github.com/relateddigital/euromessage-android/releases/tag/support-3.0.1-module). But we will not contribute support library in the future. This is our last supported version. 
+
+Also you can check  [Euromessage Demo Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/releases/tag/support-3.0.1) for demo purpose. You can use its module too. 
+
 
 ### Using the SDK
 
