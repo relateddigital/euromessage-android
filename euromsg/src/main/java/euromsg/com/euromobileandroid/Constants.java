@@ -16,5 +16,6 @@ public class Constants {
     public static final String EURO_SUBSCRIPTION_KEY = "subscription";
 
     public static final String LOG_TAG = "EuroPush";
+    public static final String APPLICATION_KEY = "AppKey";
 
 }

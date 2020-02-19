@@ -53,9 +53,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void initializeEuroMessage(){
 
-        euroMobileManager = EuroMobileManager.sharedManager(ENTEGRASYON_ID);
+        euroMobileManager = EuroMobileManager.sharedManager(ENTEGRASYON_ID, getApplicationContext());
 
         euroMobileManager.registerToFCM(getBaseContext());
+
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override

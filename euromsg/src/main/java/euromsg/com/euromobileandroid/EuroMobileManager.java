@@ -42,11 +42,13 @@ public class EuroMobileManager {
      *
      * @param applicationKey Application key from Euromsg. Euromsg will give you this key.
      */
-    public static EuroMobileManager sharedManager(String applicationKey) {
+    public static EuroMobileManager sharedManager(String applicationKey, Context context) {
         if (instance == null) {
             instance = new EuroMobileManager(applicationKey);
         }
         EuroLogger.debugLog("SharedManager App Key : " + instance.subscription.getAppKey());
+        Utils.savePrefString(context, Constants.APPLICATION_KEY, instance.subscription.getAppKey());
+
         return instance;
     }
 
@@ -128,7 +130,7 @@ public class EuroMobileManager {
      *
      * @param message Message from GCM
      */
-    public void reportReceived(Message message) {
+    public void reportReceived(Message message) throws Exception {
         reportReceived(message.getPushId());
     }
 
@@ -301,13 +303,13 @@ public class EuroMobileManager {
 
     private void setSubscriptionProperty(String key, Object value, Context context) {
 
-        if (Utils.hasPrefString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
+      /*  if (Utils.hasPrefString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
             this.subscription = new Gson().fromJson(Utils.getPrefString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             this.subscription.add(key, value);
 
-        } else {
+        } else {*/
             this.subscription.add(key, value);
-        }
+       // }
     }
 
     /**

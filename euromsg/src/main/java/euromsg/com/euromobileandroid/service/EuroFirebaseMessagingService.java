@@ -15,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -24,6 +25,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 import java.util.Set;
 
+import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.EuroMobileManager;
 
 import euromsg.com.euromobileandroid.connection.ConnectionManager;
@@ -51,14 +53,17 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
         Message pushMessage = new Message(data);
         EuroLogger.debugLog("Message received : " + pushMessage.getMessage());
-        if (!TextUtils.isEmpty(pushMessage.getMessage()) && EuroMobileManager.getInstance().shouldShowPush()) {
+        if (!TextUtils.isEmpty(pushMessage.getMessage())) {
             if (pushMessage.getPushType() == PushType.Image) {
                 generateNotification(getApplicationContext(), data, ConnectionManager.getInstance().getBitmap(pushMessage.getMediaUrl()));
             } else {
                 generateNotification(getApplicationContext(), data, null);
             }
         }
-        EuroMobileManager.getInstance().reportReceived(pushMessage.getPushId());
+
+        String key = Utils.getPrefString(this, Constants.APPLICATION_KEY);
+
+        EuroMobileManager.sharedManager(key, this).reportReceived(pushMessage.getPushId());
     }
 
     @TargetApi(Build.VERSION_CODES.O)
