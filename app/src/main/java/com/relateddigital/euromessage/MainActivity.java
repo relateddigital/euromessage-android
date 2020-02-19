@@ -73,8 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void syncExample() {
-
-
+        
         euroMobileManager.setEmail("test@testew.com", getApplicationContext());
         euroMobileManager.sync(getApplicationContext());
     }
