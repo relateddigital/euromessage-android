@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.R;
 
 public class Carousal {
@@ -627,7 +629,7 @@ public class Carousal {
      * @return pendingIntent for the same
      */
     private PendingIntent getPendingIntent(int eventClicked) {
-        Intent carousalIntent = new Intent(CarousalConstants.CAROUSAL_EVENT_FIRED_INTENT_FILTER);
+        Intent carousalIntent = new Intent(context, CarousalEventReceiver.class);
         Bundle bundle = new Bundle();
         bundle.putInt(CarousalConstants.EVENT_CAROUSAL_ITEM_CLICKED_KEY, eventClicked);
         bundle.putParcelable(CarousalConstants.CAROUSAL_SET_UP_KEY, carousalSetUp);

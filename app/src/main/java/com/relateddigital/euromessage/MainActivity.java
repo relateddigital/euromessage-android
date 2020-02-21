@@ -4,13 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,21 +22,9 @@ import euromsg.com.euromobileandroid.model.Message;
 
 public class MainActivity extends AppCompatActivity {
 
-    //test
     private static EuroMobileManager euroMobileManager;
-    CarousalEventReceiver carousalEventReceiver;
 
     public static String ENTEGRASYON_ID = TestConstant.ENTEGRASYON_ID;
-
-
-    @Override
-    protected void onResume() {
-        this.carousalEventReceiver = new CarousalEventReceiver();
-        registerReceiver(
-                this.carousalEventReceiver,
-                new IntentFilter("in.mamga.CAROUSALNOTIFICATIONFIRED"));
-        super.onResume();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
