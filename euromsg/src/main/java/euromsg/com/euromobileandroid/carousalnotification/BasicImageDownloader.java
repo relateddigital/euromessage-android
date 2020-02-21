@@ -5,12 +5,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -109,6 +111,23 @@ public class BasicImageDownloader {
         void onComplete();
     }
 
+    private Bitmap getBitMapFromUri(String photo_url) {
+        URL url = null;
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+        StrictMode.setThreadPolicy(policy);
+        Bitmap image = null;
+        try {
+            url = new URL(photo_url);
+
+            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return image;
+    }
+
     /**
      * Downloads the image from the given URL using an {@link AsyncTask}. If a download
      * for the given URL is already in progress this method returns immediately.
@@ -139,10 +158,8 @@ public class BasicImageDownloader {
                 try {
                    // connection = (HttpURLConnection) new URL(imageUrl).openConnection();
                     //is = connection.getInputStream();
-                    URL url = new URL(imageUrl);
-                    bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 
-
+                   bitmap =  getBitMapFromUri(imageUrl);
                    // bitmap = BitmapFactory.decodeStream(is);
                     if (bitmap != null) {
                         //scaling bitmap to ensure minimum memory usage

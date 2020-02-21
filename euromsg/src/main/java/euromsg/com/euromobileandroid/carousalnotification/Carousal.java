@@ -351,35 +351,19 @@ public class Carousal {
             this.leftItem = leftItem;
             leftItemTitle = leftItem.getTitle();
             leftItemDescription = leftItem.getDescription();
-            leftItemBitmap = getBitMapFromUri(leftItem.getPhoto_url());
+            leftItemBitmap = getCarousalBitmap(leftItem);
 
         }
         if (rightItem != null) {
             this.rightItem = rightItem;
             rightItemTitle = rightItem.getTitle();
             rightItemDescription = rightItem.getDescription();
-            rightItemBitmap = getBitMapFromUri(rightItem.getPhoto_url());
+            rightItemBitmap = getCarousalBitmap(rightItem);
 
         }
         showCarousal();
     }
 
-    private Bitmap getBitMapFromUri(String photo_url) {
-        URL url = null;
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
-        Bitmap image = null;
-        try {
-            url = new URL(photo_url);
-
-            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return image;
-    }
 
     /**
      * final function which displays carousal. Make sure carousalItems and pending intents are
