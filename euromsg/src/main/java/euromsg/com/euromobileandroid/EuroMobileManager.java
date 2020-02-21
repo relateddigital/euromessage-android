@@ -303,13 +303,13 @@ public class EuroMobileManager {
 
     private void setSubscriptionProperty(String key, Object value, Context context) {
 
-      /*  if (Utils.hasPrefString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
+     if (Utils.hasPrefString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
             this.subscription = new Gson().fromJson(Utils.getPrefString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             this.subscription.add(key, value);
 
-        } else {*/
+        } else {
             this.subscription.add(key, value);
-       // }
+        }
     }
 
     /**
