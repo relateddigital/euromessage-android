@@ -281,10 +281,12 @@ public class EuroMobileManager {
 
 
     private void saveSubscription(Context context) {
+
         subscription.setCarrier(Utils.carrier(context));
         subscription.setAppVersion(Utils.appVersion(context));
         subscription.setIdentifierForVendor(Utils.deviceUDID(context));
         subscription.setLocal(Utils.local(context));
+
         if (Utils.hasPrefString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
             Subscription oldSubcription = new Gson().fromJson(Utils.getPrefString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             subscription.addAll(oldSubcription.getExtra());

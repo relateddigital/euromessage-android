@@ -51,9 +51,9 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
             "  \"message\": \"body\",\n" +
             "  \"title\": \"title\",\n" +
             "  \"elements\": [\n" +
-            " {\"id\" : \"1\",  \"title\": \"t1\",  \"content\": \"t1\" ,  \"url\": \"http://www.1.com/\" ,  \"picture\": \"https://productimages.hepsiburada.net/s/22/280-413/9986363097138.jpg\"}" +
-            " ,{\"id\": \"2\",  \"title\": \"t2\",  \"content\": \"t2\" ,  \"url\": \"http://www.2.com/\" ,  \"picture\": \"https://productimages.hepsiburada.net/s/32/400-592/10352550510642.jpg\"}" +
-            " ,{\"id\": \"3\",  \"title\": \"t3\",  \"content\": \"t3\" ,  \"url\" : \"http://www.3.com/\",  \"picture\": \"https://productimages.hepsiburada.net/s/32/400-592/10352551526450.jpg\"}" +
+            " {\"id\" : \"1\",  \"title\": \"Süper İndirim\",  \"content\": \"Akıllı saatlerde akılalmaz indirimleri kaçırmayın. Harika bir saat\" ,  \"url\": \"http://www.1.com/\" ,  \"picture\": \"https://productimages.hepsiburada.net/s/22/280-413/9986363097138.jpg\"}" +
+            " ,{\"id\": \"2\",  \"title\": \"Mükemmel İndirim\",  \"content\": \"Hayatını akıllı saatlerle beraber çok kolaylaştırabilirsin. Yeterki mutlu ol seni çok seviyoruz\" ,  \"url\": \"http://www.2.com/\" ,  \"picture\": \"https://productimages.hepsiburada.net/s/32/400-592/10352550510642.jpg\"}" +
+            " ,{\"id\": \"3\",  \"title\": \"Şaşırtıcı İndirim\",  \"content\": \"Mutlu ol çok \" ,  \"url\" : \"http://www.3.com/\",  \"picture\": \"https://productimages.hepsiburada.net/s/32/400-592/10352551526450.jpg\"}" +
             "  ]\n" +
             "}";
 
