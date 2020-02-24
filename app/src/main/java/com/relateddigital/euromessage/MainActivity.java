@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -97,7 +98,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void setRelease () {
 
-        TextView tvRelease = findViewById(R.id.tvRelease);
-        tvRelease.setText( "Version : " + Build.VERSION.RELEASE);
+        TextView tvAppRelease = findViewById(R.id.tvAppRelease);
+        TextView tvSDKRelease = findViewById(R.id.tvSDKRelease);
+
+        String libVersionName = euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME;
+
+        tvAppRelease.setText("App Version : " + BuildConfig.VERSION_NAME );
+        tvSDKRelease.setText(" EuroMessage SDK Version: " + libVersionName);
     }
 }

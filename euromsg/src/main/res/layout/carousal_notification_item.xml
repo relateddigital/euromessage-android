@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="256dp"
-    android:background="#efefef">
+    android:background="#fff">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,13 +71,13 @@
                 <LinearLayout
                     android:id="@+id/llLeftItemLayout"
                     android:layout_width="0dp"
+                    android:background="#fff"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="3dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/carousal_card_item"
                     android:orientation="vertical"
                     android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
@@ -100,11 +100,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
+                        android:textColor="#000"
                         android:maxLines="2"
                         android:paddingBottom="2dp"
                         android:paddingTop="5dp"
                         android:text=""
-                        android:textColor="#000"
                         android:textSize="14sp" />
 
                     <TextView
@@ -117,7 +117,6 @@
                         android:paddingTop="2dp"
                         android:singleLine="false"
                         android:text=""
-                        android:textColor="#000"
                         android:textSize="12sp" />
                 </LinearLayout>
 
@@ -130,7 +129,7 @@
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/carousal_card_item"
+                    android:background="#fff"
                     android:orientation="vertical"
                     android:paddingBottom="5dp"
                     android:paddingLeft="10dp"
@@ -156,8 +155,8 @@
                         android:maxLines="2"
                         android:paddingBottom="2dp"
                         android:paddingTop="5dp"
-                        android:text=""
                         android:textColor="#000"
+                        android:text=""
                         android:textSize="14sp" />
 
                     <TextView
@@ -169,7 +168,6 @@
                         android:paddingBottom="5dp"
                         android:paddingTop="2dp"
                         android:text=""
-                        android:textColor="#000"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -182,6 +180,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="#80ffffff"
+                android:tint="#263238"
                 android:clickable="true"
                 android:padding="5dp"
                 android:src="@drawable/ic_carousal_right_icon" />
@@ -192,6 +191,7 @@
                 android:layout_height="45dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
+                android:tint="#263238"
                 android:background="#80ffffff"
                 android:clickable="true"
                 android:padding="5dp"
