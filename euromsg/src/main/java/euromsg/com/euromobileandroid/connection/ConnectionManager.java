@@ -3,6 +3,7 @@ package euromsg.com.euromobileandroid.connection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -60,17 +61,15 @@ public final class ConnectionManager {
         new JsonAsyncTask(retention, "https://test.euromsg.com:4243/retention").execute();
     }
 
-
     private static Gson gson = new Gson();
 
-    private static boolean makeJsonRequest(BaseRequest requestModel, String urlString) {
+    private static void makeJsonRequest(BaseRequest requestModel, String urlString) {
         HttpURLConnection conn = null;
         OutputStream os = null;
-        int responseCode = 0;
+        int responseCode;
         try {
             URL url = new URL(urlString);
             String message = gson.toJson(requestModel);
-            EuroLogger.debugLog("Request to : " + requestModel.getClass().getName() + " with : " + message);
             conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeout);
             conn.setConnectTimeout(connectionTimeout);
@@ -78,32 +77,29 @@ public final class ConnectionManager {
             conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setFixedLengthStreamingMode(message.getBytes().length);
-            //make some HTTP header nicety
             conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-            //open
             conn.connect();
-            //setup send
             os = new BufferedOutputStream(conn.getOutputStream());
             os.write(message.getBytes());
-            //clean up
             os.flush();
             responseCode = conn.getResponseCode();
+
+            EuroLogger.debugLog("Request for : " + requestModel.getClass().getName() + "with : " + message + " Server response : " + responseCode);
+
         } catch (Exception e) {
-            EuroLogger.debugLog(e.getMessage());
+            EuroLogger.debugLog(e.toString());
         } finally {
             try {
                 if (os != null) {
                     os.close();
                 }
             } catch (Exception e) {
-                EuroLogger.debugLog(e.getMessage());
+                EuroLogger.debugLog(e.toString());
             }
             if (conn != null) {
                 conn.disconnect();
             }
         }
-        //EuroLogger.debugLog("Request for : " + requestModel.getClass().getName() + " Server response : " + responseCode);
-        return responseCode > 199 && responseCode < 300;
     }
 
     private static class GetAsyncTask extends AsyncTask<Void, Void, Void> {

@@ -66,7 +66,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:id="@+id/llLeftItemLayout"
@@ -83,7 +84,12 @@
                     android:paddingLeft="10dp"
                     android:paddingTop="5dp"
                     android:paddingRight="5dp"
-                    android:paddingBottom="5dp">
+                    android:paddingBottom="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="3dp"
+                    android:focusable="true"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="5dp">
 
                     <ImageView
                         android:id="@+id/ivImageLeft"
@@ -93,7 +99,6 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_carousal_icon"
                         android:visibility="visible" />
 
                     <TextView
@@ -148,8 +153,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:padding="10dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/ic_carousal_icon" />
+                        android:scaleType="centerCrop" />
 
                     <TextView
                         android:id="@+id/tvRightTitleText"
@@ -189,7 +193,9 @@
                 android:clickable="true"
                 android:padding="5dp"
                 android:src="@drawable/ic_carousal_right_icon"
-                android:tint="#263238" />
+                android:tint="#263238"
+                android:layout_alignParentEnd="true"
+                android:focusable="true" />
 
             <ImageView
                 android:id="@+id/ivArrowLeft"
@@ -201,7 +207,9 @@
                 android:clickable="true"
                 android:padding="5dp"
                 android:src="@drawable/ic_carousal_left_arrow"
-                android:tint="#263238" />
+                android:tint="#263238"
+                android:focusable="true"
+                android:layout_alignParentStart="true" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -215,7 +223,8 @@
         android:layout_margin="15dp"
         android:padding="5dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_carousal_icon" />
+        android:src="@drawable/ic_carousal_icon"
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

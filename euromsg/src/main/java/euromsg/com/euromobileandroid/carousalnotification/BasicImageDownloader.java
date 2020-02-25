@@ -18,17 +18,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class BasicImageDownloader {
+class BasicImageDownloader {
 
     private final String TAG = this.getClass().getSimpleName();
     private Context context;
     private ArrayList<CarousalItem> carousalItems;
     private OnDownloadsCompletedListener onDownloadsCompletedListener;
-    int numberOfImages;
-    static int currentDownloadTaskIndex = 0;
-    CarousalItem currentItem;
+    private int numberOfImages;
+    private static int currentDownloadTaskIndex = 0;
+    private CarousalItem currentItem;
 
-    public BasicImageDownloader(Context context, ArrayList<CarousalItem> carousalItems, int numberOfImages, @NonNull OnDownloadsCompletedListener onDownloadsCompletedListener) {
+    BasicImageDownloader(Context context, ArrayList<CarousalItem> carousalItems, int numberOfImages,
+                         @NonNull OnDownloadsCompletedListener onDownloadsCompletedListener) {
         this.carousalItems = carousalItems;
         this.context = context;
         this.onDownloadsCompletedListener = onDownloadsCompletedListener;
@@ -52,10 +53,10 @@ public class BasicImageDownloader {
     private void updateDownLoad(String filePath) {
 
         for (int i = (currentDownloadTaskIndex + 1); i < carousalItems.size(); i++) {
-            if (!TextUtils.isEmpty(carousalItems.get(i).getPhoto_url())) {
+            if (!TextUtils.isEmpty(carousalItems.get(i).getPhotoUrl())) {
                 currentDownloadTaskIndex = i;
                 currentItem = carousalItems.get(i);
-                downloadImage(currentItem.getPhoto_url());
+                downloadImage(currentItem.getPhotoUrl());
                 break;
             }
         }
@@ -65,57 +66,38 @@ public class BasicImageDownloader {
         }
     }
 
-    public void startAllDownloads() {
+    void startAllDownloads() {
         if (carousalItems != null && carousalItems.size() > 0) {
             for (int i = 0; i < carousalItems.size(); i++) {
-                if (!TextUtils.isEmpty(carousalItems.get(i).getPhoto_url())) {
+                if (!TextUtils.isEmpty(carousalItems.get(i).getPhotoUrl())) {
                     currentDownloadTaskIndex = i;
                     currentItem = carousalItems.get(i);
-                    downloadImage(currentItem.getPhoto_url());
+                    downloadImage(currentItem.getPhotoUrl());
                     break;
                 }
             }
         }
     }
 
-    /**
-     * Interface definition for callbacks to be invoked
-     * when the image download status changes.
-     */
     public interface OnImageLoaderListener {
-        /**
-         * Invoked if an error has occurred and thus
-         * the download did not complete
-         *
-         * @param error the occurred error
-         */
         void onError(ImageError error);
 
-        /**
-         * Invoked after the image has been successfully downloaded
-         *
-         * @param resultPath the downloaded image
-         */
         void onComplete(String resultPath);
     }
 
-    /**
-     * Interface definition for callbacks to be invoked
-     * when the image download status changes.
-     */
     public interface OnDownloadsCompletedListener {
 
-        /**
-         * invoked after all files are downloaded
-         */
         void onComplete();
     }
 
     private Bitmap getBitMapFromUri(String photo_url) {
-        URL url = null;
+
+        URL url;
+
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
         StrictMode.setThreadPolicy(policy);
+
         Bitmap image = null;
         try {
             url = new URL(photo_url);
@@ -128,13 +110,8 @@ public class BasicImageDownloader {
         return image;
     }
 
-    /**
-     * Downloads the image from the given URL using an {@link AsyncTask}. If a download
-     * for the given URL is already in progress this method returns immediately.
-     *
-     * @param imageUrl the URL to get the image from
-     */
-    public void downloadImage(@NonNull final String imageUrl) {
+
+    private void downloadImage(@NonNull final String imageUrl) {
 
         new AsyncTask<Void, Integer, String>() {
 
@@ -150,21 +127,17 @@ public class BasicImageDownloader {
             @Override
             protected String doInBackground(Void... params) {
                 currentTimeInMillis = System.currentTimeMillis();
-                Bitmap bitmap = null;
+                Bitmap bitmap;
                 String imagePath = null;
-                HttpURLConnection connection = null;
-                InputStream is = null;
-                ByteArrayOutputStream out = null;
-                try {
-                   // connection = (HttpURLConnection) new URL(imageUrl).openConnection();
-                    //is = connection.getInputStream();
 
-                   bitmap =  getBitMapFromUri(imageUrl);
-                   // bitmap = BitmapFactory.decodeStream(is);
+                try {
+
+                    bitmap = getBitMapFromUri(imageUrl);
+
                     if (bitmap != null) {
-                        //scaling bitmap to ensure minimum memory usage
+
                         int sampleSize = CarousalUtilities.carousalCalculateInSampleSize(bitmap.getWidth(), bitmap.getHeight(), 250, 250);
-                        Bitmap bit = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/sampleSize, bitmap.getHeight()/sampleSize, false);
+                        Bitmap bit = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / sampleSize, bitmap.getHeight() / sampleSize, false);
                         imagePath = CarousalUtilities.carousalSaveBitmapToInternalStorage(context, bit, CarousalConstants.CAROUSAL_IMAGE_BEGENNING + currentTimeInMillis);
                     }
 
@@ -173,20 +146,8 @@ public class BasicImageDownloader {
                         error = new ImageError(e).setErrorCode(ImageError.ERROR_GENERAL_EXCEPTION);
                         this.cancel(true);
                     }
-                } finally {
-                    try {
-                        if (connection != null)
-                            connection.disconnect();
-                        if (out != null) {
-                            out.flush();
-                            out.close();
-                        }
-                        if (is != null)
-                            is.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                 }
+
                 return imagePath;
             }
 
@@ -198,9 +159,10 @@ public class BasicImageDownloader {
                             .setErrorCode(ImageError.ERROR_DECODE_FAILED));
                 } else {
                     Log.d(TAG, "download complete");
-                    if (currentItem != null)
-                        currentItem.setImage_file_location(result);
-                        currentItem.setImage_file_name(CarousalConstants.CAROUSAL_IMAGE_BEGENNING + currentTimeInMillis);
+                    if (currentItem != null) {
+                        currentItem.setImageFileLocation(result);
+                        currentItem.setImageFileName(CarousalConstants.CAROUSAL_IMAGE_BEGENNING + currentTimeInMillis);
+                    }
                     mImageLoaderListener.onComplete(result);
                 }
                 System.gc();
@@ -209,52 +171,31 @@ public class BasicImageDownloader {
     }
 
 
-    /**
-     * Represents an error that has occurred while
-     * downloading image or writing it to disk. Since
-     * this class extends {@code Throwable}, you may get the
-     * stack trace from an {@code ImageError} object
-     */
     public static final class ImageError extends Throwable {
 
         private int errorCode;
-        /**
-         * An exception was thrown during an operation.
-         * Check the error message for details.
-         */
-        public static final int ERROR_GENERAL_EXCEPTION = -1;
-        /**
-         * The URL does not point to a valid file
-         */
+
+        static final int ERROR_GENERAL_EXCEPTION = -1;
+
         public static final int ERROR_INVALID_FILE = 0;
-        /**
-         * The downloaded file could not be decoded as bitmap
-         */
-        public static final int ERROR_DECODE_FAILED = 1;
+
+        static final int ERROR_DECODE_FAILED = 1;
 
 
-        public ImageError(@NonNull String message) {
+        ImageError(@NonNull String message) {
             super(message);
         }
 
-        public ImageError(@NonNull Throwable error) {
+        ImageError(@NonNull Throwable error) {
             super(error.getMessage(), error.getCause());
             this.setStackTrace(error.getStackTrace());
         }
 
-        /**
-         * @param code the code for the occurred error
-         * @return the same ImageError object
-         */
-        public ImageError setErrorCode(int code) {
+        ImageError setErrorCode(int code) {
             this.errorCode = code;
             return this;
         }
 
-        /**
-         * @return the error code that was previously set
-         * by {@link #setErrorCode(int)}
-         */
         public int getErrorCode() {
             return errorCode;
         }

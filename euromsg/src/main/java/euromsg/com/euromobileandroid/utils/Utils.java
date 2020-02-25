@@ -2,7 +2,9 @@ package euromsg.com.euromobileandroid.utils;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -12,6 +14,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
@@ -21,6 +24,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.security.MessageDigest;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public final class Utils {
@@ -58,7 +63,7 @@ public final class Utils {
                 try {
                     f.close();
                 } catch (IOException e) {
-                    throw e;
+                    Log.e("Error", e.toString());
                 }
             }
         }
@@ -132,6 +137,8 @@ public final class Utils {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return pInfo.versionName;
         } catch (Exception e) {
+            EuroLogger.debugLog("Version Name Error : " + e.toString());
+
         }
         return null;
     }
@@ -252,5 +259,38 @@ public final class Utils {
         } catch (final PackageManager.NameNotFoundException e) {
         }
         return (String) (lApplicationInfo != null ? lPackageManager.getApplicationLabel(lApplicationInfo) : defaultText);
+    }
+
+    public static Intent getLauchIntent(Context context, Map<String, String> data) {
+
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+        ComponentName componentName = intent.getComponent();
+        Intent notificationIntent = Intent.makeRestartActivityTask(componentName);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        if (data != null) {
+            Set<Map.Entry<String, String>> entrySet = data.entrySet();
+            for (Map.Entry<String, String> entry : entrySet) {
+                notificationIntent.putExtra(entry.getKey(), entry.getValue());
+            }
+        }
+        return notificationIntent;
+    }
+
+    public static int getAppIcon(Context context) {
+        int appIconResId = 0;
+        PackageManager packageManager = context.getPackageManager();
+        final ApplicationInfo applicationInfo;
+        try {
+            applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+
+            appIconResId = applicationInfo.icon;
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return appIconResId;
     }
 }

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import euromsg.com.euromobileandroid.utils.Utils;
+
 public class CarousalEventReceiver extends BroadcastReceiver {
 
     @Override
@@ -16,14 +18,8 @@ public class CarousalEventReceiver extends BroadcastReceiver {
             int carousalEvent = bundle.getInt(CarousalConstants.EVENT_CAROUSAL_ITEM_CLICKED_KEY);
             CarousalSetUp carousalSetUp = bundle.getParcelable(CarousalConstants.CAROUSAL_SET_UP_KEY);
 
-            PackageManager packageManager = context.getPackageManager();
-            Intent a = packageManager.getLaunchIntentForPackage(context.getPackageName());
-            ComponentName componentName = a.getComponent();
-            Intent mainIntent = Intent.makeRestartActivityTask(componentName);
-
-
             if (carousalEvent > 2) {
-                context.startActivity(mainIntent);
+                context.startActivity(Utils.getLauchIntent(context, null));
                 context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
 

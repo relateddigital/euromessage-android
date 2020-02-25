@@ -18,8 +18,8 @@ import java.io.IOException;
 
 
 public class CarousalUtilities {
-    public static Bitmap carousalDrawableToBitmap(Drawable drawable) {
-        Bitmap bitmap = null;
+    static Bitmap carousalDrawableToBitmap(Drawable drawable) {
+        Bitmap bitmap;
 
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
@@ -40,10 +40,7 @@ public class CarousalUtilities {
         return bitmap;
     }
 
-    /**
-     * retrieves app icon resource id
-     * **/
-    public static int carousalGetAppIconResourceId(Context context) {
+    static int carousalGetAppIconResourceId(Context context) {
         int appIconResId = -1;
         String packageName = context.getPackageName();
         final PackageManager pm = context.getPackageManager();
@@ -57,20 +54,13 @@ public class CarousalUtilities {
         return appIconResId;
     }
 
-    public static String carousalGetApplicationName(Context context) {
+    static String carousalGetApplicationName(Context context) {
         ApplicationInfo applicationInfo = context.getApplicationInfo();
         int stringId = applicationInfo.labelRes;
         return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
     }
 
-    /**
-     * saves bitmap to internal storage
-     * @param context
-     * @param bitmapImage
-     * @param fileName
-     * @return
-     */
-    public static String carousalSaveBitmapToInternalStorage(Context context, Bitmap bitmapImage, String fileName) {
+    static String carousalSaveBitmapToInternalStorage(Context context, Bitmap bitmapImage, String fileName) {
         boolean fileSaved = false;
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
@@ -81,14 +71,15 @@ public class CarousalUtilities {
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fileSaved = true;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
-                fos.close();
+                if (fos != null) {
+                    fos.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -99,13 +90,7 @@ public class CarousalUtilities {
             return null;
     }
 
-    /**
-     * Returns image from internal storage
-     * @param path
-     * @param fileName
-     * @return
-     */
-    public static Bitmap carousalLoadImageFromStorage(String path, String fileName) {
+    static Bitmap carousalLoadImageFromStorage(String path, String fileName) {
         Bitmap b = null;
 
         try {
@@ -117,14 +102,6 @@ public class CarousalUtilities {
         return b;
     }
 
-    /**
-     * returns inSampleSize of an image for scaling
-     * @param width : current width
-     * @param height : current height
-     * @param reqWidth : required width
-     * @param reqHeight : required height
-     * @return inSmplesize --> power of 2
-     */
     public static int carousalCalculateInSampleSize(
             final int width, final int height, int reqWidth, int reqHeight) {
         // Raw height and width of image
@@ -134,9 +111,6 @@ public class CarousalUtilities {
 
             final int halfHeight = height / 2;
             final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
             while ((halfHeight / inSampleSize) >= reqHeight
                     && (halfWidth / inSampleSize) >= reqWidth) {
                 inSampleSize *= 2;

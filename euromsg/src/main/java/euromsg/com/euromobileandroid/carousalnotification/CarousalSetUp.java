@@ -11,35 +11,29 @@ import java.util.ArrayList;
 
 public class CarousalSetUp implements Parcelable {
 
-    public ArrayList<CarousalItem> carousalItems;
+    ArrayList<CarousalItem> carousalItems;
 
-    public String contentTitle;
-    public String contentText; //title and text while it is small
-    public String bigContentTitle;
-    public String bigContentText; //title and text when it becomes large
-    public int carousalNotificationId = 9873715; //Random id for notification. Will cancel any
-    // notification that have existing same id.
+    String contentTitle;
+    String contentText;
+    String bigContentTitle;
+    String bigContentText;
+    int carousalNotificationId; //Random id 9873715 for notification. Will cancel any notification that have existing same id.
+    int currentStartIndex; //Variable that keeps track of where the startIndex is
+    int notificationPriority = NotificationCompat.PRIORITY_DEFAULT;
+    String smallIcon;
+    private int smallIconResourceId;
+    String largeIcon;
+    String caraousalPlaceholder;
+    CarousalItem leftItem;
+    CarousalItem rightItem;
+    boolean isOtherRegionClickable;
+    boolean isImagesInCarousal;
 
-    public  int currentStartIndex = 0; //Variable that keeps track of where the startIndex is
-    public int notificationPriority = NotificationCompat.PRIORITY_DEFAULT;
-    public String smallIcon;
-    public int smallIconResourceId = -1; //check before setting it that it does exists
-    public String largeIcon;
-    public String caraousalPlaceholder;
-    public CarousalItem leftItem;
-    public CarousalItem rightItem;
-    public boolean isOtherRegionClickable = false;
-    public boolean isImagesInCarousal = true;
-
-    public CarousalSetUp() {
-        //default set up
-    }
-
-    public CarousalSetUp (ArrayList<CarousalItem> carousalItems, String contentTitle, String contentText,
-                          String bigContentTitle, String bigContentText, int carousalNotificationId,
-                          int currentStartIndex,String smallIcon, int smallIconResourceId,
-                          String largeIcon, String caraousalPlaceholder, CarousalItem leftItem,
-                          CarousalItem rightItem, boolean isOtherRegionClickable, boolean isImagesInCarousal) {
+    CarousalSetUp(ArrayList<CarousalItem> carousalItems, String contentTitle, String contentText,
+                  String bigContentTitle, String bigContentText, int carousalNotificationId,
+                  int currentStartIndex, String smallIcon, int smallIconResourceId,
+                  String largeIcon, String caraousalPlaceholder, CarousalItem leftItem,
+                  CarousalItem rightItem, boolean isOtherRegionClickable, boolean isImagesInCarousal) {
         this.carousalItems = carousalItems;
         this.contentTitle = contentTitle;
         this.contentText = contentText;
@@ -48,6 +42,7 @@ public class CarousalSetUp implements Parcelable {
         this.carousalNotificationId = carousalNotificationId;
         this.currentStartIndex = currentStartIndex;
         this.smallIcon = smallIcon;
+        this.smallIconResourceId = -1;
         this.smallIconResourceId = smallIconResourceId;
         this.largeIcon = largeIcon;
         this.caraousalPlaceholder = caraousalPlaceholder;
@@ -57,11 +52,9 @@ public class CarousalSetUp implements Parcelable {
         this.isImagesInCarousal = isImagesInCarousal;
     }
 
-
-
-    protected CarousalSetUp(Parcel in) {
+    private CarousalSetUp(Parcel in) {
         if (in.readByte() == 0x01) {
-            carousalItems = new ArrayList<CarousalItem>();
+            carousalItems = new ArrayList<>();
             in.readList(carousalItems, CarousalItem.class.getClassLoader());
         } else {
             carousalItems = null;
@@ -74,6 +67,7 @@ public class CarousalSetUp implements Parcelable {
         currentStartIndex = in.readInt();
         notificationPriority = in.readInt();
         smallIcon = in.readString();
+        smallIconResourceId = -1;
         smallIconResourceId = in.readInt();
         largeIcon = in.readString();
         caraousalPlaceholder = in.readString();

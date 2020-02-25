@@ -3,41 +3,29 @@ package euromsg.com.euromobileandroid.carousalnotification;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by Shailesh on 06/01/17.
- */
 
 public class CarousalItem implements Parcelable {
-    String id; //id can store a key id or entire object as a gson string. At developer discretion
-    String title;
-    String description;
-    String photo_url;
-    String image_file_location;
-    String image_file_name;
-    String type;
+    private String id;
+    private String title;
+    private String description;
+    private String photoUrl;
+    private String imageFileLocation;
+    private String imageFileName;
+    private String type;
 
-
-
-    public CarousalItem( String photo_url) {
-        this(null, null, null, photo_url);
+    public CarousalItem( String photoUrl) {
+        this(null, null, null, photoUrl);
     }
 
-    public CarousalItem() {
+    CarousalItem() {
         this(null, null, null, null);
     }
 
-    /**
-     * Constructor with id. Recommended as it is easy to tell which item was clicked
-     * @param id String id of the item. Later it can be checked if it is the item that was clicked.
-     * @param title
-     * @param description
-     * @param photo_url
-     */
-    public CarousalItem(String id, String title, String description, String photo_url) {
+    public CarousalItem(String id, String title, String description, String photoUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.photo_url = photo_url;
+        this.photoUrl = photoUrl;
     }
 
     public String getId() {
@@ -48,7 +36,7 @@ public class CarousalItem implements Parcelable {
         this.id = id;
     }
 
-    public String getTitle() {
+    String getTitle() {
         return title;
     }
 
@@ -56,7 +44,7 @@ public class CarousalItem implements Parcelable {
         this.title = title;
     }
 
-    public String getDescription() {
+    String getDescription() {
         return description;
     }
 
@@ -64,28 +52,28 @@ public class CarousalItem implements Parcelable {
         this.description = description;
     }
 
-    public String getPhoto_url() {
-        return photo_url;
+    String getPhotoUrl() {
+        return photoUrl;
     }
 
-    public void setPhoto_url(String photo_url) {
-        this.photo_url = photo_url;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
-    public String getImage_file_location() {
-        return image_file_location;
+    String getImageFileLocation() {
+        return imageFileLocation;
     }
 
-    public void setImage_file_location(String image_file_location) {
-        this.image_file_location = image_file_location;
+    void setImageFileLocation(String imageFileLocation) {
+        this.imageFileLocation = imageFileLocation;
     }
 
-    public String getImage_file_name() {
-        return image_file_name;
+    String getImageFileName() {
+        return imageFileName;
     }
 
-    public void setImage_file_name(String image_file_name) {
-        this.image_file_name = image_file_name;
+    void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 
     public String getType() {
@@ -96,13 +84,13 @@ public class CarousalItem implements Parcelable {
         this.type = type;
     }
 
-    protected CarousalItem(Parcel in) {
+    private CarousalItem(Parcel in) {
         id = in.readString();
         title = in.readString();
         description = in.readString();
-        photo_url = in.readString();
-        image_file_location = in.readString();
-        image_file_name = in.readString();
+        photoUrl = in.readString();
+        imageFileLocation = in.readString();
+        imageFileName = in.readString();
         type = in.readString();
     }
 
@@ -116,9 +104,9 @@ public class CarousalItem implements Parcelable {
         dest.writeString(id);
         dest.writeString(title);
         dest.writeString(description);
-        dest.writeString(photo_url);
-        dest.writeString(image_file_location);
-        dest.writeString(image_file_name);
+        dest.writeString(photoUrl);
+        dest.writeString(imageFileLocation);
+        dest.writeString(imageFileName);
         dest.writeString(type);
     }
 
