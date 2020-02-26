@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">euromessage</string>
+    <string name="email">Email</string>
+    <string name="test_sync">Test Sync</string>
+    <string name="fail_token">Token Alınamadı </string>
+    <string name="success_token">Token Alındı </string>
+    <string name="token">TOKEN : </string>
+    <string name="sync">SYNC : </string>
+
 </resources>

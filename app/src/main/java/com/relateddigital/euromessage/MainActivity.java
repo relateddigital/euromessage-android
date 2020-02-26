@@ -2,25 +2,22 @@ package com.relateddigital.euromessage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.relateddigital.euromessage.databinding.ActivityMainBinding;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
-import euromsg.com.euromobileandroid.carousalnotification.CarousalEventReceiver;
 import euromsg.com.euromobileandroid.model.Message;
 
 
@@ -30,23 +27,20 @@ public class MainActivity extends AppCompatActivity {
 
     public static String ENTEGRASYON_ID = TestConstant.ENTEGRASYON_ID;
 
-    TextView tvToken;
-    EditText etEmail;
+    ActivityMainBinding mainBinding;
+
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         initializeEuroMessage();
 
-        setRelease();
+        setReleaseName();
 
-        tvToken = findViewById(R.id.tv_token);
-        etEmail = findViewById(R.id.et_email);
-
-        Button button = findViewById(R.id.btn);
-        button.setOnClickListener(new View.OnClickListener() {
+        mainBinding.btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 syncExample();
@@ -69,41 +63,47 @@ public class MainActivity extends AppCompatActivity {
 
         euroMobileManager.registerToFCM(getBaseContext());
 
+        checkTokenStatus();
+    }
+
+    private void checkTokenStatus() {
+
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
                         if (!task.isSuccessful()) {
-                            tvToken.setText("Token Alınamadı");
+                            mainBinding.tvTokenMessage.setText(getResources().getString(R.string.fail_token));
                             return;
                         }
-                        String token = task.getResult().getToken();
-                        Log.e("token", token);
 
-                        tvToken.setText("Token Alındı : " + token);
+                        token = task.getResult().getToken();
+                        mainBinding.tvTokenMessage.setText(getResources().getString(R.string.success_token));
+
+                        mainBinding.tvToken.setText(token);
                     }
                 });
-
     }
 
     public void syncExample() {
 
-        if (!etEmail.getText().toString().equals("")) {
-            euroMobileManager.setEmail(etEmail.getText().toString().trim(), getApplicationContext());
+        if (!mainBinding.etEmail.getText().toString().equals("")) {
+            euroMobileManager.setEmail(mainBinding.etEmail.getText().toString().trim(), getApplicationContext());
             euroMobileManager.sync(getApplicationContext());
+
             Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "E-Mail Adresi Giriniz", Toast.LENGTH_LONG).show();
         }
     }
 
 
-    public void setRelease () {
-
-        TextView tvAppRelease = findViewById(R.id.tvAppRelease);
-        TextView tvSDKRelease = findViewById(R.id.tvSDKRelease);
+    public void setReleaseName() {
 
         String libVersionName = euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME;
 
-        tvAppRelease.setText("App Version : " + BuildConfig.VERSION_NAME );
-        tvSDKRelease.setText(" EuroMessage SDK Version: " + libVersionName);
+        mainBinding.tvAppRelease.setText("App Version : " + BuildConfig.VERSION_NAME );
+        mainBinding.tvSDKRelease.setText(" EuroMessage SDK Version: " + libVersionName);
     }
 }
