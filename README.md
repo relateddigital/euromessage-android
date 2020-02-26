@@ -43,7 +43,14 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 - [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support)
 
 ### Using the SDK
+        
+        public static String ENTEGRASYON_ID = Constant.ENTEGRASYON_ID;  // e.g.: "euromessage-android"
 
+        EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(ENTEGRASYON_ID, this);
+
+        euroMobileManager.registerToFCM(getBaseContext());
+       
+        
 RMC Campaign and more information :  [Please check this](https://docs.relateddigital.com/display/KB/Android+SDK). 
 
 ### Licence
