@@ -1,7 +1,6 @@
 package euromsg.com.euromobileandroid.carousalnotification;
 
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -21,10 +20,13 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.R;
+import euromsg.com.euromobileandroid.connection.ImageDownloaderManager;
+import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.Utils;
 
-public class Carousal {
-    private static Carousal carousal;
+public class CarousalNotificationBuilder {
+
+    private static CarousalNotificationBuilder carousalNotificationBuilder;
     private Context context;
     private ArrayList<CarousalItem> carousalItems;
     private String contentTitle, contentText; //title and text while it is small
@@ -56,19 +58,20 @@ public class Carousal {
     private boolean isOtherRegionClickable = false;
     private boolean isImagesInCarousal = true;
 
+    private String channelId = "euroChannel";
 
     private static final String CAROUSAL_ITEM_CLICKED_KEY = "CarousalNotificationItemClickedKey";
 
-    private Carousal(Context context) {
+    private CarousalNotificationBuilder(Context context) {
         this.context = context;
-        mBuilder = new NotificationCompat.Builder(context);
+        mBuilder = new NotificationCompat.Builder(context, channelId);
     }
 
-    public static Carousal with(Context context) {
-        if (carousal == null) {
-            synchronized (Carousal.class) {
-                if (carousal == null) {
-                    carousal = new Carousal(context);
+    public static CarousalNotificationBuilder with(Context context) {
+        if (carousalNotificationBuilder == null) {
+            synchronized (CarousalNotificationBuilder.class) {
+                if (carousalNotificationBuilder == null) {
+                    carousalNotificationBuilder = new CarousalNotificationBuilder(context);
                     try {
                         appIcon = CarousalUtilities.carousalDrawableToBitmap(context.getPackageManager().getApplicationIcon(context.getPackageName()));
                     } catch (PackageManager.NameNotFoundException e) {
@@ -79,10 +82,10 @@ public class Carousal {
                 }
             }
         }
-        return carousal;
+        return carousalNotificationBuilder;
     }
 
-    public Carousal beginTransaction() {
+    public CarousalNotificationBuilder beginTransaction() {
         clearCarousalIfExists();
         return this;
     }
@@ -98,7 +101,7 @@ public class Carousal {
         }
     }
 
-    public Carousal setContentTitle(String title) {
+    public CarousalNotificationBuilder setContentTitle(String title) {
         if (title != null) {
             this.contentTitle = title;
         } else {
@@ -131,7 +134,7 @@ public class Carousal {
         }
     }
 
-    public Carousal setNotificationPriority(int priority) {
+    public CarousalNotificationBuilder setNotificationPriority(int priority) {
         if (priority >= NotificationCompat.PRIORITY_MIN && priority <= NotificationCompat.PRIORITY_MAX) {
             notificationPriority = priority;
         } else {
@@ -140,7 +143,7 @@ public class Carousal {
         return this;
     }
 
-    public Carousal setSmallIconResource(int resourceId) {
+    public CarousalNotificationBuilder setSmallIconResource(int resourceId) {
         try {
             smallIcon = BitmapFactory.decodeResource(context.getResources(), resourceId);
         } catch (Exception e) {
@@ -154,7 +157,7 @@ public class Carousal {
         return this;
     }
 
-    public Carousal setLargeIcon(int resourceId) {
+    public CarousalNotificationBuilder setLargeIcon(int resourceId) {
         try {
             largeIcon = BitmapFactory.decodeResource(context.getResources(), resourceId);
         } catch (Exception e) {
@@ -163,7 +166,7 @@ public class Carousal {
         return this;
     }
 
-    public Carousal setLargeIcon(Bitmap large) {
+    public CarousalNotificationBuilder setLargeIcon(Bitmap large) {
         if (large != null) {
             largeIcon = large;
         } else {
@@ -198,14 +201,14 @@ public class Carousal {
                 }
             }
             if (isImagesInCarous) {
-                BasicImageDownloader basicDownloader = new BasicImageDownloader(context, carousalItems
-                        , numberofImages, new BasicImageDownloader.OnDownloadsCompletedListener() {
+                ImageDownloaderManager imageDownloaderManager = new ImageDownloaderManager(context, carousalItems
+                        , numberofImages, new ImageDownloaderManager.OnDownloadsCompletedListener() {
                     @Override
                     public void onComplete() {
                         initiateCarousalTransaction();
                     }
                 });
-                basicDownloader.startAllDownloads();
+                imageDownloaderManager.startAllDownloads();
             } else {
                 this.isImagesInCarousal = false;
                 initiateCarousalTransaction();
@@ -267,19 +270,17 @@ public class Carousal {
             RemoteViews bigView = new RemoteViews(context.getApplicationContext().getPackageName(), R.layout.carousal_notification_item);
 
             setUpCarousalVisibilities(bigView);
-
             setUpCarousalItems(bigView);
             setPendingIntents(bigView);
 
-            String channelId = "euroChannel";
+            NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-            setNotificationChannel(channelId);
+            PushNotificationManager pushNotificationManager = new PushNotificationManager();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotifyManager != null) {
+                pushNotificationManager.createNotificationChannel(mNotifyManager, channelId);
+            }
 
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(context, channelId);
-            mBuilder.setContentTitle(contentTitle).setContentText(contentText)
-                    .setSmallIcon(smallIconResourceId).setLargeIcon(largeIcon)
-                    .setPriority(notificationPriority);
+            mBuilder = pushNotificationManager.createNotificationBuilder(context, contentTitle, contentText);
 
             if (isOtherRegionClickable) {
                 setOtherRegionClickable();
@@ -288,7 +289,6 @@ public class Carousal {
             foregroundNote = mBuilder.build();
             foregroundNote.bigContentView = bigView;
 
-            NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             if (mNotifyManager != null) {
                 mNotifyManager.notify(carousalNotificationId, foregroundNote);
             }
@@ -309,23 +309,6 @@ public class Carousal {
         mBuilder.setContentIntent(pIntent);
     }
 
-    private void setNotificationChannel(String channelId) {
-
-        NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotificationManager != null) {
-            CharSequence name = "Euro Message Channel";
-            String description = "Channel for Euro Message notifications";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel notificationChannel = new NotificationChannel(channelId, name, importance);
-            notificationChannel.setDescription(description);
-            notificationChannel.setShowBadge(true);
-            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-            mNotificationManager.createNotificationChannel(notificationChannel);
-        }
-    }
-
     private Bitmap getCarousalBitmap(CarousalItem item) {
         Bitmap bitmap = null;
         if (item != null) {
@@ -344,6 +327,7 @@ public class Carousal {
     }
 
     private void setUpCarousalVisibilities(RemoteViews bigView) {
+
         if (carousalItems.size() < 3) {
             bigView.setViewVisibility(R.id.ivArrowLeft, View.GONE);
             bigView.setViewVisibility(R.id.ivArrowRight, View.GONE);

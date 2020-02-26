@@ -13,6 +13,7 @@ import euromsg.com.euromobileandroid.EuroMobileManager;
 
 import euromsg.com.euromobileandroid.connection.ConnectionManager;
 import euromsg.com.euromobileandroid.model.Message;
+import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.Utils;
 
@@ -53,7 +54,7 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
         Map<String, String> remoteMessageData = remoteMessage.getData();
 
-         Message pushMessage = new Gson().fromJson(carousel, Message.class);
+        Message pushMessage = new Gson().fromJson(carousel, Message.class);
         //Message pushMessage = new Message(remoteMessageData);
 
         EuroLogger.debugLog("Message received : " + pushMessage.getMessage());
@@ -76,8 +77,8 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
                 break;
         }
 
-        String key = Utils.getPrefString(this, Constants.APPLICATION_KEY);
+        String key = Utils.getSharedPrefString(this, Constants.APPLICATION_KEY);
 
-        EuroMobileManager.sharedManager(key, this).reportReceived(pushMessage.getPushId());
+        EuroMobileManager.createInstance(key, this).reportReceived(pushMessage.getPushId());
     }
 }

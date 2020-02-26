@@ -52,7 +52,7 @@ public class CarousalItem implements Parcelable {
         this.description = description;
     }
 
-    String getPhotoUrl() {
+    public String getPhotoUrl() {
         return photoUrl;
     }
 
@@ -64,7 +64,7 @@ public class CarousalItem implements Parcelable {
         return imageFileLocation;
     }
 
-    void setImageFileLocation(String imageFileLocation) {
+    public void setImageFileLocation(String imageFileLocation) {
         this.imageFileLocation = imageFileLocation;
     }
 
@@ -72,7 +72,7 @@ public class CarousalItem implements Parcelable {
         return imageFileName;
     }
 
-    void setImageFileName(String imageFileName) {
+    public void setImageFileName(String imageFileName) {
         this.imageFileName = imageFileName;
     }
 

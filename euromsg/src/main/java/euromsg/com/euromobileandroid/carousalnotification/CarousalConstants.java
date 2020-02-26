@@ -1,7 +1,7 @@
 package euromsg.com.euromobileandroid.carousalnotification;
 
 
-class CarousalConstants {
+public class CarousalConstants {
 
     static final int EVENT_LEFT_ARROW_CLICKED = 1;
     static final int EVENT_RIGHT_ARROW_CLICKED = 2;
@@ -10,7 +10,7 @@ class CarousalConstants {
     static final int EVENT_OTHER_REGION_CLICKED = 5;
 
     static final String EVENT_CAROUSAL_ITEM_CLICKED_KEY = "CarousalItemClicked";
-    static final String CAROUSAL_IMAGE_BEGENNING = "CarousalImage";
+    public static final String CAROUSAL_IMAGE_BEGENNING = "CarousalImage";
     static final String CAROUSAL_EVENT_FIRED_INTENT_FILTER = "CAROUSALNOTIFICATIONFIRED";
     static final String CAROUSAL_ITEM_CLICKED_INTENT_FILTER = "CAROUSALNOTIFICATIONITEMCLICKED";
     static final String CAROUSAL_SET_UP_KEY = "CAROUSAL_SET_UP_KEY";

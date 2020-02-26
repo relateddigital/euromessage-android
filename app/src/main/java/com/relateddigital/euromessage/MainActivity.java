@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil;
 import android.content.Intent;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static EuroMobileManager euroMobileManager;
 
-    public static String ENTEGRASYON_ID = TestConstant.ENTEGRASYON_ID;
+    public static String APPLICATION_KEY = TestConstant.APPLICATION_KEY;
 
     ActivityMainBinding mainBinding;
 
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void initializeEuroMessage() {
 
-        euroMobileManager = EuroMobileManager.sharedManager(ENTEGRASYON_ID, getApplicationContext());
+        euroMobileManager = EuroMobileManager.createInstance(APPLICATION_KEY, this);
 
         euroMobileManager.registerToFCM(getBaseContext());
 
@@ -89,11 +88,12 @@ public class MainActivity extends AppCompatActivity {
     public void syncExample() {
 
         if (!mainBinding.etEmail.getText().toString().equals("")) {
+
             euroMobileManager.setEmail(mainBinding.etEmail.getText().toString().trim(),this);
             euroMobileManager.setEuroUserId("12345", this);
             euroMobileManager.sync(this);
 
-            Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Sync Clicked", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "E-Mail Adresi Giriniz", Toast.LENGTH_LONG).show();
         }

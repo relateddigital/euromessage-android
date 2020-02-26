@@ -74,7 +74,7 @@ public final class Utils {
         out.close();
     }
 
-    public static void savePrefString(Context context, String key, String value) {
+    public static void saveSharedPrefString(Context context, String key, String value) {
         String appName = context.getPackageName();
         SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
         SharedPreferences.Editor spEditor = sp.edit();
@@ -82,8 +82,8 @@ public final class Utils {
         spEditor.apply();
     }
 
-    public static void savePrefBoolean(Context context, String key,
-                                       boolean value) {
+    public static void saveSharedPrefBoolean(Context context, String key,
+                                             boolean value) {
         String appName = context.getPackageName();
         SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
         SharedPreferences.Editor spEditor = sp.edit();
@@ -91,7 +91,7 @@ public final class Utils {
         spEditor.apply();
     }
 
-    public static void savePrefLong(Context context, String key, long value) {
+    public static void saveSharedPrefLong(Context context, String key, long value) {
         String appName = context.getPackageName();
         SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
         SharedPreferences.Editor spEditor = sp.edit();
@@ -99,20 +99,20 @@ public final class Utils {
         spEditor.apply();
     }
 
-    public static boolean hasPrefString(Context context, String key) {
+    public static boolean hasSharedPrefString(Context context, String key) {
         String appName = context.getPackageName();
         SharedPreferences sp = context.getSharedPreferences(appName,
                 Context.MODE_PRIVATE);
         return sp.contains(key);
     }
 
-    public static String getPrefString(Context context, String key) {
+    public static String getSharedPrefString(Context context, String key) {
         String appName = context.getPackageName();
         SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
         return sp.getString(key, "");
     }
 
-    public static long getPrefLong(Context context, String key) {
+    public static long getSharedPrefLong(Context context, String key) {
         String appName = context.getPackageName();
         SharedPreferences sp = context.getSharedPreferences(appName,
                 Context.MODE_PRIVATE);
@@ -206,20 +206,6 @@ public final class Utils {
 
     public static String local(Context context) {
         return context.getResources().getConfiguration().locale.getLanguage();
-    }
-
-    private static String convertToHex(byte[] data) {
-        StringBuilder buf = new StringBuilder();
-        for (byte b : data) {
-            int halfbyte = (b >>> 4) & 0x0F;
-            int two_halfs = 0;
-            do {
-                buf.append((0 <= halfbyte) && (halfbyte <= 9) ? (char) ('0' + halfbyte)
-                        : (char) ('a' + (halfbyte - 10)));
-                halfbyte = b & 0x0F;
-            } while (two_halfs++ < 1);
-        }
-        return buf.toString();
     }
 
     public static String deviceType() {

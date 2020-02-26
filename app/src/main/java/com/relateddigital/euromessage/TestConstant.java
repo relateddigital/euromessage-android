@@ -2,5 +2,5 @@ package com.relateddigital.euromessage;
 
 class TestConstant {
 
-    static final String ENTEGRASYON_ID = "euromessage-android";
+    static final String APPLICATION_KEY = "euromessage-android";
 }

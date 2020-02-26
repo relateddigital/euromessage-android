@@ -1,24 +1,21 @@
-package euromsg.com.euromobileandroid.carousalnotification;
+package euromsg.com.euromobileandroid.connection;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
-import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
-class BasicImageDownloader {
+import euromsg.com.euromobileandroid.carousalnotification.CarousalConstants;
+import euromsg.com.euromobileandroid.carousalnotification.CarousalItem;
+import euromsg.com.euromobileandroid.carousalnotification.CarousalUtilities;
+
+public class ImageDownloaderManager {
 
     private final String TAG = this.getClass().getSimpleName();
     private Context context;
@@ -28,8 +25,8 @@ class BasicImageDownloader {
     private static int currentDownloadTaskIndex = 0;
     private CarousalItem currentItem;
 
-    BasicImageDownloader(Context context, ArrayList<CarousalItem> carousalItems, int numberOfImages,
-                         @NonNull OnDownloadsCompletedListener onDownloadsCompletedListener) {
+    public ImageDownloaderManager(Context context, ArrayList<CarousalItem> carousalItems, int numberOfImages,
+                                  @NonNull OnDownloadsCompletedListener onDownloadsCompletedListener) {
         this.carousalItems = carousalItems;
         this.context = context;
         this.onDownloadsCompletedListener = onDownloadsCompletedListener;
@@ -66,7 +63,7 @@ class BasicImageDownloader {
         }
     }
 
-    void startAllDownloads() {
+    public void startAllDownloads() {
         if (carousalItems != null && carousalItems.size() > 0) {
             for (int i = 0; i < carousalItems.size(); i++) {
                 if (!TextUtils.isEmpty(carousalItems.get(i).getPhotoUrl())) {
@@ -90,23 +87,6 @@ class BasicImageDownloader {
         void onComplete();
     }
 
-    private Bitmap getBitMapFromUri(String photo_url) {
-
-        URL url;
-
-        Bitmap image = null;
-        try {
-            url = new URL(photo_url);
-
-            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return image;
-    }
-
-
     private void downloadImage(@NonNull final String imageUrl) {
 
         new AsyncTask<Void, Integer, String>() {
@@ -128,7 +108,7 @@ class BasicImageDownloader {
 
                 try {
 
-                    bitmap = getBitMapFromUri(imageUrl);
+                    bitmap = ConnectionManager.getInstance().getBitMapFromUri(imageUrl);
 
                     if (bitmap != null) {
 

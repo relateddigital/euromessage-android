@@ -60,7 +60,7 @@ public class CarousalUtilities {
         return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
     }
 
-    static String carousalSaveBitmapToInternalStorage(Context context, Bitmap bitmapImage, String fileName) {
+    public static String carousalSaveBitmapToInternalStorage(Context context, Bitmap bitmapImage, String fileName) {
         boolean fileSaved = false;
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir

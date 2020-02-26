@@ -22,7 +22,7 @@ public class CarousalEventReceiver extends BroadcastReceiver {
             }
 
             if (carousalEvent > 0 && carousalSetUp != null)
-                Carousal.with(context).handleClickEvent(carousalEvent, carousalSetUp);
+                CarousalNotificationBuilder.with(context).handleClickEvent(carousalEvent, carousalSetUp);
         }
     }
 }

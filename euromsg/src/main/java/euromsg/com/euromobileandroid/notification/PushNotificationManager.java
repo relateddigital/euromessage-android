@@ -1,4 +1,4 @@
-package euromsg.com.euromobileandroid.service;
+package euromsg.com.euromobileandroid.notification;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
@@ -17,39 +17,41 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 import java.util.Map;
 
-import euromsg.com.euromobileandroid.carousalnotification.Carousal;
+import euromsg.com.euromobileandroid.carousalnotification.CarousalNotificationBuilder;
 import euromsg.com.euromobileandroid.carousalnotification.CarousalItem;
 import euromsg.com.euromobileandroid.model.CarouselElement;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.Utils;
 
-class PushNotificationManager {
+public class PushNotificationManager {
 
-    void generateCarouselNotification(Context context, Message pushMessage) {
+    private String channelId = "euroChannel";
+
+    public void generateCarouselNotification(Context context, Message pushMessage) {
 
         ArrayList<CarouselElement> carouselElements = pushMessage.getElements();
-        Carousal carousal = Carousal.with(context).beginTransaction();
-        carousal.setContentTitle(pushMessage.getTitle()).setContentText(pushMessage.getMessage());
+
+        CarousalNotificationBuilder carousalNotificationBuilder = CarousalNotificationBuilder.with(context).beginTransaction();
+        carousalNotificationBuilder.setContentTitle(pushMessage.getTitle()).setContentText(pushMessage.getMessage());
 
         for (CarouselElement item : carouselElements) {
             CarousalItem cItem = new CarousalItem(item.getId(), item.getTitle(), item.getContent(), item.getPicture());
-            carousal.addCarousalItem(cItem);
+            carousalNotificationBuilder.addCarousalItem(cItem);
         }
-        carousal.setOtherRegionClickable(true);
-        carousal.buildCarousal();
+        carousalNotificationBuilder.setOtherRegionClickable(true);
+        carousalNotificationBuilder.buildCarousal();
     }
 
-    void generateNotification(Context context, Map<String, String> data, Bitmap image) {
+    public void generateNotification(Context context, Map<String, String> data, Bitmap image) {
 
         try {
-            String channelId = "euroChannel";
 
             Message pushMessage = new Message(data);
 
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, Utils.getLaunchIntent(context, data), PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, Utils.getLaunchIntent(context, null), PendingIntent.FLAG_UPDATE_CURRENT);
 
-            NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent, channelId);
+            NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
 
            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -64,7 +66,23 @@ class PushNotificationManager {
         }
     }
 
-    private NotificationCompat.Builder createNotificationBuilder(Context context, Bitmap pushImage, Message pushMessage, PendingIntent contentIntent, String channelId) {
+
+    public NotificationCompat.Builder createNotificationBuilder(Context context, String contentTitle, String contentText){
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(context, channelId);
+        mBuilder.setContentTitle(contentTitle)
+                .setContentText(contentText)
+                .setSmallIcon(Utils.getAppIcon(context))
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
+        .setAutoCancel(true);
+
+        return mBuilder;
+    }
+
+    private NotificationCompat.Builder createNotificationBuilder(Context context,
+                                                                 Bitmap pushImage, Message pushMessage, PendingIntent contentIntent) {
 
         String title = TextUtils.isEmpty(pushMessage.getTitle()) ? Utils.getAppLabel(context, "") : pushMessage.getTitle();
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
@@ -78,11 +96,10 @@ class PushNotificationManager {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
                 .setSmallIcon(Utils.getAppIcon(context))
-                .setAutoCancel(true)
                 .setStyle(style)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(title)
-                .setColorized(false)
+                .setColorized(false).setAutoCancel(true)
                 .setContentText(pushMessage.getMessage());
         mBuilder.setContentIntent(contentIntent);
 
@@ -90,7 +107,7 @@ class PushNotificationManager {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    private static void createNotificationChannel(NotificationManager notificationManager, String channelId) {
+    public void createNotificationChannel(NotificationManager notificationManager, String channelId) {
 
         CharSequence name = "Euro Message Channel";
         String description = "Channel for Euro Message notifications";
