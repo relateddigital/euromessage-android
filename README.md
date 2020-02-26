@@ -1,5 +1,5 @@
 
-![Image description](lhttps://www.tsoftapps.com/Data/Logo/euromsg.svg)
+![Image description](https://blog.euromsg.com/wp-content/uploads/2011/09/euromesage_logo.jpg)
 
 
 # Euromessage Android
