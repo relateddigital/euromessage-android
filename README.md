@@ -72,15 +72,15 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
  #### Sync
  
  RMC needs that at least one property which is email or user id in order to match and analyse users.
-
  
-            euroMobileManager.setEmail("test@mail.com", this);
-            euroMobileManager.setEuroUserId("12345", this);
+ ```java
+ 
+    euroMobileManager.setEmail("test@mail.com", this);
+    euroMobileManager.setEuroUserId("12345", this);
 
-            euroMobileManager.sync(this);
-
-
-        
+    euroMobileManager.sync(this);
+```
+    
 RMC Campaign and more information :  [Please check docs](https://docs.relateddigital.com/display/KB/Android+SDK). 
 
 ### Licence
