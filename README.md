@@ -35,9 +35,9 @@ You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage
 ### Sample Applications 
 
 - [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
-  it is in master branch
+ (master branch)
 
-- [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support)its module is available for usage 
+- [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support)
 
 ### Using the SDK
 
