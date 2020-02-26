@@ -43,13 +43,26 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 - [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support)
 
 ### Using the SDK
-        
-        public static String ENTEGRASYON_ID = Constant.ENTEGRASYON_ID;  // > e.g.: "euromessage-android" <
+ 
+ #### Initialization
+
+        public static String ENTEGRASYON_ID = Constant.ENTEGRASYON_ID;  // e.g.: "euromessage-android"
 
         EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(ENTEGRASYON_ID, this);
 
         euroMobileManager.registerToFCM(getBaseContext());
-       
+  
+ #### Sync
+ 
+ RMC needs that at least one property which is email or user id in order to match and analyse users.
+
+ 
+            euroMobileManager.setEmail("test@mail.com", this);
+            euroMobileManager.setEuroUserId("12345", this);
+
+           euroMobileManager.sync(this);
+
+
         
 RMC Campaign and more information :  [Please check this](https://docs.relateddigital.com/display/KB/Android+SDK). 
 
