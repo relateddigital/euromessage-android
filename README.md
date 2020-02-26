@@ -20,12 +20,13 @@ or
 
 You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
  For that :
- - Download module
+- Download module
 - Open your project which you want to use Euromessage
 - Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
 
 
 ### Permission
+
      <uses-permission android:name="android.permission.INTERNET"/>
 
      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
@@ -33,11 +34,10 @@ You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage
     
 ### Sample Applications 
 
-  - [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
-  You may find sample application in master branch
+- [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
+  it is in master branch
 
-- [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support) You can use its module too. 
-
+- [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support)its module is available for usage 
 
 ### Using the SDK
 
