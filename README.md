@@ -22,8 +22,6 @@
       - [Sync](#sync)
     + [Licence](#licence)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
 
 # Euromessage Android
 
@@ -81,7 +79,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 
 
         
-RMC Campaign and more information :  [Please check this](https://docs.relateddigital.com/display/KB/Android+SDK). 
+RMC Campaign and more information :  [Please check docs](https://docs.relateddigital.com/display/KB/Android+SDK). 
 
 ### Licence
 
