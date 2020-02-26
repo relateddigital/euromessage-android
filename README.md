@@ -14,7 +14,6 @@
 - [Latest Version](#latest-version)
 - [Euromessage Android](#euromessage-android)
   * [Installation](#installation)
-      - [Note :](#note--)
     + [Permission](#permission)
     + [Sample Applications](#sample-applications)
     + [Using the SDK](#using-the-sdk)
