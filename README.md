@@ -1,6 +1,7 @@
 
 <img src="https://blog.euromsg.com/wp-content/uploads/2011/09/euromesage_logo.jpg" alt="drawing" style="width:100;"/>
 
+<a href="url"><img src="https://blog.euromsg.com/wp-content/uploads/2011/09/euromesage_logo.jpg" align="left" height="48" width="48" ></a>
 
 
 # Euromessage Android
