@@ -16,13 +16,7 @@ The Euromessage Android Sdk is a java implementation of an Android client for Eu
 
 You can add ```implementation 'com.euromsg:euromsg:3.0.1'``` to build.gradle
 
-### Permission
-``` <uses-permission android:name="android.permission.INTERNET"/>
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> ```
-    
-
-Also you can check  [Euromessage Demo Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) for demo purpose. You may find demo application in master branch
+or 
 
 You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
  For that :
@@ -30,11 +24,20 @@ You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage
 - Open your project which you want to use Euromessage
 - Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
 
-### Note that: 
 
-If you do not use AndroidX, you may use  [Euromessage Module - (Support Library)](https://github.com/relateddigital/euromessage-android/tree/euromessage-support/euromsg) directly. But we will not contribute support library in the future. This is our last supported version. 
+### Permission
+     <uses-permission android:name="android.permission.INTERNET"/>
 
-Also you can check  [Euromessage Demo Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support) for demo purpose. You can use its module too. 
+     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
+     
+    
+### Sample Applications 
+
+Also you can check  [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) for demo purpose. You may find sample application in master branch
+
+#### Note that: 
+
+Also you can check  [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support) for demo purpose. You can use its module too. 
 
 
 ### Using the SDK
