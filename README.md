@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android"><img src="https://blog.euromsg.com/wp-content/uploads/2011/09/euromesage_logo.jpg" alt="Euromessage Android Library" style="max-width:100%;"></a>
+  <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android"><img src="https://blog.euromsg.com/wp-content/uploads/2011/09/euromesage_logo.jpg" alt="Euromessage Android Library" style="max-width:80%;"></a>
 </p>
 
 
