@@ -12,8 +12,8 @@ import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.model.Retention;
 import euromsg.com.euromobileandroid.model.Subscription;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
+import euromsg.com.euromobileandroid.utils.SharedPreference;
 import euromsg.com.euromobileandroid.utils.Utils;
-
 
 public class EuroMobileManager {
 
@@ -42,11 +42,13 @@ public class EuroMobileManager {
      * @param applicationKey Application key from Euromsg. Euromsg will give you this key.
      */
     public static EuroMobileManager createInstance(String applicationKey, Context context) {
+
         if (instance == null) {
             instance = new EuroMobileManager(applicationKey);
         }
+
         EuroLogger.debugLog("SharedManager App Key : " + instance.subscription.getAppKey());
-        Utils.saveSharedPrefString(context, Constants.APPLICATION_KEY, instance.subscription.getAppKey());
+        SharedPreference.saveString(context, Constants.APPLICATION_KEY, instance.subscription.getAppKey());
 
         return instance;
     }
@@ -132,19 +134,19 @@ public class EuroMobileManager {
 
     public void setTwitterId(String twitterId, Context context) {
         setSubscriptionProperty(Constants.EURO_TWITTER_KEY, twitterId, context);
-        Utils.saveSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
     public void setEmail(String email, Context context) {
 
         setSubscriptionProperty(Constants.EURO_EMAIL_KEY, email, context);
 
-        Utils.saveSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
     public void setFacebook(String facebookId, Context context) {
         setSubscriptionProperty(Constants.EURO_FACEBOOK_KEY, facebookId, context);
-        Utils.saveSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
     public void setLocation(double latitude, double longitude, Context context) {
@@ -153,22 +155,22 @@ public class EuroMobileManager {
 
     public void setEuroUserId(String userKey, Context context) {
         setSubscriptionProperty(Constants.EURO_USER_KEY, userKey, context);
-        Utils.saveSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
     public void setPhoneNumber(String msisdn, Context context) {
         setSubscriptionProperty(Constants.EURO_MSISDN_KEY, msisdn, context);
-        Utils.saveSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
     public void setUserProperty(String key, String value, Context context) {
         setSubscriptionProperty(key, value, context);
-        Utils.saveSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
     public void removeUserProperties(Context context) {
         this.subscription.removeAll();
-        Utils.saveSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
     private void saveSubscription(Context context) {
@@ -178,8 +180,8 @@ public class EuroMobileManager {
         subscription.setIdentifierForVendor(Utils.deviceUDID(context));
         subscription.setLocal(Utils.local(context));
 
-        if (Utils.hasSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
-            Subscription oldSubcription = new Gson().fromJson(Utils.getSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
+        if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
+            Subscription oldSubcription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             subscription.addAll(oldSubcription.getExtra());
             subscription.setToken(oldSubcription.getToken());
             subscription.setAdvertisingIdentifier(oldSubcription.getAdvertisingIdentifier());
@@ -187,7 +189,7 @@ public class EuroMobileManager {
         }
         try {
             EuroLogger.debugLog(this.subscription.toJson());
-            Utils.saveSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+            SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
         } catch (Exception e) {
             if (BuildConfig.DEBUG) e.printStackTrace();
 
@@ -196,8 +198,8 @@ public class EuroMobileManager {
 
     private void setSubscriptionProperty(String key, Object value, Context context) {
 
-     if (Utils.hasSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
-            this.subscription = new Gson().fromJson(Utils.getSharedPrefString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
+     if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
+            this.subscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             this.subscription.add(key, value);
 
         } else {

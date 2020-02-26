@@ -74,51 +74,6 @@ public final class Utils {
         out.close();
     }
 
-    public static void saveSharedPrefString(Context context, String key, String value) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
-        SharedPreferences.Editor spEditor = sp.edit();
-        spEditor.putString(key, value);
-        spEditor.apply();
-    }
-
-    public static void saveSharedPrefBoolean(Context context, String key,
-                                             boolean value) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
-        SharedPreferences.Editor spEditor = sp.edit();
-        spEditor.putBoolean(key, value);
-        spEditor.apply();
-    }
-
-    public static void saveSharedPrefLong(Context context, String key, long value) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
-        SharedPreferences.Editor spEditor = sp.edit();
-        spEditor.putLong(key, value);
-        spEditor.apply();
-    }
-
-    public static boolean hasSharedPrefString(Context context, String key) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName,
-                Context.MODE_PRIVATE);
-        return sp.contains(key);
-    }
-
-    public static String getSharedPrefString(Context context, String key) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
-        return sp.getString(key, "");
-    }
-
-    public static long getSharedPrefLong(Context context, String key) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName,
-                Context.MODE_PRIVATE);
-        return sp.getLong(key, 0);
-    }
-
     public static String appVersion(Context context) {
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
@@ -218,6 +173,7 @@ public final class Utils {
         try {
             lApplicationInfo = lPackageManager.getApplicationInfo(pContext.getApplicationInfo().packageName, 0);
         } catch (final PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
         return (String) (lApplicationInfo != null ? lPackageManager.getApplicationLabel(lApplicationInfo) : defaultText);
     }

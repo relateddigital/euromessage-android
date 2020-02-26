@@ -52,8 +52,7 @@ public class PushNotificationManager {
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, Utils.getLaunchIntent(context, null), PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
-
-           NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotificationManager != null) {
                 createNotificationChannel(mNotificationManager, channelId);
@@ -66,8 +65,7 @@ public class PushNotificationManager {
         }
     }
 
-
-    public NotificationCompat.Builder createNotificationBuilder(Context context, String contentTitle, String contentText){
+    public NotificationCompat.Builder createNotificationBuilder(Context context, String contentTitle, String contentText) {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, channelId);
@@ -76,7 +74,7 @@ public class PushNotificationManager {
                 .setSmallIcon(Utils.getAppIcon(context))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
-        .setAutoCancel(true);
+                .setAutoCancel(true);
 
         return mBuilder;
     }

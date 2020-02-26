@@ -36,12 +36,9 @@ public class CarousalNotificationBuilder {
 
     private static final String TAG = "Carousal";
     private NotificationCompat.Builder mBuilder;
-    private int carousalNotificationId = 9873715; //Random id for notification. Will cancel any
-    // notification that have existing same id.
+    private int carousalNotificationId = 9873715; //Random id for notification. Will cancel any notification that have existing same id.
 
     private static int currentStartIndex = 0; //Variable that keeps track of where the startIndex is
-    private static int notificationPriority = NotificationCompat.PRIORITY_DEFAULT;
-    private Notification foregroundNote;
 
     private static Bitmap appIcon;
     private static Bitmap smallIcon;
@@ -136,7 +133,6 @@ public class CarousalNotificationBuilder {
 
     public CarousalNotificationBuilder setNotificationPriority(int priority) {
         if (priority >= NotificationCompat.PRIORITY_MIN && priority <= NotificationCompat.PRIORITY_MAX) {
-            notificationPriority = priority;
         } else {
             Log.i(TAG, "Invalid priority");
         }
@@ -286,7 +282,7 @@ public class CarousalNotificationBuilder {
                 setOtherRegionClickable();
             }
 
-            foregroundNote = mBuilder.build();
+            Notification foregroundNote = mBuilder.build();
             foregroundNote.bigContentView = bigView;
 
             if (mNotifyManager != null) {
@@ -547,7 +543,6 @@ public class CarousalNotificationBuilder {
             bigContentText = setUp.bigContentText;
             carousalNotificationId = setUp.carousalNotificationId;
             currentStartIndex = setUp.currentStartIndex;
-            notificationPriority = setUp.notificationPriority;
             smallIconPath = setUp.smallIcon;
             largeIconPath = setUp.largeIcon;
             placeHolderImagePath = setUp.caraousalPlaceholder;
@@ -604,7 +599,6 @@ public class CarousalNotificationBuilder {
                 Log.e(TAG, "Unable To send notification's pendingIntent");
             }
         }
-
     }
 
     private void sendItemClickedBroadcast(CarousalItem cItem) {

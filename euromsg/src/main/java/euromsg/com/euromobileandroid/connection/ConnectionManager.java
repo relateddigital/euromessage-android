@@ -35,20 +35,17 @@ public final class ConnectionManager {
         instance = new ConnectionManager();
     }
 
-    private ConnectionManager() {
-    }
-
     public void get(final String urlString) {
         new GetAsyncTask(urlString).execute();
     }
 
-    public Bitmap getBitMapFromUri(String photo_url) {
+    public Bitmap getBitMapFromUri(String photoUrl) {
 
         URL url;
 
         Bitmap image = null;
         try {
-            url = new URL(photo_url);
+            url = new URL(photoUrl);
 
             image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
         } catch (IOException e) {

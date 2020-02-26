@@ -15,7 +15,7 @@ import euromsg.com.euromobileandroid.connection.ConnectionManager;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
-import euromsg.com.euromobileandroid.utils.Utils;
+import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -77,8 +77,8 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
                 break;
         }
 
-        String key = Utils.getSharedPrefString(this, Constants.APPLICATION_KEY);
+        String applicationKey = SharedPreference.getString(this, Constants.APPLICATION_KEY);
 
-        EuroMobileManager.createInstance(key, this).reportReceived(pushMessage.getPushId());
+        EuroMobileManager.createInstance(applicationKey, this).reportReceived(pushMessage.getPushId());
     }
 }
