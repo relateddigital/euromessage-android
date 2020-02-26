@@ -29,7 +29,7 @@ The Euromessage Android Sdk is a java implementation of an Android client for Eu
 
 ## Installation
 
-Add Euromessage to the dependencies in app/build.gradle.
+Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```implementation 'com.euromsg:euromsg:3.0.1'```
  
@@ -60,12 +60,14 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 ### Using the SDK
  
  #### Initialization
+```java
 
-        public static String ENTEGRASYON_ID = Constant.ENTEGRASYON_ID;  // e.g.: "euromessage-android"
+  public static String ENTEGRASYON_ID = Constant.ENTEGRASYON_ID;  // e.g.: "euromessage-android"
 
-        EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(ENTEGRASYON_ID, this);
+  EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(ENTEGRASYON_ID, this);
 
-        euroMobileManager.registerToFCM(getBaseContext());
+   euroMobileManager.registerToFCM(getBaseContext()); 
+   ```
   
  #### Sync
  
