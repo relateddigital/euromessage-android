@@ -18,8 +18,9 @@ Add Euromessage to the dependencies in app/build.gradle.
 
 ```implementation 'com.euromsg:euromsg:3.0.1'```
  
+#### Note : 
 
-You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
+You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
  For that :
 - Download module
 - Open your project which you want to use Euromessage
