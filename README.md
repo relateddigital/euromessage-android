@@ -1,5 +1,5 @@
 
-<img src="https://blog.euromsg.com/wp-content/uploads/2011/09/euromesage_logo.jpg" alt="drawing" style="width:200px;"/>
+<img src="https://blog.euromsg.com/wp-content/uploads/2011/09/euromesage_logo.jpg" alt="drawing" style="width:100px;"/>
 
 
 
