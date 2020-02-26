@@ -6,7 +6,23 @@
 
 # Latest Version 
 
-***February 20, 2020***  [Euromessage v3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
+***February 20, 2020*** - [Euromessage v3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
+
+
+# Table of Contents
+
+- [Latest Version](#latest-version)
+- [Euromessage Android](#euromessage-android)
+  * [Installation](#installation)
+      - [Note :](#note--)
+    + [Permission](#permission)
+    + [Sample Applications](#sample-applications)
+    + [Using the SDK](#using-the-sdk)
+      - [Initialization](#initialization)
+      - [Sync](#sync)
+    + [Licence](#licence)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 
 # Euromessage Android
