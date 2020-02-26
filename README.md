@@ -33,11 +33,10 @@ You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage
     
 ### Sample Applications 
 
-Also you can check  [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) for demo purpose. You may find sample application in master branch
+  - [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
+  You may find sample application in master branch
 
-#### Note that: 
-
-Also you can check  [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support) for demo purpose. You can use its module too. 
+- [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support) You can use its module too. 
 
 
 ### Using the SDK
