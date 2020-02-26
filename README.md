@@ -3,6 +3,11 @@
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android"><img src="https://blog.euromsg.com/wp-content/uploads/2011/09/euromesage_logo.jpg" alt="Euromessage Android Library" height="150" style="max-width:100%;"></a>
 </p>
 
+
+# Latest Version 
+February 20, 2020 [3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) directly.
+
+
 # Euromessage Android
 
 The Euromessage Android Sdk is a java implementation of an Android client for Euromessage.
