@@ -89,8 +89,9 @@ public class MainActivity extends AppCompatActivity {
     public void syncExample() {
 
         if (!mainBinding.etEmail.getText().toString().equals("")) {
-            euroMobileManager.setEmail(mainBinding.etEmail.getText().toString().trim(), getApplicationContext());
-            euroMobileManager.sync(getApplicationContext());
+            euroMobileManager.setEmail(mainBinding.etEmail.getText().toString().trim(),this);
+            euroMobileManager.setEuroUserId("12345", this);
+            euroMobileManager.sync(this);
 
             Toast.makeText(getApplicationContext(), "Sync", Toast.LENGTH_LONG).show();
         } else {

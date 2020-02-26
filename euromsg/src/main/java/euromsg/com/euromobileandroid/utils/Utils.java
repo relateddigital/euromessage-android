@@ -30,9 +30,6 @@ import java.util.UUID;
 
 public final class Utils {
 
-    private Utils() {
-    }
-
     private static String sID = null;
     private static final String INSTALLATION = "INSTALLATION";
 
@@ -120,16 +117,6 @@ public final class Utils {
         SharedPreferences sp = context.getSharedPreferences(appName,
                 Context.MODE_PRIVATE);
         return sp.getLong(key, 0);
-    }
-
-    public static boolean isInternetAvailable(Context ctx) {
-        ConnectivityManager cm = (ConnectivityManager) ctx
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        }
-        return false;
     }
 
     public static String appVersion(Context context) {
@@ -221,7 +208,6 @@ public final class Utils {
         return context.getResources().getConfiguration().locale.getLanguage();
     }
 
-
     private static String convertToHex(byte[] data) {
         StringBuilder buf = new StringBuilder();
         for (byte b : data) {
@@ -234,17 +220,6 @@ public final class Utils {
             } while (two_halfs++ < 1);
         }
         return buf.toString();
-    }
-
-    public static String sha1(String text) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            md.update(text.getBytes("iso-8859-1"), 0, text.length());
-            byte[] sha1hash = md.digest();
-            return convertToHex(sha1hash);
-        } catch (Exception e) {
-        }
-        return null;
     }
 
     public static String deviceType() {
@@ -261,7 +236,7 @@ public final class Utils {
         return (String) (lApplicationInfo != null ? lPackageManager.getApplicationLabel(lApplicationInfo) : defaultText);
     }
 
-    public static Intent getLauchIntent(Context context, Map<String, String> data) {
+    public static Intent getLaunchIntent(Context context, Map<String, String> data) {
 
         PackageManager packageManager = context.getPackageManager();
         Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());

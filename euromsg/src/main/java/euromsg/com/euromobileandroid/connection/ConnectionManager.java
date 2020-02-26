@@ -3,11 +3,13 @@ package euromsg.com.euromobileandroid.connection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.StrictMode;
 import android.util.Log;
 
 import com.google.gson.Gson;
 
 import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
@@ -40,15 +42,20 @@ public final class ConnectionManager {
         new GetAsyncTask(urlString).execute();
     }
 
-    public Bitmap getBitmap(final String urlString) {
+    public Bitmap getBitMapFromUri(String photo_url) {
+
+        URL url;
+
+        Bitmap image = null;
         try {
-            return BitmapFactory.decodeStream(new URL(urlString).openConnection().getInputStream());
-        } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
-                e.printStackTrace();
-            }
-            return null;
+            url = new URL(photo_url);
+
+            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        return image;
     }
 
     public void subscribe(final Subscription subscription) {

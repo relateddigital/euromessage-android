@@ -1,10 +1,8 @@
 package euromsg.com.euromobileandroid.carousalnotification;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import euromsg.com.euromobileandroid.utils.Utils;
@@ -19,7 +17,7 @@ public class CarousalEventReceiver extends BroadcastReceiver {
             CarousalSetUp carousalSetUp = bundle.getParcelable(CarousalConstants.CAROUSAL_SET_UP_KEY);
 
             if (carousalEvent > 2) {
-                context.startActivity(Utils.getLauchIntent(context, null));
+                context.startActivity(Utils.getLaunchIntent(context, null));
                 context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
 

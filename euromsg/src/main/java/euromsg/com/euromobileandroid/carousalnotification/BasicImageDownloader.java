@@ -94,10 +94,6 @@ class BasicImageDownloader {
 
         URL url;
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
-
         Bitmap image = null;
         try {
             url = new URL(photo_url);

@@ -47,11 +47,11 @@ class PushNotificationManager {
 
             Message pushMessage = new Message(data);
 
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, Utils.getLauchIntent(context, data), PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, Utils.getLaunchIntent(context, data), PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent, channelId);
 
-            android.app.NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+           NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotificationManager != null) {
                 createNotificationChannel(mNotificationManager, channelId);
