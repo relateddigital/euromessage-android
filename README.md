@@ -87,4 +87,5 @@ RMC Campaign and more information :  [Please check docs](https://docs.relateddig
 ### Licence
 
 
- [Related Digital ](https://www.relateddigital.com/)
+ - [Related Digital ](https://www.relateddigital.com/)
+ - [Euromessage](https://www.euromsg.com/)
