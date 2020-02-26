@@ -14,9 +14,10 @@ The Euromessage Android Sdk is a java implementation of an Android client for Eu
 
 ## Installation
 
-You can add ```implementation 'com.euromsg:euromsg:3.0.1'``` to build.gradle
+Add Euromessage to the dependencies in app/build.gradle.
 
-or 
+```implementation 'com.euromsg:euromsg:3.0.1'```
+ 
 
 You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
  For that :
