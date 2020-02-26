@@ -31,7 +31,7 @@ The Euromessage Android Sdk is a java implementation of an Android client for Eu
 
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
-```implementation 'com.euromsg:euromsg:3.0.1'```
+```gradle implementation 'com.euromsg:euromsg:3.0.1' ```
  
 #### Note : 
 
@@ -44,11 +44,11 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 
 
 ### Permission
-
+```xml
      <uses-permission android:name="android.permission.INTERNET"/>
 
      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
-     
+ ```    
     
 ### Sample Applications 
 
