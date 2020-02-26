@@ -6,7 +6,7 @@
 
 # Latest Version 
 
-***February 20, 2020***  [Euromessage 3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
+***February 20, 2020***  [Euromessage v3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
 
 
 # Euromessage Android
