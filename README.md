@@ -1,5 +1,5 @@
 
-<img src="https://blog.euromsg.com/wp-content/uploads/2011/09/euromesage_logo.jpg" align="center" width="200" >
+<img src="https://blog.euromsg.com/wp-content/uploads/2011/09/euromesage_logo.jpg" align="center" height="200" >
 
 
 # Euromessage Android
