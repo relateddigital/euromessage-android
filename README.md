@@ -60,7 +60,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
             euroMobileManager.setEmail("test@mail.com", this);
             euroMobileManager.setEuroUserId("12345", this);
 
-           euroMobileManager.sync(this);
+            euroMobileManager.sync(this);
 
 
         
