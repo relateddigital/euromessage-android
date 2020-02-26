@@ -22,8 +22,9 @@ Add Euromessage to the dependencies in app/build.gradle.
 #### Note : 
 
 You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
- For that :
-- Download module
+  
+  For that :
+- Download the module
 - Open your project which you want to use Euromessage
 - Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
 
