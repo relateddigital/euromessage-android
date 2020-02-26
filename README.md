@@ -44,7 +44,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 
 ### Using the SDK
         
-        public static String ENTEGRASYON_ID = Constant.ENTEGRASYON_ID;  // e.g.: "euromessage-android"
+        public static String ENTEGRASYON_ID = Constant.ENTEGRASYON_ID;  // > e.g.: "euromessage-android" <
 
         EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(ENTEGRASYON_ID, this);
 
