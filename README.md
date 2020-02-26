@@ -68,7 +68,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 
   EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(ENTEGRASYON_ID, this);
 
-   euroMobileManager.registerToFCM(getBaseContext()); 
+  euroMobileManager.registerToFCM(getBaseContext()); 
    ```
   
  #### Sync
