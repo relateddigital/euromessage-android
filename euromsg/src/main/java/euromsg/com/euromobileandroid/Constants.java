@@ -13,7 +13,7 @@ public class Constants {
     static final String EURO_SUBSCRIPTION_KEY = "subscription";
 
     public static final String LOG_TAG = "EuroPush";
-    public static final String APPLICATION_KEY = "AppKey";
+    public static final String APP_ALIAS = "AppKey";
 
 
     public static final int EVENT_LEFT_ARROW_CLICKED = 1;

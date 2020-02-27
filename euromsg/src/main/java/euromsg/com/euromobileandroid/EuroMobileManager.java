@@ -23,10 +23,10 @@ public class EuroMobileManager {
 
     private boolean showPush = true;
 
-    private EuroMobileManager(String applicationKey) {
+    private EuroMobileManager(String appAlias) {
 
         subscription.setFirstTime(1);
-        subscription.setAppKey(applicationKey);
+        subscription.setAppAlias(appAlias);
         subscription.setOs(AppUtils.osType());
         subscription.setOsVersion(AppUtils.osVersion());
         subscription.setSdkVersion(Constants.SDK_VERSION);
@@ -44,8 +44,8 @@ public class EuroMobileManager {
             instance = new EuroMobileManager(appAlias);
         }
 
-        EuroLogger.debugLog("SharedManager App Key : " + instance.subscription.getAppKey());
-        SharedPreference.saveString(context, Constants.APPLICATION_KEY, instance.subscription.getAppKey());
+        EuroLogger.debugLog("SharedManager App Key : " + instance.subscription.getAppAlias());
+        SharedPreference.saveString(context, Constants.APP_ALIAS, instance.subscription.getAppAlias());
 
         return instance;
     }
@@ -67,7 +67,7 @@ public class EuroMobileManager {
             EuroLogger.debugLog("Report Received : " + pushId);
 
             Retention retention = new Retention();
-            retention.setKey(subscription.getAppKey());
+            retention.setKey(subscription.getAppAlias());
             retention.setPushId(pushId);
             retention.setStatus(MessageStatus.Received.toString());
             retention.setToken(subscription.getToken());
@@ -93,7 +93,7 @@ public class EuroMobileManager {
         if (pushId != null) {
             EuroLogger.debugLog("Report Read : " + pushId);
             Retention retention = new Retention();
-            retention.setKey(subscription.getAppKey());
+            retention.setKey(subscription.getAppAlias());
             retention.setPushId(pushId);
             retention.setStatus(MessageStatus.Read.toString());
             retention.setToken(subscription.getToken());

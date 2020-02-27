@@ -16,7 +16,7 @@ public class Subscription extends BaseRequest {
     private String appVersion;
 
     @SerializedName("appKey")
-    private String appKey;
+    private String appAlias;
 
     @SerializedName("os")
     private String os;
@@ -64,8 +64,8 @@ public class Subscription extends BaseRequest {
     }
 
     public boolean isValid() {
-        EuroLogger.debugLog("Token : " + getToken() + " App Key : " + this.appKey);
-        return !(TextUtils.isEmpty(getToken()) && TextUtils.isEmpty(appKey));
+        EuroLogger.debugLog("Token : " + getToken() + " App Key : " + this.appAlias);
+        return !(TextUtils.isEmpty(getToken()) && TextUtils.isEmpty(appAlias));
     }
 
     public Map<String, Object> getExtra() {
@@ -76,12 +76,12 @@ public class Subscription extends BaseRequest {
         return appVersion;
     }
 
-    public String getAppKey() {
-        return appKey;
+    public String getAppAlias() {
+        return appAlias;
     }
 
-    public void setAppKey(String appKey) {
-        this.appKey = appKey;
+    public void setAppAlias(String appAlias) {
+        this.appAlias = appAlias;
     }
 
     public String getOs() {

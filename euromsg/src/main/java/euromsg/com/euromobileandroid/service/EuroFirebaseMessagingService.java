@@ -77,7 +77,7 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
                 break;
         }
 
-        String applicationKey = SharedPreference.getString(this, Constants.APPLICATION_KEY);
+        String applicationKey = SharedPreference.getString(this, Constants.APP_ALIAS);
 
         EuroMobileManager.createInstance(applicationKey, this).reportReceived(pushMessage.getPushId());
     }
