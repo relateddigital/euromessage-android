@@ -36,12 +36,12 @@ public class EuroMobileManager {
 
     /**
      * Initiator method
-     * @param applicationKey Application key from Euromsg. Euromsg will give you this key.
+     * @param appAlias Application key from Euromsg. Euromsg will give you this key.
      */
-    public static EuroMobileManager createInstance(String applicationKey, Context context) {
+    public static EuroMobileManager createInstance(String appAlias, Context context) {
 
         if (instance == null) {
-            instance = new EuroMobileManager(applicationKey);
+            instance = new EuroMobileManager(appAlias);
         }
 
         EuroLogger.debugLog("SharedManager App Key : " + instance.subscription.getAppKey());
