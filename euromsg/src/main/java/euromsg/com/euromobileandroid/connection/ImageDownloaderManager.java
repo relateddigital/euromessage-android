@@ -11,23 +11,23 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
-import euromsg.com.euromobileandroid.carousalnotification.CarousalConstants;
-import euromsg.com.euromobileandroid.carousalnotification.CarousalItem;
-import euromsg.com.euromobileandroid.carousalnotification.CarousalUtilities;
+import euromsg.com.euromobileandroid.Constants;
+import euromsg.com.euromobileandroid.model.CarouselItem;
+import euromsg.com.euromobileandroid.utils.ImageUtils;
 
 public class ImageDownloaderManager {
 
     private final String TAG = this.getClass().getSimpleName();
     private Context context;
-    private ArrayList<CarousalItem> carousalItems;
+    private ArrayList<CarouselItem> carouselItems;
     private OnDownloadsCompletedListener onDownloadsCompletedListener;
     private int numberOfImages;
     private static int currentDownloadTaskIndex = 0;
-    private CarousalItem currentItem;
+    private CarouselItem currentItem;
 
-    public ImageDownloaderManager(Context context, ArrayList<CarousalItem> carousalItems, int numberOfImages,
+    public ImageDownloaderManager(Context context, ArrayList<CarouselItem> carouselItems, int numberOfImages,
                                   @NonNull OnDownloadsCompletedListener onDownloadsCompletedListener) {
-        this.carousalItems = carousalItems;
+        this.carouselItems = carouselItems;
         this.context = context;
         this.onDownloadsCompletedListener = onDownloadsCompletedListener;
         this.numberOfImages = numberOfImages;
@@ -49,26 +49,26 @@ public class ImageDownloaderManager {
 
     private void updateDownLoad(String filePath) {
 
-        for (int i = (currentDownloadTaskIndex + 1); i < carousalItems.size(); i++) {
-            if (!TextUtils.isEmpty(carousalItems.get(i).getPhotoUrl())) {
+        for (int i = (currentDownloadTaskIndex + 1); i < carouselItems.size(); i++) {
+            if (!TextUtils.isEmpty(carouselItems.get(i).getPhotoUrl())) {
                 currentDownloadTaskIndex = i;
-                currentItem = carousalItems.get(i);
+                currentItem = carouselItems.get(i);
                 downloadImage(currentItem.getPhotoUrl());
                 break;
             }
         }
         --numberOfImages;
-        if (numberOfImages < 1 || currentDownloadTaskIndex > carousalItems.size() - 1) {
+        if (numberOfImages < 1 || currentDownloadTaskIndex > carouselItems.size() - 1) {
             onDownloadsCompletedListener.onComplete();
         }
     }
 
     public void startAllDownloads() {
-        if (carousalItems != null && carousalItems.size() > 0) {
-            for (int i = 0; i < carousalItems.size(); i++) {
-                if (!TextUtils.isEmpty(carousalItems.get(i).getPhotoUrl())) {
+        if (carouselItems != null && carouselItems.size() > 0) {
+            for (int i = 0; i < carouselItems.size(); i++) {
+                if (!TextUtils.isEmpty(carouselItems.get(i).getPhotoUrl())) {
                     currentDownloadTaskIndex = i;
-                    currentItem = carousalItems.get(i);
+                    currentItem = carouselItems.get(i);
                     downloadImage(currentItem.getPhotoUrl());
                     break;
                 }
@@ -112,9 +112,9 @@ public class ImageDownloaderManager {
 
                     if (bitmap != null) {
 
-                        int sampleSize = CarousalUtilities.carousalCalculateInSampleSize(bitmap.getWidth(), bitmap.getHeight(), 250, 250);
+                        int sampleSize = ImageUtils.calculateInSampleSize(bitmap.getWidth(), bitmap.getHeight(), 250, 250);
                         Bitmap bit = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / sampleSize, bitmap.getHeight() / sampleSize, false);
-                        imagePath = CarousalUtilities.carousalSaveBitmapToInternalStorage(context, bit, CarousalConstants.CAROUSAL_IMAGE_BEGENNING + currentTimeInMillis);
+                        imagePath = ImageUtils.saveBitmapToInternalStorage(context, bit, Constants.CAROUSAL_IMAGE_BEGENNING + currentTimeInMillis);
                     }
 
                 } catch (Throwable e) {
@@ -137,7 +137,7 @@ public class ImageDownloaderManager {
                     Log.d(TAG, "download complete");
                     if (currentItem != null) {
                         currentItem.setImageFileLocation(result);
-                        currentItem.setImageFileName(CarousalConstants.CAROUSAL_IMAGE_BEGENNING + currentTimeInMillis);
+                        currentItem.setImageFileName(Constants.CAROUSAL_IMAGE_BEGENNING + currentTimeInMillis);
                     }
                     mImageLoaderListener.onComplete(result);
                 }

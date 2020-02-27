@@ -1,4 +1,4 @@
-package euromsg.com.euromobileandroid.carousalnotification;
+package euromsg.com.euromobileandroid.utils;
 
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -17,8 +17,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-public class CarousalUtilities {
-    static Bitmap carousalDrawableToBitmap(Drawable drawable) {
+public class ImageUtils {
+
+    public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap;
 
         if (drawable instanceof BitmapDrawable) {
@@ -40,27 +41,7 @@ public class CarousalUtilities {
         return bitmap;
     }
 
-    static int carousalGetAppIconResourceId(Context context) {
-        int appIconResId = -1;
-        String packageName = context.getPackageName();
-        final PackageManager pm = context.getPackageManager();
-        final ApplicationInfo applicationInfo;
-        try {
-            applicationInfo = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
-            appIconResId = applicationInfo.icon;
-        } catch (PackageManager.NameNotFoundException e) {
-            //do nothing here
-        }
-        return appIconResId;
-    }
-
-    static String carousalGetApplicationName(Context context) {
-        ApplicationInfo applicationInfo = context.getApplicationInfo();
-        int stringId = applicationInfo.labelRes;
-        return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
-    }
-
-    public static String carousalSaveBitmapToInternalStorage(Context context, Bitmap bitmapImage, String fileName) {
+    public static String saveBitmapToInternalStorage(Context context, Bitmap bitmapImage, String fileName) {
         boolean fileSaved = false;
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
@@ -90,7 +71,7 @@ public class CarousalUtilities {
             return null;
     }
 
-    static Bitmap carousalLoadImageFromStorage(String path, String fileName) {
+    public static Bitmap loadImageFromStorage(String path, String fileName) {
         Bitmap b = null;
 
         try {
@@ -102,7 +83,7 @@ public class CarousalUtilities {
         return b;
     }
 
-    public static int carousalCalculateInSampleSize(
+    public static int calculateInSampleSize(
             final int width, final int height, int reqWidth, int reqHeight) {
         // Raw height and width of image
         int inSampleSize = 1;
@@ -118,5 +99,21 @@ public class CarousalUtilities {
         }
 
         return inSampleSize;
+    }
+
+    public static int getAppIcon(Context context) {
+        int appIconResId = 0;
+        PackageManager packageManager = context.getPackageManager();
+        final ApplicationInfo applicationInfo;
+        try {
+            applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+
+            appIconResId = applicationInfo.icon;
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return appIconResId;
     }
 }

@@ -55,7 +55,7 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, String> remoteMessageData = remoteMessage.getData();
 
         Message pushMessage = new Gson().fromJson(carousel, Message.class);
-        //Message pushMessage = new Message(remoteMessageData);
+       // Message pushMessage = new Message(remoteMessageData);
 
         EuroLogger.debugLog("Message received : " + pushMessage.getMessage());
 

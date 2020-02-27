@@ -25,7 +25,7 @@
             android:visibility="visible">
 
             <TextView
-                android:id="@+id/tvCarousalTitle"
+                android:id="@+id/tv_carousel_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -40,7 +40,7 @@
                 android:visibility="visible" />
 
             <TextView
-                android:id="@+id/tvCarousalContent"
+                android:id="@+id/tv_carousel_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="6dp"
@@ -70,7 +70,7 @@
                 android:baselineAligned="false">
 
                 <LinearLayout
-                    android:id="@+id/llLeftItemLayout"
+                    android:id="@+id/ll_left_item_layout"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
@@ -92,7 +92,7 @@
                     android:paddingEnd="5dp">
 
                     <ImageView
-                        android:id="@+id/ivImageLeft"
+                        android:id="@+id/iv_image_left"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_margin="5dp"
@@ -102,7 +102,7 @@
                         android:visibility="visible" />
 
                     <TextView
-                        android:id="@+id/tvLeftTitleText"
+                        android:id="@+id/tv_left_title_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -114,7 +114,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/tvLeftDescriptionText"
+                        android:id="@+id/tv_left_description_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -128,7 +128,7 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/llRightItemLayout"
+                    android:id="@+id/ll_right_item_layout"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="3dp"
@@ -148,7 +148,7 @@
                     android:layout_marginEnd="5dp">
 
                     <ImageView
-                        android:id="@+id/ivImageRight"
+                        android:id="@+id/iv_image_right"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -156,7 +156,7 @@
                         android:scaleType="centerCrop" />
 
                     <TextView
-                        android:id="@+id/tvRightTitleText"
+                        android:id="@+id/tv_right_title_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -169,7 +169,7 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/tvRightDescriptionText"
+                        android:id="@+id/tv_right_description_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
@@ -184,7 +184,7 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/ivArrowRight"
+                android:id="@+id/iv_arrow_right"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_alignParentRight="true"
@@ -192,13 +192,13 @@
                 android:background="#80ffffff"
                 android:clickable="true"
                 android:padding="5dp"
-                android:src="@drawable/ic_carousal_right_icon"
+                android:src="@drawable/ic_carousel_right_icon"
                 android:tint="#263238"
                 android:layout_alignParentEnd="true"
                 android:focusable="true" />
 
             <ImageView
-                android:id="@+id/ivArrowLeft"
+                android:id="@+id/iv_arrow_left"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_alignParentLeft="true"
@@ -206,7 +206,7 @@
                 android:background="#80ffffff"
                 android:clickable="true"
                 android:padding="5dp"
-                android:src="@drawable/ic_carousal_left_arrow"
+                android:src="@drawable/ic_carousel_left_arrow"
                 android:tint="#263238"
                 android:focusable="true"
                 android:layout_alignParentStart="true" />
@@ -215,7 +215,7 @@
 
 
     <ImageView
-        android:id="@+id/ivCarousalAppIcon"
+        android:id="@+id/iv_carousel_app_icon"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
@@ -223,7 +223,7 @@
         android:layout_margin="15dp"
         android:padding="5dp"
         android:scaleType="centerInside"
-        android:src="@drawable/ic_carousal_icon"
+        android:src="@drawable/ic_carousel_icon"
         android:layout_alignParentStart="true" />
 
 

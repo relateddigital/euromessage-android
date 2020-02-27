@@ -13,7 +13,7 @@ import euromsg.com.euromobileandroid.model.Retention;
 import euromsg.com.euromobileandroid.model.Subscription;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
-import euromsg.com.euromobileandroid.utils.Utils;
+import euromsg.com.euromobileandroid.utils.AppUtils;
 
 public class EuroMobileManager {
 
@@ -27,18 +27,15 @@ public class EuroMobileManager {
 
         subscription.setFirstTime(1);
         subscription.setAppKey(applicationKey);
-        subscription.setOs(Utils.osType());
-        subscription.setOsVersion(Utils.osVersion());
+        subscription.setOs(AppUtils.osType());
+        subscription.setOsVersion(AppUtils.osVersion());
         subscription.setSdkVersion(Constants.SDK_VERSION);
-        subscription.setDeviceName(Utils.deviceName());
-        subscription.setDeviceType(Utils.deviceType());
+        subscription.setDeviceName(AppUtils.deviceName());
+        subscription.setDeviceType(AppUtils.deviceType());
     }
 
     /**
      * Initiator method
-     * <p>
-     * Use to initiate Euromsg Service with application key and sender id
-     *
      * @param applicationKey Application key from Euromsg. Euromsg will give you this key.
      */
     public static EuroMobileManager createInstance(String applicationKey, Context context) {
@@ -60,7 +57,7 @@ public class EuroMobileManager {
     /**
      * Retention service
      * <p>
-     * Use to report when a GCM message is received. Only required when you perform a manuel GCM registration.
+     * Use to report when a FCM message is received. Only required when you perform a manuel FCM registration.
      *
      * @param pushId Message Id
      */
@@ -175,10 +172,10 @@ public class EuroMobileManager {
 
     private void saveSubscription(Context context) {
 
-        subscription.setCarrier(Utils.carrier(context));
-        subscription.setAppVersion(Utils.appVersion(context));
-        subscription.setIdentifierForVendor(Utils.deviceUDID(context));
-        subscription.setLocal(Utils.local(context));
+        subscription.setCarrier(AppUtils.carrier(context));
+        subscription.setAppVersion(AppUtils.appVersion(context));
+        subscription.setIdentifierForVendor(AppUtils.deviceUDID(context));
+        subscription.setLocal(AppUtils.local(context));
 
         if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
             Subscription oldSubcription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);

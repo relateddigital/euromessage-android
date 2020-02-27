@@ -23,8 +23,8 @@ public class Message {
     private String sound;
     private PushType pushType;
     private String collapseKey;
-    private Map<String, String> params = new HashMap<String, String>();
-    private ArrayList<CarouselElement> elements = new ArrayList<>();
+    private Map<String, String> params = new HashMap<>();
+    private ArrayList<Element> elements = new ArrayList<>();
 
     public Message(@NonNull Map<String,String> bundle) {
         for (String key : bundle.keySet()) {
@@ -117,7 +117,7 @@ public class Message {
         return sound;
     }
 
-    public ArrayList<CarouselElement> getElements() {
+    public ArrayList<Element> getElements() {
         return elements;
     }
 }

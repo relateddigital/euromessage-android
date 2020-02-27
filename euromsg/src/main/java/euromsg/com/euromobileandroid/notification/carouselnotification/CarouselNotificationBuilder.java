@@ -1,4 +1,4 @@
-package euromsg.com.euromobileandroid.carousalnotification;
+package euromsg.com.euromobileandroid.notification.carouselnotification;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -19,24 +19,28 @@ import androidx.core.app.NotificationCompat;
 
 import java.util.ArrayList;
 
+import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.R;
 import euromsg.com.euromobileandroid.connection.ImageDownloaderManager;
+import euromsg.com.euromobileandroid.model.CarouselItem;
+import euromsg.com.euromobileandroid.model.CarouselSetUp;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
-import euromsg.com.euromobileandroid.utils.Utils;
+import euromsg.com.euromobileandroid.utils.ImageUtils;
+import euromsg.com.euromobileandroid.utils.AppUtils;
 
-public class CarousalNotificationBuilder {
+public class CarouselNotificationBuilder {
 
-    private static CarousalNotificationBuilder carousalNotificationBuilder;
+    private static CarouselNotificationBuilder carouselNotificationBuilder;
     private Context context;
-    private ArrayList<CarousalItem> carousalItems;
+    private ArrayList<CarouselItem> carouselItems;
     private String contentTitle, contentText; //title and text while it is small
     private String bigContentTitle, bigContentText; //title and text when it becomes large
     private String leftItemTitle, leftItemDescription;
     private String rightItemTitle, rightItemDescription;
 
-    private static final String TAG = "Carousal";
+    private static final String TAG = "Carousel";
     private NotificationCompat.Builder mBuilder;
-    private int carousalNotificationId = 9873715; //Random id for notification. Will cancel any notification that have existing same id.
+    private int carouselNotificationId = 9873715; //Random id for notification. Will cancel any notification that have existing same id.
 
     private static int currentStartIndex = 0; //Variable that keeps track of where the startIndex is
 
@@ -46,31 +50,31 @@ public class CarousalNotificationBuilder {
     private static Bitmap largeIcon;
     private static Bitmap caraousalPlaceholder;
 
-    private CarousalItem leftItem, rightItem;
+    private CarouselItem leftItem, rightItem;
     private Bitmap leftItemBitmap, rightItemBitmap;
 
-    private CarousalSetUp carousalSetUp;
+    private CarouselSetUp carouselSetUp;
     private String smallIconPath, largeIconPath, placeHolderImagePath; //Stores path of these images if set by user
 
     private boolean isOtherRegionClickable = false;
-    private boolean isImagesInCarousal = true;
+    private boolean isImagesInCarousel = true;
 
     private String channelId = "euroChannel";
 
-    private static final String CAROUSAL_ITEM_CLICKED_KEY = "CarousalNotificationItemClickedKey";
+    private static final String CAROUSAL_ITEM_CLICKED_KEY = "CarouselNotificationItemClickedKey";
 
-    private CarousalNotificationBuilder(Context context) {
+    private CarouselNotificationBuilder(Context context) {
         this.context = context;
         mBuilder = new NotificationCompat.Builder(context, channelId);
     }
 
-    public static CarousalNotificationBuilder with(Context context) {
-        if (carousalNotificationBuilder == null) {
-            synchronized (CarousalNotificationBuilder.class) {
-                if (carousalNotificationBuilder == null) {
-                    carousalNotificationBuilder = new CarousalNotificationBuilder(context);
+    public static CarouselNotificationBuilder with(Context context) {
+        if (carouselNotificationBuilder == null) {
+            synchronized (CarouselNotificationBuilder.class) {
+                if (carouselNotificationBuilder == null) {
+                    carouselNotificationBuilder = new CarouselNotificationBuilder(context);
                     try {
-                        appIcon = CarousalUtilities.carousalDrawableToBitmap(context.getPackageManager().getApplicationIcon(context.getPackageName()));
+                        appIcon = ImageUtils.drawableToBitmap(context.getPackageManager().getApplicationIcon(context.getPackageName()));
                     } catch (PackageManager.NameNotFoundException e) {
                         appIcon = null;
                         Log.e(TAG, "Unable to retrieve app Icon");
@@ -79,26 +83,26 @@ public class CarousalNotificationBuilder {
                 }
             }
         }
-        return carousalNotificationBuilder;
+        return carouselNotificationBuilder;
     }
 
-    public CarousalNotificationBuilder beginTransaction() {
-        clearCarousalIfExists();
+    public CarouselNotificationBuilder beginTransaction() {
+        clearCarouselIfExists();
         return this;
     }
 
-    public void addCarousalItem(CarousalItem carousalItem) {
-        if (carousalItem != null) {
-            if (carousalItems == null) {
-                carousalItems = new ArrayList<>();
+    public void addCarouselItem(CarouselItem carouselItem) {
+        if (carouselItem != null) {
+            if (carouselItems == null) {
+                carouselItems = new ArrayList<>();
             }
-            carousalItems.add(carousalItem);
+            carouselItems.add(carouselItem);
         } else {
-            Log.e(TAG, "Null carousal can't be added!");
+            Log.e(TAG, "Null carousel can't be added!");
         }
     }
 
-    public CarousalNotificationBuilder setContentTitle(String title) {
+    public CarouselNotificationBuilder setContentTitle(String title) {
         if (title != null) {
             this.contentTitle = title;
         } else {
@@ -131,7 +135,7 @@ public class CarousalNotificationBuilder {
         }
     }
 
-    public CarousalNotificationBuilder setNotificationPriority(int priority) {
+    public CarouselNotificationBuilder setNotificationPriority(int priority) {
         if (priority >= NotificationCompat.PRIORITY_MIN && priority <= NotificationCompat.PRIORITY_MAX) {
         } else {
             Log.i(TAG, "Invalid priority");
@@ -139,7 +143,7 @@ public class CarousalNotificationBuilder {
         return this;
     }
 
-    public CarousalNotificationBuilder setSmallIconResource(int resourceId) {
+    public CarouselNotificationBuilder setSmallIconResource(int resourceId) {
         try {
             smallIcon = BitmapFactory.decodeResource(context.getResources(), resourceId);
         } catch (Exception e) {
@@ -153,7 +157,7 @@ public class CarousalNotificationBuilder {
         return this;
     }
 
-    public CarousalNotificationBuilder setLargeIcon(int resourceId) {
+    public CarouselNotificationBuilder setLargeIcon(int resourceId) {
         try {
             largeIcon = BitmapFactory.decodeResource(context.getResources(), resourceId);
         } catch (Exception e) {
@@ -162,7 +166,7 @@ public class CarousalNotificationBuilder {
         return this;
     }
 
-    public CarousalNotificationBuilder setLargeIcon(Bitmap large) {
+    public CarouselNotificationBuilder setLargeIcon(Bitmap large) {
         if (large != null) {
             largeIcon = large;
         } else {
@@ -172,7 +176,7 @@ public class CarousalNotificationBuilder {
         return this;
     }
 
-    public void setCarousalPlaceHolder(int resourceId) {
+    public void setCarouselPlaceHolder(int resourceId) {
         try {
             caraousalPlaceholder = BitmapFactory.decodeResource(context.getResources(), resourceId);
         } catch (Exception e) {
@@ -185,88 +189,88 @@ public class CarousalNotificationBuilder {
         this.isOtherRegionClickable = isOtherRegionClickable;
     }
 
-    public void buildCarousal() {
+    public void buildCarousel() {
 
         boolean isImagesInCarous = false;
         int numberofImages = 0;
-        if (carousalItems != null && carousalItems.size() > 0) {
-            for (CarousalItem item : carousalItems) {
+        if (carouselItems != null && carouselItems.size() > 0) {
+            for (CarouselItem item : carouselItems) {
                 if (!TextUtils.isEmpty(item.getPhotoUrl())) {
                     isImagesInCarous = true;
                     numberofImages++;
                 }
             }
             if (isImagesInCarous) {
-                ImageDownloaderManager imageDownloaderManager = new ImageDownloaderManager(context, carousalItems
+                ImageDownloaderManager imageDownloaderManager = new ImageDownloaderManager(context, carouselItems
                         , numberofImages, new ImageDownloaderManager.OnDownloadsCompletedListener() {
                     @Override
                     public void onComplete() {
-                        initiateCarousalTransaction();
+                        initiateCarouselTransaction();
                     }
                 });
                 imageDownloaderManager.startAllDownloads();
             } else {
-                this.isImagesInCarousal = false;
-                initiateCarousalTransaction();
+                this.isImagesInCarousel = false;
+                initiateCarouselTransaction();
             }
         }
     }
 
-    private void initiateCarousalTransaction() {
+    private void initiateCarouselTransaction() {
         currentStartIndex = 0;
-        if (carousalItems != null && carousalItems.size() > 0) {
-            if (carousalItems.size() == 1) {
-                prepareVariablesForCarousalAndShow(carousalItems.get(currentStartIndex), null);
+        if (carouselItems != null && carouselItems.size() > 0) {
+            if (carouselItems.size() == 1) {
+                prepareVariablesForCarouselAndShow(carouselItems.get(currentStartIndex), null);
             } else {
-                prepareVariablesForCarousalAndShow(carousalItems.get(currentStartIndex), carousalItems.get(currentStartIndex + 1));
+                prepareVariablesForCarouselAndShow(carouselItems.get(currentStartIndex), carouselItems.get(currentStartIndex + 1));
             }
         }
     }
 
-    private void prepareVariablesForCarousalAndShow(CarousalItem leftItem, CarousalItem rightItem) {
+    private void prepareVariablesForCarouselAndShow(CarouselItem leftItem, CarouselItem rightItem) {
         if (this.leftItem == null) {
-            this.leftItem = new CarousalItem();
+            this.leftItem = new CarouselItem();
         }
         if (this.rightItem == null) {
-            this.rightItem = new CarousalItem();
+            this.rightItem = new CarouselItem();
         }
         if (leftItem != null) {
             this.leftItem = leftItem;
             leftItemTitle = leftItem.getTitle();
             leftItemDescription = leftItem.getDescription();
-            leftItemBitmap = getCarousalBitmap(leftItem);
+            leftItemBitmap = getCarouselBitmap(leftItem);
 
         }
         if (rightItem != null) {
             this.rightItem = rightItem;
             rightItemTitle = rightItem.getTitle();
             rightItemDescription = rightItem.getDescription();
-            rightItemBitmap = getCarousalBitmap(rightItem);
+            rightItemBitmap = getCarouselBitmap(rightItem);
 
         }
-        showCarousal();
+        showCarousel();
     }
 
-    private void showCarousal() {
+    private void showCarousel() {
 
-        if (carousalItems != null && carousalItems.size() > 0) {
+        if (carouselItems != null && carouselItems.size() > 0) {
 
-            if (carousalSetUp == null || carousalSetUp.carousalNotificationId != carousalNotificationId) {
-                //First save this set up into a carousal setup item
-                carousalSetUp = saveCarousalSetUp();
+            if (carouselSetUp == null || carouselSetUp.carouselNotificationId != carouselNotificationId) {
+                //First save this set up into a carousel setup item
+                carouselSetUp = saveCarouselSetUp();
             } else {
-                carousalSetUp.currentStartIndex = currentStartIndex;
-                carousalSetUp.leftItem = leftItem;
-                carousalSetUp.rightItem = rightItem;
+                carouselSetUp.currentStartIndex = currentStartIndex;
+                carouselSetUp.leftItem = leftItem;
+                carouselSetUp.rightItem = rightItem;
             }
 
-            setUpCarousalIcons();
-            setUpCarousalTitles();
+            setUpCarouselIcons();
+            setUpCarouselTitles();
 
-            RemoteViews bigView = new RemoteViews(context.getApplicationContext().getPackageName(), R.layout.carousal_notification_item);
+            RemoteViews bigView = new RemoteViews(context.getApplicationContext().getPackageName(), R.layout.carousel_notification_item);
 
-            setUpCarousalVisibilities(bigView);
-            setUpCarousalItems(bigView);
+            setUpCarouselVisibilities(bigView);
+            setUpCarouselItems(bigView);
             setPendingIntents(bigView);
 
             NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -286,7 +290,7 @@ public class CarousalNotificationBuilder {
             foregroundNote.bigContentView = bigView;
 
             if (mNotifyManager != null) {
-                mNotifyManager.notify(carousalNotificationId, foregroundNote);
+                mNotifyManager.notify(carouselNotificationId, foregroundNote);
             }
         } else {
             Log.e(TAG, "Empty item array or of length less than 2");
@@ -296,20 +300,20 @@ public class CarousalNotificationBuilder {
 
     private void setOtherRegionClickable() {
 
-        Intent carousalIntent = new Intent(CarousalConstants.CAROUSAL_EVENT_FIRED_INTENT_FILTER);
+        Intent carouselIntent = new Intent( Constants.CAROUSAL_EVENT_FIRED_INTENT_FILTER);
         Bundle bundle = new Bundle();
-        bundle.putInt(CarousalConstants.EVENT_CAROUSAL_ITEM_CLICKED_KEY, CarousalConstants.EVENT_OTHER_REGION_CLICKED);
-        bundle.putParcelable(CarousalConstants.CAROUSAL_SET_UP_KEY, carousalSetUp);
-        carousalIntent.putExtras(bundle);
-        PendingIntent pIntent = PendingIntent.getBroadcast(context, CarousalConstants.EVENT_OTHER_REGION_CLICKED, carousalIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        bundle.putInt(  Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY,   Constants.EVENT_OTHER_REGION_CLICKED);
+        bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carouselSetUp);
+        carouselIntent.putExtras(bundle);
+        PendingIntent pIntent = PendingIntent.getBroadcast(context,   Constants.EVENT_OTHER_REGION_CLICKED, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pIntent);
     }
 
-    private Bitmap getCarousalBitmap(CarousalItem item) {
+    private Bitmap getCarouselBitmap(CarouselItem item) {
         Bitmap bitmap = null;
         if (item != null) {
             if (!TextUtils.isEmpty(item.getImageFileName()) && !TextUtils.isEmpty(item.getImageFileLocation())) {
-                bitmap = CarousalUtilities.carousalLoadImageFromStorage(item.getImageFileLocation(), item.getImageFileName());
+                bitmap = ImageUtils.loadImageFromStorage(item.getImageFileLocation(), item.getImageFileName());
                 if (bitmap != null)
                     return bitmap;
             }
@@ -322,63 +326,63 @@ public class CarousalNotificationBuilder {
         return bitmap;
     }
 
-    private void setUpCarousalVisibilities(RemoteViews bigView) {
+    private void setUpCarouselVisibilities(RemoteViews bigView) {
 
-        if (carousalItems.size() < 3) {
-            bigView.setViewVisibility(R.id.ivArrowLeft, View.GONE);
-            bigView.setViewVisibility(R.id.ivArrowRight, View.GONE);
+        if (carouselItems.size() < 3) {
+            bigView.setViewVisibility(R.id.iv_arrow_left, View.GONE);
+            bigView.setViewVisibility(R.id.iv_arrow_right, View.GONE);
         } else {
-            bigView.setViewVisibility(R.id.ivArrowLeft, View.VISIBLE);
-            bigView.setViewVisibility(R.id.ivArrowRight, View.VISIBLE);
+            bigView.setViewVisibility(R.id.iv_arrow_left, View.VISIBLE);
+            bigView.setViewVisibility(R.id.iv_arrow_right, View.VISIBLE);
         }
-        if (carousalItems.size() < 2) {
-            bigView.setViewVisibility(R.id.llRightItemLayout, View.GONE);
+        if (carouselItems.size() < 2) {
+            bigView.setViewVisibility(R.id.ll_right_item_layout, View.GONE);
         } else {
-            bigView.setViewVisibility(R.id.llRightItemLayout, View.VISIBLE);
+            bigView.setViewVisibility(R.id.ll_right_item_layout, View.VISIBLE);
         }
         if (TextUtils.isEmpty(bigContentText)) {
-            bigView.setViewVisibility(R.id.tvCarousalContent, View.GONE);
+            bigView.setViewVisibility(R.id.tv_carousel_content, View.GONE);
         } else {
-            bigView.setViewVisibility(R.id.tvCarousalContent, View.VISIBLE);
+            bigView.setViewVisibility(R.id.tv_carousel_content, View.VISIBLE);
         }
         if (TextUtils.isEmpty(bigContentTitle)) {
-            bigView.setViewVisibility(R.id.tvCarousalTitle, View.GONE);
+            bigView.setViewVisibility(R.id.tv_carousel_title, View.GONE);
         } else {
-            bigView.setViewVisibility(R.id.tvCarousalTitle, View.VISIBLE);
+            bigView.setViewVisibility(R.id.tv_carousel_title, View.VISIBLE);
         }
         if (TextUtils.isEmpty(leftItemTitle)) {
-            bigView.setViewVisibility(R.id.tvLeftTitleText, View.GONE);
+            bigView.setViewVisibility(R.id.tv_left_title_text, View.GONE);
         } else {
-            bigView.setViewVisibility(R.id.tvLeftTitleText, View.VISIBLE);
+            bigView.setViewVisibility(R.id.tv_left_title_text, View.VISIBLE);
         }
         if (TextUtils.isEmpty(leftItemDescription)) {
-            bigView.setViewVisibility(R.id.tvLeftDescriptionText, View.GONE);
+            bigView.setViewVisibility(R.id.tv_left_description_text, View.GONE);
         } else {
-            bigView.setViewVisibility(R.id.tvLeftDescriptionText, View.VISIBLE);
+            bigView.setViewVisibility(R.id.tv_left_description_text, View.VISIBLE);
         }
         if (TextUtils.isEmpty(rightItemTitle)) {
-            bigView.setViewVisibility(R.id.tvRightTitleText, View.GONE);
+            bigView.setViewVisibility(R.id.tv_right_title_text, View.GONE);
         } else {
-            bigView.setViewVisibility(R.id.tvRightTitleText, View.VISIBLE);
+            bigView.setViewVisibility(R.id.tv_right_title_text, View.VISIBLE);
         }
         if (TextUtils.isEmpty(rightItemDescription)) {
-            bigView.setViewVisibility(R.id.tvRightDescriptionText, View.GONE);
+            bigView.setViewVisibility(R.id.tv_right_description_text, View.GONE);
         } else {
-            bigView.setViewVisibility(R.id.tvRightDescriptionText, View.VISIBLE);
+            bigView.setViewVisibility(R.id.tv_right_description_text, View.VISIBLE);
         }
-        if (!isImagesInCarousal) {
-            bigView.setViewVisibility(R.id.ivImageLeft, View.GONE);
-            bigView.setViewVisibility(R.id.ivImageRight, View.GONE);
+        if (!isImagesInCarousel) {
+            bigView.setViewVisibility(R.id.iv_image_left, View.GONE);
+            bigView.setViewVisibility(R.id.iv_image_right, View.GONE);
         } else {
-            bigView.setViewVisibility(R.id.ivImageLeft, View.VISIBLE);
-            bigView.setViewVisibility(R.id.ivImageRight, View.VISIBLE);
+            bigView.setViewVisibility(R.id.iv_image_left, View.VISIBLE);
+            bigView.setViewVisibility(R.id.iv_image_right, View.VISIBLE);
         }
 
     }
 
-    private void setUpCarousalTitles() {
+    private void setUpCarouselTitles() {
         if (TextUtils.isEmpty(contentTitle)) {
-            setContentTitle(CarousalUtilities.carousalGetApplicationName(context));
+            setContentTitle(AppUtils.getApplicationName(context));
         }
 
         if (bigContentTitle == null)
@@ -387,7 +391,7 @@ public class CarousalNotificationBuilder {
             bigContentText = "";
     }
 
-    private void setUpCarousalIcons() {
+    private void setUpCarouselIcons() {
         if (appIcon != null) {
             if (largeIcon == null) {
                 largeIcon = appIcon;
@@ -396,7 +400,7 @@ public class CarousalNotificationBuilder {
                 caraousalPlaceholder = appIcon;
             }
         } else {
-            appIcon = BitmapFactory.decodeResource(context.getResources(), Utils.getAppIcon(context));
+            appIcon = BitmapFactory.decodeResource(context.getResources(), ImageUtils.getAppIcon(context));
             if (largeIcon == null) {
                 largeIcon = appIcon;
             }
@@ -405,89 +409,89 @@ public class CarousalNotificationBuilder {
             }
         }
         if (smallIconResourceId < 0) {
-            smallIconResourceId = CarousalUtilities.carousalGetAppIconResourceId(context);
+            smallIconResourceId = ImageUtils.getAppIcon(context);
         }
         if (smallIconResourceId < 0) {
-            smallIconResourceId = R.drawable.ic_carousal_icon;
+            smallIconResourceId = R.drawable.ic_carousel_icon;
         }
     }
 
-    private void setUpCarousalItems(RemoteViews bigView) {
+    private void setUpCarouselItems(RemoteViews bigView) {
         if (leftItemBitmap != null) {
-            bigView.setImageViewBitmap(R.id.ivImageLeft, leftItemBitmap);
+            bigView.setImageViewBitmap(R.id.iv_image_left, leftItemBitmap);
         }
         if (rightItemBitmap != null) {
-            bigView.setImageViewBitmap(R.id.ivImageRight, rightItemBitmap);
+            bigView.setImageViewBitmap(R.id.iv_image_right, rightItemBitmap);
         }
-        bigView.setImageViewBitmap(R.id.ivCarousalAppIcon, largeIcon);
-        bigView.setTextViewText(R.id.tvCarousalTitle, bigContentTitle);
-        bigView.setTextViewText(R.id.tvCarousalContent, bigContentText);
-        bigView.setTextViewText(R.id.tvRightTitleText, rightItemTitle);
-        bigView.setTextViewText(R.id.tvRightDescriptionText, rightItemDescription);
-        bigView.setTextViewText(R.id.tvLeftTitleText, leftItemTitle);
-        bigView.setTextViewText(R.id.tvLeftDescriptionText, leftItemDescription);
+        bigView.setImageViewBitmap(R.id.iv_carousel_app_icon, largeIcon);
+        bigView.setTextViewText(R.id.tv_carousel_title, bigContentTitle);
+        bigView.setTextViewText(R.id.tv_carousel_content, bigContentText);
+        bigView.setTextViewText(R.id.tv_right_title_text, rightItemTitle);
+        bigView.setTextViewText(R.id.tv_right_description_text, rightItemDescription);
+        bigView.setTextViewText(R.id.tv_left_title_text, leftItemTitle);
+        bigView.setTextViewText(R.id.tv_left_description_text, leftItemDescription);
     }
 
     private void setPendingIntents(RemoteViews bigView) {
         //right arrow
-        PendingIntent rightArrowPendingIntent = getPendingIntent(CarousalConstants.EVENT_RIGHT_ARROW_CLICKED);
-        bigView.setOnClickPendingIntent(R.id.ivArrowRight, rightArrowPendingIntent);
+        PendingIntent rightArrowPendingIntent = getPendingIntent(  Constants.EVENT_RIGHT_ARROW_CLICKED);
+        bigView.setOnClickPendingIntent(R.id.iv_arrow_right, rightArrowPendingIntent);
         //left arrow
-        PendingIntent leftArrowPendingIntent = getPendingIntent(CarousalConstants.EVENT_LEFT_ARROW_CLICKED);
-        bigView.setOnClickPendingIntent(R.id.ivArrowLeft, leftArrowPendingIntent);
+        PendingIntent leftArrowPendingIntent = getPendingIntent(  Constants.EVENT_LEFT_ARROW_CLICKED);
+        bigView.setOnClickPendingIntent(R.id.iv_arrow_left, leftArrowPendingIntent);
         //right item
-        PendingIntent rightItemPendingIntent = getPendingIntent(CarousalConstants.EVENT_RIGHT_ITEM_CLICKED);
-        bigView.setOnClickPendingIntent(R.id.llRightItemLayout, rightItemPendingIntent);
+        PendingIntent rightItemPendingIntent = getPendingIntent(  Constants.EVENT_RIGHT_ITEM_CLICKED);
+        bigView.setOnClickPendingIntent(R.id.ll_right_item_layout, rightItemPendingIntent);
         //left item
-        PendingIntent leftItemPendingIntent = getPendingIntent(CarousalConstants.EVENT_LEFT_ITEM_CLICKED);
-        bigView.setOnClickPendingIntent(R.id.llLeftItemLayout, leftItemPendingIntent);
+        PendingIntent leftItemPendingIntent = getPendingIntent(  Constants.EVENT_LEFT_ITEM_CLICKED);
+        bigView.setOnClickPendingIntent(R.id.ll_left_item_layout, leftItemPendingIntent);
     }
 
     private PendingIntent getPendingIntent(int eventClicked) {
 
-        Intent carousalIntent = new Intent(context, CarousalEventReceiver.class);
+        Intent carouselIntent = new Intent(context, CarouselEventReceiver.class);
         Bundle bundle = new Bundle();
-        bundle.putInt(CarousalConstants.EVENT_CAROUSAL_ITEM_CLICKED_KEY, eventClicked);
-        bundle.putParcelable(CarousalConstants.CAROUSAL_SET_UP_KEY, carousalSetUp);
-        carousalIntent.putExtras(bundle);
-        return PendingIntent.getBroadcast(context, eventClicked, carousalIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        bundle.putInt(  Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY, eventClicked);
+        bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carouselSetUp);
+        carouselIntent.putExtras(bundle);
+        return PendingIntent.getBroadcast(context, eventClicked, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private CarousalSetUp saveCarousalSetUp() {
+    private CarouselSetUp saveCarouselSetUp() {
         setUpfilePathOfImages();
-        return new CarousalSetUp(carousalItems, contentTitle, contentText,
-                bigContentTitle, bigContentText, carousalNotificationId,
+        return new CarouselSetUp(carouselItems, contentTitle, contentText,
+                bigContentTitle, bigContentText, carouselNotificationId,
                 currentStartIndex, smallIconPath, smallIconResourceId, largeIconPath,
-                placeHolderImagePath, leftItem, rightItem, isOtherRegionClickable, isImagesInCarousal);
+                placeHolderImagePath, leftItem, rightItem, isOtherRegionClickable, isImagesInCarousel);
     }
 
     private void setUpfilePathOfImages() {
         if (smallIcon != null) {
-            smallIconPath = CarousalUtilities.carousalSaveBitmapToInternalStorage(context, smallIcon,
-                    CarousalConstants.CAROUSAL_SMALL_ICON_FILE_NAME);
+            smallIconPath = ImageUtils.saveBitmapToInternalStorage(context, smallIcon,
+                      Constants.CAROUSAL_SMALL_ICON_FILE_NAME);
         }
         if (largeIcon != null) {
-            largeIconPath = CarousalUtilities.carousalSaveBitmapToInternalStorage(context, largeIcon,
-                    CarousalConstants.CAROUSAL_LARGE_ICON_FILE_NAME);
+            largeIconPath = ImageUtils.saveBitmapToInternalStorage(context, largeIcon,
+                      Constants.CAROUSAL_LARGE_ICON_FILE_NAME);
         }
         if (caraousalPlaceholder != null) {
-            placeHolderImagePath = CarousalUtilities.carousalSaveBitmapToInternalStorage(context, caraousalPlaceholder,
-                    CarousalConstants.CAROUSAL_PLACEHOLDER_ICON_FILE_NAME);
+            placeHolderImagePath = ImageUtils.saveBitmapToInternalStorage(context, caraousalPlaceholder,
+                      Constants.CAROUSAL_PLACEHOLDER_ICON_FILE_NAME);
         }
     }
 
-    private void clearCarousalIfExists() {
-        if (carousalItems != null) {
-            /*for (CarousalItem cr : carousalItems) {
+    private void clearCarouselIfExists() {
+        if (carouselItems != null) {
+            /*for (CarouselItem cr : carouselItems) {
                 if (cr.getImageFileName() != null)
                 if(context.deleteFile(cr.getImageFileName()))
                     Log.i(TAG, "Image deleted.");
             }*/
-            carousalItems.clear();
+            carouselItems.clear();
 
             smallIconResourceId = -1;
             isOtherRegionClickable = false;
-            isImagesInCarousal = true;
+            isImagesInCarousel = true;
             smallIcon = null;
             smallIconPath = null;
             largeIcon = null;
@@ -501,30 +505,30 @@ public class CarousalNotificationBuilder {
             NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (mNotifyManager != null) {
-                mNotifyManager.cancel(carousalNotificationId);
+                mNotifyManager.cancel(carouselNotificationId);
             }
         }
         //ToDo :  delete all cache files
     }
 
-    void handleClickEvent(int clickEvent, CarousalSetUp setUp) {
+    void handleClickEvent(int clickEvent, CarouselSetUp setUp) {
 
           verifyAndSetUpVariables(setUp);
 
         switch (clickEvent) {
-            case CarousalConstants.EVENT_LEFT_ARROW_CLICKED:
+            case   Constants.EVENT_LEFT_ARROW_CLICKED:
                 onLeftArrowClicked();
                 break;
-            case CarousalConstants.EVENT_RIGHT_ARROW_CLICKED:
+            case   Constants.EVENT_RIGHT_ARROW_CLICKED:
                 onRightArrowClicked();
                 break;
-            case CarousalConstants.EVENT_LEFT_ITEM_CLICKED:
+            case   Constants.EVENT_LEFT_ITEM_CLICKED:
                 onLeftItemClicked();
                 break;
-            case CarousalConstants.EVENT_RIGHT_ITEM_CLICKED:
+            case   Constants.EVENT_RIGHT_ITEM_CLICKED:
                 onRightItemClicked();
                 break;
-            case CarousalConstants.EVENT_OTHER_REGION_CLICKED:
+            case   Constants.EVENT_OTHER_REGION_CLICKED:
                 onOtherRegionClicked ();
                 break;
             default:
@@ -532,16 +536,16 @@ public class CarousalNotificationBuilder {
         }
     }
 
-    private void verifyAndSetUpVariables(CarousalSetUp setUp) {
+    private void verifyAndSetUpVariables(CarouselSetUp setUp) {
 
-        if (carousalSetUp == null) {
+        if (carouselSetUp == null) {
 
-            carousalItems = setUp.carousalItems;
+            carouselItems = setUp.carouselItems;
             contentTitle = setUp.contentTitle;
             contentText = setUp.contentText;
             bigContentTitle = setUp.bigContentTitle;
             bigContentText = setUp.bigContentText;
-            carousalNotificationId = setUp.carousalNotificationId;
+            carouselNotificationId = setUp.carouselNotificationId;
             currentStartIndex = setUp.currentStartIndex;
             smallIconPath = setUp.smallIcon;
             largeIconPath = setUp.largeIcon;
@@ -549,13 +553,13 @@ public class CarousalNotificationBuilder {
             leftItem = setUp.leftItem;
             rightItem = setUp.rightItem;
             isOtherRegionClickable = setUp.isOtherRegionClickable;
-            isImagesInCarousal = setUp.isImagesInCarousal;
+            isImagesInCarousel = setUp.isImagesInCarousel;
 
 
-            setUpBitCarousalBitmapsFromSetUp();
+            setUpBitCarouselBitmapsFromSetUp();
 
-        } else if (carousalSetUp != null && carousalNotificationId != setUp.carousalNotificationId) {
-            carousalSetUp = null;
+        } else if (carouselSetUp != null && carouselNotificationId != setUp.carouselNotificationId) {
+            carouselSetUp = null;
             verifyAndSetUpVariables(setUp);
         }
     }
@@ -563,15 +567,15 @@ public class CarousalNotificationBuilder {
     /**
      * If exists it loads bitmaps from file directory and saves them.
      */
-    private void setUpBitCarousalBitmapsFromSetUp() {
+    private void setUpBitCarouselBitmapsFromSetUp() {
         if (smallIconPath != null) {
-            smallIcon = CarousalUtilities.carousalLoadImageFromStorage(smallIconPath, CarousalConstants.CAROUSAL_SMALL_ICON_FILE_NAME);
+            smallIcon = ImageUtils.loadImageFromStorage(smallIconPath,   Constants.CAROUSAL_SMALL_ICON_FILE_NAME);
         }
         if (largeIconPath != null) {
-            largeIcon = CarousalUtilities.carousalLoadImageFromStorage(largeIconPath, CarousalConstants.CAROUSAL_LARGE_ICON_FILE_NAME);
+            largeIcon = ImageUtils.loadImageFromStorage(largeIconPath,   Constants.CAROUSAL_LARGE_ICON_FILE_NAME);
         }
         if (placeHolderImagePath != null) {
-            caraousalPlaceholder = CarousalUtilities.carousalLoadImageFromStorage(placeHolderImagePath, CarousalConstants.CAROUSAL_PLACEHOLDER_ICON_FILE_NAME);
+            caraousalPlaceholder = ImageUtils.loadImageFromStorage(placeHolderImagePath,   Constants.CAROUSAL_PLACEHOLDER_ICON_FILE_NAME);
         }
     }
 
@@ -586,14 +590,14 @@ public class CarousalNotificationBuilder {
 
     private void onOtherRegionClicked() {
         if (isOtherRegionClickable) {
-            //We will send the broadcast and finish the carousal
+            //We will send the broadcast and finish the carousel
             Intent i = new Intent();
-            i.setAction(CarousalConstants.CAROUSAL_ITEM_CLICKED_INTENT_FILTER);
+            i.setAction(  Constants.CAROUSAL_ITEM_CLICKED_INTENT_FILTER);
             Bundle bundle = new Bundle();
             i.putExtras(bundle);
             context.getApplicationContext().sendBroadcast(i);
             try {
-                clearCarousalIfExists();
+                clearCarouselIfExists();
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e(TAG, "Unable To send notification's pendingIntent");
@@ -601,9 +605,9 @@ public class CarousalNotificationBuilder {
         }
     }
 
-    private void sendItemClickedBroadcast(CarousalItem cItem) {
+    private void sendItemClickedBroadcast(CarouselItem cItem) {
         Intent i = new Intent();
-        i.setAction(CarousalConstants.CAROUSAL_ITEM_CLICKED_INTENT_FILTER);
+        i.setAction(  Constants.CAROUSAL_ITEM_CLICKED_INTENT_FILTER);
         Bundle bundle = new Bundle();
         bundle.putParcelable(CAROUSAL_ITEM_CLICKED_KEY, cItem);
         i.putExtras(bundle);
@@ -612,7 +616,7 @@ public class CarousalNotificationBuilder {
 
 
         try {
-            clearCarousalIfExists();
+            clearCarouselIfExists();
         } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "Unable To send notification's pendingIntent");
@@ -621,46 +625,46 @@ public class CarousalNotificationBuilder {
 
     private void onLeftArrowClicked() {
 
-        if (carousalItems != null && carousalItems.size() > currentStartIndex) {
+        if (carouselItems != null && carouselItems.size() > currentStartIndex) {
 
             switch (currentStartIndex) {
 
                 case 1:
-                    currentStartIndex = carousalItems.size() - 1;
-                    prepareVariablesForCarousalAndShow(carousalItems.get(currentStartIndex), carousalItems.get(0));
+                    currentStartIndex = carouselItems.size() - 1;
+                    prepareVariablesForCarouselAndShow(carouselItems.get(currentStartIndex), carouselItems.get(0));
                     break;
                 case 0:
-                    currentStartIndex = carousalItems.size() - 2;
-                    prepareVariablesForCarousalAndShow(carousalItems.get(currentStartIndex), carousalItems.get(currentStartIndex + 1));
+                    currentStartIndex = carouselItems.size() - 2;
+                    prepareVariablesForCarouselAndShow(carouselItems.get(currentStartIndex), carouselItems.get(currentStartIndex + 1));
                     break;
                 default:
                     currentStartIndex -= 2;
-                    prepareVariablesForCarousalAndShow(carousalItems.get(currentStartIndex), carousalItems.get(currentStartIndex + 1));
+                    prepareVariablesForCarouselAndShow(carouselItems.get(currentStartIndex), carouselItems.get(currentStartIndex + 1));
                     break;
             }
         }
     }
 
     private void onRightArrowClicked() {
-        if (carousalItems != null && carousalItems.size() > currentStartIndex) {
+        if (carouselItems != null && carouselItems.size() > currentStartIndex) {
 
-            int difference = carousalItems.size() - currentStartIndex;
+            int difference = carouselItems.size() - currentStartIndex;
             switch (difference) {
                 case 3:
                     currentStartIndex += 2;
-                    prepareVariablesForCarousalAndShow(carousalItems.get(currentStartIndex), carousalItems.get(0));
+                    prepareVariablesForCarouselAndShow(carouselItems.get(currentStartIndex), carouselItems.get(0));
                     break;
                 case 2:
                     currentStartIndex = 0;
-                    prepareVariablesForCarousalAndShow(carousalItems.get(0), carousalItems.get(1));
+                    prepareVariablesForCarouselAndShow(carouselItems.get(0), carouselItems.get(1));
                     break;
                 case 1:
                     currentStartIndex = 1;
-                    prepareVariablesForCarousalAndShow(carousalItems.get(currentStartIndex), carousalItems.get(currentStartIndex + 1));
+                    prepareVariablesForCarouselAndShow(carouselItems.get(currentStartIndex), carouselItems.get(currentStartIndex + 1));
                     break;
                 default:
                     currentStartIndex += 2;
-                    prepareVariablesForCarousalAndShow(carousalItems.get(currentStartIndex), carousalItems.get(currentStartIndex + 1));
+                    prepareVariablesForCarouselAndShow(carouselItems.get(currentStartIndex), carouselItems.get(currentStartIndex + 1));
                     break;
             }
         }

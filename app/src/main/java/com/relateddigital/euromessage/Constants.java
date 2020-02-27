@@ -1,6 +1,6 @@
 package com.relateddigital.euromessage;
 
-class TestConstant {
+class Constants {
 
     static final String APPLICATION_KEY = "euromessage-android";
 }

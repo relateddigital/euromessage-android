@@ -1,10 +1,10 @@
-package euromsg.com.euromobileandroid.carousalnotification;
+package euromsg.com.euromobileandroid.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 
-public class CarousalItem implements Parcelable {
+public class CarouselItem implements Parcelable {
     private String id;
     private String title;
     private String description;
@@ -13,15 +13,15 @@ public class CarousalItem implements Parcelable {
     private String imageFileName;
     private String type;
 
-    public CarousalItem( String photoUrl) {
+    public CarouselItem( String photoUrl) {
         this(null, null, null, photoUrl);
     }
 
-    CarousalItem() {
+    public CarouselItem() {
         this(null, null, null, null);
     }
 
-    public CarousalItem(String id, String title, String description, String photoUrl) {
+    public CarouselItem(String id, String title, String description, String photoUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -36,7 +36,7 @@ public class CarousalItem implements Parcelable {
         this.id = id;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -44,7 +44,7 @@ public class CarousalItem implements Parcelable {
         this.title = title;
     }
 
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 
@@ -60,7 +60,7 @@ public class CarousalItem implements Parcelable {
         this.photoUrl = photoUrl;
     }
 
-    String getImageFileLocation() {
+    public String getImageFileLocation() {
         return imageFileLocation;
     }
 
@@ -68,7 +68,7 @@ public class CarousalItem implements Parcelable {
         this.imageFileLocation = imageFileLocation;
     }
 
-    String getImageFileName() {
+    public String getImageFileName() {
         return imageFileName;
     }
 
@@ -84,7 +84,7 @@ public class CarousalItem implements Parcelable {
         this.type = type;
     }
 
-    private CarousalItem(Parcel in) {
+    private CarouselItem(Parcel in) {
         id = in.readString();
         title = in.readString();
         description = in.readString();
@@ -111,15 +111,15 @@ public class CarousalItem implements Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public static final Creator<CarousalItem> CREATOR = new Creator<CarousalItem>() {
+    public static final Creator<CarouselItem> CREATOR = new Creator<CarouselItem>() {
         @Override
-        public CarousalItem createFromParcel(Parcel in) {
-            return new CarousalItem(in);
+        public CarouselItem createFromParcel(Parcel in) {
+            return new CarouselItem(in);
         }
 
         @Override
-        public CarousalItem[] newArray(int size) {
-            return new CarousalItem[size];
+        public CarouselItem[] newArray(int size) {
+            return new CarouselItem[size];
         }
     };
 }

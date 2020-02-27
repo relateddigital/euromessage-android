@@ -1,6 +1,6 @@
 package euromsg.com.euromobileandroid.model;
 
-public class CarouselElement {
+public class Element {
 
     private String id;
     private String url;

@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static EuroMobileManager euroMobileManager;
 
-    public static String APPLICATION_KEY = TestConstant.APPLICATION_KEY;
+    public static String APPLICATION_KEY = Constants.APPLICATION_KEY;
 
     ActivityMainBinding mainBinding;
 

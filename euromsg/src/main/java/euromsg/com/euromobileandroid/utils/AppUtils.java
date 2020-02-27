@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-public final class Utils {
+public final class AppUtils {
 
     private static String sID = null;
     private static final String INSTALLATION = "INSTALLATION";
@@ -195,19 +195,9 @@ public final class Utils {
         return notificationIntent;
     }
 
-    public static int getAppIcon(Context context) {
-        int appIconResId = 0;
-        PackageManager packageManager = context.getPackageManager();
-        final ApplicationInfo applicationInfo;
-        try {
-            applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
-
-            appIconResId = applicationInfo.icon;
-
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return appIconResId;
+    public static String getApplicationName(Context context) {
+        ApplicationInfo applicationInfo = context.getApplicationInfo();
+        int stringId = applicationInfo.labelRes;
+        return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
     }
 }
