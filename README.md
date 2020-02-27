@@ -63,9 +63,9 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
  #### Initialization
 ```java
 
-  public static String ENTEGRASYON_ID = Constant.ENTEGRASYON_ID;  // e.g.: "euromessage-android"
+  public static String ENTEGRASYON_ID = Constant.APP_ALIAS;  // Entegrasyon id e.g.: "euromessage-android"
 
-  EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(ENTEGRASYON_ID, this);
+  EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(APP_ALIAS, this);
 
   euroMobileManager.registerToFCM(getBaseContext()); 
    ```
