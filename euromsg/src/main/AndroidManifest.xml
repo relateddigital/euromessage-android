@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
-        <receiver android:name=".notification.carouselnotification.CarouselEventReceiver" android:exported="true" android:enabled="true"/>
+        <receiver android:name=".notification.carousel.CarouselEventReceiver" android:exported="true" android:enabled="true"/>
 
     </application>
 </manifest>

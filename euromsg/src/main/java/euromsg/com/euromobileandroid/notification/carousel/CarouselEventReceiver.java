@@ -1,4 +1,4 @@
-package euromsg.com.euromobileandroid.notification.carouselnotification;
+package euromsg.com.euromobileandroid.notification.carousel;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -24,7 +24,7 @@ public class CarouselEventReceiver extends BroadcastReceiver {
             }
 
             if (carouselEvent > 0 && carouselSetUp != null)
-                CarouselNotificationBuilder.with(context).handleClickEvent(carouselEvent, carouselSetUp);
+                CarouselBuilder.with(context).handleClickEvent(carouselEvent, carouselSetUp);
         }
     }
 }

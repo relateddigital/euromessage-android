@@ -1,4 +1,4 @@
-package euromsg.com.euromobileandroid.notification.carouselnotification;
+package euromsg.com.euromobileandroid.notification.carousel;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -28,9 +28,9 @@ import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 
-public class CarouselNotificationBuilder {
+public class CarouselBuilder {
 
-    private static CarouselNotificationBuilder carouselNotificationBuilder;
+    private static CarouselBuilder carouselBuilder;
     private Context context;
     private ArrayList<CarouselItem> carouselItems;
     private String contentTitle, contentText; //title and text while it is small
@@ -63,16 +63,16 @@ public class CarouselNotificationBuilder {
 
     private static final String CAROUSAL_ITEM_CLICKED_KEY = "CarouselNotificationItemClickedKey";
 
-    private CarouselNotificationBuilder(Context context) {
+    private CarouselBuilder(Context context) {
         this.context = context;
         mBuilder = new NotificationCompat.Builder(context, channelId);
     }
 
-    public static CarouselNotificationBuilder with(Context context) {
-        if (carouselNotificationBuilder == null) {
-            synchronized (CarouselNotificationBuilder.class) {
-                if (carouselNotificationBuilder == null) {
-                    carouselNotificationBuilder = new CarouselNotificationBuilder(context);
+    public static CarouselBuilder with(Context context) {
+        if (carouselBuilder == null) {
+            synchronized (CarouselBuilder.class) {
+                if (carouselBuilder == null) {
+                    carouselBuilder = new CarouselBuilder(context);
                     try {
                         appIcon = ImageUtils.drawableToBitmap(context.getPackageManager().getApplicationIcon(context.getPackageName()));
                     } catch (PackageManager.NameNotFoundException e) {
@@ -83,10 +83,10 @@ public class CarouselNotificationBuilder {
                 }
             }
         }
-        return carouselNotificationBuilder;
+        return carouselBuilder;
     }
 
-    public CarouselNotificationBuilder beginTransaction() {
+    public CarouselBuilder beginTransaction() {
         clearCarouselIfExists();
         return this;
     }
@@ -102,7 +102,7 @@ public class CarouselNotificationBuilder {
         }
     }
 
-    public CarouselNotificationBuilder setContentTitle(String title) {
+    public CarouselBuilder setContentTitle(String title) {
         if (title != null) {
             this.contentTitle = title;
         } else {
@@ -135,7 +135,7 @@ public class CarouselNotificationBuilder {
         }
     }
 
-    public CarouselNotificationBuilder setNotificationPriority(int priority) {
+    public CarouselBuilder setNotificationPriority(int priority) {
         if (priority >= NotificationCompat.PRIORITY_MIN && priority <= NotificationCompat.PRIORITY_MAX) {
         } else {
             Log.i(TAG, "Invalid priority");
@@ -143,7 +143,7 @@ public class CarouselNotificationBuilder {
         return this;
     }
 
-    public CarouselNotificationBuilder setSmallIconResource(int resourceId) {
+    public CarouselBuilder setSmallIconResource(int resourceId) {
         try {
             smallIcon = BitmapFactory.decodeResource(context.getResources(), resourceId);
         } catch (Exception e) {
@@ -157,7 +157,7 @@ public class CarouselNotificationBuilder {
         return this;
     }
 
-    public CarouselNotificationBuilder setLargeIcon(int resourceId) {
+    public CarouselBuilder setLargeIcon(int resourceId) {
         try {
             largeIcon = BitmapFactory.decodeResource(context.getResources(), resourceId);
         } catch (Exception e) {
@@ -166,7 +166,7 @@ public class CarouselNotificationBuilder {
         return this;
     }
 
-    public CarouselNotificationBuilder setLargeIcon(Bitmap large) {
+    public CarouselBuilder setLargeIcon(Bitmap large) {
         if (large != null) {
             largeIcon = large;
         } else {
@@ -276,6 +276,7 @@ public class CarouselNotificationBuilder {
             NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             PushNotificationManager pushNotificationManager = new PushNotificationManager();
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotifyManager != null) {
                 pushNotificationManager.createNotificationChannel(mNotifyManager, channelId);
             }

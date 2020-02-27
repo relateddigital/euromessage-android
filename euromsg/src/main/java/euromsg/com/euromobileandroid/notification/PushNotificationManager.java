@@ -17,7 +17,7 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 import java.util.Map;
 
-import euromsg.com.euromobileandroid.notification.carouselnotification.CarouselNotificationBuilder;
+import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
 import euromsg.com.euromobileandroid.model.Message;
@@ -33,15 +33,15 @@ public class PushNotificationManager {
 
         ArrayList<Element> elements = pushMessage.getElements();
 
-        CarouselNotificationBuilder carouselNotificationBuilder = CarouselNotificationBuilder.with(context).beginTransaction();
-        carouselNotificationBuilder.setContentTitle(pushMessage.getTitle()).setContentText(pushMessage.getMessage());
+        CarouselBuilder carouselBuilder = CarouselBuilder.with(context).beginTransaction();
+        carouselBuilder.setContentTitle(pushMessage.getTitle()).setContentText(pushMessage.getMessage());
 
         for (Element item : elements) {
             CarouselItem cItem = new CarouselItem(item.getId(), item.getTitle(), item.getContent(), item.getPicture());
-            carouselNotificationBuilder.addCarouselItem(cItem);
+            carouselBuilder.addCarouselItem(cItem);
         }
-        carouselNotificationBuilder.setOtherRegionClickable(true);
-        carouselNotificationBuilder.buildCarousel();
+        carouselBuilder.setOtherRegionClickable(true);
+        carouselBuilder.buildCarousel();
     }
 
     public void generateNotification(Context context, Map<String, String> data, Bitmap image) {
