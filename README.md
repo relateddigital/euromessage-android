@@ -85,7 +85,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 RMC Campaign and more information :  [Please check docs](https://docs.relateddigital.com/display/KB/Android+SDK). 
 
 
-- If you have a question please send an e-mail to: <support@euromsg.com> [mailto](mailto:support@euromsg.com) 
+- If you have a question please send an e-mail to: <support@euromsg.com> 
 
 ### Licences
 
