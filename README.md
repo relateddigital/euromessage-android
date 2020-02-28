@@ -6,8 +6,7 @@
 
 # Latest Version 
 
-***February 20, 2020*** - [Euromessage v3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) <a href='https://bintray.com/visilabs/euromessage/euromessage?source=watch' alt='Get automatic notifications about new "euromessage" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_greyscale.png'></a>
-
+***February 20, 2020*** - [Euromessage v3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1)
 
 
 # Table of Contents
@@ -84,6 +83,9 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 ```
     
 RMC Campaign and more information :  [Please check docs](https://docs.relateddigital.com/display/KB/Android+SDK). 
+
+#### Bintray
+ <a href='https://bintray.com/visilabs/euromessage/euromessage?source=watch' alt='Get automatic notifications about new "euromessage" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_greyscale.png'></a>
 
 #### CI 
 
