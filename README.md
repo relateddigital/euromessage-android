@@ -4,6 +4,8 @@
 </p>
 
 
+[![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
+
 # Latest Version 
 
 ***February 20, 2020*** - [Euromessage v3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1)
@@ -85,10 +87,6 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
     
 RMC Campaign and more information :  [Please check docs](https://docs.relateddigital.com/display/KB/Android+SDK). 
 
-#### CI 
-
-
-[![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
 ### Licences
 
