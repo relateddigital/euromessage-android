@@ -1,26 +1,91 @@
+
+<p align="center">
+  <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android"><img src="https://github.com/relateddigital/euromessage-android/blob/heads/feature/carousel_implementation/app/euromessage.png" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
+</p>
+
+
+# Latest Version 
+
+***February 20, 2020*** - [Euromessage v3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
+
+
+# Table of Contents
+
+- [Latest Version](#latest-version)
+- [Euromessage Android](#euromessage-android)
+  * [Installation](#installation)
+    + [Permission](#permission)
+    + [Sample Applications](#sample-applications)
+    + [Using the SDK](#using-the-sdk)
+      - [Initialization](#initialization)
+      - [Sync](#sync)
+    + [Licence](#licence)
+
+
 # Euromessage Android
 
 The Euromessage Android Sdk is a java implementation of an Android client for Euromessage.
 
 ## Installation
 
+Add Euromessage to the ```dependencies``` in app/build.gradle.
 
-Also you can check  [Euromessage Demo Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.0) for demo purpose. You may find demo application in master branch
-
-
-### Note that: 
-You can also use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/releases/tag/android-sdk-3.0.0) directly.
+```java
+implementation 'com.euromsg:euromsg:3.0.1' 
+```
  
-For that :
+#### Note : 
+
+You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
+  
+  For that :
+- Download the module
 - Open your project which you want to use Euromessage
 - Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
-- Please do not forget to link euromessage module with adding implementation project(path: ':euromessage') to your build.gradle
+
+
+### Permission
+```xml
+     <uses-permission android:name="android.permission.INTERNET"/>
+
+     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
+ ```    
+    
+### Sample Applications 
+
+- [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
+ (master branch)
+
+- [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support)
 
 ### Using the SDK
+ 
+ #### Initialization
+```java
 
-RMC Campaign and more information :  [Please check this](https://docs.relateddigital.com/display/KB/Android+SDK). 
+  public static String APP_ALIAS = Constant.APP_ALIAS;  // (EntegrasyonID) e.g.: "euromessage-android"
 
-### Licence
+  EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(APP_ALIAS, this);
+
+  euroMobileManager.registerToFCM(getBaseContext()); 
+   ```
+  
+ #### Sync
+ 
+ RMC needs that at least one property which is email or user id in order to match and analyse users.
+ 
+ ```java
+ 
+    euroMobileManager.setEmail("test@mail.com", this);
+    euroMobileManager.setEuroUserId("12345", this);
+
+    euroMobileManager.sync(this);
+```
+    
+RMC Campaign and more information :  [Please check docs](https://docs.relateddigital.com/display/KB/Android+SDK). 
+
+### Licences
 
 
- [Related Digital ](https://www.relateddigital.com/)
+ - [Related Digital ](https://www.relateddigital.com/)
+ - [Euromessage](https://www.euromsg.com/)
