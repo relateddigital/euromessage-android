@@ -1,6 +1,7 @@
 package euromsg.com.euromobileandroid.utils;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -138,7 +139,7 @@ public final class Utils {
 
     private static boolean hasReadPhoneStatePermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            boolean permissionRequest = PermissionChecker.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
+            @SuppressLint("WrongConstant") boolean permissionRequest = PermissionChecker.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
             return permissionRequest;
         }
         return true;
@@ -157,6 +158,7 @@ public final class Utils {
         return true;
     }
 
+    @SuppressLint("MissingPermission")
     public static String deviceUDID(Context context) {
         try {
             if (hasReadPhoneStatePermission(context)) {
