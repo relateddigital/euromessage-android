@@ -1,5 +1,5 @@
 language: android
-jdk: oraclejdk8
+jdk: oraclejdk10
 env:
   global:
     - ANDROID_API_LEVEL=29
