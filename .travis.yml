@@ -13,5 +13,3 @@ android:
     # The SDK version used to compile your project
     - android-$ANDROID_API_LEVEL
   
-script:
-  - ./gradlew build check
