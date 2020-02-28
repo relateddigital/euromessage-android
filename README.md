@@ -8,6 +8,7 @@
 
 ***February 20, 2020*** - [Euromessage v3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
 
+<a href='https://bintray.com/visilabs/euromessage/euromessage?source=watch' alt='Get automatic notifications about new "euromessage" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_color.png'></a><a href='https://bintray.com/visilabs/euromessage/euromessage?source=watch' alt='Get automatic notifications about new "euromessage" versions'><img src='https://www.bintray.com/docs/images/bintray_badge_color.png'></a>
 
 # Table of Contents
 
