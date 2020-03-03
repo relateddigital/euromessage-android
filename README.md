@@ -13,9 +13,6 @@
 
 - [Euromessage Android](#euromessage-android)
   * [Installation](#installation)
-    + [Gradle :](#gradle--)     
-      - [Support Lib :](#support-lib--)
-    + [Permission](#permission)
   * [Usage of the SDK](#usage-of-the-sdk)
     + [Initialization](#initialization)
       - [How to Get App Alias/Entegration ID ?](#how-to-get-app-alias-entegration-id--)
