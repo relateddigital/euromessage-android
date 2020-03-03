@@ -61,30 +61,42 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 ### Using the SDK
  
  #### Initialization
+ 
+ 
 ```java
 
   public static String APP_ALIAS = Constant.APP_ALIAS;  // (EntegrasyonID) e.g.: "euromessage-android"
 
   EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(APP_ALIAS, this);
 
-  euroMobileManager.registerToFCM(getBaseContext()); 
+  euroMobileManager.registerToFCM(getBaseContext());   
+  ```
+  
+  RMC needs that at least one property which is email or user id in order to match and analyse users. This is important part to use RMC. 
+
+  ``` 
+  euroMobileManager.setEmail("test@mail.com", this);
+  euroMobileManager.setEuroUserId("12345", this);
+  euroMobileManager.sync(this);
    ```
   
  #### Sync
  
- RMC needs that at least one property which is email or user id in order to match and analyse users.
  
- ```java
+```java
  
-    euroMobileManager.setEmail("test@mail.com", this);
-    euroMobileManager.setEuroUserId("12345", this);
+EuroMobileManager manager = EuroMobileManager.getInstance();
+ 
+manager.setEmail(ozan.uysal@euromsg.com,this);
+manager.setEuroUserId("2342343",this);
+manager.setAppVersion("1.1");
+manager.setFacebook("euroFB",this);
+manager.setTwitterId(“euroTW",this);
+manager.setPhoneNumber(“05320000000",this);
+manager.sync();
 
-    euroMobileManager.sync(this);
 ```
     
-RMC Campaign and more information :  [Please check docs](https://docs.relateddigital.com/display/KB/Android+SDK). 
-
-
 - If you have a question please send an e-mail to: <clientsupport@relateddigital.com> 
 
 ### Licences
