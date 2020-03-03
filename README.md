@@ -11,15 +11,18 @@
 
 # Table of Contents
 
-- [Latest Version](#latest-version)
 - [Euromessage Android](#euromessage-android)
   * [Installation](#installation)
+    + [Gradle :](#gradle--)
+          + [Note : You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project.](#note---you-need-to-add-an-android-project-in--firebase-console--https---consolefirebasegooglecom---please-follow-firebase-instruction-and-do-not-forget-to-add-google-servicejson-to-the-project)
+      - [Support Lib :](#support-lib--)
     + [Permission](#permission)
-    + [Sample Applications](#sample-applications)
-    + [Using the SDK](#using-the-sdk)
-      - [Initialization](#initialization)
-      - [Sync](#sync)
-    + [Licence](#licence)
+  * [Usage of the SDK](#usage-of-the-sdk)
+    + [Initialization](#initialization)
+      - [How to Get App Alias/Entegration ID ?](#how-to-get-app-alias-entegration-id--)
+    + [Sync](#sync)
+  * [Sample Applications](#sample-applications)
+  * [Licences](#licences)
 
 
 # Euromessage Android
@@ -40,7 +43,7 @@ implementation 'com.euromsg:euromsg:3.0.1'
 ###### Note : You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project.
 
 
-### Support Lib : 
+#### Support Lib : 
 
 You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
   
