@@ -11,7 +11,6 @@
 
 # Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Euromessage Android](#euromessage-android)
   * [1.Installation](#1installation)
     + [Gradle](#gradle)
