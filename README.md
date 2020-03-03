@@ -79,6 +79,18 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
   euroMobileManager.setEuroUserId("12345", this);
   euroMobileManager.sync(this);
    ```
+   
+   RMC needs that information about notification read
+   
+       @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (intent.getExtras() != null) {
+            euroMobileManager.reportRead(new Message(intent.getExtras()));
+        }
+    }
+
   
  #### Sync
  
