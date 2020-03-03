@@ -28,13 +28,16 @@ The Euromessage Android Sdk is a java implementation of an Android client for Eu
 
 ## Installation
 
+
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
 implementation 'com.euromsg:euromsg:3.0.1' 
 ```
+
+You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project
  
-#### Note : 
+##### Support Lib : 
 
 You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
   
@@ -80,7 +83,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
   euroMobileManager.sync(this);
    ```
    
-   RMC needs that information about notification read
+   RMC needs that information about the notification is read by user. You need to add code below.
    
        @Override
     protected void onNewIntent(Intent intent) {
@@ -92,7 +95,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
     }
 
 
-##### How to get App Alias ? 
+##### How to Get App Alias/Entegration ID ? 
 
 <p align="center">
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android/blob/master/ss.png"><img src="https://github.com/relateddigital/euromessage-android/blob/master/ss.png" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
