@@ -11,14 +11,20 @@
 
 # Table of Contents
 
+- [Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)](#latest-version----build-status--https---travis-cicom-relateddigital-euromessage-androidsvg-branch-master---https---travis-cicom-relateddigital-euromessage-android-)
+- [Table of Contents](#table-of-contents)
 - [Euromessage Android](#euromessage-android)
-  * [Installation](#installation)
-  * [Usage of the SDK](#usage-of-the-sdk)
+  * [1.Installation](#1installation)
+    + [Gradle](#gradle)
+          + [Note :](#note--)
+      - [Support Lib](#support-lib)
+    + [Permission](#permission)
+  * [2.Usage of the SDK](#2usage-of-the-sdk)
     + [Initialization](#initialization)
-      - [How to Get App Alias/Entegration ID ?](#how-to-get-app-alias-entegration-id--)
-    + [Sync](#sync)
-  * [Sample Applications](#sample-applications)
-  * [Licences](#licences)
+      - [How to Get App Alias/Entegration Id?](#how-to-get-app-alias-entegration-id-)
+  * [3.Sync](#3sync)
+  * [4.Sample Applications](#4sample-applications)
+  * [5.Licences](#5licences)
 
 
 # Euromessage Android
@@ -127,7 +133,7 @@ manager.sync();
 
 - If you have a question please send an e-mail to: <clientsupport@relateddigital.com> 
 
-## Licences
+## 5.Licences
 
 
  - [Related Digital ](https://www.relateddigital.com/)
