@@ -25,7 +25,7 @@
 
 The Euromessage Android Sdk is a java implementation of an Android client for Euromessage.
 
-## Installation
+## 1.Installation
 
 ### Gradle
 
@@ -61,7 +61,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 
 ## Usage of the SDK
  
- ### Initialization
+ ### 2.Initialization
  
  
 ```java
