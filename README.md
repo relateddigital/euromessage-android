@@ -11,7 +11,7 @@
 
 # Table of Contents
 
-- [Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)](#latest-version----build-status--https---travis-cicom-relateddigital-euromessage-androidsvg-branch-master---https---travis-cicom-relateddigital-euromessage-android-)
+- [Latest Version (#latest-version)
 - [Table of Contents](#table-of-contents)
 - [Euromessage Android](#euromessage-android)
   * [1.Installation](#1installation)
