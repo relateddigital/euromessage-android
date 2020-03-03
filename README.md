@@ -34,10 +34,12 @@ Add Euromessage to the ```dependencies``` in app/build.gradle.
 ```java
 implementation 'com.euromsg:euromsg:3.0.1' 
 ```
-
-You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project
  
-##### Support Lib : 
+ 
+###### Note : You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project
+
+
+#### Support Lib : 
 
 You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
   
@@ -45,6 +47,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 - Download the module
 - Open your project which you want to use Euromessage
 - Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
+
 
 
 ### Permission
