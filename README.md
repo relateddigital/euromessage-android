@@ -13,8 +13,7 @@
 
 - [Euromessage Android](#euromessage-android)
   * [Installation](#installation)
-    + [Gradle :](#gradle--)
-          + [Note : You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project.](#note---you-need-to-add-an-android-project-in--firebase-console--https---consolefirebasegooglecom---please-follow-firebase-instruction-and-do-not-forget-to-add-google-servicejson-to-the-project)
+    + [Gradle :](#gradle--)     
       - [Support Lib :](#support-lib--)
     + [Permission](#permission)
   * [Usage of the SDK](#usage-of-the-sdk)
