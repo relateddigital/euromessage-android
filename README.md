@@ -26,8 +26,9 @@
 
 The Euromessage Android Sdk is a java implementation of an Android client for Euromessage.
 
-## 1- Installation
+## Installation
 
+### Gradle : 
 
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
@@ -39,7 +40,7 @@ implementation 'com.euromsg:euromsg:3.0.1'
 ###### Note : You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project.
 
 
-#### Support Lib : 
+### Support Lib : 
 
 You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
   
@@ -57,14 +58,8 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
  ```    
     
-### Sample Applications 
 
-- [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
- (master branch)
-
-- [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support)
-
-## 2- Using the SDK
+## Usage of the SDK
  
  ### Initialization
  
@@ -98,14 +93,14 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
     }
 
 
-##### How to Get App Alias/Entegration ID ? 
+#### How to Get App Alias/Entegration ID ? 
 
 <p align="center">
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android/blob/master/ss.png"><img src="https://github.com/relateddigital/euromessage-android/blob/master/ss.png" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
 </p>
 
  
- ## 3- Sync
+ ### Sync
  
  Please make the following improvements to add more information about the user in RMC.
  
@@ -124,6 +119,14 @@ manager.sync();
 ```
     
 - If you have a question please send an e-mail to: <clientsupport@relateddigital.com> 
+
+
+## Sample Applications 
+
+- [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
+ (master branch)
+
+- [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support)
 
 ## Licences
 
