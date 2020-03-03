@@ -3,12 +3,11 @@
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android"><img src="https://github.com/relateddigital/euromessage-android/blob/heads/feature/carousel_implementation/app/euromessage.png" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
 </p>
 
-
-# Latest Version 
+# Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
 ***February 20, 2020*** - [Euromessage v3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1)
 
-***Bintray Maven*** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
+ **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
 # Table of Contents
 
@@ -62,33 +61,55 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 ### Using the SDK
  
  #### Initialization
+ 
+ 
 ```java
 
   public static String APP_ALIAS = Constant.APP_ALIAS;  // (EntegrasyonID) e.g.: "euromessage-android"
 
   EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(APP_ALIAS, this);
 
-  euroMobileManager.registerToFCM(getBaseContext()); 
+  euroMobileManager.registerToFCM(getBaseContext());   
+  ```
+  
+  RMC needs that at least one property which is email or user id in order to match and analyse users. This is important part to use RMC. 
+
+  ``` 
+  euroMobileManager.setEmail("test@mail.com", this);
+  euroMobileManager.setEuroUserId("12345", this);
+  euroMobileManager.sync(this);
    ```
+   
+   RMC needs that information about notification read
+   
+       @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        if (intent.getExtras() != null) {
+            euroMobileManager.reportRead(new Message(intent.getExtras()));
+        }
+    }
+
   
  #### Sync
  
- RMC needs that at least one property which is email or user id in order to match and analyse users.
  
- ```java
+```java
  
-    euroMobileManager.setEmail("test@mail.com", this);
-    euroMobileManager.setEuroUserId("12345", this);
+EuroMobileManager manager = EuroMobileManager.getInstance();
+ 
+manager.setEmail(ozan.uysal@euromsg.com,this);
+manager.setEuroUserId("2342343",this);
+manager.setAppVersion("1.1");
+manager.setFacebook("euroFB",this);
+manager.setTwitterId(“euroTW",this);
+manager.setPhoneNumber(“05320000000",this);
+manager.sync();
 
-    euroMobileManager.sync(this);
 ```
     
-RMC Campaign and more information :  [Please check docs](https://docs.relateddigital.com/display/KB/Android+SDK). 
-
-#### CI 
-
-
-[![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
+- If you have a question please send an e-mail to: <clientsupport@relateddigital.com> 
 
 ### Licences
 
