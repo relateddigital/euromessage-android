@@ -107,17 +107,18 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
  
  #### Sync
  
+ Please make the following improvements to add more information about the user in RMC.
  
 ```java
  
 EuroMobileManager manager = EuroMobileManager.getInstance();
  
-manager.setEmail(ozan.uysal@euromsg.com,this);
-manager.setEuroUserId("2342343",this);
+manager.setEmail(melike.yildirim@euromsg.com, this);
+manager.setEuroUserId("2342343", this);
 manager.setAppVersion("1.1");
-manager.setFacebook("euroFB",this);
-manager.setTwitterId(“euroTW",this);
-manager.setPhoneNumber(“05320000000",this);
+manager.setFacebook("euroFB", this);
+manager.setTwitterId(“euroTW", this);
+manager.setPhoneNumber(“05320000000", this);
 manager.sync();
 
 ```
