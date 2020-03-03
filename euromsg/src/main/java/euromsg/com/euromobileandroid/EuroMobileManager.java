@@ -21,8 +21,6 @@ public class EuroMobileManager {
 
     private Subscription subscription = new Subscription();
 
-    private boolean showPush = true;
-
     private EuroMobileManager(String appAlias) {
 
         subscription.setFirstTime(1);
@@ -202,14 +200,6 @@ public class EuroMobileManager {
         } else {
             this.subscription.add(key, value);
         }
-    }
-
-    public void showPush(Boolean show) {
-        this.showPush = show;
-    }
-
-    public boolean shouldShowPush() {
-        return this.showPush;
     }
 
     public void setVisiUrl(String visiUrl) {
