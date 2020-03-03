@@ -59,9 +59,9 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
  ```    
     
 
-## Usage of the SDK
+## 2.Usage of the SDK
  
- ### 2.Initialization
+ ### Initialization
  
  
 ```java
@@ -100,7 +100,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 </p>
 
  
- ### Sync
+ ## 3.Sync
  
  Please make the following improvements to add more information about the user in RMC.
  
@@ -118,7 +118,7 @@ manager.sync();
 
 ```
 
-## Sample Applications 
+## 4.Sample Applications 
 
 - [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
  (master branch)
