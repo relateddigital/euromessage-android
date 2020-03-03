@@ -11,12 +11,10 @@
 
 # Table of Contents
 
-- [Latest Version (#latest-version)
 - [Table of Contents](#table-of-contents)
 - [Euromessage Android](#euromessage-android)
   * [1.Installation](#1installation)
     + [Gradle](#gradle)
-          + [Note :](#note--)
       - [Support Lib](#support-lib)
     + [Permission](#permission)
   * [2.Usage of the SDK](#2usage-of-the-sdk)
