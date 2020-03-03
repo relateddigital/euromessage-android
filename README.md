@@ -26,7 +26,7 @@
 
 The Euromessage Android Sdk is a java implementation of an Android client for Euromessage.
 
-## Installation
+## 1- Installation
 
 
 Add Euromessage to the ```dependencies``` in app/build.gradle.
@@ -64,9 +64,9 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 
 - [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support)
 
-### Using the SDK
+## 2- Using the SDK
  
- #### Initialization
+ ### Initialization
  
  
 ```java
@@ -105,7 +105,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 </p>
 
  
- #### Sync
+ ## 3- Sync
  
  Please make the following improvements to add more information about the user in RMC.
  
@@ -125,7 +125,7 @@ manager.sync();
     
 - If you have a question please send an e-mail to: <clientsupport@relateddigital.com> 
 
-### Licences
+## Licences
 
 
  - [Related Digital ](https://www.relateddigital.com/)
