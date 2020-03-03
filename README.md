@@ -91,7 +91,14 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
         }
     }
 
-  
+
+##### How to get App Alias ? 
+
+<p align="center">
+  <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android/blob/master/ss.png"><img src="https://github.com/relateddigital/euromessage-android/blob/master/ss.png" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
+</p>
+
+ 
  #### Sync
  
  
