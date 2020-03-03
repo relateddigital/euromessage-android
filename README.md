@@ -36,7 +36,7 @@ implementation 'com.euromsg:euromsg:3.0.1'
 ```
  
  
-###### Note : You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project
+###### Note : You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project.
 
 
 #### Support Lib : 
