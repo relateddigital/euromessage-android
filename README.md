@@ -111,7 +111,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
  
 EuroMobileManager manager = EuroMobileManager.getInstance();
  
-manager.setEmail(melike.yildirim@euromsg.com, this);
+manager.setEmail("melike.yildirim@euromsg.com", this);
 manager.setEuroUserId("2342343", this);
 manager.setAppVersion("1.1");
 manager.setFacebook("euroFB", this);
