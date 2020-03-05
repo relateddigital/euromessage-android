@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android"><img src="https://github.com/relateddigital/euromessage-android/blob/heads/feature/master/app/euromessage.png" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
+  <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android"><img src="https://www.tsoftapps.com/Data/Logo/euromsg.svg" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
 </p>
 
 # Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
@@ -76,7 +76,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
   euroMobileManager.registerToFCM(getBaseContext());   
   ```
   
-  RMC needs that at least one property which is email or user id in order to match and analyse users. This is important part to use RMC. 
+  RMC needs that at least one property which is email or user id in order to match and analyse users. This is important part to use RMC.  Please add code below after being sure you generate the token.. 
 
   ``` 
   euroMobileManager.setEmail("test@mail.com", this);
