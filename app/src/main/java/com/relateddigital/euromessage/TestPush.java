@@ -4,31 +4,31 @@ public class TestPush {
 
     public static String testImage = "{\n" +
             "    \"pushType\": \"Image\",\n" +
-            "    \"url\": \"http://www.google.com.tr\",\n" +
-            "    \"mediaUrl\": \"https://productimages.hepsiburada.net/s/32/400-592/10352551526450.jpg\",\n" +
+            "    \"url\": \"https://www.euromsg.com/\",\n" +
+            "    \"mediaUrl\": \"https://mcdn01.gittigidiyor.net/ps/banner_1583388342.jpg\",\n" +
             "    \"pushId\": \"bea5303f-11aa-4ac7-aae8-2265ba63b535\",\n" +
             "    \"altUrl\": \"\",\n" +
             "    \"sound\": \"default\",\n" +
-            "    \"message\": \"test carousel omer\",\n" +
-            "    \"title\": \"test carousel omer\"\n" +
+            "    \"message\": \"Bugünü kaçırma\",\n" +
+            "    \"title\": \"BUGÜNE ÖZEL 150 TL İNDİRİM\"\n" +
             "\n" +
             "}";;
 
 
     public static String testText = "{\n" +
             "    \"pushType\": \"Text\",\n" +
-            "    \"url\": \"http://www.google.com.tr\",\n" +
-            "    \"mediaUrl\": \"https://productimages.hepsiburada.net/s/32/400-592/10352551526450.jpg\",\n" +
+            "    \"url\": \"https://www.euromsg.com/\",\n" +
+            "    \"mediaUrl\": \"\",\n" +
             "    \"pushId\": \"bea5303f-11aa-4ac7-aae8-2265ba63b535\",\n" +
             "    \"altUrl\": \"\",\n" +
             "    \"sound\": \"default\",\n" +
-            "    \"message\": \"test carousel omer\",\n" +
-            "    \"title\": \"test carousel omer\"\n" +
+            "    \"message\": \"Buzdolabı, Soğutucu\",\n" +
+            "    \"title\": \"BUGÜNE ÖZEL 150 TL İNDİRİM\"\n" +
             "\n" +
             "}";
     public static String testCarousel = "{\n" +
             "    \"pushType\": \"Text\",\n" +
-            "    \"url\": \"http://www.google.com.tr\",\n" +
+            "    \"url\": \"https://www.euromsg.com/\",\n" +
             "    \"mediaUrl\": \"\",\n" +
             "    \"pushId\": \"bea5303f-11aa-4ac7-aae8-2265ba63b535\",\n" +
             "    \"altUrl\": \"\",\n" +
@@ -39,20 +39,20 @@ public class TestPush {
             "            \"id\": 1,\n" +
             "            \"title\": \"Süper İndirim\",\n" +
             "            \"content\": \"Akıllı saatlerde akılalmaz indirimleri kaçırmayın. Harika bir saat\",\n" +
-            "            \"url\": \"http://www.1.com/\",\n" +
-            "            \"picture\": \"https://productimages.hepsiburada.net/s/22/280-413/9986363097138.jpg\"\n" +
+            "            \"url\": \"https://www.euromsg.com/\",\n" +
+            "            \"picture\": \"https://mcdn01.gittigidiyor.net/52578/tn50/525782224_tn50_0.jpg?1583398\"\n" +
             "        }, {\n" +
             "            \"id\": 2,\n" +
             "            \"title\": \"Mükemmel İndirim\",\n" +
-            "            \"content\": \"Hayatını akıllı saatlerle beraber çok kolaylaştırabilirsin. Yeterki mutlu ol seni çok seviyoruz\",\n" +
-            "            \"url\": \"http://www.2.com/\",\n" +
-            "            \"picture\": \"https://productimages.hepsiburada.net/s/32/400-592/10352550510642.jpg\"\n" +
+            "            \"content\": \"Hayatını akıllı saatlerle beraber çok kolaylaştırabilirsin. Akıllı saatleri incele!\",\n" +
+            "            \"url\": \"https://www.euromsg.com/\",\n" +
+            "            \"picture\": \"https://mcdn01.gittigidiyor.net/49668/tn50/496687214_tn50_0.jpg?1583398\"\n" +
             "        }, {\n" +
             "            \"id\": 3,\n" +
             "            \"title\": \"Şaşırtıcı İndirim\",\n" +
-            "            \"content\": \"Mutlu ol çok \",\n" +
-            "            \"url\": \"http://www.3.com/\",\n" +
-            "            \"picture\": \"https://productimages.hepsiburada.net/s/32/400-592/10352551526450.jpg\"\n" +
+            "            \"content\": \"Akıllı Saatler ! \",\n" +
+            "            \"url\": \"https://www.euromsg.com/\",\n" +
+            "            \"picture\": \"https://mcdn01.gittigidiyor.net/49101/tn50/491019547_tn50_0.jpg?1583398\"\n" +
             "        }\n" +
             "    ]\n" +
             "}";

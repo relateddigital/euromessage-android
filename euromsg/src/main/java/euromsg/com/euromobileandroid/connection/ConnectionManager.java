@@ -3,8 +3,6 @@ package euromsg.com.euromobileandroid.connection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.os.StrictMode;
-import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -19,6 +17,7 @@ import euromsg.com.euromobileandroid.BuildConfig;
 import euromsg.com.euromobileandroid.model.BaseRequest;
 import euromsg.com.euromobileandroid.model.Retention;
 import euromsg.com.euromobileandroid.model.Subscription;
+import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 public final class ConnectionManager {
 
@@ -46,6 +45,7 @@ public final class ConnectionManager {
         Bitmap image = null;
         try {
 
+            AppUtils.setThreadPool();
             url = new URL(photoUrl);
 
             image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
@@ -57,13 +57,11 @@ public final class ConnectionManager {
     }
 
     public void subscribe(final Subscription subscription) {
-       // new JsonAsyncTask(subscription, "https://test.euromsg.com:4242/subscription").execute();
         new JsonAsyncTask(subscription, "https://pushs.euromsg.com/subscription").execute();
     }
 
     public void report(final Retention retention) {
         new JsonAsyncTask(retention, "https://pushr.euromsg.com/retention").execute();
-       // new JsonAsyncTask(retention, "https://test.euromsg.com:4243/retention").execute();
     }
 
     private static Gson gson = new Gson();

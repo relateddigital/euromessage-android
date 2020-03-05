@@ -1,10 +1,12 @@
 <resources>
-    <string name="app_name">euromessage</string>
-    <string name="email">Email</string>
+    <string name="app_name">Euromessage Demo</string>
     <string name="test_sync">Test Sync</string>
-    <string name="fail_token">Token Alınamadı </string>
-    <string name="success_token">Token Alındı </string>
+    <string name="fail_token">Token Failed </string>
+    <string name="success_token">Token Success </string>
     <string name="token">TOKEN : </string>
-    <string name="sync">SYNC : </string>
+    <string name="note">Note: Please create a campaign from RMC to send a real push notification</string>
+    <string name="send_a_template_carousel_push_beta">SEND A TEMPLATE CAROUSEL PUSH (BETA)</string>
+    <string name="send_a_template_image_push">SEND A TEMPLATE IMAGE PUSH</string>
+    <string name="send_a_template_text_push">SEND A TEMPLATE TEXT PUSH</string>
 
 </resources>
