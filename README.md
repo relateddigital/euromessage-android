@@ -76,7 +76,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
   euroMobileManager.registerToFCM(getBaseContext());   
   ```
   
-  RMC needs that at least one property which is email or user id in order to match and analyse users. This is important part to use RMC. 
+  RMC needs that at least one property which is email or user id in order to match and analyse users. This is important part to use RMC.  Please add code below after being sure you generate the token.. 
 
   ``` 
   euroMobileManager.setEmail("test@mail.com", this);
