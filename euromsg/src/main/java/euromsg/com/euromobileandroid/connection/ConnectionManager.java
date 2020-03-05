@@ -45,6 +45,7 @@ public final class ConnectionManager {
 
         Bitmap image = null;
         try {
+
             url = new URL(photoUrl);
 
             image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
@@ -56,13 +57,13 @@ public final class ConnectionManager {
     }
 
     public void subscribe(final Subscription subscription) {
-        new JsonAsyncTask(subscription, "https://test.euromsg.com:4242/subscription").execute();
-       // new JsonAsyncTask(subscription, "https://pushs.euromsg.com/subscription").execute();
+       // new JsonAsyncTask(subscription, "https://test.euromsg.com:4242/subscription").execute();
+        new JsonAsyncTask(subscription, "https://pushs.euromsg.com/subscription").execute();
     }
 
     public void report(final Retention retention) {
-       // new JsonAsyncTask(retention, "https://pushr.euromsg.com/retention").execute();
-        new JsonAsyncTask(retention, "https://test.euromsg.com:4243/retention").execute();
+        new JsonAsyncTask(retention, "https://pushr.euromsg.com/retention").execute();
+       // new JsonAsyncTask(retention, "https://test.euromsg.com:4243/retention").execute();
     }
 
     private static Gson gson = new Gson();

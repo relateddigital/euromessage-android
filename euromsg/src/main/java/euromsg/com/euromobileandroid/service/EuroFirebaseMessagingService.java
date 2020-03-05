@@ -49,11 +49,11 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
                     pushNotificationManager.generateCarouselNotification(this, pushMessage);
                 } else
-                    pushNotificationManager.generateNotification(this, remoteMessageData, ConnectionManager.getInstance().getBitMapFromUri(pushMessage.getMediaUrl()));
+                    pushNotificationManager.generateNotification(this, pushMessage, ConnectionManager.getInstance().getBitMapFromUri(pushMessage.getMediaUrl()));
                 break;
 
             case Text:
-                pushNotificationManager.generateNotification(this, remoteMessageData, null);
+                pushNotificationManager.generateNotification(this, pushMessage, null);
 
                 break;
         }

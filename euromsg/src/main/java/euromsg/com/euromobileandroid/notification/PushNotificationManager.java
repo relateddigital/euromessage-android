@@ -44,12 +44,9 @@ public class PushNotificationManager {
         carouselBuilder.buildCarousel();
     }
 
-    public void generateNotification(Context context, Map<String, String> data, Bitmap image) {
+    public void generateNotification(Context context, Message pushMessage, Bitmap image) {
 
         try {
-
-            Message pushMessage = new Message(data);
-
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, AppUtils.getLaunchIntent(context, null), PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
