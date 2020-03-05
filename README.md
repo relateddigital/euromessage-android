@@ -1,6 +1,6 @@
 
 <p align="center">
-  <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android"><img src="https://github.com/relateddigital/euromessage-android/blob/heads/feature/master/app/euromessage.png" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
+  <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android"><img src="https://www.tsoftapps.com/Data/Logo/euromsg.svg" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
 </p>
 
 # Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
