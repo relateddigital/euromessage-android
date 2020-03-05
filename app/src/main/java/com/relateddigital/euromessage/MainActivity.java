@@ -56,18 +56,23 @@ public class MainActivity extends AppCompatActivity {
         euroMobileManager = EuroMobileManager.createInstance(APP_ALIAS, this);
 
         euroMobileManager.registerToFCM(getBaseContext());
-
-        euroMobileManager.setEmail("test@euromsg.com", this);
-        euroMobileManager.setEuroUserId("12345", this);
-        euroMobileManager.sync(this);
     }
 
     private void setUI() {
-        checkTokenStatus();
 
         sendATemplatePush();
 
         setReleaseName();
+
+        checkTokenStatus();
+
+    }
+
+    private void sync() {
+
+        euroMobileManager.setEmail("test@euromsg.com", this);
+        euroMobileManager.setEuroUserId("12345", this);
+        euroMobileManager.sync(this);
     }
 
     private void checkTokenStatus() {
@@ -84,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
 
                         token = task.getResult().getToken();
                         mainBinding.tvTokenMessage.setText(getResources().getString(R.string.success_token));
-
                         mainBinding.tvToken.setText(token);
                     }
                 });
