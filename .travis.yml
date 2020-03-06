@@ -1,0 +1,18 @@
+language: android
+sudo: required
+jdk: oraclejdk8
+android: 
+   components:
+      - tools
+      - platform-tools
+      - tools
+      - build-tools-29.0.2
+      - android-29
+      - extra-android-m2repository
+#optional, use it if only you haven't give permission yet.
+#before_install:
+#   - chmod +x gradlew
+script:
+   - ./gradlew build
+before_install:
+- chmod +x gradlew

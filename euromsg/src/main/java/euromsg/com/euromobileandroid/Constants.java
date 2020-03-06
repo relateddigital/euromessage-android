@@ -1,21 +1,34 @@
 package euromsg.com.euromobileandroid;
 
-/**
- * Created by ozanuysal on 25/01/15.
- */
 public class Constants {
 
-    public static final String SDK_VERSION = BuildConfig.VERSION_NAME;
+    static final String SDK_VERSION = BuildConfig.VERSION_NAME;
 
-    public static final String EURO_EMAIL_KEY = "email";
-    public static final String EURO_TWITTER_KEY = "twitter";
-    public static final String EURO_FACEBOOK_KEY = "facebook";
-    public static final String EURO_MSISDN_KEY = "msisdn";
-    public static final String EURO_USER_KEY = "keyID";
-    public static final String EURO_LOCATION_KEY = "location";
-    public static final String EURO_SUBSCRIPTION_KEY = "subscription";
+    static final String EURO_EMAIL_KEY = "email";
+    static final String EURO_TWITTER_KEY = "twitter";
+    static final String EURO_FACEBOOK_KEY = "facebook";
+    static final String EURO_MSISDN_KEY = "msisdn";
+    static final String EURO_USER_KEY = "keyID";
+    static final String EURO_LOCATION_KEY = "location";
+    static final String EURO_SUBSCRIPTION_KEY = "subscription";
 
     public static final String LOG_TAG = "EuroPush";
-    public static final String APPLICATION_KEY = "AppKey";
+    public static final String APP_ALIAS = "AppKey";
+
+
+    public static final int EVENT_LEFT_ARROW_CLICKED = 1;
+    public static final int EVENT_RIGHT_ARROW_CLICKED = 2;
+    public static final int EVENT_LEFT_ITEM_CLICKED = 3;
+    public static final int EVENT_RIGHT_ITEM_CLICKED = 4;
+    public static final int EVENT_OTHER_REGION_CLICKED = 5;
+
+    public static final String EVENT_CAROUSAL_ITEM_CLICKED_KEY = "CarouselItemClicked";
+    public static final String CAROUSAL_IMAGE_BEGENNING = "CarouselImage";
+    public static final String CAROUSAL_EVENT_FIRED_INTENT_FILTER = "CAROUSALNOTIFICATIONFIRED";
+    public static final String CAROUSAL_ITEM_CLICKED_INTENT_FILTER = "CAROUSALNOTIFICATIONITEMCLICKED";
+    public static final String CAROUSAL_SET_UP_KEY = "CAROUSAL_SET_UP_KEY";
+    public static final String CAROUSAL_SMALL_ICON_FILE_NAME = "smallIconCarousel";
+    public static final String CAROUSAL_LARGE_ICON_FILE_NAME = "largeIconCarousel";
+    public static final String CAROUSAL_PLACEHOLDER_ICON_FILE_NAME = "placeHolderIconCarousel";
 
 }

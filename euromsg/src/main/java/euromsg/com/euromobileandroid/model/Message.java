@@ -4,14 +4,16 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import euromsg.com.euromobileandroid.enums.PushType;
 
-/**
- * Created by ozanuysal on 25/01/15.
- */
 public class Message {
 
     private String mediaUrl;
@@ -25,12 +27,15 @@ public class Message {
     private String sound;
     private PushType pushType;
     private String collapseKey;
-    private Map<String, String> params = new HashMap<String, String>();
+    private Map<String, String> params = new HashMap<>();
+    private ArrayList<Element> elements;
 
-    public Message(@NonNull Map<String,String> bundle) {
+    public Message(@NonNull Map<String, String> bundle) {
+
         for (String key : bundle.keySet()) {
+
             Object value = bundle.get(key);
-            if(value != null) {
+            if (value != null) {
                 params.put(key, value.toString());
             }
         }
@@ -43,10 +48,39 @@ public class Message {
         title = bundle.get("title");
         sound = bundle.get("sound");
         campaignId = bundle.get("cId");
-        if(bundle.get("pushType") != null) {
+        if (bundle.get("pushType") != null) {
             pushType = PushType.valueOf(bundle.get("pushType"));
         }
         collapseKey = bundle.get("collapse_key");
+
+        if (bundle.get("elements") != null) {
+            convertJsonStrToElementsArray(bundle.get("elements"));
+        }
+    }
+
+    private void convertJsonStrToElementsArray(String elementJsonStr) {
+
+        JSONArray jsonArr;
+
+        try {
+            jsonArr = new JSONArray(elementJsonStr);
+            elements = new ArrayList<>();
+            for (int i = 0; i < jsonArr.length(); i++) {
+
+                JSONObject jsonObj = jsonArr.getJSONObject(i);
+
+                Element element = new Element();
+                element.setId(jsonObj.getString("id"));
+                element.setTitle(jsonObj.getString("title"));
+                element.setContent(jsonObj.getString("content"));
+                element.setPicture(jsonObj.getString("picture"));
+                element.setUrl(jsonObj.getString("url"));
+
+                elements.add(element);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public Message(@NonNull Bundle bundle) {
@@ -63,10 +97,11 @@ public class Message {
         title = bundle.getString("title");
         sound = bundle.getString("sound");
         campaignId = bundle.getString("cId");
-        if(bundle.getString("pushType") != null) {
+        if (bundle.getString("pushType") != null) {
             pushType = PushType.valueOf(bundle.getString("pushType"));
         }
         collapseKey = bundle.getString("collapse_key");
+        elements = bundle.getParcelable("elements");
     }
 
     public String getAltUrl() {
@@ -115,5 +150,9 @@ public class Message {
 
     public String getSound() {
         return sound;
+    }
+
+    public ArrayList<Element> getElements() {
+        return elements;
     }
 }

@@ -1,14 +1,163 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Button
-        android:id="@+id/btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sync" />
-</LinearLayout>
+    <data>
+
+        <variable
+            name="activity"
+            type="com.relateddigital.euromessage.MainActivity" />
+    </data>
+
+    <ScrollView xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorLight"
+                android:focusable="true"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBackground"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/token"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold|italic" />
+
+                <TextView
+                    android:id="@+id/tv_token_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp" />
+
+                <TextView
+                    android:id="@+id/tv_token"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
+            <Button
+
+                android:id="@+id/btn_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@color/colorButton"
+                android:text="@string/send_a_template_text_push"
+                android:textColor="@android:color/white" />
+
+            <Button
+
+                android:id="@+id/btn_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@color/colorButton"
+                android:text="@string/send_a_template_image_push"
+                android:textColor="@android:color/white" />
+
+            <Button
+
+                android:id="@+id/btn_carousel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@color/colorButton"
+                android:text="@string/send_a_template_carousel_push_beta"
+                android:textColor="@android:color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorLight"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBackground"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="@string/test_sync"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold|italic" />
+
+
+                <AutoCompleteTextView
+                    android:id="@+id/autotext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:background="@android:drawable/edit_text"
+                    android:hint="@string/please_enter_email_address"
+                    android:inputType="textEmailAddress"
+                    android:nextFocusLeft="@id/autotext"
+                    android:nextFocusUp="@id/autotext" />
+
+                <Button
+                    android:id="@+id/btn_sync"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/colorButton"
+                    android:text="@string/add"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="@string/note"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvRelease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingStart="10dp" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_weight="0.2"
+                    android:layout_marginRight="5dp"
+                    android:src="@mipmap/logo"
+                    android:layout_marginEnd="5dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</layout>

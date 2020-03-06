@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import com.google.gson.Gson;
 
 import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
@@ -16,6 +17,7 @@ import euromsg.com.euromobileandroid.BuildConfig;
 import euromsg.com.euromobileandroid.model.BaseRequest;
 import euromsg.com.euromobileandroid.model.Retention;
 import euromsg.com.euromobileandroid.model.Subscription;
+import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 public final class ConnectionManager {
 
@@ -32,22 +34,26 @@ public final class ConnectionManager {
         instance = new ConnectionManager();
     }
 
-    private ConnectionManager() {
-    }
-
     public void get(final String urlString) {
         new GetAsyncTask(urlString).execute();
     }
 
-    public Bitmap getBitmap(final String urlString) {
+    public Bitmap getBitMapFromUri(String photoUrl) {
+
+        URL url;
+
+        Bitmap image = null;
         try {
-            return BitmapFactory.decodeStream(new URL(urlString).openConnection().getInputStream());
-        } catch (Exception e) {
-            if (BuildConfig.DEBUG) {
-                e.printStackTrace();
-            }
-            return null;
+
+            AppUtils.setThreadPool();
+            url = new URL(photoUrl);
+
+            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        return image;
     }
 
     public void subscribe(final Subscription subscription) {
@@ -58,17 +64,15 @@ public final class ConnectionManager {
         new JsonAsyncTask(retention, "https://pushr.euromsg.com/retention").execute();
     }
 
-
     private static Gson gson = new Gson();
 
-    private static boolean makeJsonRequest(BaseRequest requestModel, String urlString) {
+    private static void makeJsonRequest(BaseRequest requestModel, String urlString) {
         HttpURLConnection conn = null;
         OutputStream os = null;
-        int responseCode = 0;
+        int responseCode;
         try {
             URL url = new URL(urlString);
             String message = gson.toJson(requestModel);
-            EuroLogger.debugLog("Request to : " + requestModel.getClass().getName() + " with : " + message);
             conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(readTimeout);
             conn.setConnectTimeout(connectionTimeout);
@@ -76,32 +80,29 @@ public final class ConnectionManager {
             conn.setDoInput(true);
             conn.setDoOutput(true);
             conn.setFixedLengthStreamingMode(message.getBytes().length);
-            //make some HTTP header nicety
             conn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-            //open
             conn.connect();
-            //setup send
             os = new BufferedOutputStream(conn.getOutputStream());
             os.write(message.getBytes());
-            //clean up
             os.flush();
             responseCode = conn.getResponseCode();
+
+            EuroLogger.debugLog("Request for : " + requestModel.getClass().getName() + "with : " + message + " Server response : " + responseCode);
+
         } catch (Exception e) {
-            EuroLogger.debugLog(e.getMessage());
+            EuroLogger.debugLog(e.toString());
         } finally {
             try {
                 if (os != null) {
                     os.close();
                 }
             } catch (Exception e) {
-                EuroLogger.debugLog(e.getMessage());
+                EuroLogger.debugLog(e.toString());
             }
             if (conn != null) {
                 conn.disconnect();
             }
         }
-        //EuroLogger.debugLog("Request for : " + requestModel.getClass().getName() + " Server response : " + responseCode);
-        return responseCode > 199 && responseCode < 300;
     }
 
     private static class GetAsyncTask extends AsyncTask<Void, Void, Void> {

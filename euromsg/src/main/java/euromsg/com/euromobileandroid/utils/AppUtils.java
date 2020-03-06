@@ -1,8 +1,10 @@
 package euromsg.com.euromobileandroid.utils;
 
 import android.Manifest;
-import android.app.Fragment;
+import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -10,22 +12,24 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.StrictMode;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import androidx.core.content.PermissionChecker;
+import androidx.fragment.app.Fragment;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.security.MessageDigest;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
-public final class Utils {
-
-    private Utils() {
-    }
+public final class AppUtils {
 
     private static String sID = null;
     private static final String INSTALLATION = "INSTALLATION";
@@ -57,7 +61,7 @@ public final class Utils {
                 try {
                     f.close();
                 } catch (IOException e) {
-                    throw e;
+                    Log.e("Error", e.toString());
                 }
             }
         }
@@ -71,93 +75,39 @@ public final class Utils {
         out.close();
     }
 
-    public static String savePrefString(Context context, String key, String value) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
-        SharedPreferences.Editor spEditor = sp.edit();
-        spEditor.putString(key, value);
-        spEditor.apply();
-        return value;
-    }
-
-    public static void savePrefBoolean(Context context, String key,
-                                       boolean value) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
-        SharedPreferences.Editor spEditor = sp.edit();
-        spEditor.putBoolean(key, value);
-        spEditor.apply();
-    }
-
-    public static void savePrefLong(Context context, String key, long value) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
-        SharedPreferences.Editor spEditor = sp.edit();
-        spEditor.putLong(key, value);
-        spEditor.apply();
-    }
-
-    public static boolean hasPrefString(Context context, String key) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName,
-                Context.MODE_PRIVATE);
-        return sp.contains(key);
-    }
-
-    public static String getPrefString(Context context, String key) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
-        return sp.getString(key, "");
-    }
-
-    public static long getPrefLong(Context context, String key) {
-        String appName = context.getPackageName();
-        SharedPreferences sp = context.getSharedPreferences(appName,
-                Context.MODE_PRIVATE);
-        return sp.getLong(key, 0);
-    }
-
-    public static boolean isInternetAvailable(Context ctx) {
-        ConnectivityManager cm = (ConnectivityManager) ctx
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
-            return true;
-        }
-        return false;
-    }
-
     public static String appVersion(Context context) {
         try {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return pInfo.versionName;
         } catch (Exception e) {
+            EuroLogger.debugLog("Version Name Error : " + e.toString());
+
         }
         return null;
     }
 
+    @SuppressLint("WrongConstant")
     private static boolean hasReadPhoneStatePermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            boolean permissionRequest = PermissionChecker.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
-            return permissionRequest;
+            return PermissionChecker.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED;
         }
         return true;
     }
 
-    private static boolean askForReadPhoneStatePermission(Fragment fragment, int requestCode) {
+    private static void askForReadPhoneStatePermission(Fragment fragment, int requestCode) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (hasReadPhoneStatePermission(fragment.getContext())) {
-                return true;
+                return;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 fragment.requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE}, requestCode);
             }
-            return false;
         }
-        return true;
     }
 
+    @SuppressLint("MissingPermission")
     public static String deviceUDID(Context context) {
+
         try {
             if (hasReadPhoneStatePermission(context)) {
                 TelephonyManager tm = (TelephonyManager) context
@@ -214,32 +164,6 @@ public final class Utils {
         return context.getResources().getConfiguration().locale.getLanguage();
     }
 
-
-    private static String convertToHex(byte[] data) {
-        StringBuilder buf = new StringBuilder();
-        for (byte b : data) {
-            int halfbyte = (b >>> 4) & 0x0F;
-            int two_halfs = 0;
-            do {
-                buf.append((0 <= halfbyte) && (halfbyte <= 9) ? (char) ('0' + halfbyte)
-                        : (char) ('a' + (halfbyte - 10)));
-                halfbyte = b & 0x0F;
-            } while (two_halfs++ < 1);
-        }
-        return buf.toString();
-    }
-
-    public static String sha1(String text) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
-            md.update(text.getBytes("iso-8859-1"), 0, text.length());
-            byte[] sha1hash = md.digest();
-            return convertToHex(sha1hash);
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
     public static String deviceType() {
         return android.os.Build.MANUFACTURER + " : " + android.os.Build.MODEL;
     }
@@ -250,8 +174,36 @@ public final class Utils {
         try {
             lApplicationInfo = lPackageManager.getApplicationInfo(pContext.getApplicationInfo().packageName, 0);
         } catch (final PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
         return (String) (lApplicationInfo != null ? lPackageManager.getApplicationLabel(lApplicationInfo) : defaultText);
     }
 
+    public static Intent getLaunchIntent(Context context, Map<String, String> data) {
+
+        PackageManager packageManager = context.getPackageManager();
+        Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+        ComponentName componentName = intent.getComponent();
+        Intent notificationIntent = Intent.makeRestartActivityTask(componentName);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        if (data != null) {
+            Set<Map.Entry<String, String>> entrySet = data.entrySet();
+            for (Map.Entry<String, String> entry : entrySet) {
+                notificationIntent.putExtra(entry.getKey(), entry.getValue());
+            }
+        }
+        return notificationIntent;
+    }
+
+    public static String getApplicationName(Context context) {
+        ApplicationInfo applicationInfo = context.getApplicationInfo();
+        int stringId = applicationInfo.labelRes;
+        return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
+    }
+
+    public static void setThreadPool() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+    }
 }
