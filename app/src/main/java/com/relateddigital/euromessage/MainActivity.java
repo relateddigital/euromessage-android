@@ -6,8 +6,10 @@ import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -66,13 +68,28 @@ public class MainActivity extends AppCompatActivity {
 
         checkTokenStatus();
 
+        sync();
+
     }
 
     private void sync() {
 
-        euroMobileManager.setEmail("test@euromsg.com", this);
-        euroMobileManager.setEuroUserId("12345", this);
-        euroMobileManager.sync(this);
+        mainBinding.btnSync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mainBinding.autotext.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
+
+                } else {
+                    euroMobileManager.setEmail(mainBinding.autotext.getText().toString().trim(), getApplicationContext());
+                    euroMobileManager.setEuroUserId("12345", getApplicationContext());
+                    euroMobileManager.sync(getApplicationContext());
+                    mainBinding.autotext.setText("");
+                    Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void checkTokenStatus() {
@@ -84,11 +101,13 @@ public class MainActivity extends AppCompatActivity {
 
                         if (!task.isSuccessful()) {
                             mainBinding.tvTokenMessage.setText(getResources().getString(R.string.fail_token));
+                            mainBinding.tvTokenMessage.setTextColor(getResources().getColor(android.R.color.darker_gray));
                             return;
                         }
 
                         token = task.getResult().getToken();
                         mainBinding.tvTokenMessage.setText(getResources().getString(R.string.success_token));
+                        mainBinding.tvTokenMessage.setTextColor(getResources().getColor(R.color.colorButton));
                         mainBinding.tvToken.setText(token);
                     }
                 });
@@ -98,8 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
         String libVersionName = euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME;
 
-        mainBinding.tvAppRelease.setText("App Version : " + BuildConfig.VERSION_NAME);
-        mainBinding.tvSDKRelease.setText(" EuroMessage SDK Version: " + libVersionName);
+        mainBinding.tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " + libVersionName);
     }
 
     public void sendATemplatePush() {
