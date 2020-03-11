@@ -64,7 +64,6 @@ public class PushNotificationManager {
                 channelId += pushMessage.getSound();
             }
 
-
             mNotificationManager.notify(12, mBuilder.build());
 
         } catch (Exception e) {
