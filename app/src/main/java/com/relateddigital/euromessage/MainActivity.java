@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 Message message = new Gson().fromJson(TestPush.testText, Message.class);
                 pushNotificationManager.generateNotification(getApplicationContext(), message, null);
 
-                Toast.makeText(getApplicationContext(), "Ringing a Cool Custom Notification Sound ", Toast.LENGTH_LONG ).show();
+                Toast.makeText(getApplicationContext(), "Ringing a cool custom notification sound ! ", Toast.LENGTH_LONG ).show();
             }
         });
 
@@ -141,9 +141,6 @@ public class MainActivity extends AppCompatActivity {
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testImage, Message.class);
                 pushNotificationManager.generateNotification(getApplicationContext(), message, ConnectionManager.getInstance().getBitMapFromUri((message.getMediaUrl())));
-
-                Toast.makeText(getApplicationContext(), "Ringing a Cool Custom Notification Sound ", Toast.LENGTH_LONG ).show();
-
             }
         });
 
