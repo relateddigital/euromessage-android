@@ -277,10 +277,6 @@ public class CarouselBuilder {
 
             PushNotificationManager pushNotificationManager = new PushNotificationManager();
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotifyManager != null) {
-                pushNotificationManager.createNotificationChannel(mNotifyManager, channelId);
-            }
-
             mBuilder = pushNotificationManager.createNotificationBuilder(context, contentTitle, contentText);
 
             if (isOtherRegionClickable) {
