@@ -11,15 +11,14 @@
 
 # Table of Contents
 
- [Euromessage Android](#euromessage-android)
+- [Table of Contents](#table-of-contents)
+- [Euromessage Android](#euromessage-android)
   * [1.Installation](#1installation)
     + [Gradle](#gradle)
-          + [Note :](#note--)
-      - [Support Lib](#support-lib)
     + [Permission](#permission)
   * [2.Usage of the SDK](#2usage-of-the-sdk)
     + [Initialization](#initialization)
-      - [How to make configuration on RMC for AppAlias, Sound, Server Key?]
+      - [How to make configuration on RMC for AppAlias, Sound, Server Key?](#how-to-make-configuration-on-rmc-for-appalias--sound--server-key-)
   * [3.Sync](#3sync)
   * [4.Sample Applications](#4sample-applications)
   * [5.Licences](#5licences)
