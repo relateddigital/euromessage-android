@@ -98,6 +98,12 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 
 #### How to make configuration on RMC for AppAlias, Sound, Server Key? 
 
+You need to add configuration for your android application on RMC.
+
+Open the page to add an applicatio below. 
+
+Follow : Setting Icon-> Campaing Managment -> Campaign Settings -> Push Applications
+
 <p align="center">
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android/blob/master/ss.png"><img src="https://github.com/relateddigital/euromessage-android/blob/master/screenhelp.png" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
 </p>
@@ -105,6 +111,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 - ***Server Key*** : It should be server key from Firebase Cloud Messaging Settings
 - ***App Alias*** : It can be any name eg: euromessagedemo
 - ***Custom Sound File***  : It is an optional feature. It should be name of your music file without extension in /raw folder 
+
  
  ## 3.Sync
  
