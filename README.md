@@ -5,20 +5,21 @@
 
 # Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
-***February 20, 2020*** - [Euromessage v3.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1)
+***March 12, 2020*** - [Euromessage v3.0.2](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.2)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
 # Table of Contents
 
-- [Euromessage Android](#euromessage-android)
+ [Euromessage Android](#euromessage-android)
   * [1.Installation](#1installation)
     + [Gradle](#gradle)
-    + [Support Lib](#support-lib)
+          + [Note :](#note--)
+      - [Support Lib](#support-lib)
     + [Permission](#permission)
   * [2.Usage of the SDK](#2usage-of-the-sdk)
     + [Initialization](#initialization)
-    + [How to configuration on RMC](#how-to-get-app-alias-entegration-id-)
+      - [How to make configuration on RMC for AppAlias, Sound, Server Key?](#how-to-make-configuration-on-rmc-for-appalias--sound--server-key-)
   * [3.Sync](#3sync)
   * [4.Sample Applications](#4sample-applications)
   * [5.Licences](#5licences)
