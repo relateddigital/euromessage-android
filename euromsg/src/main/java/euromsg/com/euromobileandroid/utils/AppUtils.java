@@ -188,7 +188,7 @@ public final class AppUtils {
         Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
         ComponentName componentName = intent.getComponent();
         Intent notificationIntent = Intent.makeRestartActivityTask(componentName);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
 
         if (data != null) {
             Set<Map.Entry<String, String>> entrySet = data.entrySet();

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.google.gson.Gson;
 
 
 import java.util.Map;
@@ -46,7 +45,6 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
             case Image:
                 if (pushMessage.getElements() != null) {
-
                     pushNotificationManager.generateCarouselNotification(this, pushMessage);
                 } else
                     pushNotificationManager.generateNotification(this, pushMessage, ConnectionManager.getInstance().getBitMapFromUri(pushMessage.getMediaUrl()));
@@ -60,6 +58,6 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
         String applicationKey = SharedPreference.getString(this, Constants.APP_ALIAS);
 
-        EuroMobileManager.createInstance(applicationKey, this).reportReceived(pushMessage.getPushId());
+        EuroMobileManager.init(applicationKey, this).reportReceived(pushMessage.getPushId());
     }
 }

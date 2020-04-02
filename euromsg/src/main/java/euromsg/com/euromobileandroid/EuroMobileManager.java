@@ -36,7 +36,7 @@ public class EuroMobileManager {
      * Initiator method
      * @param appAlias Application key from Euromsg. Euromsg will give you this key.
      */
-    public static EuroMobileManager createInstance(String appAlias, Context context) {
+    public static EuroMobileManager init(String appAlias, Context context) {
 
         if (instance == null) {
             instance = new EuroMobileManager(appAlias);

@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -55,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void initializeEuroMessage() {
 
-        euroMobileManager = EuroMobileManager.createInstance(APP_ALIAS, this);
+        euroMobileManager = EuroMobileManager.init(APP_ALIAS, this);
 
         euroMobileManager.registerToFCM(getBaseContext());
     }
@@ -91,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void checkTokenStatus() {
 
@@ -129,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testText, Message.class);
                 pushNotificationManager.generateNotification(getApplicationContext(), message, null);
-
-                Toast.makeText(getApplicationContext(), "Ringing a cool custom notification sound ! ", Toast.LENGTH_LONG ).show();
             }
         });
 

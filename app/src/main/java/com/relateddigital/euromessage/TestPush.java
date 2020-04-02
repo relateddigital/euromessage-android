@@ -8,7 +8,7 @@ public class TestPush {
             "    \"mediaUrl\": \"https://mcdn01.gittigidiyor.net/ps/banner_1583388342.jpg\",\n" +
             "    \"pushId\": \"bea5303f-11aa-4ac7-aae8-2265ba63b535\",\n" +
             "    \"altUrl\": \"\",\n" +
-            "    \"sound\": \"default\",\n" +
+            "    \"sound\": \"sound\",\n" +
             "    \"message\": \"Bugünü kaçırma\",\n" +
             "    \"title\": \"BUGÜNE ÖZEL 150 TL İNDİRİM\"\n" +
             "\n" +
@@ -32,9 +32,9 @@ public class TestPush {
             "    \"mediaUrl\": \"\",\n" +
             "    \"pushId\": \"bea5303f-11aa-4ac7-aae8-2265ba63b535\",\n" +
             "    \"altUrl\": \"\",\n" +
-            "    \"sound\": \"default\",\n" +
-            "    \"message\": \"test carousel omer\",\n" +
-            "    \"title\": \"test carousel omer\",\n" +
+            "    \"sound\": \"sound\",\n" +
+            "    \"message\": \"test carousel\",\n" +
+            "    \"title\": \"test title\",\n" +
             "    \"elements\": [{\n" +
             "            \"id\": 1,\n" +
             "            \"title\": \"Süper İndirim\",\n" +

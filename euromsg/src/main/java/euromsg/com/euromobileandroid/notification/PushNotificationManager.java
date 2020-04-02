@@ -118,23 +118,6 @@ public class PushNotificationManager {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    public void createNotificationChannel(NotificationManager notificationManager, String channelId) {
-
-        CharSequence name = "Euro Message Channel";
-        String description = "Channel for Euro Message notifications";
-        int importance = android.app.NotificationManager.IMPORTANCE_DEFAULT;
-
-        NotificationChannel notificationChannel = new NotificationChannel(channelId, name, importance);
-        notificationChannel.setDescription(description);
-        notificationChannel.setShowBadge(true);
-        notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-        notificationChannel.enableVibration(true);
-        notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-        notificationManager.createNotificationChannel(notificationChannel);
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.O)
     public void createNotificationChannel(NotificationManager notificationManager, String channelId, String sound, Context context) {
 
         CharSequence name = "Euro Message Channel";
@@ -143,7 +126,6 @@ public class PushNotificationManager {
 
         NotificationChannel notificationChannel = new NotificationChannel(channelId, name, importance);
         notificationChannel.setDescription(description);
-        notificationChannel.setShowBadge(true);
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         notificationChannel.enableVibration(true);
         notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
