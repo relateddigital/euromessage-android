@@ -5,6 +5,7 @@ import android.content.Context;
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 
+import euromsg.com.euromobileandroid.connection.ApiUtil;
 import euromsg.com.euromobileandroid.connection.ConnectionManager;
 import euromsg.com.euromobileandroid.enums.MessageStatus;
 import euromsg.com.euromobileandroid.model.Location;
@@ -69,7 +70,8 @@ public class EuroMobileManager {
             retention.setPushId(pushId);
             retention.setStatus(MessageStatus.Received.toString());
             retention.setToken(subscription.getToken());
-            ConnectionManager.getInstance().report(retention);
+            ApiUtil.retention(retention);
+           // ConnectionManager.getInstance().report(retention);
         } else {
             EuroLogger.debugLog("reportReceived : Push Id cannot be null!");
         }
@@ -95,7 +97,9 @@ public class EuroMobileManager {
             retention.setPushId(pushId);
             retention.setStatus(MessageStatus.Read.toString());
             retention.setToken(subscription.getToken());
-            ConnectionManager.getInstance().report(retention);
+
+            ApiUtil.retention(retention);
+            //ConnectionManager.getInstance().report(retention);
         } else {
             EuroLogger.debugLog("reportRead : Push Id cannot be null!");
         }
@@ -119,7 +123,9 @@ public class EuroMobileManager {
         EuroLogger.debugLog("Sync started");
         if (this.subscription.isValid()) {
             saveSubscription(context);
-            ConnectionManager.getInstance().subscribe(subscription);
+
+            ApiUtil.subscription(subscription);
+          //  ConnectionManager.getInstance().subscribe(subscription);
         }
     }
 

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
@@ -52,6 +54,16 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api 'com.google.code.gson:gson:2.8.6'
     api 'com.google.firebase:firebase-messaging:20.1.0'
+
+    implementation "com.google.code.gson:gson:2.8.0"
+    implementation "com.squareup.retrofit2:retrofit:2.4.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
+    implementation "com.squareup.okhttp3:okhttp:3.10.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:3.10.0"
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
 }
 
 allprojects {
@@ -62,3 +74,6 @@ allprojects {
 
 apply from: 'bintray-install.gradle'
 apply from: 'bintray-upload.gradle'
+repositories {
+    mavenCentral()
+}
