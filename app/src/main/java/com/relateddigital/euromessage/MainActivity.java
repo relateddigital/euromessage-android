@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         euroMobileManager = EuroMobileManager.init(APP_ALIAS, this);
 
-        euroMobileManager.registerToFCM(getBaseContext());
+        euroMobileManager.registerToFCM(this);
     }
 
     private void setUI() {
