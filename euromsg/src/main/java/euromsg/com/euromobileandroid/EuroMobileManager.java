@@ -1,12 +1,17 @@
 package euromsg.com.euromobileandroid;
 
 import android.content.Context;
+import android.os.StrictMode;
+import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 
+import euromsg.com.euromobileandroid.connection.ApiClient;
 import euromsg.com.euromobileandroid.connection.ApiUtil;
 import euromsg.com.euromobileandroid.connection.ConnectionManager;
+import euromsg.com.euromobileandroid.connection.EuroApiService;
+import euromsg.com.euromobileandroid.enums.BaseUrl;
 import euromsg.com.euromobileandroid.enums.MessageStatus;
 import euromsg.com.euromobileandroid.model.Location;
 import euromsg.com.euromobileandroid.model.Message;
@@ -15,10 +20,15 @@ import euromsg.com.euromobileandroid.model.Subscription;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 import euromsg.com.euromobileandroid.utils.AppUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EuroMobileManager {
 
     private static EuroMobileManager instance;
+
+    private static EuroApiService apiInterface;
 
     private Subscription subscription = new Subscription();
 
@@ -98,8 +108,27 @@ public class EuroMobileManager {
             retention.setStatus(MessageStatus.Read.toString());
             retention.setToken(subscription.getToken());
 
-            ApiUtil.retention(retention);
+            apiInterface = ApiClient.getClient(BaseUrl.Retention).create(EuroApiService.class);
+
+            Call<Void> call1 = apiInterface.report(retention);
+            call1.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+
+                    if (response.isSuccessful()) {
+                        Log.e("isSuccesful", "msg");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    call.cancel();
+                }
+            });
+
+           // ApiUtil.retention(retention);
             //ConnectionManager.getInstance().report(retention);
+
         } else {
             EuroLogger.debugLog("reportRead : Push Id cannot be null!");
         }
@@ -124,7 +153,32 @@ public class EuroMobileManager {
         if (this.subscription.isValid()) {
             saveSubscription(context);
 
-            ApiUtil.subscription(subscription);
+            StrictMode.ThreadPolicy policy = new
+                    StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+
+            Gson gson = new Gson();
+            String subscriptionString = gson.toJson(subscription);
+
+            apiInterface = ApiClient.getClient(BaseUrl.Subscription).create(EuroApiService.class);
+
+            Call<Void> call1 = apiInterface.saveSubscription(subscriptionString);
+
+            call1.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.e("isSuccesful", "msg");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    call.cancel();
+                }
+            });
+
+        //    ApiUtil.subscription(subscription);
           //  ConnectionManager.getInstance().subscribe(subscription);
         }
     }

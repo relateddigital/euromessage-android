@@ -22,38 +22,19 @@ public class ApiUtil {
 
     public static void subscription(Subscription subscription) {
 
-        apiInterface = ApiClient.getClient(BaseUrl.Subscription).create(EuroApiService.class);
 
-        Gson gson = new Gson();
-
-        String s = gson.toJson(subscription);
-
-        Call<Void> call1 = apiInterface.saveSubscription(s);
-        call1.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Log.e("isSuccesful", "msg");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                call.cancel();
-            }
-        });
     }
 
 
     public static void retention(Retention retention) {
 
         apiInterface = ApiClient.getClient(BaseUrl.Retention).create(EuroApiService.class);
-
+/*
         Gson gson = new Gson();
 
         String s = gson.toJson(retention);
 
-        Call<Void> call1 = apiInterface.saveSubscription(s);
+        Call<Void> call1 = apiInterface.report(s);
         call1.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -67,7 +48,7 @@ public class ApiUtil {
             public void onFailure(Call<Void> call, Throwable t) {
                 call.cancel();
             }
-        });
+        });*/
     }
 
 }
