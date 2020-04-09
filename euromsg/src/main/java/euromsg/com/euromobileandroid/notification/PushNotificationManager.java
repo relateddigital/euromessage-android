@@ -17,14 +17,13 @@ import android.text.TextUtils;
 import androidx.core.app.NotificationCompat;
 
 import java.util.ArrayList;
-import java.util.Map;
 
-import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
 import euromsg.com.euromobileandroid.model.Message;
-import euromsg.com.euromobileandroid.utils.EuroLogger;
+import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.utils.AppUtils;
+import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
 
 public class PushNotificationManager {
@@ -73,10 +72,16 @@ public class PushNotificationManager {
 
     public NotificationCompat.Builder createNotificationBuilder(Context context, String contentTitle, String contentText) {
 
+        String title = TextUtils.isEmpty(contentTitle) ? " " : contentTitle;
+
+        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
+                ImageUtils.getAppIcon(context));
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, channelId);
-        mBuilder.setContentTitle(contentTitle)
+        mBuilder.setContentTitle(title)
                 .setContentText(contentText)
+                .setLargeIcon(largeIcon)
                 .setSmallIcon(ImageUtils.getAppIcon(context))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
@@ -88,7 +93,8 @@ public class PushNotificationManager {
     private NotificationCompat.Builder createNotificationBuilder(Context context,
                                                                  Bitmap pushImage, Message pushMessage, PendingIntent contentIntent) {
 
-        String title = TextUtils.isEmpty(pushMessage.getTitle()) ? AppUtils.getAppLabel(context, "") : pushMessage.getTitle();
+        String title = TextUtils.isEmpty(pushMessage.getTitle()) ? "" : pushMessage.getTitle();
+
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
                 ImageUtils.getAppIcon(context));
 
@@ -103,7 +109,7 @@ public class PushNotificationManager {
                 .setStyle(style)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(title)
-                .setColorized(false).setAutoCancel(true)
+                .setAutoCancel(true)
                 .setContentText(pushMessage.getMessage());
 
         if (pushMessage.getSound() != null) {

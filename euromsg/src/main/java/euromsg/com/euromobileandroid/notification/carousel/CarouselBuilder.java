@@ -379,7 +379,7 @@ public class CarouselBuilder {
 
     private void setUpCarouselTitles() {
         if (TextUtils.isEmpty(contentTitle)) {
-            setContentTitle(AppUtils.getApplicationName(context));
+            setContentTitle("");
         }
 
         if (bigContentTitle == null)

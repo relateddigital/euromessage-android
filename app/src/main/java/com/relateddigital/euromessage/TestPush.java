@@ -26,6 +26,7 @@ public class TestPush {
             "    \"title\": \"BUGÜNE ÖZEL 150 TL İNDİRİM\"\n" +
             "\n" +
             "}";
+
     public static String testCarousel = "{\n" +
             "    \"pushType\": \"Text\",\n" +
             "    \"url\": \"https://www.euromsg.com/\",\n" +
@@ -34,7 +35,7 @@ public class TestPush {
             "    \"altUrl\": \"\",\n" +
             "    \"sound\": \"sound\",\n" +
             "    \"message\": \"test carousel\",\n" +
-            "    \"title\": \"test title\",\n" +
+            "    \"title\": \"\",\n" +
             "    \"elements\": [{\n" +
             "            \"id\": 1,\n" +
             "            \"title\": \"Süper İndirim\",\n" +
