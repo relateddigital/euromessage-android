@@ -35,7 +35,7 @@ public class TestPush {
             "    \"altUrl\": \"\",\n" +
             "    \"sound\": \"sound\",\n" +
             "    \"message\": \"test carousel\",\n" +
-            "    \"title\": \"\",\n" +
+            "    \"title\": \"test title\",\n" +
             "    \"elements\": [{\n" +
             "            \"id\": 1,\n" +
             "            \"title\": \"Süper İndirim\",\n" +
