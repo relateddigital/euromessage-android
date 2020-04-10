@@ -52,6 +52,9 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
             case Text:
                 pushNotificationManager.generateNotification(this, pushMessage, null);
+                break;
+
+            case Video:
 
                 break;
         }

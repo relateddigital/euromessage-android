@@ -1,7 +1,7 @@
 package euromsg.com.euromobileandroid.enums;
 
 public enum PushType {
-    Text("Text"), Image("Image"), Carousel("Carousel");
+    Text("Text"), Image("Image"), Carousel("Carousel"), Video("Video");
 
     private final String name;
 
