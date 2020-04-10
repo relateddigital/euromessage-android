@@ -5,7 +5,7 @@
 
 # Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
-***March 12, 2020*** - [Euromessage v3.0.2](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.2)
+***April 10, 2020*** - [Euromessage v3.0.4](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.4)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -35,7 +35,7 @@ The Euromessage Android Sdk is a java implementation of an Android client for Eu
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:3.0.2'
+implementation 'com.euromsg:euromsg:3.0.4'
 ```
  
  
@@ -69,9 +69,9 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
  
 ```java
 
-  public static String APP_ALIAS = Constant.APP_ALIAS;  // (EntegrasyonID) e.g.: "euromessage-android"
+  public static String APP_ALIAS = Constant.APP_ALIAS;  // e.g.: "euromessage-android"
 
-  EuroMobileManager euroMobileManager = EuroMobileManager.sharedManager(APP_ALIAS, this);
+  EuroMobileManager euroMobileManager = EuroMobileManager.init(APP_ALIAS, this);
 
   euroMobileManager.registerToFCM(getBaseContext());   
   ```
