@@ -5,7 +5,7 @@
 
 # Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
-***March 12, 2020*** - [Euromessage v3.0.4](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.4)
+***April 10, 2020*** - [Euromessage v3.0.4](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.4)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
