@@ -65,8 +65,9 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 ## 2.Usage of the SDK.  
  
  ### Initialization
-  <img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" width="40" height="40" />
-
+<p align="right">
+    <img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" width="150" height="150" />
+</p>
 
 ```java
 
