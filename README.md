@@ -128,8 +128,7 @@ manager.sync();
 
 ```
 ### Notifications
-
-    <img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" width="200" height="400" />  
+<img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" alt="Euromessage Android Library" width="600" style="max-width:100%;">
 
 ## 4.Sample Applications 
 
