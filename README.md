@@ -66,6 +66,9 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
  
  ### Initialization
  
+ ![Alt Text](https://github.com/relateddigital/euromessage-android/blob/master/notification.gif)
+
+
  
 ```java
 
