@@ -5,10 +5,13 @@
 
 # Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
+<p align="right">
+    <img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" width="150" height="150" />
+
 ***April 10, 2020*** - [Euromessage v3.0.5](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.5)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
-
+</p>
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
@@ -65,9 +68,6 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 ## 2.Usage of the SDK.  
  
  ### Initialization
-<p align="right">
-    <img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" width="150" height="150" />
-</p>
 
 ```java
 
