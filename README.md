@@ -26,13 +26,6 @@
 
 # Euromessage Android
 
-<div id="col-1">
-  <h1>This is half of a page</h1>
-</div>
-<div id="col-2">
-  <h1>This is another half of a page</h1>
-</div>
-
 <p>
   <div align="left">
 The Euromessage Android Sdk is a java implementation of an Android client for Euromessage.</div>
