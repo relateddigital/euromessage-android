@@ -28,6 +28,9 @@
 
 The Euromessage Android Sdk is a java implementation of an Android client for Euromessage.
 
+### Notifications
+<img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" alt="Euromessage Android Library" width="300" style="max-width:100%;">
+
 ## 1.Installation
 
 ### Gradle
@@ -127,8 +130,6 @@ manager.setPhoneNumber(“05320000000", this);
 manager.sync();
 
 ```
-### Notifications
-<img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" alt="Euromessage Android Library" width="300" style="max-width:100%;">
 
 ## 4.Sample Applications 
 
