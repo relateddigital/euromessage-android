@@ -56,20 +56,18 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 
 ### Permission
 ```xml
-     <uses-permission android:name="android.permission.INTERNET"/>
+     <uses-permission android:name="android.permission.INTER NET"/>
 
      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
  ```    
     
 
-## 2.Usage of the SDK
+## 2.Usage of the SDK.  
  
  ### Initialization
- 
- ![Alt Text](https://github.com/relateddigital/euromessage-android/blob/master/notification.gif)
+  <img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" width="40" height="40" />
 
 
- 
 ```java
 
   public static String APP_ALIAS = Constant.APP_ALIAS;  // e.g.: "euromessage-android"
