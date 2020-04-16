@@ -27,6 +27,7 @@
 # Euromessage Android
 
 The Euromessage Android Sdk is a java implementation of an Android client for Euromessage.
+For more information, please check: [Euromessage Documentation]("https://relateddigital.atlassian.net/wiki/spaces/RMCKBT/pages/428802131/Android+SDK")
 
 ### Notifications
 <img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" alt="Euromessage Android Library" width="300" style="max-width:100%;">
@@ -59,7 +60,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 
 ### Permission
 ```xml
-     <uses-permission android:name="android.permission.INTER NET"/>
+     <uses-permission android:name="android.permission.INTERNET"/>
 
      <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
  ```    
@@ -140,7 +141,6 @@ manager.sync();
 - If you have a question please send an e-mail to: <clientsupport@relateddigital.com> 
 
 ## 5.Licences
-
 
  - [Related Digital ](https://www.relateddigital.com/)
  - [Euromessage](https://www.euromsg.com/)
