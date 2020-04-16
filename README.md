@@ -123,7 +123,6 @@ EuroMobileManager manager = EuroMobileManager.getInstance();
  
 manager.setEmail("melike.yildirim@euromsg.com", this);
 manager.setEuroUserId("2342343", this);
-manager.setAppVersion("1.1");
 manager.setFacebook("euroFB", this);
 manager.setTwitterId(“euroTW", this);
 manager.setPhoneNumber(“05320000000", this);
