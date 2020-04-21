@@ -5,7 +5,7 @@
 
 # Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
-***April 10, 2020*** - [Euromessage v3.0.4](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.4)
+***April 10, 2020*** - [Euromessage v3.0.5](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.5)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -28,6 +28,12 @@
 
 The Euromessage Android Sdk is a java implementation of an Android client for Euromessage.
 
+For more information, please check:
+[Euromessage Documentation](https://relateddigital.atlassian.net/wiki/spaces/RMCKBT/pages/428802131/Android+SDK)
+
+### Notifications
+<img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" alt="Euromessage Android Library" width="300" style="max-width:100%;">
+
 ## 1.Installation
 
 ### Gradle
@@ -35,7 +41,7 @@ The Euromessage Android Sdk is a java implementation of an Android client for Eu
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:3.0.4'
+implementation 'com.euromsg:euromsg:3.0.5'
 ```
  
  
@@ -62,11 +68,10 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
  ```    
     
 
-## 2.Usage of the SDK
+## 2.Usage of the SDK.  
  
  ### Initialization
- 
- 
+
 ```java
 
   public static String APP_ALIAS = Constant.APP_ALIAS;  // e.g.: "euromessage-android"
@@ -75,7 +80,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
 
   euroMobileManager.registerToFCM(getBaseContext());   
   ```
-  
+    
   RMC needs that at least one property which is email or user id in order to match and analyse users. This is important part to use RMC.  Please add code below after being sure you generate the token.. 
 
   ``` 
@@ -121,10 +126,9 @@ EuroMobileManager manager = EuroMobileManager.getInstance();
  
 manager.setEmail("melike.yildirim@euromsg.com", this);
 manager.setEuroUserId("2342343", this);
-manager.setAppVersion("1.1");
 manager.setFacebook("euroFB", this);
-manager.setTwitterId(“euroTW", this);
-manager.setPhoneNumber(“05320000000", this);
+manager.setTwitterId("euroTW", this);
+manager.setPhoneNumber("05320000000", this);
 manager.sync();
 
 ```
@@ -139,7 +143,6 @@ manager.sync();
 - If you have a question please send an e-mail to: <clientsupport@relateddigital.com> 
 
 ## 5.Licences
-
 
  - [Related Digital ](https://www.relateddigital.com/)
  - [Euromessage](https://www.euromsg.com/)
