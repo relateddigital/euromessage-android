@@ -4,8 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <application
-        android:networkSecurityConfig="@xml/network_security_config">
+    <application>
         <receiver android:name=".notification.carousel.CarouselEventReceiver" android:exported="true" android:enabled="true"/>
 
     </application>

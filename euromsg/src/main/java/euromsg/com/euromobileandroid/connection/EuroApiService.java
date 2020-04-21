@@ -17,9 +17,9 @@ public interface EuroApiService {
 
     @Headers({ "Content-Type: application/json;charset=utf-8"})
     @POST("/subscription")
-    Call<Void> saveSubscription(@Body String subscription);
+    Call<Void> saveSubscription(@Body Subscription subscription);
 
-
+    @Headers({ "Content-Type: application/json;charset=utf-8"})
     @POST("/retention")
     Call<Void> report(@Body Retention retention);
 }

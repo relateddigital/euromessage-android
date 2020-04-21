@@ -5,7 +5,10 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioAttributes;
@@ -17,7 +20,9 @@ import android.text.TextUtils;
 import androidx.core.app.NotificationCompat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
@@ -43,10 +48,10 @@ public class PushNotificationManager {
             carouselBuilder.addCarouselItem(cItem);
         }
         carouselBuilder.setOtherRegionClickable(true);
-        carouselBuilder.buildCarousel();
+        carouselBuilder.buildCarousel(pushMessage.getPushId());
     }
 
-    public void generateNotification(Context context, Message pushMessage, Bitmap image) {
+    public void generateNotification(Context context, Message pushMessage, Bitmap image, HashMap<String, String> data) {
 
         try {
 
@@ -55,7 +60,8 @@ public class PushNotificationManager {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotificationManager != null) {
                 createNotificationChannel(mNotificationManager, channelId, pushMessage.getSound(), context);
             }
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, AppUtils.getLaunchIntent(context, null), PendingIntent.FLAG_UPDATE_CURRENT);
+
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, AppUtils.getLaunchIntent(context, pushMessage.getPushId()), PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
 

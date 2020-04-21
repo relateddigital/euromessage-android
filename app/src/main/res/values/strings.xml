@@ -5,7 +5,7 @@
     <string name="success_token">Token Success </string>
     <string name="token">TOKEN : </string>
     <string name="note">Note: Please create a campaign from RMC to send a real push notification</string>
-    <string name="send_a_template_carousel_push_beta">SEND A TEMPLATE CAROUSEL PUSH (BETA)</string>
+    <string name="send_a_template_carousel_push">SEND A TEMPLATE CAROUSEL PUSH</string>
     <string name="send_a_template_image_push">SEND A TEMPLATE IMAGE PUSH</string>
     <string name="send_a_template_text_push">SEND A TEMPLATE TEXT PUSH</string>
     <string name="please_enter_email_address">Please Enter Email Address</string>

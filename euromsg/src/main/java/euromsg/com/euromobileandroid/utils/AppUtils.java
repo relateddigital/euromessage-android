@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -27,7 +29,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.URL;
 import java.security.MessageDigest;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -108,6 +112,24 @@ public final class AppUtils {
         }
     }
 
+    public static Bitmap getBitMapFromUri(String photoUrl) {
+
+        URL url;
+
+        Bitmap image = null;
+        try {
+
+            AppUtils.setThreadPool();
+            url = new URL(photoUrl);
+
+            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return image;
+    }
+
     @SuppressLint("MissingPermission")
     public static String deviceUDID(Context context) {
 
@@ -182,20 +204,16 @@ public final class AppUtils {
         return (String) (lApplicationInfo != null ? lPackageManager.getApplicationLabel(lApplicationInfo) : defaultText);
     }
 
-    public static Intent getLaunchIntent(Context context, Map<String, String> data) {
+    public static Intent getLaunchIntent(Context context, String data) {
 
         PackageManager packageManager = context.getPackageManager();
         Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
         ComponentName componentName = intent.getComponent();
         Intent notificationIntent = Intent.makeRestartActivityTask(componentName);
-        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+        notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        if (data != null) {
-            Set<Map.Entry<String, String>> entrySet = data.entrySet();
-            for (Map.Entry<String, String> entry : entrySet) {
-                notificationIntent.putExtra(entry.getKey(), entry.getValue());
-            }
-        }
+        notificationIntent.putExtra("data", data);
+
         return notificationIntent;
     }
 

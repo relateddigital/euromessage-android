@@ -1,6 +1,7 @@
 package euromsg.com.euromobileandroid;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 
@@ -8,8 +9,6 @@ import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 
 import euromsg.com.euromobileandroid.connection.ApiClient;
-import euromsg.com.euromobileandroid.connection.ApiUtil;
-import euromsg.com.euromobileandroid.connection.ConnectionManager;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
 import euromsg.com.euromobileandroid.enums.BaseUrl;
 import euromsg.com.euromobileandroid.enums.MessageStatus;
@@ -45,6 +44,7 @@ public class EuroMobileManager {
 
     /**
      * Initiator method
+     *
      * @param appAlias Application key from Euromsg. Euromsg will give you this key.
      */
     public static EuroMobileManager init(String appAlias, Context context) {
@@ -63,13 +63,6 @@ public class EuroMobileManager {
         return instance;
     }
 
-    /**
-     * Retention service
-     * <p>
-     * Use to report when a FCM message is received. Only required when you perform a manuel FCM registration.
-     *
-     * @param pushId Message Id
-     */
     public void reportReceived(String pushId) {
 
         if (pushId != null) {
@@ -80,25 +73,36 @@ public class EuroMobileManager {
             retention.setPushId(pushId);
             retention.setStatus(MessageStatus.Received.toString());
             retention.setToken(subscription.getToken());
-            ApiUtil.retention(retention);
-           // ConnectionManager.getInstance().report(retention);
+
+            apiInterface = ApiClient.getClient(BaseUrl.Retention).create(EuroApiService.class);
+            Call<Void> call1 = apiInterface.report(retention);
+            call1.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+
+                    if (response.isSuccessful()) {
+                        Log.e("isSuccesful", "msg");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    call.cancel();
+                }
+            });
+
         } else {
             EuroLogger.debugLog("reportReceived : Push Id cannot be null!");
         }
     }
 
-    /**
-     * Register to FCM
-     * <p>
-     * Use to get a token from Firebase
-     *
-     * @param context Application context
-     */
     public void registerToFCM(Context context) {
         FirebaseApp.initializeApp(context);
     }
 
-    public void reportRead(String pushId) {
+    public void reportRead(Bundle data) {
+
+        String pushId = data.getString("data");
 
         if (pushId != null) {
             EuroLogger.debugLog("Report Read : " + pushId);
@@ -126,16 +130,9 @@ public class EuroMobileManager {
                 }
             });
 
-           // ApiUtil.retention(retention);
-            //ConnectionManager.getInstance().report(retention);
-
         } else {
             EuroLogger.debugLog("reportRead : Push Id cannot be null!");
         }
-    }
-
-    public void reportRead(Message message) {
-        reportRead(message.getPushId());
     }
 
     public void reportReceived(Message message) throws Exception {
@@ -157,12 +154,9 @@ public class EuroMobileManager {
                     StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            Gson gson = new Gson();
-            String subscriptionString = gson.toJson(subscription);
-
             apiInterface = ApiClient.getClient(BaseUrl.Subscription).create(EuroApiService.class);
 
-            Call<Void> call1 = apiInterface.saveSubscription(subscriptionString);
+            Call<Void> call1 = apiInterface.saveSubscription(subscription);
 
             call1.enqueue(new Callback<Void>() {
                 @Override
@@ -177,9 +171,6 @@ public class EuroMobileManager {
                     call.cancel();
                 }
             });
-
-        //    ApiUtil.subscription(subscription);
-          //  ConnectionManager.getInstance().subscribe(subscription);
         }
     }
 
@@ -253,16 +244,12 @@ public class EuroMobileManager {
 
     private void setSubscriptionProperty(String key, Object value, Context context) {
 
-     if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
+        if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
             this.subscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             this.subscription.add(key, value);
 
         } else {
             this.subscription.add(key, value);
         }
-    }
-
-    public void setVisiUrl(String visiUrl) {
-        ConnectionManager.getInstance().get(visiUrl);
     }
 }
