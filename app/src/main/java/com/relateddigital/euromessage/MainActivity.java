@@ -2,13 +2,15 @@ package com.relateddigital.euromessage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,7 +18,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
-import com.relateddigital.euromessage.databinding.ActivityMainBinding;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.model.Message;
@@ -29,15 +30,27 @@ public class MainActivity extends AppCompatActivity {
     private static EuroMobileManager euroMobileManager;
 
     public static String APP_ALIAS = Constants.APP_ALIAS;
-
-    ActivityMainBinding mainBinding;
-
+    
     String token;
+
+    AutoCompleteTextView autotext;
+    Button btnSync,btnText,btnImage, btnCarousel;
+    TextView tvTokenMessage, tvToken, tvRelease;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setContentView( R.layout.activity_main);
+
+        autotext = findViewById(R.id.autotext);
+        btnSync = findViewById(R.id.btn_sync);
+        btnCarousel = findViewById(R.id.btn_carousel);
+        btnText  = findViewById(R.id.btn_text);
+        btnImage = findViewById(R.id.btn_image);
+        tvRelease = findViewById(R.id.tvRelease);
+        tvToken = findViewById(R.id.tv_token);
+        tvTokenMessage = findViewById(R.id.tv_token_message);
 
         initializeEuroMessage();
 
@@ -79,18 +92,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void sync() {
 
-        mainBinding.btnSync.setOnClickListener(new View.OnClickListener() {
+        btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (mainBinding.autotext.getText().toString().equals("")) {
+                if (autotext.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
 
                 } else {
-                    euroMobileManager.setEmail(mainBinding.autotext.getText().toString().trim(), getApplicationContext());
+                    euroMobileManager.setEmail(autotext.getText().toString().trim(), getApplicationContext());
                     euroMobileManager.setEuroUserId("12345", getApplicationContext());
                     euroMobileManager.sync(getApplicationContext());
-                    mainBinding.autotext.setText("");
+                    autotext.setText("");
                     Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
                 }
             }
@@ -106,15 +119,15 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
 
                         if (!task.isSuccessful()) {
-                            mainBinding.tvTokenMessage.setText(getResources().getString(R.string.fail_token));
-                            mainBinding.tvTokenMessage.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                            tvTokenMessage.setText(getResources().getString(R.string.fail_token));
+                            tvTokenMessage.setTextColor(getResources().getColor(android.R.color.darker_gray));
                             return;
                         }
 
                         token = task.getResult().getToken();
-                        mainBinding.tvTokenMessage.setText(getResources().getString(R.string.success_token));
-                        mainBinding.tvTokenMessage.setTextColor(getResources().getColor(R.color.colorButton));
-                        mainBinding.tvToken.setText(token);
+                        tvTokenMessage.setText(getResources().getString(R.string.success_token));
+                        tvTokenMessage.setTextColor(getResources().getColor(R.color.colorButton));
+                        tvToken.setText(token);
                     }
                 });
     }
@@ -123,12 +136,12 @@ public class MainActivity extends AppCompatActivity {
 
         String libVersionName = euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME;
 
-        mainBinding.tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " + libVersionName);
+        tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " + libVersionName);
     }
 
     public void sendATemplatePush() {
 
-        mainBinding.btnText.setOnClickListener(new View.OnClickListener() {
+        btnText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -139,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        mainBinding.btnImage.setOnClickListener(new View.OnClickListener() {
+        btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
@@ -148,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mainBinding.btnCarousel.setOnClickListener(new View.OnClickListener() {
+        btnCarousel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
