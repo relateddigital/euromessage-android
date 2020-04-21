@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,9 +19,9 @@ import com.google.gson.Gson;
 import com.relateddigital.euromessage.databinding.ActivityMainBinding;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
-import euromsg.com.euromobileandroid.connection.ConnectionManager;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
+import euromsg.com.euromobileandroid.utils.AppUtils;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,8 +49,14 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
 
         if (intent.getExtras() != null) {
-            euroMobileManager.reportRead(new Message(intent.getExtras()));
+            euroMobileManager.reportRead(intent.getExtras());
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     public void initializeEuroMessage() {
@@ -68,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         checkTokenStatus();
 
         sync();
-
     }
 
     private void sync() {
@@ -128,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testText, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, null);
+                pushNotificationManager.generateNotification(getApplicationContext(), message, null, null);
             }
         });
 
@@ -138,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testImage, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, ConnectionManager.getInstance().getBitMapFromUri((message.getMediaUrl())));
+                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitMapFromUri((message.getMediaUrl())), null);
             }
         });
 

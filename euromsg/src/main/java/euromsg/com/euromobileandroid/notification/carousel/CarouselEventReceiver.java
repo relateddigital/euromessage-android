@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import euromsg.com.euromobileandroid.Constants;
+import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.model.CarouselSetUp;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 
@@ -18,8 +19,9 @@ public class CarouselEventReceiver extends BroadcastReceiver {
             int carouselEvent = bundle.getInt(Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY);
             CarouselSetUp carouselSetUp = bundle.getParcelable( Constants.CAROUSAL_SET_UP_KEY);
 
+            EuroMobileManager.getInstance().reportRead(bundle);
             if (carouselEvent > 2) {
-                context.startActivity(AppUtils.getLaunchIntent(context, null));
+                context.startActivity(AppUtils.getLaunchIntent(context, bundle.getString("data")));
                 context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
 

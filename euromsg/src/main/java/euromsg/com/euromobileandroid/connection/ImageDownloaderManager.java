@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.model.CarouselItem;
+import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
 
 public class ImageDownloaderManager {
@@ -108,7 +109,7 @@ public class ImageDownloaderManager {
 
                 try {
 
-                    bitmap = ConnectionManager.getInstance().getBitMapFromUri(imageUrl);
+                    bitmap = AppUtils.getBitMapFromUri(imageUrl);
 
                     if (bitmap != null) {
 

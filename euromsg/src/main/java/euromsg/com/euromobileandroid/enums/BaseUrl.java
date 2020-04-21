@@ -2,7 +2,7 @@ package euromsg.com.euromobileandroid.enums;
 
 
 public enum BaseUrl {
-    Retention("https://test.euromsg.com:4243/"), Subscription("https://test.euromsg.com:4242/");
+    Retention("https://pushr.euromsg.com/retention/"), Subscription("https://pushs.euromsg.com/subscription/");
 
     private final String name;
 

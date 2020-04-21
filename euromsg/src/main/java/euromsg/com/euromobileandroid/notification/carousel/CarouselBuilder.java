@@ -38,6 +38,7 @@ public class CarouselBuilder {
     private String leftItemTitle, leftItemDescription;
     private String rightItemTitle, rightItemDescription;
 
+    private String pushId;
     private static final String TAG = "Carousel";
     private NotificationCompat.Builder mBuilder;
     private int carouselNotificationId = 9873715; //Random id for notification. Will cancel any notification that have existing same id.
@@ -189,8 +190,9 @@ public class CarouselBuilder {
         this.isOtherRegionClickable = isOtherRegionClickable;
     }
 
-    public void buildCarousel() {
+    public void buildCarousel(String pushId) {
 
+        this.pushId = pushId;
         boolean isImagesInCarous = false;
         int numberofImages = 0;
         if (carouselItems != null && carouselItems.size() > 0) {
@@ -450,6 +452,7 @@ public class CarouselBuilder {
         Bundle bundle = new Bundle();
         bundle.putInt(  Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY, eventClicked);
         bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carouselSetUp);
+        bundle.putString("data", pushId);
         carouselIntent.putExtras(bundle);
         return PendingIntent.getBroadcast(context, eventClicked, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }

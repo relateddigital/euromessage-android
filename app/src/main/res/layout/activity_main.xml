@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:background="@color/colorButton"
-                android:text="@string/send_a_template_carousel_push_beta"
+                android:text="@string/send_a_template_carousel_push"
                 android:textColor="@android:color/white" />
 
             <LinearLayout
