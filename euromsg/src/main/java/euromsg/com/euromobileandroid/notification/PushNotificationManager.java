@@ -51,7 +51,7 @@ public class PushNotificationManager {
         carouselBuilder.buildCarousel(pushMessage.getPushId());
     }
 
-    public void generateNotification(Context context, Message pushMessage, Bitmap image, HashMap<String, String> data) {
+    public void generateNotification(Context context, Message pushMessage, Bitmap image) {
 
         try {
 
