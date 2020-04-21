@@ -6,6 +6,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 
+import java.util.HashMap;
 import java.util.Map;
 
 import euromsg.com.euromobileandroid.Constants;
@@ -13,6 +14,7 @@ import euromsg.com.euromobileandroid.EuroMobileManager;
 
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
+import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
@@ -52,15 +54,12 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
             case Text:
                 pushNotificationManager.generateNotification(this, pushMessage, null);
-                break;
-
-            case Video:
 
                 break;
         }
 
-        String appAlias = SharedPreference.getString(this, Constants.APP_ALIAS);
+        String applicationKey = SharedPreference.getString(this, Constants.APP_ALIAS);
 
-        EuroMobileManager.init(appAlias, this).reportReceived(pushMessage.getPushId());
+        EuroMobileManager.init(applicationKey, this).reportReceived(pushMessage.getPushId());
     }
 }

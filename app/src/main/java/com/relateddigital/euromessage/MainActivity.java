@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         euroMobileManager = EuroMobileManager.init(APP_ALIAS, this);
 
-        euroMobileManager.registerToFCM(this);
+        euroMobileManager.registerToFCM(getBaseContext());
     }
 
     private void setUI() {
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testText, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, null);
+                pushNotificationManager.generateNotification(getApplicationContext(), message, null, null);
             }
         });
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testImage, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitMapFromUri((message.getMediaUrl())));
+                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitMapFromUri((message.getMediaUrl())), null);
             }
         });
 
