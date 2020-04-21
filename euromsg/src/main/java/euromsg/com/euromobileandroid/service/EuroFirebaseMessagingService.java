@@ -11,9 +11,9 @@ import java.util.Map;
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.EuroMobileManager;
 
-import euromsg.com.euromobileandroid.connection.ConnectionManager;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
+import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 
@@ -47,7 +47,7 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
                 if (pushMessage.getElements() != null) {
                     pushNotificationManager.generateCarouselNotification(this, pushMessage);
                 } else
-                    pushNotificationManager.generateNotification(this, pushMessage, ConnectionManager.getInstance().getBitMapFromUri(pushMessage.getMediaUrl()));
+                    pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(pushMessage.getMediaUrl()));
                 break;
 
             case Text:

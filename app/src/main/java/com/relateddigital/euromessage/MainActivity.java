@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testText, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, null, null);
+                pushNotificationManager.generateNotification(getApplicationContext(), message, null);
             }
         });
 
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testImage, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitMapFromUri((message.getMediaUrl())), null);
+                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitMapFromUri((message.getMediaUrl())));
             }
         });
 
