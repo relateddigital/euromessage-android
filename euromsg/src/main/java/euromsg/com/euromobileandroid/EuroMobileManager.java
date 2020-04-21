@@ -1,9 +1,12 @@
 package euromsg.com.euromobileandroid;
 
 import android.content.Context;
+import android.net.DnsResolver;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
@@ -19,9 +22,8 @@ import euromsg.com.euromobileandroid.model.Subscription;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 import euromsg.com.euromobileandroid.utils.AppUtils;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
+
 
 public class EuroMobileManager {
 
