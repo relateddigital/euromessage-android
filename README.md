@@ -96,7 +96,7 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
         super.onNewIntent(intent);
 
         if (intent.getExtras() != null) {
-            euroMobileManager.reportRead(new Message(intent.getExtras()));
+            euroMobileManager.reportRead(intent.getExtras());
         }
     }
 
