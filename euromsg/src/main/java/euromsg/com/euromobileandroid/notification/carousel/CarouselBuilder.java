@@ -454,9 +454,6 @@ public class CarouselBuilder implements Serializable {
         Bundle bundle = new Bundle();
         bundle.putInt(  Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY, eventClicked);
         bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carouselSetUp);
-        bundle.putString("pushId", message.getPushId());
-        bundle.putString("url", message.getUrl());
-        bundle.putSerializable("elements", message.getElements());
         bundle.putSerializable("message", message);
         carouselIntent.putExtras(bundle);
         return PendingIntent.getBroadcast(context, eventClicked, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT);

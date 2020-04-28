@@ -23,10 +23,10 @@ public class CarouselEventReceiver extends BroadcastReceiver {
             CarouselSetUp carouselSetUp = bundle.getParcelable( Constants.CAROUSAL_SET_UP_KEY);
 
             if (carouselEvent > 2) {
-                Message model = (Message) intent.getSerializableExtra("message");
-                context.startActivity(AppUtils.getLaunchIntent(context, model));
+                Message message = (Message) intent.getSerializableExtra("message");
+                context.startActivity(AppUtils.getLaunchIntent(context, message));
                 context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                EuroMobileManager.getInstance().reportRead(bundle);
+                EuroMobileManager.getInstance().reportRead(intent);
             }
 
             if (carouselEvent > 0 && carouselSetUp != null)

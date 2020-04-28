@@ -63,9 +63,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        if (intent.getExtras() != null) {
-            euroMobileManager.reportRead(intent.getExtras());
+        if (intent != null) {
+            euroMobileManager.reportRead(intent);
+            directNotificationUrl(intent);
         }
+    }
+
+    private void directNotificationUrl(Intent intent) {
 
         if (euroMobileManager.getNotification(intent) != null) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(euroMobileManager.getNotification(intent).getUrl()));
@@ -77,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(browserIntent);
         }
     }
-    
 
     public void initializeEuroMessage() {
 

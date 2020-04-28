@@ -111,9 +111,12 @@ public class EuroMobileManager {
         FirebaseApp.initializeApp(context);
     }
 
-    public void reportRead(Bundle data) {
+    public void reportRead(Intent data) {
 
-        String pushId = data.getString("pushId");
+         Message message = (Message) data.getExtras().getSerializable("message");
+      //  Message message = (Message) data.getSerializableExtra("message");
+
+        String pushId = message.getPushId();
 
         if (pushId != null) {
             EuroLogger.debugLog("Report Read : " + pushId);
@@ -131,7 +134,7 @@ public class EuroMobileManager {
                 public void onResponse(Call<Void> call, Response<Void> response) {
 
                     if (response.isSuccessful()) {
-                        Log.d("isSuccesful", "OK");
+                        Log.d("reportRead", "Success");
                     }
                 }
 
