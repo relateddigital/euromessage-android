@@ -17,6 +17,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
@@ -29,12 +30,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.Serializable;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
+import euromsg.com.euromobileandroid.model.Element;
+import euromsg.com.euromobileandroid.model.Message;
 
 public final class AppUtils {
 
@@ -204,16 +210,14 @@ public final class AppUtils {
         return (String) (lApplicationInfo != null ? lPackageManager.getApplicationLabel(lApplicationInfo) : defaultText);
     }
 
-    public static Intent getLaunchIntent(Context context, String data) {
+    public static Intent getLaunchIntent(Context context, Message message) {
 
         PackageManager packageManager = context.getPackageManager();
         Intent intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
         ComponentName componentName = intent.getComponent();
         Intent notificationIntent = Intent.makeRestartActivityTask(componentName);
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        notificationIntent.putExtra("data", data);
-
+        notificationIntent.putExtra("message", message);
         return notificationIntent;
     }
 

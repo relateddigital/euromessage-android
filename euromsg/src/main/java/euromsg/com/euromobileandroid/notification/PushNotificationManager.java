@@ -48,7 +48,7 @@ public class PushNotificationManager {
             carouselBuilder.addCarouselItem(cItem);
         }
         carouselBuilder.setOtherRegionClickable(true);
-        carouselBuilder.buildCarousel(pushMessage.getPushId());
+        carouselBuilder.buildCarousel(pushMessage);
     }
 
     public void generateNotification(Context context, Message pushMessage, Bitmap image) {
@@ -61,7 +61,7 @@ public class PushNotificationManager {
                 createNotificationChannel(mNotificationManager, channelId, pushMessage.getSound(), context);
             }
 
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, AppUtils.getLaunchIntent(context, pushMessage.getPushId()), PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, AppUtils.getLaunchIntent(context, pushMessage), PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
 

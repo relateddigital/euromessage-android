@@ -1,15 +1,24 @@
 package euromsg.com.euromobileandroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.DnsResolver;
 import android.os.Bundle;
 import android.os.StrictMode;
+
+import euromsg.com.euromobileandroid.model.Element;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;import android.util.Log;
+import retrofit2.Response;
+
+import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import euromsg.com.euromobileandroid.connection.ApiClient;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
@@ -83,7 +92,7 @@ public class EuroMobileManager {
                 public void onResponse(Call<Void> call, Response<Void> response) {
 
                     if (response.isSuccessful()) {
-                        Log.e("isSuccesful", "msg");
+                        Log.d("isSuccesful", "OK");
                     }
                 }
 
@@ -104,7 +113,7 @@ public class EuroMobileManager {
 
     public void reportRead(Bundle data) {
 
-        String pushId = data.getString("data");
+        String pushId = data.getString("pushId");
 
         if (pushId != null) {
             EuroLogger.debugLog("Report Read : " + pushId);
@@ -122,7 +131,7 @@ public class EuroMobileManager {
                 public void onResponse(Call<Void> call, Response<Void> response) {
 
                     if (response.isSuccessful()) {
-                        Log.e("isSuccesful", "msg");
+                        Log.d("isSuccesful", "OK");
                     }
                 }
 
@@ -164,7 +173,7 @@ public class EuroMobileManager {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Log.e("isSuccesful", "msg");
+                        Log.d("isSuccesful", "OK");
                     }
                 }
 
@@ -254,4 +263,19 @@ public class EuroMobileManager {
             this.subscription.add(key, value);
         }
     }
+
+    public Message getNotification(Intent intent) {
+
+        Message message = (Message) intent.getSerializableExtra("message");
+
+        return message;
+    }
+
+    public ArrayList<Element> getCarousels(Intent intent) {
+
+        Message message = (Message) intent.getSerializableExtra("message");
+
+        return message.getElements();
+    }
+
 }

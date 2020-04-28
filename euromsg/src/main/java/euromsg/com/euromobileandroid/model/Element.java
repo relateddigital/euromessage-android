@@ -1,6 +1,8 @@
 package euromsg.com.euromobileandroid.model;
 
-public class Element {
+import java.io.Serializable;
+
+public class Element implements Serializable {
 
     private String id;
     private String url;

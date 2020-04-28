@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -27,26 +27,28 @@ import euromsg.com.euromobileandroid.utils.AppUtils;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int FIRST_ITEM_CAROUSEL = 0;
+
     private static EuroMobileManager euroMobileManager;
 
     public static String APP_ALIAS = Constants.APP_ALIAS;
-    
+
     String token;
 
     AutoCompleteTextView autotext;
-    Button btnSync,btnText,btnImage, btnCarousel;
+    Button btnSync, btnText, btnImage, btnCarousel;
     TextView tvTokenMessage, tvToken, tvRelease;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView( R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
         autotext = findViewById(R.id.autotext);
         btnSync = findViewById(R.id.btn_sync);
         btnCarousel = findViewById(R.id.btn_carousel);
-        btnText  = findViewById(R.id.btn_text);
+        btnText = findViewById(R.id.btn_text);
         btnImage = findViewById(R.id.btn_image);
         tvRelease = findViewById(R.id.tvRelease);
         tvToken = findViewById(R.id.tv_token);
@@ -64,13 +66,18 @@ public class MainActivity extends AppCompatActivity {
         if (intent.getExtras() != null) {
             euroMobileManager.reportRead(intent.getExtras());
         }
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+        if (euroMobileManager.getNotification(intent) != null) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(euroMobileManager.getNotification(intent).getUrl()));
+            startActivity(browserIntent);
+        }
 
+        if (euroMobileManager.getCarousels(intent) != null) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(euroMobileManager.getCarousels(intent).get(FIRST_ITEM_CAROUSEL).getUrl()));
+            startActivity(browserIntent);
+        }
     }
+    
 
     public void initializeEuroMessage() {
 

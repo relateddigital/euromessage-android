@@ -8,13 +8,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import euromsg.com.euromobileandroid.enums.PushType;
 
-public class Message {
+public class Message implements Serializable {
 
     private String mediaUrl;
     private String altUrl;

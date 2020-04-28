@@ -17,6 +17,7 @@ import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
@@ -24,11 +25,12 @@ import euromsg.com.euromobileandroid.R;
 import euromsg.com.euromobileandroid.connection.ImageDownloaderManager;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.CarouselSetUp;
+import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 
-public class CarouselBuilder {
+public class CarouselBuilder implements Serializable {
 
     private static CarouselBuilder carouselBuilder;
     private Context context;
@@ -38,7 +40,7 @@ public class CarouselBuilder {
     private String leftItemTitle, leftItemDescription;
     private String rightItemTitle, rightItemDescription;
 
-    private String pushId;
+    Message message;
     private static final String TAG = "Carousel";
     private NotificationCompat.Builder mBuilder;
     private int carouselNotificationId = 9873715; //Random id for notification. Will cancel any notification that have existing same id.
@@ -190,9 +192,9 @@ public class CarouselBuilder {
         this.isOtherRegionClickable = isOtherRegionClickable;
     }
 
-    public void buildCarousel(String pushId) {
+    public void buildCarousel(Message message) {
 
-        this.pushId = pushId;
+        this.message = message;
         boolean isImagesInCarous = false;
         int numberofImages = 0;
         if (carouselItems != null && carouselItems.size() > 0) {
@@ -452,7 +454,10 @@ public class CarouselBuilder {
         Bundle bundle = new Bundle();
         bundle.putInt(  Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY, eventClicked);
         bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carouselSetUp);
-        bundle.putString("data", pushId);
+        bundle.putString("pushId", message.getPushId());
+        bundle.putString("url", message.getUrl());
+        bundle.putSerializable("elements", message.getElements());
+        bundle.putSerializable("message", message);
         carouselIntent.putExtras(bundle);
         return PendingIntent.getBroadcast(context, eventClicked, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }

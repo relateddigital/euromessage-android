@@ -46,13 +46,13 @@ public class TestPush {
             "            \"id\": 2,\n" +
             "            \"title\": \"Mükemmel İndirim\",\n" +
             "            \"content\": \"Hayatını akıllı saatlerle beraber çok kolaylaştırabilirsin. Akıllı saatleri incele!\",\n" +
-            "            \"url\": \"https://www.euromsg.com/\",\n" +
+            "            \"url\": \"https://www.relateddigital.com/\",\n" +
             "            \"picture\": \"https://mcdn01.gittigidiyor.net/49668/tn50/496687214_tn50_0.jpg?1583398\"\n" +
             "        }, {\n" +
             "            \"id\": 3,\n" +
             "            \"title\": \"Şaşırtıcı İndirim\",\n" +
             "            \"content\": \"Akıllı Saatler ! \",\n" +
-            "            \"url\": \"https://www.euromsg.com/\",\n" +
+            "            \"url\": \"https://www.google.com/\",\n" +
             "            \"picture\": \"https://mcdn01.gittigidiyor.net/49101/tn50/491019547_tn50_0.jpg?1583398\"\n" +
             "        }\n" +
             "    ]\n" +
