@@ -111,18 +111,15 @@ public class EuroMobileManager {
         FirebaseApp.initializeApp(context);
     }
 
-    public void reportRead(Intent data) {
+    public void reportRead(Bundle bundle) {
 
-         Message message = (Message) data.getExtras().getSerializable("message");
-      //  Message message = (Message) data.getSerializableExtra("message");
+          Message message = (Message) bundle.getSerializable("message");
 
-        String pushId = message.getPushId();
-
-        if (pushId != null) {
-            EuroLogger.debugLog("Report Read : " + pushId);
+        if ( message.getPushId() != null) {
+            EuroLogger.debugLog("Report Read : " +  message.getPushId());
             Retention retention = new Retention();
             retention.setKey(subscription.getAppAlias());
-            retention.setPushId(pushId);
+            retention.setPushId(message.getPushId());
             retention.setStatus(MessageStatus.Read.toString());
             retention.setToken(subscription.getToken());
 

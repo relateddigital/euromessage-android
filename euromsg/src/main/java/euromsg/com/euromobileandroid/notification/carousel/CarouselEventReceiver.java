@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 
 import euromsg.com.euromobileandroid.Constants;
@@ -26,7 +27,6 @@ public class CarouselEventReceiver extends BroadcastReceiver {
                 Message message = (Message) intent.getSerializableExtra("message");
                 context.startActivity(AppUtils.getLaunchIntent(context, message));
                 context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
-                EuroMobileManager.getInstance().reportRead(intent);
             }
 
             if (carouselEvent > 0 && carouselSetUp != null)

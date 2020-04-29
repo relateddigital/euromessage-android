@@ -7,6 +7,7 @@ import android.content.Intent;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -63,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
-        if (intent != null) {
-            euroMobileManager.reportRead(intent);
+        if (intent.getExtras() != null) {
+            euroMobileManager.reportRead(intent.getExtras());
             directNotificationUrl(intent);
         }
     }
@@ -80,6 +81,17 @@ public class MainActivity extends AppCompatActivity {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(euroMobileManager.getCarousels(intent).get(FIRST_ITEM_CAROUSEL).getUrl()));
             startActivity(browserIntent);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (getIntent().getExtras() != null && euroMobileManager.getNotification(getIntent()) != null) {
+            euroMobileManager.reportRead(getIntent().getExtras());
+            directNotificationUrl(getIntent());
+        }
+
     }
 
     public void initializeEuroMessage() {
