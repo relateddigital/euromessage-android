@@ -64,7 +64,7 @@ public class EuroMobileManager {
             instance = new EuroMobileManager(appAlias);
         }
 
-        EuroLogger.debugLog("SharedManager App Key : " + instance.subscription.getAppAlias());
+        EuroLogger.debugLog("App Key : " + instance.subscription.getAppAlias());
         SharedPreference.saveString(context, Constants.APP_ALIAS, instance.subscription.getAppAlias());
 
         return instance;
@@ -92,7 +92,7 @@ public class EuroMobileManager {
                 public void onResponse(Call<Void> call, Response<Void> response) {
 
                     if (response.isSuccessful()) {
-                        Log.d("isSuccesful", "OK");
+                        Log.d("ReportRecieved", "Success");
                     }
                 }
 
@@ -278,4 +278,8 @@ public class EuroMobileManager {
         return message.getElements();
     }
 
+
+    public void removeIntent(Intent intent) {
+        intent.removeExtra("message");
+    }
 }

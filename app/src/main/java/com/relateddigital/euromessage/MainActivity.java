@@ -66,21 +66,24 @@ public class MainActivity extends AppCompatActivity {
 
         if (intent.getExtras() != null) {
             euroMobileManager.reportRead(intent.getExtras());
-            directNotificationUrl(intent);
+            notificationUrl(intent);
         }
+
     }
 
-    private void directNotificationUrl(Intent intent) {
+    private void notificationUrl(Intent intent) {
 
         if (euroMobileManager.getNotification(intent) != null) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(euroMobileManager.getNotification(intent).getUrl()));
-            startActivity(browserIntent);
+
+            Log.d("Euromessage",euroMobileManager.getNotification(intent).getUrl());
         }
 
         if (euroMobileManager.getCarousels(intent) != null) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(euroMobileManager.getCarousels(intent).get(FIRST_ITEM_CAROUSEL).getUrl()));
-            startActivity(browserIntent);
+
+            Log.d("Euromessage Carousel", euroMobileManager.getCarousels(intent).get(FIRST_ITEM_CAROUSEL).getUrl());
         }
+
+        euroMobileManager.removeIntent(intent);
     }
 
     @Override
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (getIntent().getExtras() != null && euroMobileManager.getNotification(getIntent()) != null) {
             euroMobileManager.reportRead(getIntent().getExtras());
-            directNotificationUrl(getIntent());
+            notificationUrl(getIntent());
         }
 
     }
