@@ -99,8 +99,38 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
             euroMobileManager.reportRead(intent.getExtras());
         }
     }
+    
+***Warning :***   
+In some states, intent can be null, Please make sure that when you set reportRead intent to euromessage.
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (getIntent().getExtras() != null && euroMobileManager.getNotification(getIntent()) != null) {
+            euroMobileManager.reportRead(getIntent().getExtras());
+        }
+
+    }
+
+
+***URL ***
+
+When notification arrive to your activity, you can use notification url in your application. 
+
+        if (euroMobileManager.getNotification(intent) != null) {
+   
+         Log.d("Euromessage",euroMobileManager.getNotification(intent).getUrl());
+        }
+
+        if (euroMobileManager.getCarousels(intent) != null) {
+
+            Log.d("Euromessage Carousel", euroMobileManager.getCarousels(intent).get(FIRST_ITEM_CAROUSEL).getUrl());
+        }
+
+        euroMobileManager.removeIntent(intent);
+        
 #### How to make configuration on RMC for AppAlias, Sound, Server Key? 
 
 You need to add configuration for your android application on RMC. Follow steps below to add an application.
