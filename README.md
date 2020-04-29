@@ -117,7 +117,7 @@ In some states, intent can be null, Please make sure that when you set reportRea
 
 ***URL***
 
-When notification arrive to your activity, you can use the notification's url in your application. 
+When notifications arrive to your activity, you will get a notification "Message" model.  You can use the notification message's url in your application. 
 
         if (euroMobileManager.getNotification(intent) != null) {
    
