@@ -56,10 +56,13 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
                 pushNotificationManager.generateNotification(this, pushMessage, null);
 
                 break;
+
+            case Video:
+                break;
         }
 
-        String applicationKey = SharedPreference.getString(this, Constants.APP_ALIAS);
+        String appAlias = SharedPreference.getString(this, Constants.APP_ALIAS);
 
-        EuroMobileManager.init(applicationKey, this).reportReceived(pushMessage.getPushId());
+        EuroMobileManager.init(appAlias, this).reportReceived(pushMessage.getPushId());
     }
 }
