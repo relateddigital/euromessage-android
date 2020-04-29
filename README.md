@@ -5,7 +5,7 @@
 
 # Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
-***April 22, 2020*** - [Euromessage v3.0.6](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.6)
+***April 30, 2020*** - [Euromessage v3.0.7](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.7)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -41,7 +41,7 @@ For more information, please check:
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:3.0.6'
+implementation 'com.euromsg:euromsg:3.0.7'
 ```
  
  
@@ -99,8 +99,38 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
             euroMobileManager.reportRead(intent.getExtras());
         }
     }
+    
+***Warning :***   
+In some states, intent can be null, Please make sure that when you set reportRead intent to euromessage.
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (getIntent().getExtras() != null && euroMobileManager.getNotification(getIntent()) != null) {
+            euroMobileManager.reportRead(getIntent().getExtras());
+        }
+
+    }
+
+
+***URL***
+
+When notifications arrive to your activity, you will get a notification "Message" model.  You can use the notification message's url in your application. 
+
+        if (euroMobileManager.getNotification(intent) != null) {
+   
+         Log.d("Euromessage",euroMobileManager.getNotification(intent).getUrl());
+        }
+
+        if (euroMobileManager.getCarousels(intent) != null) {
+
+            Log.d("Euromessage Carousel", euroMobileManager.getCarousels(intent).get(FIRST_ITEM_CAROUSEL).getUrl());
+        }
+
+        euroMobileManager.removeIntent(intent);
+        
 #### How to make configuration on RMC for AppAlias, Sound, Server Key? 
 
 You need to add configuration for your android application on RMC. Follow steps below to add an application.
