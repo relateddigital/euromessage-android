@@ -41,7 +41,7 @@ For more information, please check:
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:3.0.6'
+implementation 'com.euromsg:euromsg:3.0.7'
 ```
  
  
