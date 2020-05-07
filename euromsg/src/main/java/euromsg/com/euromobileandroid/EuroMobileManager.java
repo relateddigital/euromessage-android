@@ -153,7 +153,12 @@ public class EuroMobileManager {
     public void subscribe(String token, Context context) {
         this.subscription.setToken(token);
 
+        setPushPermit();
         sync(context);
+    }
+
+    private void setPushPermit() {
+        this.subscription.add("pushPermit", "A");
     }
 
     public void sync(Context context) {
