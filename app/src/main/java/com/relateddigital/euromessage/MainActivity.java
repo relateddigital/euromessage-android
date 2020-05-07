@@ -19,6 +19,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
+import com.visilabs.Visilabs;
+
+import java.util.HashMap;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.model.Message;
@@ -37,9 +40,8 @@ public class MainActivity extends AppCompatActivity {
     String token;
 
     AutoCompleteTextView autotext;
-    Button btnSync, btnText, btnImage, btnCarousel;
+    Button btnSync, btnText, btnImage, btnCarousel, btnInapp;
     TextView tvTokenMessage, tvToken, tvRelease;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 
         initializeEuroMessage();
 
+        visilabsAdvertisement();
+
         setUI();
     }
 
@@ -68,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
             euroMobileManager.reportRead(intent.getExtras());
             notificationUrl(intent);
         }
-
     }
 
     private void notificationUrl(Intent intent) {
@@ -94,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
             euroMobileManager.reportRead(getIntent().getExtras());
             notificationUrl(getIntent());
         }
-
     }
 
     public void initializeEuroMessage() {
@@ -128,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
                     euroMobileManager.setEmail(autotext.getText().toString().trim(), getApplicationContext());
                     euroMobileManager.setEuroUserId("12345", getApplicationContext());
                     euroMobileManager.sync(getApplicationContext());
-                    autotext.setText("");
                     Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
                 }
             }
@@ -193,6 +194,35 @@ public class MainActivity extends AppCompatActivity {
                 Message message = new Gson().fromJson(TestPush.testCarousel, Message.class);
                 pushNotificationManager.generateCarouselNotification(getApplicationContext(), message);
 
+            }
+        });
+    }
+
+    private void visilabsAdvertisement() {
+
+        final String exVisitorId = "testUser@test.com";
+
+        Visilabs.CreateAPI(Constants.ORGANIZATION_ID, Constants.SITE_ID, "http://lgr.visilabs.net",
+                Constants.DATASOURCE, "http://rt.visilabs.net", "Android", getApplicationContext(),  "http://s.visilabs.net/json", "http://s.visilabs.net/actjson", 30000, "http://s.visilabs.net/geojson", true);
+
+        Button btnInnApp = findViewById(R.id.btn_in_app);
+        btnInnApp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, String> parameters = new HashMap<>();
+                parameters.put("OM.exVisitorID", exVisitorId);
+                Visilabs.CallAPI().customEvent("android-visilab", parameters, MainActivity.this);
+            }
+        });
+
+        Button btnInfo = findViewById(R.id.btn_info);
+        btnInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "http://www.visilabs.com";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
             }
         });
     }

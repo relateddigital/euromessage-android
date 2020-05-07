@@ -10,5 +10,8 @@
     <string name="send_a_template_text_push">SEND A TEMPLATE TEXT PUSH</string>
     <string name="please_enter_email_address">Please Enter Email Address</string>
     <string name="add">Add</string>
+    <string name="other_related_digital_products">Other Related Digital Products:</string>
+    <string name="visilabs_in_app_test">Visilabs In App Test</string>
+    <string name="learn_more_about_visilabs">Learn more about visilabs</string>
 
 </resources>

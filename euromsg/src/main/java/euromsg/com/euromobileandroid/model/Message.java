@@ -51,6 +51,8 @@ public class Message implements Serializable {
         campaignId = bundle.get("cId");
         if (bundle.get("pushType") != null) {
             pushType = PushType.valueOf(bundle.get("pushType"));
+        }else {
+            pushType = PushType.Text;
         }
         collapseKey = bundle.get("collapse_key");
 

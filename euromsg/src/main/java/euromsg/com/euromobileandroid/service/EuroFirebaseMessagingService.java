@@ -36,33 +36,45 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        PushNotificationManager pushNotificationManager = new PushNotificationManager();
-
         Map<String, String> remoteMessageData = remoteMessage.getData();
         Message pushMessage = new Message(remoteMessageData);
 
+        PushNotificationManager pushNotificationManager = new PushNotificationManager();
+
         EuroLogger.debugLog("Message received : " + pushMessage.getMessage());
 
-        switch (pushMessage.getPushType()) {
+        if (pushMessage.getPushType() != null && pushMessage.getPushId() != null) {
 
-            case Image:
-                if (pushMessage.getElements() != null) {
-                    pushNotificationManager.generateCarouselNotification(this, pushMessage);
-                } else
-                    pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(pushMessage.getMediaUrl()));
-                break;
+            switch (pushMessage.getPushType()) {
 
-            case Text:
-                pushNotificationManager.generateNotification(this, pushMessage, null);
+                case Image:
 
-                break;
+                    if (pushMessage.getElements() != null) {
+                        pushNotificationManager.generateCarouselNotification(this, pushMessage);
+                    } else {
+                        pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(pushMessage.getMediaUrl()));
+                    }
 
-            case Video:
-                break;
+                    break;
+
+                case Text:
+                    pushNotificationManager.generateNotification(this, pushMessage, null);
+
+                    break;
+
+                case Video:
+                    break;
+
+                default:
+                    pushNotificationManager.generateNotification(this, pushMessage, null);
+                    break;
+            }
+
+            String appAlias = SharedPreference.getString(this, Constants.APP_ALIAS);
+
+            EuroMobileManager.init(appAlias, this).reportReceived(pushMessage.getPushId());
+        } else {
+            EuroLogger.debugLog("remoteMessageData transfrom problem");
         }
-
-        String appAlias = SharedPreference.getString(this, Constants.APP_ALIAS);
-
-        EuroMobileManager.init(appAlias, this).reportReceived(pushMessage.getPushId());
     }
 }

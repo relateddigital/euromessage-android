@@ -30,7 +30,7 @@ ext {
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    buildToolsVersion '29.0.3'
 
     defaultConfig {
         minSdkVersion 16
@@ -47,21 +47,20 @@ android {
     repositories {
         mavenCentral()
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api 'com.google.code.gson:gson:2.8.6'
-    api 'com.google.firebase:firebase-messaging:20.1.0'
+    api 'com.google.firebase:firebase-messaging:20.1.6'
 
-    api "com.google.code.gson:gson:2.8.0"
+    api "com.google.code.gson:gson:2.8.6"
     api "com.squareup.retrofit2:retrofit:2.4.0"
     api "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
     api "com.squareup.retrofit2:converter-gson:2.4.0"
-    api "com.squareup.okhttp3:okhttp:3.10.0"
+    api "com.squareup.okhttp3:okhttp:3.11.0"
     api "com.squareup.okhttp3:logging-interceptor:3.10.0"
-    api "androidx.core:core-ktx:+"
+    api "androidx.core:core-ktx:1.2.0"
     api  "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 }
