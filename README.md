@@ -5,7 +5,7 @@
 
 # Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
-***April 30, 2020*** - [Euromessage v3.0.7](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.7)
+***May 7, 2020*** - [Euromessage v3.0.8](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.8)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -41,7 +41,7 @@ For more information, please check:
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:3.0.7'
+implementation 'com.euromsg:euromsg:3.0.8'
 ```
  
  
@@ -113,7 +113,20 @@ In some states, intent can be null, Please make sure that when you set reportRea
         }
 
     }
+    
+***Note**
 
+Permit values can take the values "Y", "N" and "X". 
+
+Y = Active,
+N = Passive,
+X = Self-release. 
+The SDK sets push permission active by default.
+
+If you want to set a different push permission's setting,  you will need to add code below, 
+
+    euroMobileManager.setUserPropery ("pushPermit", "N", this)
+   
 
 ***URL***
 
