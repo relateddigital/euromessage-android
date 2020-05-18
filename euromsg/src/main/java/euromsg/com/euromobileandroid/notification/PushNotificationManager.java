@@ -5,12 +5,10 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -20,10 +18,9 @@ import android.text.TextUtils;
 import androidx.core.app.NotificationCompat;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
+import euromsg.com.euromobileandroid.Constants;
+import euromsg.com.euromobileandroid.R;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
@@ -31,6 +28,7 @@ import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
+import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class PushNotificationManager {
 
@@ -65,7 +63,6 @@ public class PushNotificationManager {
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
 
-
             if (pushMessage.getSound() != null) {
                 channelId += pushMessage.getSound();
             }
@@ -79,7 +76,6 @@ public class PushNotificationManager {
 
     public NotificationCompat.Builder createNotificationBuilder(Context context, String contentTitle, String contentText) {
 
-
         String title = TextUtils.isEmpty(contentTitle) ? " " : contentTitle;
 
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
@@ -90,10 +86,11 @@ public class PushNotificationManager {
         mBuilder.setContentTitle(title)
                 .setContentText(contentText)
                 .setLargeIcon(largeIcon)
-                .setSmallIcon(ImageUtils.getAppIcon(context))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
                 .setAutoCancel(true);
+
+        setNotificationSmallIcon(mBuilder, context);
 
         return mBuilder;
     }
@@ -112,12 +109,13 @@ public class PushNotificationManager {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
-                .setSmallIcon(ImageUtils.getAppIcon(context))
                 .setStyle(style)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(title)
                 .setColorized(false).setAutoCancel(true)
                 .setContentText(pushMessage.getMessage());
+
+        setNotificationSmallIcon(mBuilder, context);
 
         if (pushMessage.getSound() != null) {
             mBuilder.setSound(AppUtils.getSound(context, pushMessage.getSound()));
@@ -152,5 +150,23 @@ public class PushNotificationManager {
         notificationManager.createNotificationChannel(notificationChannel);
     }
 
+    private void setNotificationSmallIcon(NotificationCompat.Builder builder, Context context) {
 
+        int defaultHexColor = R.color.defaultHex;
+        int transparentSmallIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON);
+
+        if (transparentSmallIcon == 0){
+            transparentSmallIcon = ImageUtils.getAppIcon(context);
+        }
+
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder.setSmallIcon(transparentSmallIcon);
+            if (!SharedPreference.getString(context, Constants.NOTIFICATION_COLOR).equals("")){
+            builder.setColor(Color.parseColor(SharedPreference.getString(context, "x")));
+            } else {
+         builder.setColor(Color.parseColor("#efefef"));}
+        } else {
+            builder.setSmallIcon(transparentSmallIcon);
+        }
+    }
 }

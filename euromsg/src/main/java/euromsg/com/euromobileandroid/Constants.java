@@ -15,6 +15,9 @@ public class Constants {
     public static final String LOG_TAG = "EuroPush";
     public static final String APP_ALIAS = "AppKey";
 
+    public static final String  NOTIFICATION_TRANSPARENT_SMALL_ICON = "small_icon";
+    public static final String  NOTIFICATION_COLOR = "notification_color";
+
 
     public static final int EVENT_LEFT_ARROW_CLICKED = 1;
     public static final int EVENT_RIGHT_ARROW_CLICKED = 2;

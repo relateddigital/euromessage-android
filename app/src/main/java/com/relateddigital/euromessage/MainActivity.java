@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         euroMobileManager = EuroMobileManager.init(APP_ALIAS, this);
 
         euroMobileManager.registerToFCM(getBaseContext());
+
     }
 
     private void setUI() {

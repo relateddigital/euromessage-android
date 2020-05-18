@@ -2,10 +2,13 @@ package euromsg.com.euromobileandroid;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.DnsResolver;
 import android.os.Bundle;
 import android.os.StrictMode;
 
+import euromsg.com.euromobileandroid.enums.EmailPermit;
+import euromsg.com.euromobileandroid.enums.GsmPermit;
+import euromsg.com.euromobileandroid.enums.PushPermit;
+import euromsg.com.euromobileandroid.enums.PushType;
 import euromsg.com.euromobileandroid.model.Element;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -13,12 +16,11 @@ import retrofit2.Response;
 
 import android.util.Log;
 
+import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 import euromsg.com.euromobileandroid.connection.ApiClient;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
@@ -31,7 +33,6 @@ import euromsg.com.euromobileandroid.model.Subscription;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 import euromsg.com.euromobileandroid.utils.AppUtils;
-import retrofit2.Response;
 
 
 public class EuroMobileManager {
@@ -41,6 +42,8 @@ public class EuroMobileManager {
     private static EuroApiService apiInterface;
 
     private Subscription subscription = new Subscription();
+
+    static Context mContext;
 
     private EuroMobileManager(String appAlias) {
 
@@ -63,6 +66,8 @@ public class EuroMobileManager {
         if (instance == null) {
             instance = new EuroMobileManager(appAlias);
         }
+
+        mContext = context;
 
         EuroLogger.debugLog("App Key : " + instance.subscription.getAppAlias());
         SharedPreference.saveString(context, Constants.APP_ALIAS, instance.subscription.getAppAlias());
@@ -153,11 +158,11 @@ public class EuroMobileManager {
     public void subscribe(String token, Context context) {
         this.subscription.setToken(token);
 
-        setPushPermit();
+        setDefaultPushPermit();
         sync(context);
     }
 
-    private void setPushPermit() {
+    private void setDefaultPushPermit() {
         this.subscription.add("pushPermit", "A");
     }
 
@@ -283,8 +288,27 @@ public class EuroMobileManager {
         return message.getElements();
     }
 
-
     public void removeIntent(Intent intent) {
         intent.removeExtra("message");
+    }
+
+    private void setPushPermit(PushPermit pushPermit){
+        this.subscription.add("pushPermit", pushPermit.name());
+    }
+
+    private void setGsmPermit(GsmPermit gsmPermit){
+        this.subscription.add("gsmPermit", gsmPermit.name());
+    }
+
+    private void setGsmPermit(EmailPermit emailPermit){
+        this.subscription.add("emailPermit", emailPermit.name());
+    }
+
+    public void setNotificationTransparentSmallIcon(int star_big_off) {
+        SharedPreference.saveInt(mContext, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON, star_big_off);
+    }
+
+    public void setColor(String color) {
+        SharedPreference.saveString(mContext, Constants.NOTIFICATION_COLOR, color);
     }
 }

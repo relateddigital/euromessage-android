@@ -8,7 +8,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
-        versionName "3.0.7"
+        versionName "3.0.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -25,9 +25,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     implementation project(':euromsg')
-    //implementation 'com.euromsg:euromsg:3.0.7'
+   // implementation 'com.euromsg:euromsg:3.0.8'
 
-    implementation 'com.visilabs.android:visilabs-android:3.1.3'
+    implementation 'com.visilabs.android:visilabs-android:3.1.4'
     implementation 'com.google.firebase:firebase-analytics:17.4.0'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

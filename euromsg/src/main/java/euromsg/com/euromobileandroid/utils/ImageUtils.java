@@ -9,6 +9,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
+
+import androidx.annotation.AttrRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -110,10 +115,23 @@ public class ImageUtils {
 
             appIconResId = applicationInfo.icon;
 
+
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
 
         return appIconResId;
+    }
+
+    @ColorInt
+    public static int getThemeColor
+            (
+                    @NonNull final Context context,
+                    @AttrRes final int attributeColor
+            )
+    {
+        final TypedValue value = new TypedValue();
+        context.getTheme ().resolveAttribute (attributeColor, value, true);
+        return value.data;
     }
 }
