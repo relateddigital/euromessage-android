@@ -3,7 +3,7 @@ package euromsg.com.euromobileandroid.enums;
 public enum GsmPermit {
     ACTIVE("Y"),  PASSIVE("X");
 
-    private final String name;
+    public final String name;
 
     GsmPermit(String s) {
         name = s;

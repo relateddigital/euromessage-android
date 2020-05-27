@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +24,7 @@ import com.visilabs.Visilabs;
 import java.util.HashMap;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
+import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
@@ -103,9 +103,13 @@ public class MainActivity extends AppCompatActivity {
     public void initializeEuroMessage() {
 
         euroMobileManager = EuroMobileManager.init(APP_ALIAS, this);
-
         euroMobileManager.registerToFCM(getBaseContext());
 
+        euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
+        euroMobileManager.setNotificationColor("#d1dbbd");
+
+       // euroMobileManager.removeNotificationColor();
+      //  euroMobileManager.removeNotificationTransparentSmallIcon();
     }
 
     private void setUI() {
@@ -129,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
 
                 } else {
+                    euroMobileManager.setGsmPermit(GsmPermit.ACTIVE, getApplicationContext());
                     euroMobileManager.setEmail(autotext.getText().toString().trim(), getApplicationContext());
                     euroMobileManager.setEuroUserId("12345", getApplicationContext());
                     euroMobileManager.sync(getApplicationContext());

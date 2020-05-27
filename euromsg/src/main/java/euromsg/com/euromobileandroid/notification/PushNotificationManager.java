@@ -152,21 +152,21 @@ public class PushNotificationManager {
 
     private void setNotificationSmallIcon(NotificationCompat.Builder builder, Context context) {
 
-        int defaultHexColor = R.color.defaultHex;
         int transparentSmallIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON);
 
-        if (transparentSmallIcon == 0){
+        if (transparentSmallIcon == 0) {
             transparentSmallIcon = ImageUtils.getAppIcon(context);
         }
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setSmallIcon(transparentSmallIcon);
-            if (!SharedPreference.getString(context, Constants.NOTIFICATION_COLOR).equals("")){
-            builder.setColor(Color.parseColor(SharedPreference.getString(context, "x")));
-            } else {
-         builder.setColor(Color.parseColor("#efefef"));}
         } else {
             builder.setSmallIcon(transparentSmallIcon);
+        }
+
+        if (!SharedPreference.getString(context, Constants.NOTIFICATION_COLOR).equals("")) {
+            String color = SharedPreference.getString(context, Constants.NOTIFICATION_COLOR);
+            builder.setColor(Color.parseColor(color));
         }
     }
 }

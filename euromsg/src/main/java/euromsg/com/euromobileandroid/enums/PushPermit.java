@@ -3,7 +3,7 @@ package euromsg.com.euromobileandroid.enums;
 public enum PushPermit {
     ACTIVE("A"), PASSIVE("N");
 
-    private final String name;
+    public final String name;
 
     PushPermit(String s) {
         name = s;

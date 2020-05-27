@@ -2,6 +2,8 @@ package euromsg.com.euromobileandroid;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 
@@ -21,6 +23,8 @@ import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import euromsg.com.euromobileandroid.connection.ApiClient;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
@@ -118,10 +122,10 @@ public class EuroMobileManager {
 
     public void reportRead(Bundle bundle) {
 
-          Message message = (Message) bundle.getSerializable("message");
+        Message message = (Message) bundle.getSerializable("message");
 
-        if ( message.getPushId() != null) {
-            EuroLogger.debugLog("Report Read : " +  message.getPushId());
+        if (message.getPushId() != null) {
+            EuroLogger.debugLog("Report Read : " + message.getPushId());
             Retention retention = new Retention();
             retention.setKey(subscription.getAppAlias());
             retention.setPushId(message.getPushId());
@@ -159,6 +163,7 @@ public class EuroMobileManager {
         this.subscription.setToken(token);
 
         setDefaultPushPermit();
+
         sync(context);
     }
 
@@ -193,6 +198,21 @@ public class EuroMobileManager {
                 }
             });
         }
+    }
+
+    public void setPushPermit(PushPermit pushPermit, Context context) {
+        setSubscriptionProperty("pushPermit", pushPermit.name, context);
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+    }
+
+    public void setGsmPermit(GsmPermit gsmPermit, Context context) {
+        setSubscriptionProperty("gsmPermit", gsmPermit.name, context);
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+    }
+
+    public void setEmailPermit(EmailPermit emailPermit, Context context) {
+        setSubscriptionProperty("emailPermit", emailPermit.name, context);
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
     public void setAppVersion(String appVersion) {
@@ -292,23 +312,45 @@ public class EuroMobileManager {
         intent.removeExtra("message");
     }
 
-    private void setPushPermit(PushPermit pushPermit){
-        this.subscription.add("pushPermit", pushPermit.name());
+
+    public void setNotificationTransparentSmallIcon(int transparentSmallIcon, Context context) {
+        if (isResource(context, transparentSmallIcon)) {
+            SharedPreference.saveInt(mContext, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON, transparentSmallIcon);
+        } else {
+            Log.e("EM : Res Error", transparentSmallIcon + "");
+        }
     }
 
-    private void setGsmPermit(GsmPermit gsmPermit){
-        this.subscription.add("gsmPermit", gsmPermit.name());
+    public void setNotificationColor(String color) {
+
+        if (isValidColor(color)) {
+            SharedPreference.saveString(mContext, Constants.NOTIFICATION_COLOR, color);
+        } else {
+            Log.e("EM : Color Error", color);
+        }
     }
 
-    private void setGsmPermit(EmailPermit emailPermit){
-        this.subscription.add("emailPermit", emailPermit.name());
+    private static boolean isResource(Context context, int resId) {
+        if (context != null) {
+            try {
+                return context.getResources().getResourceName(resId) != null;
+            } catch (Resources.NotFoundException ignore) {
+            }
+        }
+        return false;
     }
 
-    public void setNotificationTransparentSmallIcon(int star_big_off) {
-        SharedPreference.saveInt(mContext, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON, star_big_off);
+    private boolean isValidColor(String color) {
+        Pattern colorPattern = Pattern.compile("#([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})");
+        Matcher m = colorPattern.matcher(color);
+        return m.matches();
     }
 
-    public void setColor(String color) {
-        SharedPreference.saveString(mContext, Constants.NOTIFICATION_COLOR, color);
+    public void removeNotificationTransparentSmallIcon() {
+        SharedPreference.saveInt(mContext, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON, 0);
+    }
+
+    public void removeNotificationColor() {
+        SharedPreference.saveString(mContext, Constants.NOTIFICATION_COLOR, "");
     }
 }
