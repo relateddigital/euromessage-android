@@ -100,6 +100,19 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
         }
     }
     
+   You may set notification color and transparent small icon with  : 
+   
+   
+        euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
+        euroMobileManager.setNotificationColor("#d1dbbd");
+
+
+       // euroMobileManager.removeNotificationColor();
+      //  euroMobileManager.removeNotificationTransparentSmallIcon();
+      
+      
+Please note: the notification color may not be displayed on all android models.
+
 ***Warning :***   
 In some states, intent can be null, Please make sure that when you set reportRead intent to euromessage.
 
