@@ -124,34 +124,36 @@ public class EuroMobileManager {
 
         Message message = (Message) bundle.getSerializable("message");
 
-        if (message.getPushId() != null) {
-            EuroLogger.debugLog("Report Read : " + message.getPushId());
-            Retention retention = new Retention();
-            retention.setKey(subscription.getAppAlias());
-            retention.setPushId(message.getPushId());
-            retention.setStatus(MessageStatus.Read.toString());
-            retention.setToken(subscription.getToken());
+        if (message != null) {
+            if (message.getPushId() != null) {
+                EuroLogger.debugLog("Report Read : " + message.getPushId());
+                Retention retention = new Retention();
+                retention.setKey(subscription.getAppAlias());
+                retention.setPushId(message.getPushId());
+                retention.setStatus(MessageStatus.Read.toString());
+                retention.setToken(subscription.getToken());
 
-            apiInterface = ApiClient.getClient(BaseUrl.Retention).create(EuroApiService.class);
+                apiInterface = ApiClient.getClient(BaseUrl.Retention).create(EuroApiService.class);
 
-            Call<Void> call1 = apiInterface.report(retention);
-            call1.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
+                Call<Void> call1 = apiInterface.report(retention);
+                call1.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
 
-                    if (response.isSuccessful()) {
-                        Log.d("reportRead", "Success");
+                        if (response.isSuccessful()) {
+                            Log.d("reportRead", "Success");
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    call.cancel();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        call.cancel();
+                    }
+                });
 
-        } else {
-            EuroLogger.debugLog("reportRead : Push Id cannot be null!");
+            } else {
+                EuroLogger.debugLog("reportRead : Push Id cannot be null!");
+            }
         }
     }
 
