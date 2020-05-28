@@ -105,10 +105,6 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
    
         euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
         euroMobileManager.setNotificationColor("#d1dbbd");
-
-
-       // euroMobileManager.removeNotificationColor();
-      //  euroMobileManager.removeNotificationTransparentSmallIcon();
       
       
 Please note: the notification color may not be displayed on all android models.
