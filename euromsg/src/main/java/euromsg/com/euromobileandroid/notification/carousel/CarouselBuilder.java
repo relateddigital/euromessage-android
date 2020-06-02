@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,7 +27,6 @@ import euromsg.com.euromobileandroid.model.CarouselSetUp;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
-import euromsg.com.euromobileandroid.utils.AppUtils;
 
 public class CarouselBuilder implements Serializable {
 
@@ -62,12 +60,11 @@ public class CarouselBuilder implements Serializable {
     private boolean isOtherRegionClickable = false;
     private boolean isImagesInCarousel = true;
 
-    private String channelId = "euroChannel";
-
     private static final String CAROUSAL_ITEM_CLICKED_KEY = "CarouselNotificationItemClickedKey";
 
     private CarouselBuilder(Context context) {
         this.context = context;
+        String channelId = "euroChannel";
         mBuilder = new NotificationCompat.Builder(context, channelId);
     }
 

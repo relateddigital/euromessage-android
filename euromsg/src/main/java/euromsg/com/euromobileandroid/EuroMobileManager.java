@@ -47,7 +47,7 @@ public class EuroMobileManager {
 
     private Subscription subscription = new Subscription();
 
-    static Context mContext;
+    private static Context mContext;
 
     private EuroMobileManager(String appAlias) {
 
@@ -60,11 +60,6 @@ public class EuroMobileManager {
         subscription.setDeviceType(AppUtils.deviceType());
     }
 
-    /**
-     * Initiator method
-     *
-     * @param appAlias Application key from Euromsg. Euromsg will give you this key.
-     */
     public static EuroMobileManager init(String appAlias, Context context) {
 
         if (instance == null) {
@@ -190,13 +185,14 @@ public class EuroMobileManager {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Log.d("isSuccesful", "OK");
+                        Log.d("syncSuccess", "OK");
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     call.cancel();
+                    t.printStackTrace();
                 }
             });
         }
@@ -272,7 +268,10 @@ public class EuroMobileManager {
         if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
             Subscription oldSubcription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             subscription.addAll(oldSubcription.getExtra());
-            subscription.setToken(oldSubcription.getToken());
+
+            if (!oldSubcription.getToken().equals("")) {
+                subscription.setToken(oldSubcription.getToken());
+            }
             subscription.setAdvertisingIdentifier(oldSubcription.getAdvertisingIdentifier());
             subscription.setFirstTime(0);
         }
@@ -354,5 +353,13 @@ public class EuroMobileManager {
 
     public void removeNotificationColor() {
         SharedPreference.saveString(mContext, Constants.NOTIFICATION_COLOR, "");
+    }
+
+    public void setChannelName(String channelName, Context context) {
+        SharedPreference.saveString(context, Constants.CHANNEL_NAME, channelName);
+    }
+
+    public void removeChannelName(Context context) {
+        SharedPreference.saveString(context, Constants.CHANNEL_NAME, "");
     }
 }

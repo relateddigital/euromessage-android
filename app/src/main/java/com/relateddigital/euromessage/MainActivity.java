@@ -107,8 +107,9 @@ public class MainActivity extends AppCompatActivity {
 
         euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
         euroMobileManager.setNotificationColor("#d1dbbd");
+        euroMobileManager.setChannelName("Demo", getApplicationContext());
 
-       // euroMobileManager.removeNotificationColor();
+        // euroMobileManager.removeNotificationColor();
       //  euroMobileManager.removeNotificationTransparentSmallIcon();
     }
 
