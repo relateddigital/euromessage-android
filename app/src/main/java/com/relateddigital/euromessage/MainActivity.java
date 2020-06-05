@@ -28,6 +28,7 @@ import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
         euroMobileManager.setNotificationColor("#d1dbbd");
         euroMobileManager.setChannelName("Demo", getApplicationContext());
+        euroMobileManager.showBadge(true, getApplicationContext());
 
         // euroMobileManager.removeNotificationColor();
       //  euroMobileManager.removeNotificationTransparentSmallIcon();

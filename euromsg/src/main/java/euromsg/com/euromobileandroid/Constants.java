@@ -18,6 +18,9 @@ public class Constants {
     public static final String  NOTIFICATION_TRANSPARENT_SMALL_ICON = "small_icon";
     public static final String  NOTIFICATION_COLOR = "notification_color";
     public static final String CHANNEL_NAME = "channel_name";
+    public static final String BADGE = "badge";
+    public static final int ACTIVE = 1;
+    public static final int PASSIVE = 0;
 
     public static final int EVENT_LEFT_ARROW_CLICKED = 1;
     public static final int EVENT_RIGHT_ARROW_CLICKED = 2;

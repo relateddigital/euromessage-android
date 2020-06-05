@@ -20,7 +20,6 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
-import euromsg.com.euromobileandroid.R;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
@@ -87,9 +86,9 @@ public class PushNotificationManager {
                 .setContentText(contentText)
                 .setLargeIcon(largeIcon)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
+                .setVibrate(new long[]{0, 100})
                 .setAutoCancel(true);
-
+        setBadge(mBuilder, context);
         setNotificationSmallIcon(mBuilder, context);
 
         return mBuilder;
@@ -108,12 +107,15 @@ public class PushNotificationManager {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
+                .setVibrate(new long[]{0, 100})
                 .setStyle(style)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(title)
-                .setColorized(false).setAutoCancel(true)
+                .setColorized(false)
+                .setAutoCancel(true)
                 .setContentText(pushMessage.getMessage());
+
+        setBadge(mBuilder, context);
 
         setNotificationSmallIcon(mBuilder, context);
 
@@ -137,7 +139,7 @@ public class PushNotificationManager {
         notificationChannel.setDescription(getChannelDescription(context));
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         notificationChannel.enableVibration(true);
-        notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+        notificationChannel.setVibrationPattern(new long[]{0, 100});
 
         if (sound != null) {
             Uri soundUri = AppUtils.getSound(context, sound);
@@ -149,7 +151,7 @@ public class PushNotificationManager {
     }
 
     private String getChannelDescription(Context context) {
-            return AppUtils.getApplicationName(context);
+        return AppUtils.getApplicationName(context);
     }
 
     private String getChannelName(Context context) {
@@ -158,6 +160,12 @@ public class PushNotificationManager {
             return SharedPreference.getString(context, Constants.CHANNEL_NAME);
         }
         return AppUtils.getApplicationName(context);
+    }
+
+    private void setBadge(NotificationCompat.Builder mBuilder, Context context) {
+        if (SharedPreference.getInt(context, Constants.BADGE) == Constants.ACTIVE) {
+            mBuilder.setNumber(1).setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
+        }
     }
 
     private void setNotificationSmallIcon(NotificationCompat.Builder builder, Context context) {

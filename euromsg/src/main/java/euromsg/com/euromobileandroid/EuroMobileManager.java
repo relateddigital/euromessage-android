@@ -362,4 +362,12 @@ public class EuroMobileManager {
     public void removeChannelName(Context context) {
         SharedPreference.saveString(context, Constants.CHANNEL_NAME, "");
     }
+
+    public void showBadge(boolean isShown, Context context) {
+        if (isShown){
+            SharedPreference.saveInt(context, Constants.BADGE, Constants.ACTIVE);
+        } else {
+            SharedPreference.saveInt(context, Constants.BADGE, Constants.PASSIVE);
+        }
+    }
 }
