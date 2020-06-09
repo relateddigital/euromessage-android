@@ -5,16 +5,26 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.relateddigital.euromessage"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 29
         versionCode 1
         versionName "3.0.9"
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword '12345678'
+            storeFile file('/Users/melike/Desktop/key/eurosign')
+            storePassword '12345678'
         }
     }
 }
@@ -25,14 +35,27 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     implementation project(':euromsg')
-   // implementation 'com.euromsg:euromsg:3.0.8'
 
-    implementation 'com.visilabs.android:visilabs-android:3.1.4'
+   // implementation 'com.euromsg:euromsg:3.0.8'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.visilabs.android:visilabs-android:3.1.5'
     implementation 'com.google.firebase:firebase-analytics:17.4.2'
+
+    //huawei
+    implementation 'com.huawei.agconnect:agconnect-core:1.0.0.300'
+    implementation 'com.huawei.hms:push:4.0.3.301'
+
+    //Retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.4.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
+
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.huawei.agconnect'
+
 
