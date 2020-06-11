@@ -28,7 +28,6 @@ import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
-import me.leolin.shortcutbadger.ShortcutBadger;
 
 
 public class MainActivity extends AppCompatActivity {
