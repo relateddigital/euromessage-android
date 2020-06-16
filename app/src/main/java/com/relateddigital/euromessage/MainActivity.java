@@ -271,6 +271,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendRegTokenToServer(String token) {
-        Log.i("TAG", "sending token to server. token:" + token);
+        Log.i("Main Activity", "sending token to server. token:" + token);
+
+        euroMobileManager.subscribe(token, getApplicationContext());
+
     }
 }

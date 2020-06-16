@@ -164,6 +164,8 @@ public class EuroMobileManager {
     public void subscribe(String token, Context context) {
         this.subscription.setToken(token);
 
+        Log.i("TOKEN", token);
+
         setDefaultPushPermit();
 
         sync(context);
@@ -190,7 +192,7 @@ public class EuroMobileManager {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Log.d("isSuccesful", "OK");
+                        Log.d("Euromessage Sync", "Success");
                     }
                 }
 
@@ -272,7 +274,7 @@ public class EuroMobileManager {
         if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
             Subscription oldSubcription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             subscription.addAll(oldSubcription.getExtra());
-            subscription.setToken(oldSubcription.getToken());
+           //subscription.setToken(oldSubcription.getToken());
             subscription.setAdvertisingIdentifier(oldSubcription.getAdvertisingIdentifier());
             subscription.setFirstTime(0);
         }

@@ -41,10 +41,6 @@ dependencies {
     implementation 'com.visilabs.android:visilabs-android:3.1.5'
     implementation 'com.google.firebase:firebase-analytics:17.4.2'
 
-    //huawei
-    implementation 'com.huawei.agconnect:agconnect-core:1.0.0.300'
-    implementation 'com.huawei.hms:push:4.0.3.301'
-
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.4.0"
     implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
