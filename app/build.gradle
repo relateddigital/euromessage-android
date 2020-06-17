@@ -39,7 +39,7 @@ dependencies {
    // implementation 'com.euromsg:euromsg:3.0.8'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.visilabs.android:visilabs-android:3.1.5'
-    implementation 'com.google.firebase:firebase-analytics:17.4.2'
+    implementation 'com.google.firebase:firebase-analytics:17.4.3'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.4.0"
