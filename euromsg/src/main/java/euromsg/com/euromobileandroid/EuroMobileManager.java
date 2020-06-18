@@ -363,7 +363,7 @@ public class EuroMobileManager {
         SharedPreference.saveString(context, Constants.CHANNEL_NAME, "");
     }
 
-    public void showBadge(boolean isShown, Context context) {
+    public void showNumber(boolean isShown, Context context) {
         if (isShown){
             SharedPreference.saveInt(context, Constants.BADGE, Constants.ACTIVE);
         } else {

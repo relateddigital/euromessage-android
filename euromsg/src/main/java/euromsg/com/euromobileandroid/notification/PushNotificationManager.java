@@ -86,9 +86,8 @@ public class PushNotificationManager {
                 .setContentText(contentText)
                 .setLargeIcon(largeIcon)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setVibrate(new long[]{0, 100})
                 .setAutoCancel(true);
-        setBadge(mBuilder, context);
+        setNumber(mBuilder, context);
         setNotificationSmallIcon(mBuilder, context);
 
         return mBuilder;
@@ -107,7 +106,7 @@ public class PushNotificationManager {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setVibrate(new long[]{0, 100})
+                //.setVibrate(new long[]{0, 100, 1000})
                 .setStyle(style)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(title)
@@ -115,7 +114,7 @@ public class PushNotificationManager {
                 .setAutoCancel(true)
                 .setContentText(pushMessage.getMessage());
 
-        setBadge(mBuilder, context);
+        setNumber(mBuilder, context);
 
         setNotificationSmallIcon(mBuilder, context);
 
@@ -138,8 +137,6 @@ public class PushNotificationManager {
         NotificationChannel notificationChannel = new NotificationChannel(channelId, getChannelName(context), importance);
         notificationChannel.setDescription(getChannelDescription(context));
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-        notificationChannel.enableVibration(true);
-        notificationChannel.setVibrationPattern(new long[]{0, 100});
 
         if (sound != null) {
             Uri soundUri = AppUtils.getSound(context, sound);
@@ -162,7 +159,7 @@ public class PushNotificationManager {
         return AppUtils.getApplicationName(context);
     }
 
-    private void setBadge(NotificationCompat.Builder mBuilder, Context context) {
+    private void setNumber(NotificationCompat.Builder mBuilder, Context context) {
         if (SharedPreference.getInt(context, Constants.BADGE) == Constants.ACTIVE) {
             mBuilder.setNumber(1).setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
         }
