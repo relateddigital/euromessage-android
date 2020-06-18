@@ -18,6 +18,8 @@ import retrofit2.Response;
 
 import android.util.Log;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
@@ -48,6 +50,8 @@ public class EuroMobileManager {
     private Subscription subscription = new Subscription();
 
     static Context mContext;
+
+    String TAG = "EM Huawei";
 
     private EuroMobileManager(String appAlias) {
 
@@ -356,5 +360,62 @@ public class EuroMobileManager {
 
     public void removeNotificationColor() {
         SharedPreference.saveString(mContext, Constants.NOTIFICATION_COLOR, "");
+    }
+
+    public boolean checkPlayService(Context context) {
+        boolean result = true;
+
+        int isGoogleEnabled = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+
+        switch (isGoogleEnabled) {
+            case ConnectionResult.API_UNAVAILABLE:
+                Log.e(TAG, "Google API Unavailable");
+                result = false;
+                //API is not available
+                break;
+
+            case ConnectionResult.NETWORK_ERROR:
+                Log.e(TAG, "Google Network Error");
+                result = false;
+
+                //Network error while connection
+                break;
+
+            case ConnectionResult.RESTRICTED_PROFILE:
+                Log.e(TAG, "Google Restricted");
+                result = false;
+
+                //Profile is restricted by google so can not be used for play services
+                break;
+
+            case ConnectionResult.SERVICE_MISSING:
+                //service is missing
+                result = false;
+
+                Log.e(TAG, "Google Service is missing");
+
+                break;
+
+            case ConnectionResult.SIGN_IN_REQUIRED:
+                //service available but user not signed in
+                Log.e(TAG, "Google Sign in req");
+                result = false;
+
+                break;
+            case ConnectionResult.SERVICE_INVALID:
+                Log.e(TAG, "Google Services invalid");
+                result = false;
+
+                //  The version of the Google Play services installed on this device is not authentic
+                break;
+            case ConnectionResult.SUCCESS:
+                result = true;
+
+                Log.e(TAG, "Google Services are Enable");
+
+                break;
+        }
+
+        return result;
     }
 }

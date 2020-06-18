@@ -9,9 +9,7 @@
 -keepattributes InnerClasses
 -keepattributes Signature
 -keepattributes SourceFile,LineNumberTable
--keep class com.hianalytics.android.**{*;}
--keep class com.huawei.updatesdk.**{*;}
--keep class com.huawei.hms.**{*;}
+
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 

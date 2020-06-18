@@ -35,9 +35,21 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp" />
 
-            <TextView
-                android:id="@+id/tv_token"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/et_token"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="10sp" />
+
+            <EditText
+                android:id="@+id/et_huawei_token"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"

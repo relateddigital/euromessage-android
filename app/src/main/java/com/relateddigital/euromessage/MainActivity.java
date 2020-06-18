@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     AutoCompleteTextView autotext;
     Button btnSync, btnText, btnImage, btnCarousel, btnInapp;
-    TextView tvTokenMessage, tvToken, tvRelease;
+    TextView tvTokenMessage, tvRelease;
+    EditText etToken, etHuaweiToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
         btnText = findViewById(R.id.btn_text);
         btnImage = findViewById(R.id.btn_image);
         tvRelease = findViewById(R.id.tvRelease);
-        tvToken = findViewById(R.id.tv_token);
+        etToken = findViewById(R.id.et_token);
+        etHuaweiToken = findViewById(R.id.et_huawei_token);
         tvTokenMessage = findViewById(R.id.tv_token_message);
 
         initializeEuroMessage();
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (euroMobileManager.getNotification(intent) != null) {
 
-            Log.d("Euromessage",euroMobileManager.getNotification(intent).getUrl());
+            Log.d("Euromessage", euroMobileManager.getNotification(intent).getUrl());
         }
 
         if (euroMobileManager.getCarousels(intent) != null) {
@@ -114,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
         euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
         euroMobileManager.setNotificationColor("#d1dbbd");
 
-       // euroMobileManager.removeNotificationColor();
-      //  euroMobileManager.removeNotificationTransparentSmallIcon();
+        // euroMobileManager.removeNotificationColor();
+        //  euroMobileManager.removeNotificationTransparentSmallIcon();
     }
 
     private void setUI() {
@@ -158,16 +161,16 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
 
                         if (!task.isSuccessful()) {
-                            EuroMobileManager.getInstance().subscribe(token, getApplicationContext());
                             tvTokenMessage.setText(getResources().getString(R.string.fail_token));
                             tvTokenMessage.setTextColor(getResources().getColor(android.R.color.darker_gray));
                             return;
                         }
 
                         token = task.getResult().getToken();
+                        EuroMobileManager.getInstance().subscribe(token, getApplicationContext());
                         tvTokenMessage.setText(getResources().getString(R.string.success_token));
                         tvTokenMessage.setTextColor(getResources().getColor(R.color.colorButton));
-                        tvToken.setText(token);
+                        etToken.setText(token);
                     }
                 });
     }
@@ -217,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
         final String exVisitorId = "testUser@test.com";
 
         Visilabs.CreateAPI(Constants.ORGANIZATION_ID, Constants.SITE_ID, "http://lgr.visilabs.net",
-                Constants.DATASOURCE, "http://rt.visilabs.net", "Android", getApplicationContext(),  "http://s.visilabs.net/json", "http://s.visilabs.net/actjson", 30000, "http://s.visilabs.net/geojson", true);
+                Constants.DATASOURCE, "http://rt.visilabs.net", "Android", getApplicationContext(), "http://s.visilabs.net/json", "http://s.visilabs.net/actjson", 30000, "http://s.visilabs.net/geojson", true);
 
         Button btnInnApp = findViewById(R.id.btn_in_app);
         btnInnApp.setOnClickListener(new View.OnClickListener() {
@@ -249,23 +252,26 @@ public class MainActivity extends AppCompatActivity {
         huaweiBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            // read from agconnect-services.json
-                            String appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
-                            String token = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
-                            Log.i("Huawei Token", "get token:" + token);
-                            if(!TextUtils.isEmpty(token)) {
-                                sendRegTokenToServer(token);
-                            }
 
-                        } catch (ApiException e) {
-                            Log.e("Huawei Token", "get token failed, " + e);
+                if (!euroMobileManager.checkPlayService(getApplicationContext())) {
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            try {
+                                // read from agconnect-services.json
+                                String appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
+                                String token = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
+                                Log.i("Huawei Token", "get token:" + token);
+                                if (!TextUtils.isEmpty(token)) {
+                                    sendRegTokenToServer(token);
+                                }
+
+                            } catch (ApiException e) {
+                                Log.e("Huawei Token", "get token failed, " + e);
+                            }
                         }
-                    }
-                }.start();
+                    }.start();
+                }
             }
         });
     }

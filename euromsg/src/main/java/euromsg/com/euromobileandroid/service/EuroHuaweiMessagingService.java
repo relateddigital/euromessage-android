@@ -188,5 +188,4 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
 
         return result;
     }
-
 }
