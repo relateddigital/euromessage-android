@@ -20,7 +20,6 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
-import euromsg.com.euromobileandroid.R;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
@@ -87,9 +86,8 @@ public class PushNotificationManager {
                 .setContentText(contentText)
                 .setLargeIcon(largeIcon)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
                 .setAutoCancel(true);
-
+        setNumber(mBuilder, context);
         setNotificationSmallIcon(mBuilder, context);
 
         return mBuilder;
@@ -108,12 +106,15 @@ public class PushNotificationManager {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setVibrate(new long[]{0, 100, 100, 100, 100, 100})
+                //.setVibrate(new long[]{0, 100, 1000})
                 .setStyle(style)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(title)
-                .setColorized(false).setAutoCancel(true)
+                .setColorized(false)
+                .setAutoCancel(true)
                 .setContentText(pushMessage.getMessage());
+
+        setNumber(mBuilder, context);
 
         setNotificationSmallIcon(mBuilder, context);
 
@@ -131,15 +132,11 @@ public class PushNotificationManager {
     @TargetApi(Build.VERSION_CODES.O)
     public void createNotificationChannel(NotificationManager notificationManager, String channelId, String sound, Context context) {
 
-        CharSequence name = "Euro Message Channel";
-        String description = "Channel for Euro Message notifications";
         int importance = android.app.NotificationManager.IMPORTANCE_DEFAULT;
 
-        NotificationChannel notificationChannel = new NotificationChannel(channelId, name, importance);
-        notificationChannel.setDescription(description);
+        NotificationChannel notificationChannel = new NotificationChannel(channelId, getChannelName(context), importance);
+        notificationChannel.setDescription(getChannelDescription(context));
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-        notificationChannel.enableVibration(true);
-        notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
 
         if (sound != null) {
             Uri soundUri = AppUtils.getSound(context, sound);
@@ -148,6 +145,24 @@ public class PushNotificationManager {
             notificationChannel.setSound(soundUri, attributes);
         }
         notificationManager.createNotificationChannel(notificationChannel);
+    }
+
+    private String getChannelDescription(Context context) {
+        return AppUtils.getApplicationName(context);
+    }
+
+    private String getChannelName(Context context) {
+        if (!SharedPreference.getString(context, Constants.CHANNEL_NAME).equals("")) {
+
+            return SharedPreference.getString(context, Constants.CHANNEL_NAME);
+        }
+        return AppUtils.getApplicationName(context);
+    }
+
+    private void setNumber(NotificationCompat.Builder mBuilder, Context context) {
+        if (SharedPreference.getInt(context, Constants.BADGE) == Constants.ACTIVE) {
+            mBuilder.setNumber(1).setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
+        }
     }
 
     private void setNotificationSmallIcon(NotificationCompat.Builder builder, Context context) {

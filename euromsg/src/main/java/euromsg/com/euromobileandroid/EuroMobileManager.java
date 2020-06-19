@@ -49,7 +49,7 @@ public class EuroMobileManager {
 
     private Subscription subscription = new Subscription();
 
-    static Context mContext;
+    private static Context mContext;
 
     String TAG = "EM Huawei";
 
@@ -203,6 +203,7 @@ public class EuroMobileManager {
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     call.cancel();
+                    t.printStackTrace();
                 }
             });
         }
@@ -278,6 +279,10 @@ public class EuroMobileManager {
         if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
             Subscription oldSubcription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             subscription.addAll(oldSubcription.getExtra());
+
+          /*  if (!oldSubcription.getToken().equals("")) {
+                subscription.setToken(oldSubcription.getToken());
+            }*/
            //subscription.setToken(oldSubcription.getToken());
             subscription.setAdvertisingIdentifier(oldSubcription.getAdvertisingIdentifier());
             subscription.setFirstTime(0);
@@ -360,6 +365,22 @@ public class EuroMobileManager {
 
     public void removeNotificationColor() {
         SharedPreference.saveString(mContext, Constants.NOTIFICATION_COLOR, "");
+    }
+
+    public void setChannelName(String channelName, Context context) {
+        SharedPreference.saveString(context, Constants.CHANNEL_NAME, channelName);
+    }
+
+    public void removeChannelName(Context context) {
+        SharedPreference.saveString(context, Constants.CHANNEL_NAME, "");
+    }
+
+    public void showNumber(boolean isShown, Context context) {
+        if (isShown){
+            SharedPreference.saveInt(context, Constants.BADGE, Constants.ACTIVE);
+        } else {
+            SharedPreference.saveInt(context, Constants.BADGE, Constants.PASSIVE);
+        }
     }
 
     public boolean checkPlayService(Context context) {
