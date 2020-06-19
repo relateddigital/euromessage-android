@@ -162,15 +162,12 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
 
                         if (!task.isSuccessful()) {
-                            tvTokenMessage.setText(getResources().getString(R.string.fail_token));
-                            tvTokenMessage.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                            etToken.setText("Firebase is not enable");
                             return;
                         }
 
                         token = task.getResult().getToken();
                         EuroMobileManager.getInstance().subscribe(token, getApplicationContext());
-                        tvTokenMessage.setText(getResources().getString(R.string.success_token));
-                        tvTokenMessage.setTextColor(getResources().getColor(R.color.colorButton));
                         etToken.setText(token);
                     }
                 });
@@ -248,39 +245,43 @@ public class MainActivity extends AppCompatActivity {
 
     private void getHuaweiToken() {
 
-        Button huaweiBtn = findViewById(R.id.btn_huawei);
+        if (!euroMobileManager.checkPlayService(getApplicationContext())) {
 
-        huaweiBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        String appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
+                        final String token = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
+                        Log.i("Huawei Token", "get token:" + token);
 
-                if (!euroMobileManager.checkPlayService(getApplicationContext())) {
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            try {
-                                // read from agconnect-services.json
-                                String appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
-                                String token = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
-                                Log.i("Huawei Token", "get token:" + token);
-                                if (!TextUtils.isEmpty(token)) {
-                                    sendRegTokenToServer(token);
-                                }
-
-                            } catch (ApiException e) {
-                                Log.e("Huawei Token", "get token failed, " + e);
-                            }
+                        if (!TextUtils.isEmpty(token)) {
+                            sendRegTokenToServer(token);
                         }
-                    }.start();
+
+                    } catch (ApiException e) {
+                        Log.e("Huawei Token", "get token failed, " + e);
+                    }
                 }
-            }
-        });
+            }.start();
+
+        } else {
+            etHuaweiToken.setText("Huawei Token is not enable");
+        }
     }
 
-    private void sendRegTokenToServer(String token) {
+    private void sendRegTokenToServer(final String token) {
         Log.i("Main Activity", "sending token to server. token:" + token);
-
         euroMobileManager.subscribe(token, getApplicationContext());
 
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                etHuaweiToken.setText(token);
+
+            }
+        });
     }
 }

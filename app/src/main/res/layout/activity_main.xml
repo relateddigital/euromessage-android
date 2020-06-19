@@ -33,7 +33,17 @@
                 android:id="@+id/tv_token_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp" />
+                android:layout_margin="20dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/firebase_token"
+                android:textColor="@color/colorButton" />
 
             <EditText
                 android:id="@+id/et_token"
@@ -43,9 +53,17 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
                 android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                android:textColor="@color/colorPrimary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/huawei_token"
+                android:textColor="@color/colorButton" />
 
             <EditText
                 android:id="@+id/et_huawei_token"
@@ -55,7 +73,6 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
                 android:ellipsize="end"
-                android:maxLines="1"
                 android:textColor="@color/colorPrimary"
                 android:textSize="10sp" />
         </LinearLayout>
@@ -68,7 +85,8 @@
             android:layout_margin="20dp"
             android:background="@color/colorButton"
             android:text="Huawei TEST"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
 
         <Button
 
@@ -86,6 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
+            android:layout_marginBottom="5dp"
             android:background="@color/colorButton"
             android:text="@string/send_a_template_image_push"
             android:textColor="@android:color/white" />
@@ -144,45 +163,45 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp"
-            android:gravity="center"
             android:background="@color/colorLight"
-            android:textColor="@color/colorPrimary"
-            android:text="@string/other_related_digital_products" />
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/other_related_digital_products"
+            android:textColor="@color/colorPrimary" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:background="@color/colorLight"
             android:layout_height="wrap_content"
+            android:background="@color/colorLight"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_in_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:textColor="@color/colorButton"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:textSize="10sp"
                 android:text="@string/visilabs_in_app_test"
-                android:layout_marginStart="20dp" />
+                android:textColor="@color/colorButton"
+                android:textSize="10sp" />
 
             <Button
                 android:id="@+id/btn_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:text="@string/learn_more_about_visilabs"
                 android:textColor="@color/colorBackground"
-                android:textSize="10sp"
-                android:layout_marginEnd="20dp" />
+                android:textSize="10sp" />
 
         </LinearLayout>
 
@@ -213,7 +232,6 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_weight="0.2"
                 android:src="@mipmap/logo" />
         </LinearLayout>

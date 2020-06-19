@@ -13,5 +13,7 @@
     <string name="other_related_digital_products">Other Related Digital Products:</string>
     <string name="visilabs_in_app_test">Visilabs In App Test</string>
     <string name="learn_more_about_visilabs">Learn more about visilabs</string>
+    <string name="firebase_token">Firebase Token</string>
+    <string name="huawei_token">Huawei Token</string>
 
 </resources>
