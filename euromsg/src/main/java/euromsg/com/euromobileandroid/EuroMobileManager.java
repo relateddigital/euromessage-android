@@ -3,14 +3,13 @@ package euromsg.com.euromobileandroid;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 
+import euromsg.com.euromobileandroid.connection.RetentionApiClient;
 import euromsg.com.euromobileandroid.enums.EmailPermit;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.enums.PushPermit;
-import euromsg.com.euromobileandroid.enums.PushType;
 import euromsg.com.euromobileandroid.model.Element;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +25,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import euromsg.com.euromobileandroid.connection.ApiClient;
+import euromsg.com.euromobileandroid.connection.SubscriptionApiClient;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
 import euromsg.com.euromobileandroid.enums.BaseUrl;
 import euromsg.com.euromobileandroid.enums.MessageStatus;
@@ -89,7 +88,7 @@ public class EuroMobileManager {
             retention.setStatus(MessageStatus.Received.toString());
             retention.setToken(subscription.getToken());
 
-            apiInterface = ApiClient.getClient(BaseUrl.Retention).create(EuroApiService.class);
+            apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
             Call<Void> call1 = apiInterface.report(retention);
             call1.enqueue(new Callback<Void>() {
                 @Override
@@ -128,7 +127,7 @@ public class EuroMobileManager {
                 retention.setStatus(MessageStatus.Read.toString());
                 retention.setToken(subscription.getToken());
 
-                apiInterface = ApiClient.getClient(BaseUrl.Retention).create(EuroApiService.class);
+                apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
 
                 Call<Void> call1 = apiInterface.report(retention);
                 call1.enqueue(new Callback<Void>() {
@@ -177,7 +176,7 @@ public class EuroMobileManager {
                     StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
 
-            apiInterface = ApiClient.getClient(BaseUrl.Subscription).create(EuroApiService.class);
+            apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
 
             Call<Void> call1 = apiInterface.saveSubscription(subscription);
 
