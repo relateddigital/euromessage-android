@@ -162,6 +162,8 @@ public class MainActivity extends AppCompatActivity {
                         tvTokenMessage.setText(getResources().getString(R.string.success_token));
                         tvTokenMessage.setTextColor(getResources().getColor(R.color.colorButton));
                         tvToken.setText(token);
+
+                        EuroMobileManager.getInstance().subscribe(token, getApplicationContext());
                     }
                 });
     }
