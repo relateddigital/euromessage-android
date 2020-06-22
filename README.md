@@ -5,7 +5,7 @@
 
 # Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
-***April 30, 2020*** - [Euromessage v3.0.7](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.7)
+***June 2, 2020*** - [Euromessage v3.1.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.1.1)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -41,7 +41,7 @@ For more information, please check:
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:3.0.7'
+implementation 'com.euromsg:euromsg:3.1.1'
 ```
  
  
@@ -100,6 +100,15 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
         }
     }
     
+   You may set notification color and transparent small icon with  : 
+   
+   
+        euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
+        euroMobileManager.setNotificationColor("#d1dbbd");
+      
+      
+Please note: the notification color may not be displayed on all android models.
+
 ***Warning :***   
 In some states, intent can be null, Please make sure that when you set reportRead intent to euromessage.
 
@@ -113,7 +122,7 @@ In some states, intent can be null, Please make sure that when you set reportRea
         }
 
     }
-
+    
 
 ***URL***
 
