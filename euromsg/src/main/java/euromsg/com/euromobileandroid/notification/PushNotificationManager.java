@@ -106,7 +106,6 @@ public class PushNotificationManager {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                //.setVibrate(new long[]{0, 100, 1000})
                 .setStyle(style)
                 .setLargeIcon(largeIcon)
                 .setContentTitle(title)
