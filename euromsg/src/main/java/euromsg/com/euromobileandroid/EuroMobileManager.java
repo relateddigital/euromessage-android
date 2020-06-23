@@ -17,6 +17,8 @@ import retrofit2.Response;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
@@ -92,7 +94,7 @@ public class EuroMobileManager {
             Call<Void> call1 = apiInterface.report(retention);
             call1.enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
 
                     if (response.isSuccessful()) {
                         Log.d("ReportRecieved", "Success");
@@ -100,7 +102,7 @@ public class EuroMobileManager {
                 }
 
                 @Override
-                public void onFailure(Call<Void> call, Throwable t) {
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                     call.cancel();
                 }
             });
@@ -182,14 +184,14 @@ public class EuroMobileManager {
 
             call1.enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                     if (response.isSuccessful()) {
                         Log.d("syncSuccess", "OK");
                     }
                 }
 
                 @Override
-                public void onFailure(Call<Void> call, Throwable t) {
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                     call.cancel();
                     t.printStackTrace();
                 }
@@ -267,10 +269,6 @@ public class EuroMobileManager {
         if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
             Subscription oldSubcription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             subscription.addAll(oldSubcription.getExtra());
-
-            if (!oldSubcription.getToken().equals("")) {
-                subscription.setToken(oldSubcription.getToken());
-            }
             subscription.setAdvertisingIdentifier(oldSubcription.getAdvertisingIdentifier());
             subscription.setFirstTime(0);
         }
