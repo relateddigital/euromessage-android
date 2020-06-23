@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
 
 import euromsg.com.euromobileandroid.connection.SubscriptionApiClient;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
-import euromsg.com.euromobileandroid.enums.BaseUrl;
 import euromsg.com.euromobileandroid.enums.MessageStatus;
 import euromsg.com.euromobileandroid.model.Location;
 import euromsg.com.euromobileandroid.model.Message;

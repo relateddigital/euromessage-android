@@ -3,7 +3,6 @@ package euromsg.com.euromobileandroid.connection;
 import java.util.concurrent.TimeUnit;
 
 import euromsg.com.euromobileandroid.connection.interceptor.RawResponseInterceptor;
-import euromsg.com.euromobileandroid.enums.BaseUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
