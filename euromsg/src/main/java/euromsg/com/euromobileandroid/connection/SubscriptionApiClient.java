@@ -3,17 +3,16 @@ package euromsg.com.euromobileandroid.connection;
 import java.util.concurrent.TimeUnit;
 
 import euromsg.com.euromobileandroid.connection.interceptor.RawResponseInterceptor;
-import euromsg.com.euromobileandroid.enums.BaseUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiClient {
+public class SubscriptionApiClient {
 
     private static Retrofit retrofit = null;
 
-    public static Retrofit getClient(BaseUrl baseUrl) {
+    public static Retrofit getClient() {
 
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -27,7 +26,7 @@ public class ApiClient {
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(baseUrl.toString())
+                    .baseUrl("https://pushs.euromsg.com/")
                     .addConverterFactory(GsonConverterFactory.create()).client(httpClient.build())
                     .build();
         }
