@@ -47,22 +47,13 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
     @Override
     public void onNewToken(String token) {
         if (!checkPlayService()) {
-
-            Log.i(TAG, "Huawei Token refresh token:" + token);
-            EuroMobileManager.getInstance().subscribe(token, this);
-
             if (!TextUtils.isEmpty(token)) {
-                refreshedTokenToServer(token);
                 EuroMobileManager.getInstance().subscribe(token, this);
+                Log.i(TAG, "Huawei Token refresh token:" + token);
             }
         } else {
             Log.i(TAG, "Google Services Enable");
         }
-
-    }
-
-    private void refreshedTokenToServer(String token) {
-        Log.i(TAG, "sending token to server. token:" + token);
     }
 
     @Override

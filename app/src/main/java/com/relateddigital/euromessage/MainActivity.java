@@ -1,13 +1,11 @@
 package com.relateddigital.euromessage;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -16,15 +14,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.BuildConfig;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
-import com.huawei.agconnect.config.AGConnectServicesConfig;
-import com.huawei.hms.aaid.HmsInstanceId;
-import com.huawei.hms.common.ApiException;
 import com.visilabs.Visilabs;
 
 import java.util.HashMap;
@@ -34,22 +25,17 @@ import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
+import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int FIRST_ITEM_CAROUSEL = 0;
 
-    private static EuroMobileManager euroMobileManager;
-
-    public static String APP_ALIAS = Constants.APP_ALIAS;
-
-    String token;
-
     AutoCompleteTextView autotext;
-    Button btnSync, btnText, btnImage, btnCarousel, btnInapp;
-    TextView tvTokenMessage, tvRelease;
-    EditText etToken, etHuaweiToken;
+    Button btnSync, btnText, btnImage, btnCarousel;
+    TextView tvRelease;
+    EditText etFirebaseToken, etHuaweiToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,17 +48,12 @@ public class MainActivity extends AppCompatActivity {
         btnText = findViewById(R.id.btn_text);
         btnImage = findViewById(R.id.btn_image);
         tvRelease = findViewById(R.id.tvRelease);
-        etToken = findViewById(R.id.et_token);
+        etFirebaseToken = findViewById(R.id.et_token);
         etHuaweiToken = findViewById(R.id.et_huawei_token);
-        tvTokenMessage = findViewById(R.id.tv_token_message);
-
-        initializeEuroMessage();
 
         visilabsAdvertisement();
 
         setUI();
-
-        getHuaweiToken();
     }
 
     @Override
@@ -80,103 +61,63 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
 
         if (intent.getExtras() != null) {
-            euroMobileManager.reportRead(intent.getExtras());
+            EuroMobileManager.getInstance().reportRead(intent.getExtras());
             notificationUrl(intent);
         }
     }
 
     private void notificationUrl(Intent intent) {
 
-        if (euroMobileManager.getNotification(intent) != null) {
-
-            Log.d("Euromessage", euroMobileManager.getNotification(intent).getUrl());
+        if (EuroMobileManager.getInstance().getNotification(intent) != null) {
+            Log.d("Euromessage", EuroMobileManager.getInstance().getNotification(intent).getUrl());
         }
 
-        if (euroMobileManager.getCarousels(intent) != null) {
-
-            Log.d("Euromessage Carousel", euroMobileManager.getCarousels(intent).get(FIRST_ITEM_CAROUSEL).getUrl());
+        if (EuroMobileManager.getInstance().getCarousels(intent) != null) {
+            Log.d("Euromessage Carousel", EuroMobileManager.getInstance().getCarousels(intent).get(FIRST_ITEM_CAROUSEL).getUrl());
         }
 
-        euroMobileManager.removeIntent(intent);
+        EuroMobileManager.getInstance().removeIntent(intent);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (getIntent().getExtras() != null && euroMobileManager.getNotification(getIntent()) != null) {
-            euroMobileManager.reportRead(getIntent().getExtras());
+        if (getIntent().getExtras() != null && EuroMobileManager.getInstance().getNotification(getIntent()) != null) {
+            EuroMobileManager.getInstance().reportRead(getIntent().getExtras());
             notificationUrl(getIntent());
         }
-    }
-
-    public void initializeEuroMessage() {
-
-        euroMobileManager = EuroMobileManager.init(APP_ALIAS, this);
-        euroMobileManager.registerToFCM(getBaseContext());
-
-        //optional
-        euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
-        euroMobileManager.setNotificationColor("#d1dbbd");
-        euroMobileManager.setChannelName("Demo", getApplicationContext());
     }
 
     private void setUI() {
 
         sendATemplatePush();
 
-        setReleaseName();
+        etHuaweiToken.setText(SP.getString(getApplicationContext(), "HuaweiToken"));
+        etFirebaseToken.setText(SP.getString(getApplicationContext(), "FirebaseToken"));
 
-        checkTokenStatus();
-
-        sync();
-    }
-
-    private void sync() {
+        tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " +  BuildConfig.VERSION_NAME);
 
         btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (autotext.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
-
-                } else {
-                    euroMobileManager.setGsmPermit(GsmPermit.ACTIVE, getApplicationContext());
-                    euroMobileManager.setEmail(autotext.getText().toString().trim(), getApplicationContext());
-                    euroMobileManager.setEuroUserId("12345", getApplicationContext());
-                    euroMobileManager.sync(getApplicationContext());
-                    Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
-                }
+                sync();
             }
         });
     }
 
+    private void sync() {
 
-    private void checkTokenStatus() {
+        if (autotext.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
 
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-
-                        if (!task.isSuccessful()) {
-                            etToken.setText("Firebase is not enable");
-                            return;
-                        }
-
-                        token = task.getResult().getToken();
-                        EuroMobileManager.getInstance().subscribe(token, getApplicationContext());
-                        etToken.setText(token);
-                    }
-                });
-    }
-
-    public void setReleaseName() {
-
-        String libVersionName = BuildConfig.VERSION_NAME;
-
-        tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " + libVersionName);
+        } else {
+            EuroMobileManager.getInstance().setGsmPermit(GsmPermit.ACTIVE, getApplicationContext());
+            EuroMobileManager.getInstance().setEmail(autotext.getText().toString().trim(), getApplicationContext());
+            EuroMobileManager.getInstance().setEuroUserId("12345", getApplicationContext());
+            EuroMobileManager.getInstance().sync(getApplicationContext());
+            Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void sendATemplatePush() {
@@ -237,48 +178,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
-            }
-        });
-    }
-
-    private void getHuaweiToken() {
-
-        if (!euroMobileManager.checkPlayService(getApplicationContext())) {
-
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        String appId = AGConnectServicesConfig.fromContext(MainActivity.this).getString("client/app_id");
-                        final String token = HmsInstanceId.getInstance(MainActivity.this).getToken(appId, "HCM");
-                        Log.i("Huawei Token", "get token:" + token);
-
-                        if (!TextUtils.isEmpty(token)) {
-                            sendRegTokenToServer(token);
-                        }
-
-                    } catch (ApiException e) {
-                        Log.e("Huawei Token", "get token failed, " + e);
-                    }
-                }
-            }.start();
-
-        } else {
-            etHuaweiToken.setText("Huawei Token is not enable");
-        }
-    }
-
-    private void sendRegTokenToServer(final String token) {
-        Log.i("Main Activity", "sending token to server. token:" + token);
-        euroMobileManager.subscribe(token, getApplicationContext());
-
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                etHuaweiToken.setText(token);
-
             }
         });
     }

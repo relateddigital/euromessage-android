@@ -163,8 +163,6 @@ public class EuroMobileManager {
     public void subscribe(String token, Context context) {
         this.subscription.setToken(token);
 
-        Log.i("TOKEN", token);
-
         setDefaultPushPermit();
 
         sync(context);
