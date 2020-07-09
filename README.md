@@ -3,9 +3,8 @@
   <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android"><img src="https://www.tsoftapps.com/Data/Logo/euromsg.svg" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
 </p>
 
-# Latest Version [![Build Status](https://travis-ci.com/relateddigital/euromessage-android.svg?branch=master)](https://travis-ci.com/relateddigital/euromessage-android)
 
-***June 18, 2020*** - [Euromessage v3.1.1](https://github.com/relateddigital/euromessage-android/releases/tag/3.1.1)
+***June 18, 2020*** - [Euromessage v3.1.2](https://github.com/relateddigital/euromessage-android/releases/tag/3.1.2)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -41,7 +40,7 @@ For more information, please check:
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:3.1.1'
+implementation 'com.euromsg:euromsg:3.1.2'
 ```
  
  
