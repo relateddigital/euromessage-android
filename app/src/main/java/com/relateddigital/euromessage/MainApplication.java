@@ -1,14 +1,9 @@
 package com.relateddigital.euromessage;
 
 import android.app.Application;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,7 +30,7 @@ public class MainApplication extends Application {
 
     public void initializeEuroMessage() {
 
-        euroMobileManager = EuroMobileManager.init(APP_ALIAS, this);
+        euroMobileManager = EuroMobileManager.init("euromessage-android" , "euromsg-huawei", getApplicationContext());
         euroMobileManager.registerToFCM(getBaseContext());
 
         //optional
@@ -69,8 +64,6 @@ public class MainApplication extends Application {
 
     private void setHuaweiTokenToEuromessage() {
 
-        if (!euroMobileManager.checkPlayService(getApplicationContext())) {
-
             new Thread() {
                 @Override
                 public void run() {
@@ -89,7 +82,5 @@ public class MainApplication extends Application {
                     }
                 }
             }.start();
-
-        }
     }
 }

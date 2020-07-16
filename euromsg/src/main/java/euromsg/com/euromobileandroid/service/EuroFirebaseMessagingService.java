@@ -6,7 +6,6 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 
-import java.util.HashMap;
 import java.util.Map;
 
 import euromsg.com.euromobileandroid.Constants;
@@ -14,7 +13,6 @@ import euromsg.com.euromobileandroid.EuroMobileManager;
 
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
-import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
@@ -70,9 +68,10 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
                     break;
             }
 
-            String appAlias = SharedPreference.getString(this, Constants.APP_ALIAS);
+            String appAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+            String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
 
-            EuroMobileManager.init(appAlias, this).reportReceived(pushMessage.getPushId());
+            EuroMobileManager.init(appAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId());
         } else {
             EuroLogger.debugLog("remoteMessageData transfrom problem");
         }

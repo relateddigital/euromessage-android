@@ -25,7 +25,6 @@ import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
-import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -96,8 +95,10 @@ public class MainActivity extends AppCompatActivity {
         etHuaweiToken.setText(SP.getString(getApplicationContext(), "HuaweiToken"));
         etFirebaseToken.setText(SP.getString(getApplicationContext(), "FirebaseToken"));
 
-        tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " +  BuildConfig.VERSION_NAME);
+        tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " + BuildConfig.VERSION_NAME);
 
+        EuroMobileManager.getInstance().setEmail("melike.yildirim@euromsg.com", getApplicationContext());
+        EuroMobileManager.getInstance().sync(getApplicationContext());
         btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

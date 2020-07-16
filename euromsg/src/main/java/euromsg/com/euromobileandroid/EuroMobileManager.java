@@ -19,6 +19,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.BuildConfig;
@@ -47,16 +48,24 @@ public class EuroMobileManager {
 
     private static EuroApiService apiInterface;
 
+    public static String huaweiAppAlias;
+    public static String firebaseAppAlias;
+
     private Subscription subscription = new Subscription();
 
     private static Context mContext;
 
-    String TAG = "EM Huawei";
+    static String TAG = "EM Huawei";
 
-    private EuroMobileManager(String appAlias) {
+    private EuroMobileManager(Context context, String googleAppAlias, String huaweiAppAlias) {
+
+        if (checkPlayService(context)) {
+            subscription.setAppAlias(googleAppAlias);
+        } else {
+            subscription.setAppAlias(huaweiAppAlias);
+        }
 
         subscription.setFirstTime(1);
-        subscription.setAppAlias(appAlias);
         subscription.setOs(AppUtils.osType());
         subscription.setOsVersion(AppUtils.osVersion());
         subscription.setSdkVersion(Constants.SDK_VERSION);
@@ -64,16 +73,24 @@ public class EuroMobileManager {
         subscription.setDeviceType(AppUtils.deviceType());
     }
 
-    public static EuroMobileManager init(String appAlias, Context context) {
+    public static EuroMobileManager init(String googleAppAlias, String huwaeiAppAlias, Context context) {
 
         if (instance == null) {
-            instance = new EuroMobileManager(appAlias);
+            instance = new EuroMobileManager(context, googleAppAlias, huwaeiAppAlias);
         }
+
+        huaweiAppAlias = huwaeiAppAlias;
+        firebaseAppAlias = googleAppAlias;
 
         mContext = context;
 
+        if (checkPlayService(context)) {
+            SharedPreference.saveString(context, Constants.GOOGLE_APP_ALIAS, instance.subscription.getAppAlias());
+        } else {
+            SharedPreference.saveString(context, Constants.HUAWEI_APP_ALIAS, instance.subscription.getAppAlias());
+        }
+
         EuroLogger.debugLog("App Key : " + instance.subscription.getAppAlias());
-        SharedPreference.saveString(context, Constants.APP_ALIAS, instance.subscription.getAppAlias());
 
         return instance;
     }
@@ -88,7 +105,12 @@ public class EuroMobileManager {
             EuroLogger.debugLog("Report Received : " + pushId);
 
             Retention retention = new Retention();
-            retention.setKey(subscription.getAppAlias());
+            if (checkPlayService(mContext)) {
+                retention.setKey(firebaseAppAlias);
+            } else {
+                retention.setKey(huaweiAppAlias);
+            }
+
             retention.setPushId(pushId);
             retention.setStatus(MessageStatus.Received.toString());
             retention.setToken(subscription.getToken());
@@ -127,7 +149,13 @@ public class EuroMobileManager {
             if (message.getPushId() != null) {
                 EuroLogger.debugLog("Report Read : " + message.getPushId());
                 Retention retention = new Retention();
-                retention.setKey(subscription.getAppAlias());
+
+                if (checkPlayService(mContext)) {
+                    retention.setKey(firebaseAppAlias);
+                } else {
+                    retention.setKey(huaweiAppAlias);
+                }
+
                 retention.setPushId(message.getPushId());
                 retention.setStatus(MessageStatus.Read.toString());
                 retention.setToken(subscription.getToken());
@@ -164,7 +192,6 @@ public class EuroMobileManager {
         this.subscription.setToken(token);
 
         setDefaultPushPermit();
-
         sync(context);
     }
 
@@ -175,6 +202,13 @@ public class EuroMobileManager {
     public void sync(Context context) {
         EuroLogger.debugLog("Sync started");
         if (this.subscription.isValid()) {
+
+         if (checkPlayService(context)) {
+                subscription.setAppAlias(firebaseAppAlias);
+            } else {
+                subscription.setAppAlias(huaweiAppAlias);
+            }
+
             saveSubscription(context);
 
             StrictMode.ThreadPolicy policy = new
@@ -364,14 +398,14 @@ public class EuroMobileManager {
     }
 
     public void showNumber(boolean isShown, Context context) {
-        if (isShown){
+        if (isShown) {
             SharedPreference.saveInt(context, Constants.BADGE, Constants.ACTIVE);
         } else {
             SharedPreference.saveInt(context, Constants.BADGE, Constants.PASSIVE);
         }
     }
 
-    public boolean checkPlayService(Context context) {
+    public static boolean checkPlayService(Context context) {
         boolean result = true;
 
         int isGoogleEnabled = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);

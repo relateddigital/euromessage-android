@@ -4,13 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 
 import euromsg.com.euromobileandroid.Constants;
-import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.model.CarouselSetUp;
-import euromsg.com.euromobileandroid.model.Element;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 

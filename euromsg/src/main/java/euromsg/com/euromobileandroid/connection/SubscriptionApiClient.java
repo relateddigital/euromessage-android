@@ -14,7 +14,6 @@ public class SubscriptionApiClient {
 
     public static Retrofit getClient() {
 
-
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 

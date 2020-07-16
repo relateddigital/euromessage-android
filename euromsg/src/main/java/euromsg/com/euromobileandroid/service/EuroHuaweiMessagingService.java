@@ -16,21 +16,14 @@
 
 package euromsg.com.euromobileandroid.service;
 
-import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.TabHost;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.gson.Gson;
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;
-import com.huawei.hms.push.SendException;
-
-import java.util.Arrays;
-import java.util.Map;
 
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.EuroMobileManager;
@@ -99,9 +92,10 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                         break;
                 }
 
-                String appAlias = SharedPreference.getString(this, Constants.APP_ALIAS);
+                String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+                String googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
 
-                EuroMobileManager.init(appAlias, this).reportReceived(pushMessage.getPushId());
+                EuroMobileManager.init(googleAppAlias,huaweiAppAlias, this).reportReceived(pushMessage.getPushId());
             } else {
                 EuroLogger.debugLog("remoteMessageData transfrom problem");
             }

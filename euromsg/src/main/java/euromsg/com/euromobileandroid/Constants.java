@@ -13,7 +13,8 @@ public class Constants {
     static final String EURO_SUBSCRIPTION_KEY = "subscription";
 
     public static final String LOG_TAG = "EuroPush";
-    public static final String APP_ALIAS = "AppKey";
+    public static final String HUAWEI_APP_ALIAS = "AppKeyHuwaei";
+    public static final String GOOGLE_APP_ALIAS = "AppKeyGoogle";
 
     public static final String  NOTIFICATION_TRANSPARENT_SMALL_ICON = "small_icon";
     public static final String  NOTIFICATION_COLOR = "notification_color";
