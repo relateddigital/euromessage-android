@@ -96,9 +96,6 @@ public class MainActivity extends AppCompatActivity {
         etFirebaseToken.setText(SP.getString(getApplicationContext(), "FirebaseToken"));
 
         tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " + BuildConfig.VERSION_NAME);
-
-        EuroMobileManager.getInstance().setEmail("melike.yildirim@euromsg.com", getApplicationContext());
-        EuroMobileManager.getInstance().sync(getApplicationContext());
         btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -137,7 +137,7 @@ public class EuroMobileManager {
         }
     }
 
-    public void registerToFCM(Context context) {
+    public void registerToFCM(final Context context) {
         FirebaseApp.initializeApp(context);
     }
 
@@ -203,7 +203,7 @@ public class EuroMobileManager {
         EuroLogger.debugLog("Sync started");
         if (this.subscription.isValid()) {
 
-         if (checkPlayService(context)) {
+            if (checkPlayService(context)) {
                 subscription.setAppAlias(firebaseAppAlias);
             } else {
                 subscription.setAppAlias(huaweiAppAlias);

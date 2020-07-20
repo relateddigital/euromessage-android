@@ -30,7 +30,7 @@ public class MainApplication extends Application {
 
     public void initializeEuroMessage() {
 
-        euroMobileManager = EuroMobileManager.init("euromessage-android" , "euromsg-huawei", getApplicationContext());
+        euroMobileManager = EuroMobileManager.init("euromessage-android", "euromsg-huawei", getApplicationContext());
         euroMobileManager.registerToFCM(getBaseContext());
 
         //optional
@@ -40,7 +40,9 @@ public class MainApplication extends Application {
 
         setExistingFirebaseTokenToEuroMessage();
 
-        setHuaweiTokenToEuromessage();
+        if (!EuroMobileManager.checkPlayService(getApplicationContext())) {
+            setHuaweiTokenToEuromessage();
+        }
     }
 
     private void setExistingFirebaseTokenToEuroMessage() {
@@ -57,30 +59,30 @@ public class MainApplication extends Application {
                         String token = task.getResult().getToken();
                         euroMobileManager.subscribe(token, getApplicationContext());
 
-                        SP.saveString(getApplicationContext(),"FirebaseToken", token);
+                        SP.saveString(getApplicationContext(), "FirebaseToken", token);
                     }
                 });
     }
 
     private void setHuaweiTokenToEuromessage() {
 
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
-                        final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
+                    final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
 
-                        euroMobileManager.subscribe(token, getApplicationContext());
+                    euroMobileManager.subscribe(token, getApplicationContext());
 
-                        SP.saveString(getApplicationContext(),"HuaweiToken", token);
+                    SP.saveString(getApplicationContext(), "HuaweiToken", token);
 
-                        Log.i("Huawei Token",  "" + token);
+                    Log.i("Huawei Token", "" + token);
 
-                    } catch (ApiException e) {
-                        Log.e("Huawei Token", "get token failed, " + e);
-                    }
+                } catch (ApiException e) {
+                    Log.e("Huawei Token", "get token failed, " + e);
                 }
-            }.start();
+            }
+        }.start();
     }
 }
