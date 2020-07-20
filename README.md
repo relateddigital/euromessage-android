@@ -71,14 +71,90 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
  
  ### Initialization
 
+Android Manifest
+    
+    <service
+            android:name="euromsg.com.euromobileandroid.service.EuroFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="euromsg.com.euromobileandroid.service.EuroHuaweiMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+Main Application 
+
 ```java
 
-  public static String APP_ALIAS = Constant.APP_ALIAS;  // e.g.: "euromessage-android"
+  public static String FIREBASE_APP_ALIAS = Constant.FIREBASE_ALIAS;  // e.g.: "euromessage-android"
 
-  EuroMobileManager euroMobileManager = EuroMobileManager.init(APP_ALIAS, this);
+  public static String HUAWEI_APP_ALIAS = Constant.HUAWEI_ALIAS;  // e.g.: "euromsg-huawei"
+
+ EuroMobileManager euroMobileManager = EuroMobileManager.init("euromessage-android", "euromsg-huawei", getApplicationContext());
 
   euroMobileManager.registerToFCM(getBaseContext());   
   ```
+  
+  
+  Huawei :  
+  
+  Please check how to enable Huawei Push Kit
+  
+  
+        if (!EuroMobileManager.checkPlayService(getApplicationContext())) {
+            setHuaweiTokenToEuromessage();
+        }
+        
+  Huawei get Token according to EMUI release number, 
+        
+          private void setHuaweiTokenToEuromessage() {
+
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
+                    final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
+
+                    euroMobileManager.subscribe(token, getApplicationContext());
+
+                    SP.saveString(getApplicationContext(), "HuaweiToken", token);
+
+                    Log.i("Huawei Token", "" + token);
+
+                } catch (ApiException e) {
+                    Log.e("Huawei Token", "get token failed, " + e);
+                }
+            }
+        }.start();
+    }
+    
+    
+    
+     private void setExistingFirebaseTokenToEuroMessage() {
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+
+                        String token = task.getResult().getToken();
+                        euroMobileManager.subscribe(token, getApplicationContext());
+                    }
+                });
+    }
+  
     
   RMC needs that at least one property which is email or user id in order to match and analyse users. This is important part to use RMC.  Please add code below after being sure you generate the token.. 
 
