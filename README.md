@@ -4,7 +4,7 @@
 </p>
 
 
-***July 20, 2020*** - [Euromessage v3.1.2](https://github.com/relateddigital/euromessage-android/releases/tag/3.1.2)
+***July 20, 2020*** - [Euromessage v4.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/4.0.1)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -40,16 +40,20 @@ For more information, please check:
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:4.0.0'
+implementation 'com.euromsg:euromsg:4.0.1'
 ```
- 
+
+Also you can check our sample build.gradle to installation
+ [Project build.gradle](https://github.com/relateddigital/euromessage-android/blob/master/build.gradle)
+ [App  build.gradle](https://github.com/relateddigital/euromessage-android/blob/master/app/build.gradle)
+
  
 ###### Note :
 You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project.
 
 
 You need to add an android project in [Huawei Console](https://developer.huawei.com/consumer/en/console). Please follow Huawei instruction and do not forget to add ag_connect_services.json to the project.
-*you may need to add your fingerprint to app in Huawei console. 
+*you may need to add your fingerprint to app in Huawei console.
 
 ### Permission
 ```xml
@@ -63,6 +67,7 @@ You need to add an android project in [Huawei Console](https://developer.huawei.
  
  ### Initialization
 
+ 
 Android Manifest
     
     <service
