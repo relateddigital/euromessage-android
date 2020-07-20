@@ -4,7 +4,7 @@
 </p>
 
 
-***June 18, 2020*** - [Euromessage v3.1.2](https://github.com/relateddigital/euromessage-android/releases/tag/3.1.2)
+***July 20, 2020*** - [Euromessage v3.1.2](https://github.com/relateddigital/euromessage-android/releases/tag/3.1.2)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -40,7 +40,7 @@ For more information, please check:
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:3.1.2'
+implementation 'com.euromsg:euromsg:4.0.0'
 ```
  
  
