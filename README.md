@@ -48,16 +48,7 @@ implementation 'com.euromsg:euromsg:4.0.0'
 You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project.
 
 
-#### Support Lib 
-
-You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
-  
-  For that :
-- Download the module
-- Open your project which you want to use Euromessage
-- Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
-
-
+You need to add an android project in [Huawei Console](https://developer.huawei.com/consumer/en/console). Please follow Huawei instruction and do not forget to add ag_connect_services.json to the project.
 
 ### Permission
 ```xml
@@ -101,14 +92,11 @@ Main Application
   
   Huawei :  
   
-  Please check how to enable Huawei Push Kit
-  
-  
         if (!EuroMobileManager.checkPlayService(getApplicationContext())) {
             setHuaweiTokenToEuromessage();
         }
         
-One feature of Huawei Push Kit is that it can not collect all tokens on onNewToken, 
+One feature of Huawei Push Kit is that it can not collect all tokens on onNewToken in HMSMessaging Class, 
 According to EMUI, the way to get tokens is also changing. When collecting token from onNewToken, Euromessage will do it for you.
 
 
@@ -134,6 +122,9 @@ EMUI 10+ will get token with a code piece in your class. After make sure that ge
         }.start();
     }
     
+    
+    
+   If you want to subscribe existing firebase token to euromessage, you need to add  : 
     
  
      private void setExistingFirebaseTokenToEuroMessage() {
