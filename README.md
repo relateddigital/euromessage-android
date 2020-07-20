@@ -49,6 +49,7 @@ You need to add an android project in [Firebase Console](https://console.firebas
 
 
 You need to add an android project in [Huawei Console](https://developer.huawei.com/consumer/en/console). Please follow Huawei instruction and do not forget to add ag_connect_services.json to the project.
+*you may need to add your fingerprint to app in Huawei console. 
 
 ### Permission
 ```xml
