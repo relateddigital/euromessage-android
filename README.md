@@ -93,10 +93,6 @@ Main Application
 
 ```java
 
-  public static String FIREBASE_APP_ALIAS = Constant.FIREBASE_ALIAS;  // e.g.: "euromessage-android"
-
-  public static String HUAWEI_APP_ALIAS = Constant.HUAWEI_ALIAS;  // e.g.: "euromsg-huawei"
-
  EuroMobileManager euroMobileManager = EuroMobileManager.init("euromessage-android", "euromsg-huawei", getApplicationContext());
 
   euroMobileManager.registerToFCM(getBaseContext());   
@@ -112,8 +108,12 @@ Main Application
             setHuaweiTokenToEuromessage();
         }
         
-  Huawei get Token according to EMUI release number, 
-        
+One feature of Huawei Push Kit is that it can not collect all tokens on onNewToken, 
+According to EMUI, the way to get tokens is also changing. When collecting token from onNewToken, Euromessage will do it for you.
+
+
+EMUI 10+ will get token with a code piece in your class. After make sure that generate the Huawei token, you may subscribe it to Euromeesage SDK 
+
           private void setHuaweiTokenToEuromessage() {
 
         new Thread() {
@@ -121,11 +121,9 @@ Main Application
             public void run() {
                 try {
                     String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
-                    final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
+                    String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
 
                     euroMobileManager.subscribe(token, getApplicationContext());
-
-                    SP.saveString(getApplicationContext(), "HuaweiToken", token);
 
                     Log.i("Huawei Token", "" + token);
 
@@ -137,7 +135,7 @@ Main Application
     }
     
     
-    
+ 
      private void setExistingFirebaseTokenToEuroMessage() {
 
         FirebaseInstanceId.getInstance().getInstanceId()
