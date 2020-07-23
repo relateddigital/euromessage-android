@@ -37,7 +37,7 @@ public class MainApplication extends Application {
         euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
         euroMobileManager.setNotificationColor("#d1dbbd");
         euroMobileManager.setChannelName("Demo", getApplicationContext());
-        euroMobileManager.setPushIntent("com.relateddigital.euromessage.SecondActivity", getApplicationContext());
+        euroMobileManager.setPushIntent("com.relateddigital.euromessage.MainActivity", getApplicationContext());
 
         setExistingFirebaseTokenToEuroMessage();
 
