@@ -11,6 +11,7 @@ import euromsg.com.euromobileandroid.enums.EmailPermit;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.enums.PushPermit;
 import euromsg.com.euromobileandroid.model.Element;
+import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -343,10 +344,9 @@ public class EuroMobileManager {
         return message.getElements();
     }
 
-    public void removeIntent(Intent intent) {
+    public void removeIntentExtra(Intent intent) {
         intent.removeExtra("message");
     }
-
 
     public void setNotificationTransparentSmallIcon(int transparentSmallIcon, Context context) {
         if (isResource(context, transparentSmallIcon)) {
@@ -403,6 +403,14 @@ public class EuroMobileManager {
         } else {
             SharedPreference.saveInt(context, Constants.BADGE, Constants.PASSIVE);
         }
+    }
+
+    public void setPushIntent(String intentStr, Context context){
+        SharedPreference.saveString(context, Constants.INTENT_NAME, intentStr);
+    }
+
+    public void removePushIntent(Context context){
+        SharedPreference.saveString(context, Constants.INTENT_NAME, "");
     }
 
     public static boolean checkPlayService(Context context) {

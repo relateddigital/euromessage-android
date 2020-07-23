@@ -38,4 +38,6 @@ public class Constants {
     public static final String CAROUSAL_LARGE_ICON_FILE_NAME = "largeIconCarousel";
     public static final String CAROUSAL_PLACEHOLDER_ICON_FILE_NAME = "placeHolderIconCarousel";
 
+    public static final String INTENT_NAME = "intent_name";
+
 }

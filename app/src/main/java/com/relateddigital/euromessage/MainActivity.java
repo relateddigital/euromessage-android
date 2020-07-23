@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
+import euromsg.com.euromobileandroid.enums.PushPermit;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Euromessage Carousel", EuroMobileManager.getInstance().getCarousels(intent).get(FIRST_ITEM_CAROUSEL).getUrl());
         }
 
-        EuroMobileManager.getInstance().removeIntent(intent);
+        EuroMobileManager.getInstance().removeIntentExtra(intent);
     }
 
     @Override
@@ -114,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
             EuroMobileManager.getInstance().setEmail(autotext.getText().toString().trim(), getApplicationContext());
             EuroMobileManager.getInstance().setEuroUserId("12345", getApplicationContext());
             EuroMobileManager.getInstance().sync(getApplicationContext());
+            EuroMobileManager.getInstance().setPushPermit(PushPermit.PASSIVE, getApplicationContext());
+
             Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
         }
     }

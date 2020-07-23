@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -33,6 +34,8 @@ public class PushNotificationManager {
 
     private String channelId = "euroChannel";
 
+    Intent intent;
+
     public void generateCarouselNotification(Context context, Message pushMessage) {
 
         ArrayList<Element> elements = pushMessage.getElements();
@@ -58,7 +61,17 @@ public class PushNotificationManager {
                 createNotificationChannel(mNotificationManager, channelId, pushMessage.getSound(), context);
             }
 
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, AppUtils.getLaunchIntent(context, pushMessage), PendingIntent.FLAG_UPDATE_CURRENT);
+            String intentStr = SharedPreference.getString(context, Constants.INTENT_NAME);
+
+            if (!intentStr.isEmpty()) {
+                intent = new Intent(context, Class.forName(intentStr));
+                intent.putExtra("message", pushMessage);
+
+            } else {
+                intent = AppUtils.getLaunchIntent(context, pushMessage);
+            }
+
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
 

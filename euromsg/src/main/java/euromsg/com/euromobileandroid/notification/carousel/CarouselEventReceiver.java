@@ -10,6 +10,7 @@ import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.model.CarouselSetUp;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.utils.AppUtils;
+import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class CarouselEventReceiver extends BroadcastReceiver {
 
@@ -21,8 +22,25 @@ public class CarouselEventReceiver extends BroadcastReceiver {
             CarouselSetUp carouselSetUp = bundle.getParcelable( Constants.CAROUSAL_SET_UP_KEY);
 
             if (carouselEvent > 2) {
+
                 Message message = (Message) intent.getSerializableExtra("message");
-                context.startActivity(AppUtils.getLaunchIntent(context, message));
+
+                String intentStr = SharedPreference.getString(context, Constants.INTENT_NAME);
+
+                if (!intentStr.isEmpty()) {
+                    try {
+                        intent = new Intent(context, Class.forName(intentStr));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    intent.putExtra("message", message);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                } else {
+                    intent = AppUtils.getLaunchIntent(context, message);
+                }
+
+                context.startActivity(intent);
                 context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
             }
 
