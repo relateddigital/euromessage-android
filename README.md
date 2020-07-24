@@ -4,7 +4,7 @@
 </p>
 
 
-***June 18, 2020*** - [Euromessage v3.1.2](https://github.com/relateddigital/euromessage-android/releases/tag/3.1.2)
+***July 20, 2020*** - [Euromessage v4.1.0](https://github.com/relateddigital/euromessage-android/releases/tag/4.1.0)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -40,24 +40,20 @@ For more information, please check:
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:3.1.2'
+implementation 'com.euromsg:euromsg:4.0.1'
 ```
- 
+
+Also you can check our sample build.gradle to installation
+ [Project build.gradle](https://github.com/relateddigital/euromessage-android/blob/master/build.gradle)
+ [App  build.gradle](https://github.com/relateddigital/euromessage-android/blob/master/app/build.gradle)
+
  
 ###### Note :
 You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project.
 
 
-#### Support Lib 
-
-You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-android/tree/master/euromsg) directly.
-  
-  For that :
-- Download the module
-- Open your project which you want to use Euromessage
-- Follow steps : Android Studio -> File -> New -> Import Module and select path where you want to locate module and rename it.
-
-
+You need to add an android project in [Huawei Console](https://developer.huawei.com/consumer/en/console). Please follow Huawei instruction and do not forget to add ag_connect_services.json to the project.
+*you may need to add your fingerprint to app in Huawei console.
 
 ### Permission
 ```xml
@@ -71,14 +67,91 @@ You may use [Euromessage Sdk](https://github.com/relateddigital/euromessage-andr
  
  ### Initialization
 
+ 
+Android Manifest
+    
+    <service
+            android:name="euromsg.com.euromobileandroid.service.EuroFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="euromsg.com.euromobileandroid.service.EuroHuaweiMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+Main Application 
+
 ```java
 
-  public static String APP_ALIAS = Constant.APP_ALIAS;  // e.g.: "euromessage-android"
-
-  EuroMobileManager euroMobileManager = EuroMobileManager.init(APP_ALIAS, this);
+ EuroMobileManager euroMobileManager = EuroMobileManager.init("euromessage-android", "euromsg-huawei", getApplicationContext());
 
   euroMobileManager.registerToFCM(getBaseContext());   
   ```
+  --
+  
+  
+  
+  Huawei :  
+  
+        if (!EuroMobileManager.checkPlayService(getApplicationContext())) {
+            setHuaweiTokenToEuromessage();
+        }
+        
+One feature of Huawei Push Kit is that it can not collect all tokens on onNewToken in HMSMessaging Class, 
+According to EMUI, the way to get tokens is also changing. When collecting token from onNewToken, Euromessage will do it for you.
+
+
+EMUI 10+ will get token with a code piece in your class. After make sure that generate the Huawei token, you may subscribe it to Euromeesage SDK 
+
+          private void setHuaweiTokenToEuromessage() {
+
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
+                    String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
+
+                    euroMobileManager.subscribe(token, getApplicationContext());
+
+                    Log.i("Huawei Token", "" + token);
+
+                } catch (ApiException e) {
+                    Log.e("Huawei Token", "get token failed, " + e);
+                }
+            }
+        }.start();
+    }
+    
+    
+    
+   If you want to subscribe existing firebase token to euromessage, you need to add  : 
+    
+ 
+     private void setExistingFirebaseTokenToEuroMessage() {
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+
+                        String token = task.getResult().getToken();
+                        euroMobileManager.subscribe(token, getApplicationContext());
+                    }
+                });
+    }
+  
     
   RMC needs that at least one property which is email or user id in order to match and analyse users. This is important part to use RMC.  Please add code below after being sure you generate the token.. 
 
