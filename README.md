@@ -4,7 +4,7 @@
 </p>
 
 
-***July 20, 2020*** - [Euromessage v4.0.1](https://github.com/relateddigital/euromessage-android/releases/tag/4.0.1)
+***July 20, 2020*** - [Euromessage v4.1.0](https://github.com/relateddigital/euromessage-android/releases/tag/4.1.0)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -94,7 +94,11 @@ Main Application
 
   euroMobileManager.registerToFCM(getBaseContext());   
   ```
+  --
   
+  
+          euroMobileManager.setPushIntent("com.relateddigital.euromessage.MainActivity", getApplicationContext());
+
   
   Huawei :  
   
