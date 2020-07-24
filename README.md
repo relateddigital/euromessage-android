@@ -97,8 +97,6 @@ Main Application
   --
   
   
-          euroMobileManager.setPushIntent("com.relateddigital.euromessage.MainActivity", getApplicationContext());
-
   
   Huawei :  
   
