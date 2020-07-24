@@ -28,7 +28,7 @@ dependencies {
     implementation project(':euromsg')
 
    // implementation 'com.euromsg:euromsg:4.1.0'
-    implementation "com.visilabs.android:visilabs-android:3.1.6"
+    implementation "com.visilabs.android:visilabs-android:3.2.0"
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.4.0"
