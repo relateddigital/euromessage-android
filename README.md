@@ -31,8 +31,8 @@ For more information, please check:
 [Euromessage Documentation](https://relateddigital.atlassian.net/wiki/spaces/KB/pages/428966369/ANDROID+SDK)
 
 
-[Euromessage Türkçe Dökümantasyon](https://relateddigital.atlassian.net/wiki/spaces/RMCKBT/pages/428802131/Android+SDK)
-https://relateddigital.atlassian.net/wiki/spaces/RMCKBT/pages/428802131/ANDROID+SDK
+[Euromessage Türkçe Dökümantasyon](https://relateddigital.atlassian.net/wiki/spaces/RMCKBT/pages/428802131/ANDROID+SDK)
+
 
 ### Notifications
 <img src="https://github.com/relateddigital/euromessage-android/blob/master/notification.gif" alt="Euromessage Android Library" width="300" style="max-width:100%;">
