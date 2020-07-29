@@ -17,7 +17,6 @@
     + [Permission](#permission)
   * [2.Usage of the SDK](#2usage-of-the-sdk)
     + [Initialization](#initialization)
-      - [How to make configuration on RMC for AppAlias, Sound, Server Key?](#how-to-make-configuration-on-rmc-for-appalias--sound--server-key-)
   * [3.Sync](#3sync)
   * [4.Sample Applications](#4sample-applications)
   * [5.Licences](#5licences)
@@ -27,9 +26,9 @@
 
 The Euromessage Android Sdk is a java implementation of an Android client for Euromessage.
 
-For more information, please check:
-[Euromessage Documentation](https://relateddigital.atlassian.net/wiki/spaces/KB/pages/428966369/ANDROID+SDK)
+For more information, please check new detailed documentation :
 
+[Euromessage English Documentation](https://relateddigital.atlassian.net/wiki/spaces/KB/pages/428966369/ANDROID+SDK)
 
 [Euromessage Türkçe Dökümantasyon](https://relateddigital.atlassian.net/wiki/spaces/RMCKBT/pages/428802131/ANDROID+SDK)
 
@@ -59,13 +58,6 @@ You need to add an android project in [Firebase Console](https://console.firebas
 You need to add an android project in [Huawei Console](https://developer.huawei.com/consumer/en/console). Please follow Huawei instruction and do not forget to add ag_connect_services.json to the project.
 *you may need to add your fingerprint to app in Huawei console.
 
-### Permission
-```xml
-     <uses-permission android:name="android.permission.INTERNET"/>
-
-     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> 
- ```    
-    
 
 ## 2.Usage of the SDK.  
  
@@ -200,37 +192,6 @@ In some states, intent can be null, Please make sure that when you set reportRea
     }
     
 
-***URL***
-
-When notifications arrive to your activity, you will get a notification "Message" model.  You can use the notification message's url in your application. 
-
-        if (euroMobileManager.getNotification(intent) != null) {
-   
-         Log.d("Euromessage",euroMobileManager.getNotification(intent).getUrl());
-        }
-
-        if (euroMobileManager.getCarousels(intent) != null) {
-
-            Log.d("Euromessage Carousel", euroMobileManager.getCarousels(intent).get(FIRST_ITEM_CAROUSEL).getUrl());
-        }
-
-        euroMobileManager.removeIntent(intent);
-        
-#### How to make configuration on RMC for AppAlias, Sound, Server Key? 
-
-You need to add configuration for your android application on RMC. Follow steps below to add an application.
-
- Setting Icon-> Campaing Managment -> Campaign Settings -> Push Applications 
-
-<p align="center">
-  <a target="_blank" rel="noopener noreferrer" href="https://github.com/relateddigital/euromessage-android/blob/master/ss.png"><img src="https://github.com/relateddigital/euromessage-android/blob/master/screenhelp.png" alt="Euromessage Android Library" width="600" style="max-width:100%;"></a>
-</p>
-
-- ***Server Key*** : It should be 'server key' from Firebase Cloud Messaging 
-- ***App Alias*** : It can be any name eg: euromessagedemo
-- ***Custom Sound File***  : It is an optional feature. It should be same name of a music file without extension in /raw folder 
-
- 
  ## 3.Sync
  
  Please make the following improvements to add more information about the user in RMC.
