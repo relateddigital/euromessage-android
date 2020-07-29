@@ -16,9 +16,8 @@
     + [Gradle](#gradle)
   * [2.Usage of the SDK](#2usage-of-the-sdk)
     + [Initialization](#initialization)
-  * [3.Sync](#3sync)
-  * [4.Sample Applications](#4sample-applications)
-  * [5.Licences](#5licences)
+  * [3.Sample Applications](#4sample-applications)
+  * [4.Licences](#5licences)
 
 
 # Euromessage Android
