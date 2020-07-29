@@ -41,7 +41,7 @@ implementation 'com.euromsg:euromsg:4.1.0'
 
 For more information, please check new detailed documentation :
 
-[Euromessage Türkçe Dökümantasyon](https://relateddigital.atlassian.net/wiki/spaces/RMCKBT/pages/428802131/ANDROID+SDK)
+[Euromessage Türkçe Dokümantasyon](https://relateddigital.atlassian.net/wiki/spaces/RMCKBT/pages/428802131/ANDROID+SDK)
 
 [Euromessage English Documentation](https://relateddigital.atlassian.net/wiki/spaces/KB/pages/428966369/ANDROID+SDK)
 
