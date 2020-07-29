@@ -38,9 +38,14 @@ Add Euromessage to the ```dependencies``` in app/build.gradle.
 implementation 'com.euromsg:euromsg:4.1.0'
 ```
 
-Also you can check our sample build.gradle to installation
- [Project build.gradle](https://github.com/relateddigital/euromessage-android/blob/master/build.gradle)
- [App  build.gradle](https://github.com/relateddigital/euromessage-android/blob/master/app/build.gradle)
+## 2. Usage of SDK 
+
+For more information, please check new detailed documentation :
+
+[Euromessage Türkçe Dökümantasyon](https://relateddigital.atlassian.net/wiki/spaces/RMCKBT/pages/428802131/ANDROID+SDK)
+
+[Euromessage English Documentation](https://relateddigital.atlassian.net/wiki/spaces/KB/pages/428966369/ANDROID+SDK)
+
 
  
 ###### Note :
@@ -49,14 +54,6 @@ You need to add an android project in [Firebase Console](https://console.firebas
 
 You need to add an android project in [Huawei Console](https://developer.huawei.com/consumer/en/console). Please follow Huawei instruction and do not forget to add ag_connect_services.json to the project.
 *you may need to add your fingerprint to app in Huawei console.
-
-## 2. Usage of SDK 
-
-For more information, please check new detailed documentation :
-
-[Euromessage English Documentation](https://relateddigital.atlassian.net/wiki/spaces/KB/pages/428966369/ANDROID+SDK)
-
-[Euromessage Türkçe Dökümantasyon](https://relateddigital.atlassian.net/wiki/spaces/RMCKBT/pages/428802131/ANDROID+SDK)
 
 
 ## 3.Sample Applications 
