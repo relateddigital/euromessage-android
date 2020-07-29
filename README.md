@@ -51,16 +51,15 @@ For more information, please check new detailed documentation :
 You need to add an android project in [Firebase Console](https://console.firebase.google.com/). Please follow Firebase instruction and do not forget to add google_service.json to the project.
 
 
-You need to add an android project in [Huawei Console](https://developer.huawei.com/consumer/en/console). Please follow Huawei instruction and do not forget to add ag_connect_services.json to the project.
+You need to add an android project in [Huawei Console](https://developer.huawei.com/consumer/en/console). Please follow Huawei instruction and do not forget to add agconnect_services.json to the project.
 *you may need to add your fingerprint to app in Huawei console.
 
 
 ## 3.Sample Applications 
 
-- [Euromessage Sample Application](https://github.com/relateddigital/euromessage-android/releases/tag/3.0.1) 
- (master branch)
 
-- [Euromessage Sample Application - (Support Library) ](https://github.com/relateddigital/euromessage-android/tree/euromessage-support)
+- [Euromessage Sample Application ](https://github.com/relateddigital/euromessage-android)
+- [Euromessage Visilabs Shopping Application ](https://github.com/relateddigital/sample-shopping-android)
 
 - If you have a question please send an e-mail to: <clientsupport@relateddigital.com> 
 
