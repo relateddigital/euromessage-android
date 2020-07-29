@@ -15,7 +15,6 @@
   * [1.Installation](#1installation)
     + [Gradle](#gradle)
   * [2.Usage of the SDK](#2usage-of-the-sdk)
-    + [Initialization](#initialization)
   * [3.Sample Applications](#4sample-applications)
   * [4.Licences](#5licences)
 
