@@ -14,7 +14,6 @@
 - [Euromessage Android](#euromessage-android)
   * [1.Installation](#1installation)
     + [Gradle](#gradle)
-    + [Permission](#permission)
   * [2.Usage of the SDK](#2usage-of-the-sdk)
     + [Initialization](#initialization)
   * [3.Sync](#3sync)
@@ -62,7 +61,6 @@ You need to add an android project in [Huawei Console](https://developer.huawei.
 ## 2.Usage of the SDK.  
  
  ### Initialization
-
  
 Android Manifest
     
@@ -92,8 +90,7 @@ Main Application
   ```
   --
   
-  
-  
+
   Huawei :  
   
         if (!EuroMobileManager.checkPlayService(getApplicationContext())) {
@@ -167,16 +164,8 @@ EMUI 10+ will get token with a code piece in your class. After make sure that ge
             euroMobileManager.reportRead(intent.getExtras());
         }
     }
-    
-   You may set notification color and transparent small icon with  : 
-   
-   
-        euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
-        euroMobileManager.setNotificationColor("#d1dbbd");
+          
       
-      
-Please note: the notification color may not be displayed on all android models.
-
 ***Warning :***   
 In some states, intent can be null, Please make sure that when you set reportRead intent to euromessage.
 
