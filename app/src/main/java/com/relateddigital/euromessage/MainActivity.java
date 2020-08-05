@@ -115,8 +115,6 @@ public class MainActivity extends AppCompatActivity {
             EuroMobileManager.getInstance().setEmail(autotext.getText().toString().trim(), getApplicationContext());
             EuroMobileManager.getInstance().setEuroUserId("12345", getApplicationContext());
             EuroMobileManager.getInstance().sync(getApplicationContext());
-            EuroMobileManager.getInstance().setPushPermit(PushPermit.PASSIVE, getApplicationContext());
-
             Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
         }
     }

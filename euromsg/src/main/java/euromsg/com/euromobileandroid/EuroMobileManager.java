@@ -22,6 +22,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
@@ -192,12 +193,16 @@ public class EuroMobileManager {
     public void subscribe(String token, Context context) {
         this.subscription.setToken(token);
 
-        setDefaultPushPermit();
+        setDefaultPushPermit(context);
         sync(context);
     }
 
-    private void setDefaultPushPermit() {
-        this.subscription.add("pushPermit", "A");
+    private void setDefaultPushPermit(Context context) {
+        if (NotificationManagerCompat.from(context).areNotificationsEnabled()) {
+            setPushPermit(PushPermit.ACTIVE, context);
+        } else {
+            setPushPermit(PushPermit.PASSIVE, context);
+        }
     }
 
     public void sync(Context context) {
@@ -405,11 +410,11 @@ public class EuroMobileManager {
         }
     }
 
-    public void setPushIntent(String intentStr, Context context){
+    public void setPushIntent(String intentStr, Context context) {
         SharedPreference.saveString(context, Constants.INTENT_NAME, intentStr);
     }
 
-    public void removePushIntent(Context context){
+    public void removePushIntent(Context context) {
         SharedPreference.saveString(context, Constants.INTENT_NAME, "");
     }
 
