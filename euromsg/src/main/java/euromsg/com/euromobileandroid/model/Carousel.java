@@ -3,12 +3,10 @@ package euromsg.com.euromobileandroid.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import androidx.core.app.NotificationCompat;
-
 import java.util.ArrayList;
 
 
-public class CarouselSetUp implements Parcelable {
+public class Carousel implements Parcelable {
 
     public ArrayList<CarouselItem> carouselItems;
 
@@ -27,11 +25,11 @@ public class CarouselSetUp implements Parcelable {
     public boolean isOtherRegionClickable;
     public boolean isImagesInCarousel;
 
-    public CarouselSetUp(ArrayList<CarouselItem> carouselItems, String contentTitle, String contentText,
-                  String bigContentTitle, String bigContentText, int carouselNotificationId,
-                  int currentStartIndex, String smallIcon, int smallIconResourceId,
-                  String largeIcon, String caraousalPlaceholder, CarouselItem leftItem,
-                  CarouselItem rightItem, boolean isOtherRegionClickable, boolean isImagesInCarousel) {
+    public Carousel(ArrayList<CarouselItem> carouselItems, String contentTitle, String contentText,
+                    String bigContentTitle, String bigContentText, int carouselNotificationId,
+                    int currentStartIndex, String smallIcon, int smallIconResourceId,
+                    String largeIcon, String caraousalPlaceholder, CarouselItem leftItem,
+                    CarouselItem rightItem, boolean isOtherRegionClickable, boolean isImagesInCarousel) {
         this.carouselItems = carouselItems;
         this.contentTitle = contentTitle;
         this.contentText = contentText;
@@ -50,7 +48,7 @@ public class CarouselSetUp implements Parcelable {
         this.isImagesInCarousel = isImagesInCarousel;
     }
 
-    private CarouselSetUp(Parcel in) {
+    private Carousel(Parcel in) {
         if (in.readByte() == 0x01) {
             carouselItems = new ArrayList<>();
             in.readList(carouselItems, CarouselItem.class.getClassLoader());
@@ -104,15 +102,15 @@ public class CarouselSetUp implements Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public static final Creator<CarouselSetUp> CREATOR = new Creator<CarouselSetUp>() {
+    public static final Creator<Carousel> CREATOR = new Creator<Carousel>() {
         @Override
-        public CarouselSetUp createFromParcel(Parcel in) {
-            return new CarouselSetUp(in);
+        public Carousel createFromParcel(Parcel in) {
+            return new Carousel(in);
         }
 
         @Override
-        public CarouselSetUp[] newArray(int size) {
-            return new CarouselSetUp[size];
+        public Carousel[] newArray(int size) {
+            return new Carousel[size];
         }
     };
 }

@@ -23,7 +23,7 @@ import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.R;
 import euromsg.com.euromobileandroid.connection.ImageDownloaderManager;
 import euromsg.com.euromobileandroid.model.CarouselItem;
-import euromsg.com.euromobileandroid.model.CarouselSetUp;
+import euromsg.com.euromobileandroid.model.Carousel;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
@@ -54,7 +54,7 @@ public class CarouselBuilder implements Serializable {
     private CarouselItem leftItem, rightItem;
     private Bitmap leftItemBitmap, rightItemBitmap;
 
-    private CarouselSetUp carouselSetUp;
+    private Carousel carousel;
     private String smallIconPath, largeIconPath, placeHolderImagePath; //Stores path of these images if set by user
 
     private boolean isOtherRegionClickable = false;
@@ -256,13 +256,13 @@ public class CarouselBuilder implements Serializable {
 
         if (carouselItems != null && carouselItems.size() > 0) {
 
-            if (carouselSetUp == null || carouselSetUp.carouselNotificationId != carouselNotificationId) {
+            if (carousel == null || carousel.carouselNotificationId != carouselNotificationId) {
                 //First save this set up into a carousel setup item
-                carouselSetUp = saveCarouselSetUp();
+                carousel = saveCarouselSetUp();
             } else {
-                carouselSetUp.currentStartIndex = currentStartIndex;
-                carouselSetUp.leftItem = leftItem;
-                carouselSetUp.rightItem = rightItem;
+                carousel.currentStartIndex = currentStartIndex;
+                carousel.leftItem = leftItem;
+                carousel.rightItem = rightItem;
             }
 
             setUpCarouselIcons();
@@ -301,7 +301,7 @@ public class CarouselBuilder implements Serializable {
         Intent carouselIntent = new Intent( Constants.CAROUSAL_EVENT_FIRED_INTENT_FILTER);
         Bundle bundle = new Bundle();
         bundle.putInt(  Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY,   Constants.EVENT_OTHER_REGION_CLICKED);
-        bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carouselSetUp);
+        bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carousel);
         carouselIntent.putExtras(bundle);
         PendingIntent pIntent = PendingIntent.getBroadcast(context,   Constants.EVENT_OTHER_REGION_CLICKED, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pIntent);
@@ -450,15 +450,15 @@ public class CarouselBuilder implements Serializable {
         Intent carouselIntent = new Intent(context, CarouselEventReceiver.class);
         Bundle bundle = new Bundle();
         bundle.putInt(  Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY, eventClicked);
-        bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carouselSetUp);
+        bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carousel);
         bundle.putSerializable("message", message);
         carouselIntent.putExtras(bundle);
         return PendingIntent.getBroadcast(context, eventClicked, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private CarouselSetUp saveCarouselSetUp() {
+    private Carousel saveCarouselSetUp() {
         setUpfilePathOfImages();
-        return new CarouselSetUp(carouselItems, contentTitle, contentText,
+        return new Carousel(carouselItems, contentTitle, contentText,
                 bigContentTitle, bigContentText, carouselNotificationId,
                 currentStartIndex, smallIconPath, smallIconResourceId, largeIconPath,
                 placeHolderImagePath, leftItem, rightItem, isOtherRegionClickable, isImagesInCarousel);
@@ -510,7 +510,7 @@ public class CarouselBuilder implements Serializable {
         //ToDo :  delete all cache files
     }
 
-    void handleClickEvent(int clickEvent, CarouselSetUp setUp) {
+    void handleClickEvent(int clickEvent, Carousel setUp) {
 
           verifyAndSetUpVariables(setUp);
 
@@ -535,9 +535,9 @@ public class CarouselBuilder implements Serializable {
         }
     }
 
-    private void verifyAndSetUpVariables(CarouselSetUp setUp) {
+    private void verifyAndSetUpVariables(Carousel setUp) {
 
-        if (carouselSetUp == null) {
+        if (carousel == null) {
 
             carouselItems = setUp.carouselItems;
             contentTitle = setUp.contentTitle;
@@ -557,8 +557,8 @@ public class CarouselBuilder implements Serializable {
 
             setUpBitCarouselBitmapsFromSetUp();
 
-        } else if (carouselSetUp != null && carouselNotificationId != setUp.carouselNotificationId) {
-            carouselSetUp = null;
+        } else if (carousel != null && carouselNotificationId != setUp.carouselNotificationId) {
+            carousel = null;
             verifyAndSetUpVariables(setUp);
         }
     }
