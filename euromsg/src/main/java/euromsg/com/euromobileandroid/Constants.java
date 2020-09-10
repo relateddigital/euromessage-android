@@ -11,8 +11,9 @@ public class Constants {
     static final String EURO_USER_KEY = "keyID";
     static final String EURO_LOCATION_KEY = "location";
     static final String EURO_SUBSCRIPTION_KEY = "subscription";
+    static final String ALREADY_SENT_SUBSCRIPTION = "sent_subscription";
 
-    public static final String LOG_TAG = "EuroPush";
+    public static final String LOG_TAG = "EuroMessage";
     public static final String HUAWEI_APP_ALIAS = "AppKeyHuwaei";
     public static final String GOOGLE_APP_ALIAS = "AppKeyGoogle";
 

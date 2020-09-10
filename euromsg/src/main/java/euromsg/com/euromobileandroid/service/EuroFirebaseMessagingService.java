@@ -1,9 +1,12 @@
 package euromsg.com.euromobileandroid.service;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
 
 
 import java.util.Map;
@@ -36,6 +39,8 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
         Map<String, String> remoteMessageData = remoteMessage.getData();
         Message pushMessage = new Message(remoteMessageData);
+
+        Log.i("Euromessage FPayload", new Gson().toJson(pushMessage));
 
         PushNotificationManager pushNotificationManager = new PushNotificationManager();
 

@@ -5,25 +5,13 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.StrictMode;
-
-import euromsg.com.euromobileandroid.connection.RetentionApiClient;
-import euromsg.com.euromobileandroid.enums.EmailPermit;
-import euromsg.com.euromobileandroid.enums.GsmPermit;
-import euromsg.com.euromobileandroid.enums.PushPermit;
-import euromsg.com.euromobileandroid.model.Element;
-import euromsg.com.euromobileandroid.notification.PushNotificationManager;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import android.util.Log;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
@@ -32,16 +20,24 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import euromsg.com.euromobileandroid.connection.SubscriptionApiClient;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
+import euromsg.com.euromobileandroid.connection.RetentionApiClient;
+import euromsg.com.euromobileandroid.connection.SubscriptionApiClient;
+import euromsg.com.euromobileandroid.enums.EmailPermit;
+import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.enums.MessageStatus;
+import euromsg.com.euromobileandroid.enums.PushPermit;
+import euromsg.com.euromobileandroid.model.Element;
 import euromsg.com.euromobileandroid.model.Location;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.model.Retention;
 import euromsg.com.euromobileandroid.model.Subscription;
+import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
-import euromsg.com.euromobileandroid.utils.AppUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class EuroMobileManager {
@@ -194,6 +190,7 @@ public class EuroMobileManager {
         this.subscription.setToken(token);
 
         setDefaultPushPermit(context);
+
         sync(context);
     }
 
@@ -206,7 +203,9 @@ public class EuroMobileManager {
     }
 
     public void sync(Context context) {
+
         EuroLogger.debugLog("Sync started");
+
         if (this.subscription.isValid()) {
 
             if (checkPlayService(context)) {
@@ -217,19 +216,30 @@ public class EuroMobileManager {
 
             saveSubscription(context);
 
-            StrictMode.ThreadPolicy policy = new
-                    StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
+            callNetworkSubscription(context);
+        } else {
+            Log.i(TAG, "Not Valid Subs");
+        }
+    }
 
-            apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+    private void callNetworkSubscription(final Context context) {
 
-            Call<Void> call1 = apiInterface.saveSubscription(subscription);
+        setThreadPolicy();
+
+        apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+
+        Call<Void> call1 = apiInterface.saveSubscription(subscription);
+
+        if (SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY).equals(SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION))) {
+            Log.i(TAG, "This subscription already sent " + SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION));
+        } else {
 
             call1.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Log.d("Euromessage Sync", "Success");
+                        SharedPreference.saveString(context, Constants.ALREADY_SENT_SUBSCRIPTION, subscription.toJson());
+                        Log.i(TAG, "Sync Success");
                     }
                 }
 
@@ -240,6 +250,12 @@ public class EuroMobileManager {
                 }
             });
         }
+    }
+
+    private void setThreadPolicy() {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
     }
 
     public void setPushPermit(PushPermit pushPermit, Context context) {
@@ -269,7 +285,6 @@ public class EuroMobileManager {
     public void setEmail(String email, Context context) {
 
         setSubscriptionProperty(Constants.EURO_EMAIL_KEY, email, context);
-
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
@@ -322,6 +337,7 @@ public class EuroMobileManager {
             if (BuildConfig.DEBUG) e.printStackTrace();
 
         }
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, subscription.toJson());
     }
 
     private void setSubscriptionProperty(String key, Object value, Context context) {
@@ -467,7 +483,7 @@ public class EuroMobileManager {
             case ConnectionResult.SUCCESS:
                 result = true;
 
-                Log.e(TAG, "Google Services are Enable");
+                Log.i(TAG, "Google Service is enable");
 
                 break;
         }

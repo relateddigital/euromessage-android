@@ -45,7 +45,7 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                 Log.i(TAG, "Huawei Token refresh token:" + token);
             }
         } else {
-            Log.i(TAG, "Google Services Enable");
+            Log.i(TAG, "HMS is not enable");
         }
     }
 
@@ -58,6 +58,8 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                 Log.e(TAG, "Received message entity is null!");
                 return;
             }
+
+            Log.i("Euromessage HPayload", remoteMessage.getData());
 
             Message pushMessage = new Gson().fromJson(remoteMessage.getData(), Message.class);
 
@@ -166,7 +168,7 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
             case ConnectionResult.SUCCESS:
                 result = true;
 
-                Log.e(TAG, "Google Services are Enable");
+                Log.e(TAG, "Google Service is enable");
 
                 break;
         }
