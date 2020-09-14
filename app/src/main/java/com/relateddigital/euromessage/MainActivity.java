@@ -51,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
         etFirebaseToken = findViewById(R.id.et_token);
         etHuaweiToken = findViewById(R.id.et_huawei_token);
 
-        EuroMobileManager.getInstance().setEmail("test@gmail.com", getApplicationContext());
+        EuroMobileManager.getInstance().setEmail("test@test.com", getApplicationContext());
+        EuroMobileManager.getInstance().setEuroUserId("12345",getApplicationContext());
+        EuroMobileManager.getInstance().sync(getApplicationContext());
         visilabsAdvertisement();
 
         setUI();
