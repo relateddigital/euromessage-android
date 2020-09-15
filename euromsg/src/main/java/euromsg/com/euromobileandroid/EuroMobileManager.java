@@ -16,7 +16,10 @@ import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -217,6 +220,17 @@ public class EuroMobileManager {
             saveSubscription(context);
 
             callNetworkSubscription(context);
+
+
+            try {
+                Log.e("dif", "" + " ");
+
+                Log.d("TEST , ", String.valueOf(shouldSendSubscription()));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         } else {
             Log.i(TAG, "Not Valid Subs");
         }
@@ -230,15 +244,15 @@ public class EuroMobileManager {
 
         Call<Void> call1 = apiInterface.saveSubscription(subscription);
 
-        if (SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY).equals(SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION))) {
-            Log.i(TAG, "This subscription already sent " + SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION));
+        if (isSubscriptionAllReadySent(context)) {
+            Log.i(TAG, "This subscription already sent " + SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON));
         } else {
 
             call1.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                     if (response.isSuccessful()) {
-                        SharedPreference.saveString(context, Constants.ALREADY_SENT_SUBSCRIPTION, subscription.toJson());
+                        SharedPreference.saveString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON, subscription.toJson());
                         Log.i(TAG, "Sync Success");
                     }
                 }
@@ -250,6 +264,16 @@ public class EuroMobileManager {
                 }
             });
         }
+    }
+
+    private boolean isSubscriptionAllReadySent(Context context) {
+
+        boolean value = false;
+        if (SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY).equals(SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON))) {
+
+            value  = true;
+        }
+        return value;
     }
 
     private void setThreadPolicy() {
@@ -489,5 +513,27 @@ public class EuroMobileManager {
         }
 
         return result;
+    }
+
+
+    public boolean shouldSendSubscription() throws ParseException {
+        boolean value;
+        SimpleDateFormat newDate = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        String currentDateandTime = newDate.format(new Date());
+
+
+        Date userDob = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(currentDateandTime);
+        Date today = new Date();
+        long diff = userDob.getTime() - today.getTime();
+
+        int minutes = (int) (diff / (1000 * 60));
+
+        if (minutes > 10) {
+            value = true;
+        } else {
+            value = false;
+        }
+
+        return value;
     }
 }
