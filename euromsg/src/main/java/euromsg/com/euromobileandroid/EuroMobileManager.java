@@ -518,18 +518,19 @@ public class EuroMobileManager {
 
             if (!SharedPreference.getString(context, Constants.LAST_SUBSCRIPTION_TIME).equals("")) {
 
-                Date lastSubsDate = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(SharedPreference.getString(context, Constants.LAST_SUBSCRIPTION_TIME));
+                Date lastSubsDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(SharedPreference.getString(context, Constants.LAST_SUBSCRIPTION_TIME));
                 Date today = new Date();
-                long diff = (lastSubsDate != null ? lastSubsDate.getTime() : 0) - today.getTime();
+                long diff = lastSubsDate.getTime()- today.getTime();
 
-                int minutes = (int) (diff / (1000 * 60));
+                int min = (int) (diff / (1000 * 60));
+                int seconds = (int) (- diff / (1000));
+                int remaining = 1200 - seconds;
 
-                if (minutes > 10 || minutes<-10) {
+                if (seconds > 300 || seconds<-1200) {
                     value = true;
 
                 } else {
-
-                    Log.i(TAG, "Have to wait at least ten minutes to send the same subscription");
+                    Log.i(TAG, "Have to wait " + remaining  +" sn to send the same subscription" );
                     value = false;
                 }
             } else {
@@ -547,7 +548,7 @@ public class EuroMobileManager {
 
     public String getCurrentDate() {
 
-        SimpleDateFormat newDate = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+        SimpleDateFormat newDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         return newDate.format(new Date());
     }

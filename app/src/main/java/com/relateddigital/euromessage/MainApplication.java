@@ -59,9 +59,6 @@ public class MainApplication extends Application {
 
                         String token = task.getResult().getToken();
                         euroMobileManager.subscribe(token, getApplicationContext());
-                        euroMobileManager.setEuroUserId("12345",getApplicationContext());
-                        euroMobileManager.sync(getApplicationContext());
-
 
                         SP.saveString(getApplicationContext(), "FirebaseToken", token);
                     }
