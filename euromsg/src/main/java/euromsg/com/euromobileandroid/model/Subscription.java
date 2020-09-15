@@ -64,7 +64,6 @@ public class Subscription extends BaseRequest {
     }
 
     public boolean isValid() {
-        EuroLogger.debugLog("Token : " + getToken() + " App Key : " + this.appAlias);
         return !(TextUtils.isEmpty(getToken()) && TextUtils.isEmpty(appAlias));
     }
 

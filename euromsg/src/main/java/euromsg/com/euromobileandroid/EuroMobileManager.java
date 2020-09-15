@@ -210,29 +210,28 @@ public class EuroMobileManager {
         EuroLogger.debugLog("Sync started");
 
         if (this.subscription.isValid()) {
-
-            if (checkPlayService(context)) {
-                subscription.setAppAlias(firebaseAppAlias);
-            } else {
-                subscription.setAppAlias(huaweiAppAlias);
-            }
-
             saveSubscription(context);
-
-            callNetworkSubscription(context);
-
+            setAppAlias(context);
 
             try {
-                Log.e("dif", "" + " ");
-
-                Log.d("TEST , ", String.valueOf(shouldSendSubscription()));
-
+                if (shouldSendSubscription(context)) {
+                    callNetworkSubscription(context);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
+                callNetworkSubscription(context);
             }
 
         } else {
             Log.i(TAG, "Not Valid Subs");
+        }
+    }
+
+    private void setAppAlias(Context context) {
+        if (checkPlayService(context)) {
+            subscription.setAppAlias(firebaseAppAlias);
+        } else {
+            subscription.setAppAlias(huaweiAppAlias);
         }
     }
 
@@ -244,35 +243,32 @@ public class EuroMobileManager {
 
         Call<Void> call1 = apiInterface.saveSubscription(subscription);
 
-        if (isSubscriptionAllReadySent(context)) {
-            Log.i(TAG, "This subscription already sent " + SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON));
-        } else {
 
-            call1.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                    if (response.isSuccessful()) {
-                        SharedPreference.saveString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON, subscription.toJson());
-                        Log.i(TAG, "Sync Success");
-                    }
+        call1.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    SharedPreference.saveString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON, subscription.toJson());
+                    SharedPreference.saveString(context, Constants.LAST_SUBSCRIPTION_TIME, getCurrentDate());
+                    Log.i(TAG, "Sync Success");
                 }
+            }
 
-                @Override
-                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                    call.cancel();
-                    t.printStackTrace();
-                }
-            });
-        }
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                call.cancel();
+                t.printStackTrace();
+            }
+        });
     }
 
     private boolean isSubscriptionAllReadySent(Context context) {
 
         boolean value = false;
         if (SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY).equals(SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON))) {
-
-            value  = true;
+            value = true;
         }
+
         return value;
     }
 
@@ -361,7 +357,6 @@ public class EuroMobileManager {
             if (BuildConfig.DEBUG) e.printStackTrace();
 
         }
-        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, subscription.toJson());
     }
 
     private void setSubscriptionProperty(String key, Object value, Context context) {
@@ -516,24 +511,44 @@ public class EuroMobileManager {
     }
 
 
-    public boolean shouldSendSubscription() throws ParseException {
-        boolean value;
-        SimpleDateFormat newDate = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-        String currentDateandTime = newDate.format(new Date());
+    public boolean shouldSendSubscription(Context context) throws ParseException {
+        boolean value ;
 
+        if (isSubscriptionAllReadySent(context)) {
 
-        Date userDob = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(currentDateandTime);
-        Date today = new Date();
-        long diff = userDob.getTime() - today.getTime();
+            if (!SharedPreference.getString(context, Constants.LAST_SUBSCRIPTION_TIME).equals("")) {
 
-        int minutes = (int) (diff / (1000 * 60));
+                Date lastSubsDate = new SimpleDateFormat("yyyy-MM-dd hh:mm").parse(SharedPreference.getString(context, Constants.LAST_SUBSCRIPTION_TIME));
+                Date today = new Date();
+                long diff = (lastSubsDate != null ? lastSubsDate.getTime() : 0) - today.getTime();
 
-        if (minutes > 10) {
-            value = true;
+                int minutes = (int) (diff / (1000 * 60));
+
+                if (minutes > 10 || minutes<-10) {
+                    value = true;
+
+                } else {
+
+                    Log.i(TAG, "Have to wait at least ten minutes to send the same subscription");
+                    value = false;
+                }
+            } else {
+                value = true;
+                Log.i(TAG, "First subscription request has been received");
+
+            }
         } else {
-            value = false;
+
+            value = true;
         }
 
         return value;
+    }
+
+    public String getCurrentDate() {
+
+        SimpleDateFormat newDate = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+
+        return newDate.format(new Date());
     }
 }
