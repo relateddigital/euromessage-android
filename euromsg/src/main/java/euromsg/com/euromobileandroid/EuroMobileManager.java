@@ -526,11 +526,11 @@ public class EuroMobileManager {
                 int seconds = (int) (- diff / (1000));
                 int remaining = 1200 - seconds;
 
-                if (seconds > 300 || seconds<-1200) {
+                if (seconds > 1200 || seconds<-1200) {
                     value = true;
 
                 } else {
-                    Log.i(TAG, "Have to wait " + remaining  +" sn to send the same subscription" );
+                    Log.i(TAG, "Have to wait " + remaining  +" seconds to send the same subscription" );
                     value = false;
                 }
             } else {
