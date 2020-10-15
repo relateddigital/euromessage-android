@@ -22,7 +22,6 @@ import java.util.HashMap;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
-import euromsg.com.euromobileandroid.enums.PushPermit;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testImage, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitMapFromUri((message.getMediaUrl())));
+                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitmap(message.getMediaUrl()));
             }
         });
 

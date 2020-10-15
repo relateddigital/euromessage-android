@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -16,6 +15,7 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -26,20 +26,18 @@ import android.util.Log;
 import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.io.Serializable;
-import java.net.URL;
-import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
-import euromsg.com.euromobileandroid.model.Element;
+import java.net.URL;
+
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+
 import euromsg.com.euromobileandroid.model.Message;
 
 public final class AppUtils {
@@ -134,6 +132,32 @@ public final class AppUtils {
         }
 
         return image;
+    }
+
+    public static Bitmap getBitmap(final String photoUrl) {
+            Bitmap imageBitmap;
+            try {
+                imageBitmap = new AsyncTask<Void, Void, Bitmap>() {
+                    @Override
+                    protected Bitmap doInBackground(Void... params) {
+                        try {
+                            return Picasso.get().load(String.valueOf(photoUrl))
+                                    .get();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return getBitMapFromUri(photoUrl);
+                    }
+                }.execute().get();
+            } catch (InterruptedException e) {
+                imageBitmap = getBitMapFromUri(photoUrl);
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                imageBitmap = getBitMapFromUri(photoUrl);
+                e.printStackTrace();
+            }
+        return imageBitmap;
+
     }
 
     @SuppressLint("MissingPermission")
@@ -236,7 +260,7 @@ public final class AppUtils {
         int id = context.getResources().getIdentifier(sound, "raw", context.getPackageName());
         if (id != 0) {
             return Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + context.getPackageName() + "/" + id);
-        }else{
+        } else {
             return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
     }
