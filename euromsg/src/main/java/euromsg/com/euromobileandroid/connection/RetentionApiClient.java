@@ -14,7 +14,6 @@ public class RetentionApiClient {
 
     public static Retrofit getClient() {
 
-
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
