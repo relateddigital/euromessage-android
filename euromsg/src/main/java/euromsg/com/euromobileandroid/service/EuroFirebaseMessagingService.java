@@ -40,7 +40,7 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, String> remoteMessageData = remoteMessage.getData();
         Message pushMessage = new Message(remoteMessageData);
 
-        Log.i("Euromessage FPayload", new Gson().toJson(pushMessage));
+        EuroLogger.debugLog("EM FirebasePayload : " + new Gson().toJson(pushMessage));
 
         PushNotificationManager pushNotificationManager = new PushNotificationManager();
 
