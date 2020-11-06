@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.R;
-import euromsg.com.euromobileandroid.connection.ImageDownloaderManager;
+import euromsg.com.euromobileandroid.connection.CarouselImageDownloaderManager;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Carousel;
 import euromsg.com.euromobileandroid.model.Message;
@@ -79,7 +79,6 @@ public class CarouselBuilder implements Serializable {
                         appIcon = null;
                         Log.e(TAG, "Unable to retrieve app Icon");
                     }
-
                 }
             }
         }
@@ -202,14 +201,14 @@ public class CarouselBuilder implements Serializable {
                 }
             }
             if (isImagesInCarous) {
-                ImageDownloaderManager imageDownloaderManager = new ImageDownloaderManager(context, carouselItems
-                        , numberofImages, new ImageDownloaderManager.OnDownloadsCompletedListener() {
+                CarouselImageDownloaderManager carouselImageDownloaderManager = new CarouselImageDownloaderManager(context, carouselItems
+                        , numberofImages, new CarouselImageDownloaderManager.OnDownloadsCompletedListener() {
                     @Override
                     public void onComplete() {
                         initiateCarouselTransaction();
                     }
                 });
-                imageDownloaderManager.startAllDownloads();
+                carouselImageDownloaderManager.startAllDownloads();
             } else {
                 this.isImagesInCarousel = false;
                 initiateCarouselTransaction();

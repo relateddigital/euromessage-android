@@ -16,7 +16,7 @@ import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
 
-public class ImageDownloaderManager {
+public class CarouselImageDownloaderManager {
 
     private final String TAG = this.getClass().getSimpleName();
     private Context context;
@@ -26,8 +26,8 @@ public class ImageDownloaderManager {
     private static int currentDownloadTaskIndex = 0;
     private CarouselItem currentItem;
 
-    public ImageDownloaderManager(Context context, ArrayList<CarouselItem> carouselItems, int numberOfImages,
-                                  @NonNull OnDownloadsCompletedListener onDownloadsCompletedListener) {
+    public CarouselImageDownloaderManager(Context context, ArrayList<CarouselItem> carouselItems, int numberOfImages,
+                                          @NonNull OnDownloadsCompletedListener onDownloadsCompletedListener) {
         this.carouselItems = carouselItems;
         this.context = context;
         this.onDownloadsCompletedListener = onDownloadsCompletedListener;
@@ -37,18 +37,16 @@ public class ImageDownloaderManager {
     private OnImageLoaderListener mImageLoaderListener = new OnImageLoaderListener() {
         @Override
         public void onError(ImageError error) {
-            updateDownLoad(null);
-
+            updateDownLoad();
         }
 
         @Override
         public void onComplete(String resultPath) {
-            updateDownLoad(resultPath);
-
+            updateDownLoad();
         }
     };
 
-    private void updateDownLoad(String filePath) {
+    private void updateDownLoad() {
 
         for (int i = (currentDownloadTaskIndex + 1); i < carouselItems.size(); i++) {
             if (!TextUtils.isEmpty(carouselItems.get(i).getPhotoUrl())) {
@@ -94,7 +92,6 @@ public class ImageDownloaderManager {
 
             private ImageError error;
             private long currentTimeInMillis;
-
 
             @Override
             protected void onCancelled() {

@@ -19,9 +19,9 @@ public class CarouselEventReceiver extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             int carouselEvent = bundle.getInt(Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY);
-            Carousel carousel = bundle.getParcelable( Constants.CAROUSAL_SET_UP_KEY);
+            Carousel carousel = bundle.getParcelable(Constants.CAROUSAL_SET_UP_KEY);
 
-            if (carouselEvent > 2) {
+            if (carouselEvent > Constants.EVENT_RIGHT_ARROW_CLICKED) {
 
                 Message message = (Message) intent.getSerializableExtra("message");
 

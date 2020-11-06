@@ -52,13 +52,18 @@ public class EuroMobileManager {
     public static String huaweiAppAlias;
     public static String firebaseAppAlias;
 
-    private Subscription subscription = new Subscription();
+    private Subscription subscription;
 
     private static Context mContext;
 
     static String TAG = "EuroMobileManager";
 
     private EuroMobileManager(Context context, String googleAppAlias, String huaweiAppAlias) {
+
+        subscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
+        if(subscription == null) {
+            subscription = new Subscription();
+        }
 
         if (checkPlayService(context)) {
             subscription.setAppAlias(googleAppAlias);
@@ -345,9 +350,9 @@ public class EuroMobileManager {
         subscription.setLocal(AppUtils.local(context));
 
         if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
-            Subscription oldSubcription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
-            subscription.addAll(oldSubcription.getExtra());
-            subscription.setAdvertisingIdentifier(oldSubcription.getAdvertisingIdentifier());
+            Subscription oldSubscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
+            subscription.addAll(oldSubscription.getExtra());
+            subscription.setAdvertisingIdentifier(oldSubscription.getAdvertisingIdentifier());
             subscription.setFirstTime(0);
         }
         try {
@@ -360,7 +365,8 @@ public class EuroMobileManager {
     }
 
     private void setSubscriptionProperty(String key, Object value, Context context) {
-
+        this.subscription.add(key, value);
+        /*
         if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
             this.subscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
             this.subscription.add(key, value);
@@ -368,6 +374,7 @@ public class EuroMobileManager {
         } else {
             this.subscription.add(key, value);
         }
+        */
     }
 
     public Message getNotification(Intent intent) {
