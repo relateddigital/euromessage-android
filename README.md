@@ -4,7 +4,7 @@
 </p>
 
 
-***October 16, 2020*** - [Euromessage v4.3.1](https://github.com/relateddigital/euromessage-android/releases/tag/4.3.1)
+***October 16, 2020*** - [Euromessage v4.3.2](https://github.com/relateddigital/euromessage-android/releases/tag/4.3.2)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -34,7 +34,7 @@ The Euromessage Android Sdk is a java implementation of an Android client for Eu
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:4.3.1'
+implementation 'com.euromsg:euromsg:4.3.2'
 ```
 
 ## 2. Usage of SDK 

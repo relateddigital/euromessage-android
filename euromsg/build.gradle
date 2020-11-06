@@ -21,7 +21,7 @@ ext {
 
     developerId = 'visilabs'
     developerName = 'Visilabs'
-    developerEmail = 'melike.yildirim@euromsg.com'
+    developerEmail = 'mobiledevelopers@euromsg.com'
 
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
