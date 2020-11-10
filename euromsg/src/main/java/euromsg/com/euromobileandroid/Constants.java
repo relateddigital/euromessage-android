@@ -3,7 +3,7 @@ package euromsg.com.euromobileandroid;
 public class Constants {
 
     //https://commonsware.com/blog/2020/10/14/android-studio-4p1-library-modules-version-code.html
-    static final String SDK_VERSION = "4.3.2";//TODO: BuildConfig.VERSION_NAME;
+    static final String SDK_VERSION = "4.3.3";//TODO: BuildConfig.VERSION_NAME;
 
     static final String EURO_EMAIL_KEY = "email";
     static final String EURO_TWITTER_KEY = "twitter";
