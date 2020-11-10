@@ -36,11 +36,11 @@ public class PushNotificationManager {
 
     Intent intent;
 
-    public void generateCarouselNotification(Context context, Message pushMessage) {
+    public void generateCarouselNotification(Context context, Message pushMessage, int notificationId) {
 
         ArrayList<Element> elements = pushMessage.getElements();
 
-        CarouselBuilder carouselBuilder = CarouselBuilder.with(context).beginTransaction();
+        CarouselBuilder carouselBuilder = CarouselBuilder.with(context, notificationId).beginTransaction();
         carouselBuilder.setContentTitle(pushMessage.getTitle()).setContentText(pushMessage.getMessage());
 
         for (Element item : elements) {
@@ -51,7 +51,7 @@ public class PushNotificationManager {
         carouselBuilder.buildCarousel(pushMessage);
     }
 
-    public void generateNotification(Context context, Message pushMessage, Bitmap image) {
+    public void generateNotification(Context context, Message pushMessage, Bitmap image, int notificationId) {
 
         try {
 
@@ -79,7 +79,7 @@ public class PushNotificationManager {
                 channelId += pushMessage.getSound();
             }
 
-            mNotificationManager.notify(12, mBuilder.build());
+            mNotificationManager.notify(notificationId, mBuilder.build());
 
         } catch (Exception e) {
             EuroLogger.debugLog("Generate notification : " + e.getMessage());

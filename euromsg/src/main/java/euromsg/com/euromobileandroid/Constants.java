@@ -32,6 +32,8 @@ public class Constants {
     public static final int EVENT_RIGHT_ITEM_CLICKED = 4;
     public static final int EVENT_OTHER_REGION_CLICKED = 5;
 
+    public static final String NOTIFICATION_ID = "NotificationId";
+
     public static final String EVENT_CAROUSAL_ITEM_CLICKED_KEY = "CarouselItemClicked";
     public static final String CAROUSAL_IMAGE_BEGENNING = "CarouselImage";
     public static final String CAROUSAL_EVENT_FIRED_INTENT_FILTER = "CAROUSALNOTIFICATIONFIRED";

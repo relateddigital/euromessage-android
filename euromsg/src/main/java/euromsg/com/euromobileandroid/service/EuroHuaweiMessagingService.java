@@ -25,6 +25,8 @@ import com.google.gson.Gson;
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;
 
+import java.util.Random;
+
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.model.Message;
@@ -69,20 +71,22 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
 
             if (pushMessage.getPushType() != null && pushMessage.getPushId() != null) {
 
+                int notificationId = new Random().nextInt();
+
                 switch (pushMessage.getPushType()) {
 
                     case Image:
 
                         if (pushMessage.getElements() != null) {
-                            pushNotificationManager.generateCarouselNotification(this, pushMessage);
+                            pushNotificationManager.generateCarouselNotification(this, pushMessage, notificationId);
                         } else {
-                            pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitmap(pushMessage.getMediaUrl()));
+                            pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitmap(pushMessage.getMediaUrl()), notificationId);
                         }
 
                         break;
 
                     case Text:
-                        pushNotificationManager.generateNotification(this, pushMessage, null);
+                        pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
 
                         break;
 
@@ -90,7 +94,7 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                         break;
 
                     default:
-                        pushNotificationManager.generateNotification(this, pushMessage, null);
+                        pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
                         break;
                 }
 

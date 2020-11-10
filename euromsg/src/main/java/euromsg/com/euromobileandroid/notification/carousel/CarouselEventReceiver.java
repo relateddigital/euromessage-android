@@ -18,6 +18,7 @@ public class CarouselEventReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
+            int notificationId = bundle.getInt(Constants.NOTIFICATION_ID);
             int carouselEvent = bundle.getInt(Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY);
             Carousel carousel = bundle.getParcelable(Constants.CAROUSAL_SET_UP_KEY);
 
@@ -45,7 +46,7 @@ public class CarouselEventReceiver extends BroadcastReceiver {
             }
 
             if (carouselEvent > 0 && carousel != null)
-                CarouselBuilder.with(context).handleClickEvent(carouselEvent, carousel);
+                CarouselBuilder.with(context, notificationId).handleClickEvent(carouselEvent, carousel);
         }
     }
 }

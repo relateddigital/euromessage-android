@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import com.visilabs.Visilabs;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
@@ -123,10 +124,10 @@ public class MainActivity extends AppCompatActivity {
         btnText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int notificationId = new Random().nextInt();
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testText, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, null);
+                pushNotificationManager.generateNotification(getApplicationContext(), message, null, notificationId);
             }
         });
 
@@ -134,18 +135,20 @@ public class MainActivity extends AppCompatActivity {
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int notificationId = new Random().nextInt();
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testImage, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitmap(message.getMediaUrl()));
+                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitmap(message.getMediaUrl()),notificationId);
             }
         });
 
         btnCarousel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int notificationId = new Random().nextInt();
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testCarousel, Message.class);
-                pushNotificationManager.generateCarouselNotification(getApplicationContext(), message);
+                pushNotificationManager.generateCarouselNotification(getApplicationContext(), message, notificationId);
 
             }
         });
