@@ -62,17 +62,18 @@ public class CarouselBuilder implements Serializable {
 
     private static final String CAROUSAL_ITEM_CLICKED_KEY = "CarouselNotificationItemClickedKey";
 
-    private CarouselBuilder(Context context) {
+    private CarouselBuilder(Context context, int notificationId) {
         this.context = context;
+        this.carouselNotificationId = notificationId;
         String channelId = "euroChannel";
         mBuilder = new NotificationCompat.Builder(context, channelId);
     }
 
-    public static CarouselBuilder with(Context context) {
+    public static CarouselBuilder with(Context context, int notificationId) {
         if (carouselBuilder == null) {
             synchronized (CarouselBuilder.class) {
                 if (carouselBuilder == null) {
-                    carouselBuilder = new CarouselBuilder(context);
+                    carouselBuilder = new CarouselBuilder(context, notificationId);
                     try {
                         appIcon = ImageUtils.drawableToBitmap(context.getPackageManager().getApplicationIcon(context.getPackageName()));
                     } catch (PackageManager.NameNotFoundException e) {
@@ -448,6 +449,7 @@ public class CarouselBuilder implements Serializable {
 
         Intent carouselIntent = new Intent(context, CarouselEventReceiver.class);
         Bundle bundle = new Bundle();
+        bundle.putInt(  Constants.NOTIFICATION_ID, carouselNotificationId);
         bundle.putInt(  Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY, eventClicked);
         bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carousel);
         bundle.putSerializable("message", message);

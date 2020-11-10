@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 
 
 import java.util.Map;
+import java.util.Random;
 
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.EuroMobileManager;
@@ -48,20 +49,23 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
         if (pushMessage.getPushType() != null && pushMessage.getPushId() != null) {
 
+
+            int notificationId = new Random().nextInt();
+
             switch (pushMessage.getPushType()) {
 
                 case Image:
 
                     if (pushMessage.getElements() != null) {
-                        pushNotificationManager.generateCarouselNotification(this, pushMessage);
+                        pushNotificationManager.generateCarouselNotification(this, pushMessage, notificationId);
                     } else {
-                        pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(pushMessage.getMediaUrl()));
+                        pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(pushMessage.getMediaUrl()),notificationId);
                     }
 
                     break;
 
                 case Text:
-                    pushNotificationManager.generateNotification(this, pushMessage, null);
+                    pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
 
                     break;
 
@@ -69,7 +73,7 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
                     break;
 
                 default:
-                    pushNotificationManager.generateNotification(this, pushMessage, null);
+                    pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
                     break;
             }
 

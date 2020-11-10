@@ -3,7 +3,7 @@ package euromsg.com.euromobileandroid;
 public class Constants {
 
     //https://commonsware.com/blog/2020/10/14/android-studio-4p1-library-modules-version-code.html
-    static final String SDK_VERSION = "4.3.2";//TODO: BuildConfig.VERSION_NAME;
+    static final String SDK_VERSION = "4.3.3";//TODO: BuildConfig.VERSION_NAME;
 
     static final String EURO_EMAIL_KEY = "email";
     static final String EURO_TWITTER_KEY = "twitter";
@@ -31,6 +31,8 @@ public class Constants {
     public static final int EVENT_LEFT_ITEM_CLICKED = 3;
     public static final int EVENT_RIGHT_ITEM_CLICKED = 4;
     public static final int EVENT_OTHER_REGION_CLICKED = 5;
+
+    public static final String NOTIFICATION_ID = "NotificationId";
 
     public static final String EVENT_CAROUSAL_ITEM_CLICKED_KEY = "CarouselItemClicked";
     public static final String CAROUSAL_IMAGE_BEGENNING = "CarouselImage";
