@@ -254,7 +254,7 @@ public class EuroMobileManager {
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
                     SharedPreference.saveString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON, subscription.toJson());
-                    SharedPreference.saveString(context, Constants.LAST_SUBSCRIPTION_TIME, getCurrentDate());
+                    SharedPreference.saveString(context, Constants.LAST_SUBSCRIPTION_TIME, AppUtils.getCurrentDateString());
                     Log.i(TAG, "Sync Success");
                 }
             }
@@ -551,12 +551,5 @@ public class EuroMobileManager {
         }
 
         return value;
-    }
-
-    public String getCurrentDate() {
-
-        SimpleDateFormat newDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        return newDate.format(new Date());
     }
 }
