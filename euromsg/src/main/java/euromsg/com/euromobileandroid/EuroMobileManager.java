@@ -517,7 +517,6 @@ public class EuroMobileManager {
         return result;
     }
 
-
     public boolean shouldSendSubscription(Context context) throws ParseException {
         boolean value ;
 
@@ -551,5 +550,36 @@ public class EuroMobileManager {
         }
 
         return value;
+    }
+
+    public void registerEmail(String email, EmailPermit emailPermit, Boolean isCommercial, Context context){
+        setEmail(email, context);
+        setEmailPermit(emailPermit, context);
+        Subscription registerEmailSubscription = null;
+        try {
+            registerEmailSubscription = (Subscription) this.subscription.clone();
+            registerEmailSubscription.add(Constants.EURO_CONSENT_SOURCE_KEY, Constants.EURO_CONSENT_SOURCE_VALUE);
+            registerEmailSubscription.add(Constants.EURO_RECIPIENT_TYPE_KEY
+                    , isCommercial ? Constants.EURO_RECIPIENT_TYPE_TACIR : Constants.EURO_RECIPIENT_TYPE_BIREYSEL);
+            registerEmailSubscription.add(Constants.EURO_CONSENT_TIME_KEY, AppUtils.getCurrentTurkeyDateString());
+        } catch (Exception ex) {
+            return;
+        }
+        setThreadPolicy();
+        apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+        Call<Void> call = apiInterface.saveSubscription(registerEmailSubscription);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Register Email Success");
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                call.cancel();
+                t.printStackTrace();
+            }
+        });
     }
 }

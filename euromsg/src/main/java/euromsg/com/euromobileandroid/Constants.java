@@ -7,9 +7,11 @@ public class Constants {
 
 
     static final String EURO_CONSENT_TIME_KEY = "ConsentTime";
-    static final String EURO_RECIPIENT_TYPE_KEY = "RecipientType";
     static final String EURO_CONSENT_SOURCE_KEY = "ConsentSource";
-    static final String EURO_CONSENT_TIME_VALUE = "HS_MOBIL";
+    static final String EURO_CONSENT_SOURCE_VALUE = "HS_MOBIL";
+    static final String EURO_RECIPIENT_TYPE_KEY = "RecipientType";
+    static final String EURO_RECIPIENT_TYPE_BIREYSEL = "BIREYSEL";
+    static final String EURO_RECIPIENT_TYPE_TACIR = "TACIR";
 
     static final String EURO_EMAIL_KEY = "email";
     static final String EURO_TWITTER_KEY = "twitter";
