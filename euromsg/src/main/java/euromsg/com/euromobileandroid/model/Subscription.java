@@ -180,7 +180,10 @@ public class Subscription extends BaseRequest implements Cloneable {
     @NonNull
     public Object clone() throws CloneNotSupportedException {
         Subscription s = (Subscription)super.clone();
-        s.extra  = (Map<String, Object>) ((HashMap<String, Object>) this.extra).clone();
+        s.extra  = new HashMap<>();
+        s.extra.putAll(this.extra);
+
+        //s.extra  = (Map<String, Object>) ((HashMap<String, Object>) this.extra).clone();
         return s;
     }
 }

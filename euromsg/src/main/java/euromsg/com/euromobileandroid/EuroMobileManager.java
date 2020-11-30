@@ -31,6 +31,7 @@ import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.enums.MessageStatus;
 import euromsg.com.euromobileandroid.enums.PushPermit;
 import euromsg.com.euromobileandroid.model.Element;
+import euromsg.com.euromobileandroid.model.EuromessageCallback;
 import euromsg.com.euromobileandroid.model.Location;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.model.Retention;
@@ -552,7 +553,7 @@ public class EuroMobileManager {
         return value;
     }
 
-    public void registerEmail(String email, EmailPermit emailPermit, Boolean isCommercial, Context context){
+    public void registerEmail(String email, EmailPermit emailPermit, Boolean isCommercial, Context context, final EuromessageCallback callback){
         setEmail(email, context);
         setEmailPermit(emailPermit, context);
         Subscription registerEmailSubscription = null;
@@ -563,6 +564,9 @@ public class EuroMobileManager {
                     , isCommercial ? Constants.EURO_RECIPIENT_TYPE_TACIR : Constants.EURO_RECIPIENT_TYPE_BIREYSEL);
             registerEmailSubscription.add(Constants.EURO_CONSENT_TIME_KEY, AppUtils.getCurrentTurkeyDateString());
         } catch (Exception ex) {
+            if(callback != null) {
+                callback.fail(ex.getMessage());
+            }
             return;
         }
         setThreadPolicy();
@@ -573,12 +577,22 @@ public class EuroMobileManager {
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Register Email Success");
+                    if(callback != null) {
+                        callback.success();
+                    }
+                } else {
+                    if(callback != null) {
+                        callback.fail(response.message());
+                    }
                 }
             }
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 call.cancel();
                 t.printStackTrace();
+                if(callback != null) {
+                    callback.fail(t.getMessage());
+                }
             }
         });
     }

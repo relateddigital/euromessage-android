@@ -8,9 +8,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +24,9 @@ import java.util.HashMap;
 import java.util.Random;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
+import euromsg.com.euromobileandroid.enums.EmailPermit;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
+import euromsg.com.euromobileandroid.model.EuromessageCallback;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
@@ -32,10 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int FIRST_ITEM_CAROUSEL = 0;
 
-    AutoCompleteTextView autotext;
-    Button btnSync, btnText, btnImage, btnCarousel;
+    AutoCompleteTextView autotext, registeremailAutotext;
+    Button btnSync, btnText, btnImage, btnCarousel, btnRegisteremail;
     TextView tvRelease;
     EditText etFirebaseToken, etHuaweiToken;
+    Spinner registeremailCommercialSpinner, registeremailPermitSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +56,29 @@ public class MainActivity extends AppCompatActivity {
         etFirebaseToken = findViewById(R.id.et_token);
         etHuaweiToken = findViewById(R.id.et_huawei_token);
 
+        registeremailAutotext = findViewById(R.id.registeremail_autotext);
+        btnRegisteremail = findViewById(R.id.btn_registeremail);
+        registeremailCommercialSpinner = findViewById(R.id.registeremailcommercial_spinner);
+        registeremailPermitSpinner = findViewById(R.id.registeremailpermit_spinner);
+
+        createSpinners();
+
         visilabsAdvertisement();
 
         setUI();
+    }
+
+    private void createSpinners() {
+        String[] registeremailCommercialSpinnerItems = new String[]{ Constants.EURO_RECIPIENT_TYPE_BIREYSEL, Constants.EURO_RECIPIENT_TYPE_TACIR };
+        ArrayAdapter aa1 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, registeremailCommercialSpinnerItems);
+        aa1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        registeremailCommercialSpinner.setAdapter(aa1);
+
+        String[] registeremailPermitSpinnerItems = new String[]{ Constants.EMAIL_PERMIT_ACTIVE, Constants.EMAIL_PERMIT_PASSIVE };
+        ArrayAdapter aa2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, registeremailPermitSpinnerItems);
+        aa2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        registeremailPermitSpinner.setAdapter(aa2);
+
     }
 
     @Override
@@ -103,6 +128,56 @@ public class MainActivity extends AppCompatActivity {
                 sync();
             }
         });
+
+        btnRegisteremail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerEmail();
+            }
+        });
+    }
+
+    private int a = 0;
+
+    private void registerEmail() {
+        if (registeremailAutotext.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
+
+        } else {
+            EuromessageCallback callback = new EuromessageCallback() {
+                @Override
+                public void success() {
+                    Toast.makeText(getApplicationContext(), "REGISTER EMAIL SUCCESS", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void fail(String errorMessage) {
+                    String message = "REGISTER EMAIL ERROR";
+                    if(errorMessage != null) {
+                        message = message + errorMessage;
+                    }
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                }
+            };
+
+            boolean isCommercial = false;
+            String isCommercialText = String.valueOf(registeremailCommercialSpinner.getSelectedItem());
+            if(isCommercialText.equals(Constants.EURO_RECIPIENT_TYPE_TACIR)) {
+                isCommercial = true;
+            }
+
+            EmailPermit emailPermit = EmailPermit.ACTIVE;
+            String isEmailPermitActiveText = String.valueOf(registeremailPermitSpinner.getSelectedItem());
+            if(isEmailPermitActiveText.equals(Constants.EMAIL_PERMIT_PASSIVE)) {
+                emailPermit = EmailPermit.PASSIVE;
+            }
+
+            a++;
+
+
+            EuroMobileManager.getInstance().registerEmail(registeremailAutotext.getText().toString().trim(), emailPermit, isCommercial, getApplicationContext(), callback);
+            Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void sync() {
