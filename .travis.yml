@@ -1,4 +1,5 @@
 language: android
+dist: trusty
 sudo: required
 jdk: oraclejdk8
 
@@ -19,6 +20,10 @@ android:
       - extra-google-google_play_services
       - extra-android-m2repository
       - extra-google-m2repository
+   licenses:
+      - 'android-sdk-license-.+'
+      - 'google-gdk-license-.+'
+
 #optional, use it if only you haven't give permission yet.
 #before_install:
 #   - chmod +x gradlew
