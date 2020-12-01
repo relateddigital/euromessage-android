@@ -137,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private int a = 0;
-
     private void registerEmail() {
         if (registeremailAutotext.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
@@ -171,10 +169,7 @@ public class MainActivity extends AppCompatActivity {
             if(isEmailPermitActiveText.equals(Constants.EMAIL_PERMIT_PASSIVE)) {
                 emailPermit = EmailPermit.PASSIVE;
             }
-
-            a++;
-
-
+            
             EuroMobileManager.getInstance().registerEmail(registeremailAutotext.getText().toString().trim(), emailPermit, isCommercial, getApplicationContext(), callback);
             Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
         }
