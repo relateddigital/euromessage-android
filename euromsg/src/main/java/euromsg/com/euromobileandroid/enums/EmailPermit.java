@@ -1,7 +1,7 @@
 package euromsg.com.euromobileandroid.enums;
 
 public enum EmailPermit {
-    ACTIVE("Y"),  PASSIVE("X");
+    ACTIVE("Y"),  PASSIVE("N");
 
     public final String name;
 
