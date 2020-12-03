@@ -4,7 +4,7 @@
 </p>
 
 
-***November 10, 2020*** - [Euromessage v4.3.3](https://github.com/relateddigital/euromessage-android/releases/tag/4.3.3)
+***November 10, 2020*** - [Euromessage v4.3.4](https://github.com/relateddigital/euromessage-android/releases/tag/4.3.4)
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -16,7 +16,8 @@
     + [Gradle](#gradle)
   * [2.Usage of the SDK](#2usage-of-the-sdk)
   * [3.Sample Applications](#4sample-applications)
-  * [4.Licences](#5licences)
+  * [4.IYS Email Register](#4iys-email-register)
+  * [5.Licences](#5licences)
 
 
 # Euromessage Android
@@ -34,7 +35,7 @@ The Euromessage Android Sdk is a java implementation of an Android client for Eu
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.euromsg:euromsg:4.3.3'
+implementation 'com.euromsg:euromsg:4.3.4'
 ```
 
 ## 2. Usage of SDK 
@@ -63,7 +64,33 @@ You need to add an android project in [Huawei Console](https://developer.huawei.
 
 - If you have a question please send an e-mail to: <clientsupport@relateddigital.com> 
 
-## 4.Licences
+## 4.IYS Email Register
+
+To register email IYS:
+
+```java
+EuromessageCallback callback = new EuromessageCallback() {
+    @Override
+    public void success() {
+        Toast.makeText(getApplicationContext(), "REGISTER EMAIL SUCCESS", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void fail(String errorMessage) {
+        String message = "REGISTER EMAIL ERROR ";
+        if(errorMessage != null) {
+            message = message + errorMessage;
+        }
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+};
+EuroMobileManager.getInstance().registerEmail("test@euromsg.com", EmailPermit.ACTIVE, false, getApplicationContext(), callback);
+```
+
+
+
+
+## 5.Licences
 
  - [Related Digital ](https://www.relateddigital.com/)
  - [Euromessage](https://www.euromsg.com/)
