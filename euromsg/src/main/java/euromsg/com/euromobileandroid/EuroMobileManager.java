@@ -31,6 +31,7 @@ import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.enums.MessageStatus;
 import euromsg.com.euromobileandroid.enums.PushPermit;
 import euromsg.com.euromobileandroid.model.Element;
+import euromsg.com.euromobileandroid.model.EuromessageCallback;
 import euromsg.com.euromobileandroid.model.Location;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.model.Retention;
@@ -254,7 +255,7 @@ public class EuroMobileManager {
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
                     SharedPreference.saveString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON, subscription.toJson());
-                    SharedPreference.saveString(context, Constants.LAST_SUBSCRIPTION_TIME, getCurrentDate());
+                    SharedPreference.saveString(context, Constants.LAST_SUBSCRIPTION_TIME, AppUtils.getCurrentDateString());
                     Log.i(TAG, "Sync Success");
                 }
             }
@@ -517,7 +518,6 @@ public class EuroMobileManager {
         return result;
     }
 
-
     public boolean shouldSendSubscription(Context context) throws ParseException {
         boolean value ;
 
@@ -553,10 +553,47 @@ public class EuroMobileManager {
         return value;
     }
 
-    public String getCurrentDate() {
-
-        SimpleDateFormat newDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        return newDate.format(new Date());
+    public void registerEmail(String email, EmailPermit emailPermit, Boolean isCommercial, Context context, final EuromessageCallback callback){
+        setEmail(email, context);
+        setEmailPermit(emailPermit, context);
+        Subscription registerEmailSubscription = null;
+        try {
+            registerEmailSubscription = (Subscription) this.subscription.clone();
+            registerEmailSubscription.add(Constants.EURO_CONSENT_SOURCE_KEY, Constants.EURO_CONSENT_SOURCE_VALUE);
+            registerEmailSubscription.add(Constants.EURO_RECIPIENT_TYPE_KEY
+                    , isCommercial ? Constants.EURO_RECIPIENT_TYPE_TACIR : Constants.EURO_RECIPIENT_TYPE_BIREYSEL);
+            registerEmailSubscription.add(Constants.EURO_CONSENT_TIME_KEY, AppUtils.getCurrentTurkeyDateString());
+        } catch (Exception ex) {
+            if(callback != null) {
+                callback.fail(ex.getMessage());
+            }
+            return;
+        }
+        setThreadPolicy();
+        apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+        Call<Void> call = apiInterface.saveSubscription(registerEmailSubscription);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Register Email Success");
+                    if(callback != null) {
+                        callback.success();
+                    }
+                } else {
+                    if(callback != null) {
+                        callback.fail(response.message());
+                    }
+                }
+            }
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                call.cancel();
+                t.printStackTrace();
+                if(callback != null) {
+                    callback.fail(t.getMessage());
+                }
+            }
+        });
     }
 }

@@ -2,6 +2,8 @@ package euromsg.com.euromobileandroid.model;
 
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
@@ -10,7 +12,7 @@ import java.util.Map;
 
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 
-public class Subscription extends BaseRequest {
+public class Subscription extends BaseRequest implements Cloneable {
 
     @SerializedName("appVersion")
     private String appVersion;
@@ -173,5 +175,15 @@ public class Subscription extends BaseRequest {
 
     public String toJson() {
         return new Gson().toJson(this);
+    }
+
+    @NonNull
+    public Object clone() throws CloneNotSupportedException {
+        Subscription s = (Subscription)super.clone();
+        s.extra  = new HashMap<>();
+        s.extra.putAll(this.extra);
+
+        //s.extra  = (Map<String, Object>) ((HashMap<String, Object>) this.extra).clone();
+        return s;
     }
 }

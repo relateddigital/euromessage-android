@@ -15,5 +15,6 @@
     <string name="learn_more_about_visilabs">Learn more about visilabs</string>
     <string name="firebase_token">Firebase Token</string>
     <string name="huawei_token">Huawei Token</string>
-
+    <string name="register_email_iys">REGISTER EMAIL (İYS) : </string>
+    <string name="register">Register</string>
 </resources>

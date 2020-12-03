@@ -3,7 +3,15 @@ package euromsg.com.euromobileandroid;
 public class Constants {
 
     //https://commonsware.com/blog/2020/10/14/android-studio-4p1-library-modules-version-code.html
-    static final String SDK_VERSION = "4.3.3";//TODO: BuildConfig.VERSION_NAME;
+    static final String SDK_VERSION = "4.3.4";//TODO: BuildConfig.VERSION_NAME;
+
+
+    static final String EURO_CONSENT_TIME_KEY = "ConsentTime";
+    static final String EURO_CONSENT_SOURCE_KEY = "ConsentSource";
+    static final String EURO_CONSENT_SOURCE_VALUE = "HS_MOBIL";
+    static final String EURO_RECIPIENT_TYPE_KEY = "RecipientType";
+    static final String EURO_RECIPIENT_TYPE_BIREYSEL = "BIREYSEL";
+    static final String EURO_RECIPIENT_TYPE_TACIR = "TACIR";
 
     static final String EURO_EMAIL_KEY = "email";
     static final String EURO_TWITTER_KEY = "twitter";

@@ -35,6 +35,9 @@ import java.io.RandomAccessFile;
 
 import java.net.URL;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -264,4 +267,22 @@ public final class AppUtils {
             return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
     }
+
+    public static String getCurrentDateString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return dateFormat.format(new Date());
+    }
+
+    public static String getCurrentTurkeyDateString() {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            TimeZone tzTurkey = TimeZone.getTimeZone("Turkey");
+            dateFormat.setTimeZone(tzTurkey);
+            return dateFormat.format(new Date());
+        } catch (Exception e) {
+            EuroLogger.debugLog("Turkey timezone error : " + e.toString());
+            return getCurrentDateString();
+        }
+    }
+
 }
