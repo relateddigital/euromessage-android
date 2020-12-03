@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             if(isEmailPermitActiveText.equals(Constants.EMAIL_PERMIT_PASSIVE)) {
                 emailPermit = EmailPermit.PASSIVE;
             }
-            
+
             EuroMobileManager.getInstance().registerEmail(registeremailAutotext.getText().toString().trim(), emailPermit, isCommercial, getApplicationContext(), callback);
             Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
         }
