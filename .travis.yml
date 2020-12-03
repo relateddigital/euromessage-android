@@ -21,8 +21,9 @@ android:
       - extra-android-m2repository
       - extra-google-m2repository
    licenses:
-      - 'android-sdk-license-.+'
-      - 'google-gdk-license-.+'
+      - android-sdk-preview-license-.+
+      - android-sdk-license-.+
+      - google-gdk-license-.+
 
 #optional, use it if only you haven't give permission yet.
 #before_install:
