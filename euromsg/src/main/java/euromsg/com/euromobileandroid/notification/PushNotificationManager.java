@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
+import euromsg.com.euromobileandroid.R;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
@@ -35,6 +36,7 @@ public class PushNotificationManager {
     private String channelId = "euroChannel";
 
     Intent intent;
+
 
     public void generateCarouselNotification(Context context, Message pushMessage, int notificationId) {
 
@@ -71,7 +73,7 @@ public class PushNotificationManager {
                 intent = AppUtils.getLaunchIntent(context, pushMessage);
             }
 
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent contentIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
 
