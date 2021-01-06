@@ -86,6 +86,18 @@ public class MainActivity extends AppCompatActivity {
         super.onNewIntent(intent);
 
         if (intent.getExtras() != null) {
+
+            Message message = (Message) intent.getExtras().getSerializable("message");
+            if(message.getParams() != null)
+            {
+                String action = message.getParams().get("action");
+                String param = message.getParams().get("param");
+                if(action != null)
+                    Log.d("Euromessage Action new ", action);
+                if(param != null)
+                    Log.d("Euromessage Param new ", param);
+            }
+
             EuroMobileManager.getInstance().reportRead(intent.getExtras());
             notificationUrl(intent);
         }
@@ -109,6 +121,18 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         if (getIntent().getExtras() != null && EuroMobileManager.getInstance().getNotification(getIntent()) != null) {
+
+            Message message = (Message) getIntent().getExtras().getSerializable("message");
+            if(message.getParams() != null)
+            {
+                String action = message.getParams().get("action");
+                String param = message.getParams().get("param");
+                if(action != null)
+                    Log.d("Euromessage Action res ", action);
+                if(param != null)
+                    Log.d("Euromessage Param res", param);
+            }
+
             EuroMobileManager.getInstance().reportRead(getIntent().getExtras());
             notificationUrl(getIntent());
         }
