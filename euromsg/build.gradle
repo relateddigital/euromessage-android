@@ -52,9 +52,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     api 'com.google.code.gson:gson:2.8.6'
-    api 'com.google.firebase:firebase-messaging:21.0.0'
+    api 'com.google.firebase:firebase-messaging:21.0.1'
     api "com.google.code.gson:gson:2.8.6"
     api "com.squareup.retrofit2:retrofit:2.4.0"
     api "com.squareup.retrofit2:adapter-rxjava2:2.4.0"

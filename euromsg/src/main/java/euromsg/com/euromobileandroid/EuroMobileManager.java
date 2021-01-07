@@ -129,7 +129,7 @@ public class EuroMobileManager {
                 public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
 
                     if (response.isSuccessful()) {
-                        Log.d("ReportRecieved", "Success");
+                        Log.d("ReportReceived", "Success");
                     }
                 }
 
