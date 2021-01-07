@@ -13,4 +13,7 @@ class Constants {
 
     static final String EMAIL_PERMIT_ACTIVE = "EMAIL_PERMIT_ACTIVE";
     static final String EMAIL_PERMIT_PASSIVE = "EMAIL_PERMIT_PASSIVE";
+
+    static final String LAST_PUSH_TIME = "LAST_PUSH_TIME";
+    static final String LAST_PUSH_PARAMS = "LAST_PUSH_PARAMS";
 }

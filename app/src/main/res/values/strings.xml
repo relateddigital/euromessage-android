@@ -17,4 +17,9 @@
     <string name="huawei_token">Huawei Token</string>
     <string name="register_email_iys">REGISTER EMAIL (İYS) : </string>
     <string name="register">Register</string>
+    <string name="push_notification_parameters">PUSH NOTIFICATION PARAMETERS : </string>
+    <string name="key">Key</string>
+    <string name="value">Value</string>
+    <string name="last_push_time">Last Push Time</string>
+    <string name="huawei_test">Huawei TEST</string>
 </resources>

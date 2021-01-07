@@ -53,7 +53,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
                 android:ellipsize="end"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:textColor="@color/colorPrimary" />
 
             <TextView
@@ -74,7 +74,7 @@
                 android:layout_marginBottom="20dp"
                 android:ellipsize="end"
                 android:textColor="@color/colorPrimary"
-                android:textSize="10sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <Button
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@color/colorButton"
-            android:text="Huawei TEST"
+            android:text="@string/huawei_test"
             android:textColor="@android:color/white"
             android:visibility="gone" />
 
@@ -175,7 +175,6 @@
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold|italic" />
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -196,9 +195,6 @@
                     android:background="@android:drawable/edit_text" />
 
             </LinearLayout>
-
-
-
 
             <AutoCompleteTextView
                 android:id="@+id/registeremail_autotext"
@@ -221,6 +217,82 @@
                 android:background="@color/colorButton"
                 android:text="@string/register"
                 android:textColor="@android:color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorLight"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBackground"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/push_notification_parameters"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+
+            <TableLayout
+                android:id="@+id/tl_push_params"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:stretchColumns="*">
+
+                <TableRow
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:padding="8dip"
+                        android:text="@string/last_push_time"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_last_push_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:padding="8dip"
+                        android:text=""
+                        android:textColor="@color/colorPrimary" />
+                </TableRow>
+
+                <TableRow android:layout_width="0dp">
+                    <TextView
+                        android:text="@string/key"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:padding="8dip"
+                        android:textStyle="bold"
+                        android:background="@color/colorBackground"
+                        android:textColor="@color/colorPrimary"/>
+                    <TextView
+                        android:text="@string/value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="16sp"
+                        android:padding="8dip"
+                        android:textStyle="bold"
+                        android:background="@color/colorBackground"
+                        android:textColor="@color/colorPrimary"/>
+                </TableRow>
+
+            </TableLayout>
+
+
         </LinearLayout>
 
         <TextView
