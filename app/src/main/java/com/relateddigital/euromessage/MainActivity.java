@@ -150,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         Type paramsType = new TypeToken<Map<String, String>>() {}.getType();
         Map<String, String> params = gson.fromJson(lastPushParamsString, paramsType);
+        if(params == null)
+            return;
         int index = 0;
         for(Map.Entry<String, String> param : params.entrySet()){
             setTableRowUI(index, param);
