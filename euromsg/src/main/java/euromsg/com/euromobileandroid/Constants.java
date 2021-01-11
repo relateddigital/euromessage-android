@@ -3,7 +3,7 @@ package euromsg.com.euromobileandroid;
 public class Constants {
 
     //https://commonsware.com/blog/2020/10/14/android-studio-4p1-library-modules-version-code.html
-    static final String SDK_VERSION = "4.3.4";//TODO: BuildConfig.VERSION_NAME;
+    static final String SDK_VERSION = "4.3.5";//TODO: BuildConfig.VERSION_NAME;
 
 
     static final String EURO_CONSENT_TIME_KEY = "ConsentTime";
