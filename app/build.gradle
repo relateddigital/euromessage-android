@@ -18,6 +18,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -36,6 +41,10 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:2.4.0"
 
     implementation 'com.android.support:multidex:1.0.3'
+
+    //RxJava - RxAndroid
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.9'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

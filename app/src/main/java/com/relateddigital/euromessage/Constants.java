@@ -2,7 +2,8 @@ package com.relateddigital.euromessage;
 
 class Constants {
 
-    static final String APP_ALIAS = "euromessage-android";
+    static final String GOOGLE_APP_ALIAS = "euromessage-android";
+    static final String HUAWEI_APP_ALIAS = "euromsg-huawei";
 
     //Visilabs configurations for advertisement
     static final String ORGANIZATION_ID = "676D325830564761676D453D";

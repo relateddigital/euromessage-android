@@ -1,5 +1,6 @@
 package com.relateddigital.euromessage;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,17 +21,22 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.BuildConfig;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.hms.aaid.HmsInstanceId;
+import com.huawei.hms.common.ApiException;
 import com.visilabs.Visilabs;
 
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -42,11 +48,20 @@ import euromsg.com.euromobileandroid.model.EuromessageCallback;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
+import euromsg.com.euromobileandroid.utils.SharedPreference;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableSource;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.functions.Supplier;
+import io.reactivex.rxjava3.observers.DisposableObserver;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int FIRST_ITEM_CAROUSEL = 0;
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     AutoCompleteTextView autotext, registeremailAutotext;
     Button btnSync, btnText, btnImage, btnCarousel, btnRegisteremail;
@@ -80,6 +95,12 @@ public class MainActivity extends AppCompatActivity {
         visilabsAdvertisement();
         setUI();
         setPushParamsUI();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposables.clear();
     }
 
     private void createSpinners() {
@@ -129,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handlePush(Message message, Intent intent) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String lastPushTime = dateFormat. format(Calendar.getInstance().getTime());
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_TIME, lastPushTime);
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_PARAMS, new GsonBuilder().create().toJson(message.getParams()));
@@ -193,8 +214,38 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUI() {
         sendATemplatePush();
-        etHuaweiToken.setText(SP.getString(getApplicationContext(), "HuaweiToken"));
-        etFirebaseToken.setText(SP.getString(getApplicationContext(), "FirebaseToken"));
+        String huaweiToken = SP.getString(getApplicationContext(), "HuaweiToken");
+        String firabaseToken = SP.getString(getApplicationContext(), "FirebaseToken");
+        if(firabaseToken.equals("")){
+            getFirabaseToken();
+        } else {
+            etFirebaseToken.setText(firabaseToken);
+        }
+
+        if(huaweiToken.equals("")){
+            disposables.add(getHuaweiToken()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(new DisposableObserver<String>() {
+                @Override
+                public void onNext(@NonNull String hToken) {
+                    etHuaweiToken.setText(hToken);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    Log.e("Huawei Token", "get token failed, " + e);
+                }
+
+                @Override
+                public void onComplete() {
+
+                }
+            }));
+        } else {
+            etHuaweiToken.setText(huaweiToken);
+        }
+
         tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " + BuildConfig.VERSION_NAME);
         btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -311,6 +362,7 @@ public class MainActivity extends AppCompatActivity {
                 HashMap<String, String> parameters = new HashMap<>();
                 parameters.put("OM.exVisitorID", exVisitorId);
                 Visilabs.CallAPI().customEvent("android-visilab", parameters, MainActivity.this);
+                Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -322,6 +374,36 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
+            }
+        });
+    }
+
+    private void getFirabaseToken(){
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            return;
+                        }
+                        etFirebaseToken.setText(task.getResult());
+                    }
+                });
+    }
+
+    private Observable<String> getHuaweiToken(){
+        return Observable.defer(new Supplier<ObservableSource<? extends String>>() {
+            @Override
+            public ObservableSource<? extends String> get() throws Throwable {
+                String token = "";
+                try {
+                    String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
+                    token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
+
+                } catch (ApiException e) {
+                    Log.e("Huawei Token", "get token failed, " + e);
+                }
+                return Observable.just(token);
             }
         });
     }
