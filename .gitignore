@@ -15,3 +15,4 @@
 .externalNativeBuild
 local.properties
 .cxx
+/.idea/.name

@@ -7,8 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.huawei.agconnect.config.AGConnectServicesConfig;
 import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.common.ApiException;
@@ -16,8 +15,6 @@ import com.huawei.hms.common.ApiException;
 import euromsg.com.euromobileandroid.EuroMobileManager;
 
 public class MainApplication extends Application {
-
-    public static String APP_ALIAS = Constants.APP_ALIAS;
 
     EuroMobileManager euroMobileManager;
 
@@ -30,7 +27,7 @@ public class MainApplication extends Application {
 
     public void initializeEuroMessage() {
 
-        euroMobileManager = EuroMobileManager.init("euromessage-android", "euromsg-huawei", getApplicationContext());
+        euroMobileManager = EuroMobileManager.init(Constants.GOOGLE_APP_ALIAS, Constants.HUAWEI_APP_ALIAS, getApplicationContext());
         euroMobileManager.registerToFCM(getBaseContext());
 
         //optional
@@ -47,17 +44,14 @@ public class MainApplication extends Application {
     }
 
     private void setExistingFirebaseTokenToEuroMessage() {
-
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-
+                    public void onComplete(@NonNull Task<String> task) {
                         if (!task.isSuccessful()) {
                             return;
                         }
-
-                        String token = task.getResult().getToken();
+                        String token = task.getResult();
                         euroMobileManager.subscribe(token, getApplicationContext());
 
                         SP.saveString(getApplicationContext(), "FirebaseToken", token);
@@ -66,7 +60,6 @@ public class MainApplication extends Application {
     }
 
     private void setHuaweiTokenToEuromessage() {
-
         new Thread() {
             @Override
             public void run() {

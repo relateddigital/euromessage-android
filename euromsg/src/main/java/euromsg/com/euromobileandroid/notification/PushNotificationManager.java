@@ -102,8 +102,8 @@ public class PushNotificationManager {
                 .setLargeIcon(largeIcon)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setAutoCancel(true);
-        setNumber(mBuilder, context);
-        setNotificationSmallIcon(mBuilder, context);
+        mBuilder = setNumber(mBuilder, context);
+        mBuilder = setNotificationSmallIcon(mBuilder, context);
 
         return mBuilder;
     }
@@ -128,9 +128,9 @@ public class PushNotificationManager {
                 .setAutoCancel(true)
                 .setContentText(pushMessage.getMessage());
 
-        setNumber(mBuilder, context);
+        mBuilder = setNumber(mBuilder, context);
 
-        setNotificationSmallIcon(mBuilder, context);
+        mBuilder = setNotificationSmallIcon(mBuilder, context);
 
         if (pushMessage.getSound() != null) {
             mBuilder.setSound(AppUtils.getSound(context, pushMessage.getSound()));
@@ -173,13 +173,14 @@ public class PushNotificationManager {
         return AppUtils.getApplicationName(context);
     }
 
-    private void setNumber(NotificationCompat.Builder mBuilder, Context context) {
+    private NotificationCompat.Builder setNumber(NotificationCompat.Builder mBuilder, Context context) {
         if (SharedPreference.getInt(context, Constants.BADGE) == Constants.ACTIVE) {
             mBuilder.setNumber(1).setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
         }
+        return mBuilder;
     }
 
-    private void setNotificationSmallIcon(NotificationCompat.Builder builder, Context context) {
+    private NotificationCompat.Builder setNotificationSmallIcon(NotificationCompat.Builder builder, Context context) {
 
         int transparentSmallIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON);
 
@@ -187,15 +188,12 @@ public class PushNotificationManager {
             transparentSmallIcon = ImageUtils.getAppIcon(context);
         }
 
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setSmallIcon(transparentSmallIcon);
-        } else {
-            builder.setSmallIcon(transparentSmallIcon);
-        }
+        builder.setSmallIcon(transparentSmallIcon);
 
         if (!SharedPreference.getString(context, Constants.NOTIFICATION_COLOR).equals("")) {
             String color = SharedPreference.getString(context, Constants.NOTIFICATION_COLOR);
             builder.setColor(Color.parseColor(color));
         }
+        return builder;
     }
 }
