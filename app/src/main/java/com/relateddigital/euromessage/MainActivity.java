@@ -201,16 +201,19 @@ public class MainActivity extends AppCompatActivity {
         sendATemplatePush();
         String huaweiToken = SP.getString(getApplicationContext(), "HuaweiToken");
         String firabaseToken = SP.getString(getApplicationContext(), "FirebaseToken");
-        if(firabaseToken.equals("")){
-            getFirabaseToken();
+        
+        if (EuroMobileManager.checkPlayService(getApplicationContext())) {
+            if(firabaseToken.equals("")){
+                getFirabaseToken();
+            } else {
+                etFirebaseToken.setText(firabaseToken);
+            }
         } else {
-            etFirebaseToken.setText(firabaseToken);
-        }
-
-        if(huaweiToken.equals("")){
-            getHuaweiToken();
-        } else {
-            etHuaweiToken.setText(huaweiToken);
+            if(huaweiToken.equals("")){
+                getHuaweiToken();
+            } else {
+                etHuaweiToken.setText(huaweiToken);
+            }
         }
 
         tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " + BuildConfig.VERSION_NAME);
