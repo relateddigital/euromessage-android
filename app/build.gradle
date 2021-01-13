@@ -2,13 +2,13 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "com.relateddigital.euromessage"
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
-        versionName "4.3.3"
+        versionName "4.3.5"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,14 +33,14 @@ dependencies {
     implementation project(':euromsg')
 
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation "com.visilabs.android:visilabs-android:3.2.0"
+    implementation "com.visilabs.android:visilabs-android:5.3.1"
 
     //Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.4.0"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.4.0"
-    implementation "com.squareup.retrofit2:converter-gson:2.4.0"
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
 
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation "androidx.multidex:multidex:2.0.1"
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
@@ -49,5 +49,3 @@ dependencies {
 
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.huawei.agconnect'
-
-

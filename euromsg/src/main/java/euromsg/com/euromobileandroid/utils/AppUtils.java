@@ -195,7 +195,7 @@ public final class AppUtils {
                 askForReadPhoneStatePermission(null, 1200);
             }
         } catch (Exception e) {
-            //TODO Log here
+            Log.e("Read Device ID : ", "Could not get device id");
         }
         return id(context);
     }

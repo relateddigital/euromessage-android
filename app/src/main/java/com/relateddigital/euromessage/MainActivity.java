@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        tvRelease.setText("Appv : " + BuildConfig.VERSION_NAME + " " + " EM SDKv: " + BuildConfig.VERSION_NAME);
+        tvRelease.setText("Appv : " + com.relateddigital.euromessage.BuildConfig.VERSION_NAME + " " + " EM SDKv: " + euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME);
         btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
