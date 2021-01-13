@@ -66,7 +66,7 @@ public class Subscription extends BaseRequest implements Cloneable {
     }
 
     public boolean isValid() {
-        return !(TextUtils.isEmpty(getToken()) || TextUtils.isEmpty(appAlias));
+        return !(TextUtils.isEmpty(getToken()) && TextUtils.isEmpty(appAlias));
     }
 
     public Map<String, Object> getExtra() {

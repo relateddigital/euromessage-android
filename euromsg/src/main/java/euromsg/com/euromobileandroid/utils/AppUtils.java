@@ -172,8 +172,14 @@ public final class AppUtils {
                         .getSystemService(Context.TELEPHONY_SERVICE);
                 if (hasReadPhoneStatePermission(context)) {
                     try {
-                        if (tm.getDeviceId() != null) {
-                            return tm.getDeviceId(); // unique identifier from phone
+                        String deviceId = ""; //IMEI
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            deviceId = tm.getImei();
+                        } else {
+                            deviceId = tm.getDeviceId();
+                        }
+                        if (deviceId != null) {
+                            return deviceId; // unique identifier from phone
                         } else {
                             return Secure.getString(context.getContentResolver(),
                                     Secure.ANDROID_ID); // if device id not available get OS

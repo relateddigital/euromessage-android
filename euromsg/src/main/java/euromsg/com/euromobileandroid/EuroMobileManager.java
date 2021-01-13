@@ -120,7 +120,7 @@ public class EuroMobileManager {
 
             retention.setPushId(pushId);
             retention.setStatus(MessageStatus.Received.toString());
-            retention.setToken(subscription.getToken());
+            retention.setToken(SharedPreference.getString(mContext, Constants.TOKEN_KEY));
 
             apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
             Call<Void> call1 = apiInterface.report(retention);
@@ -197,6 +197,8 @@ public class EuroMobileManager {
 
     public void subscribe(String token, Context context) {
         this.subscription.setToken(token);
+
+        SharedPreference.saveString(context, Constants.TOKEN_KEY, token);
 
         setDefaultPushPermit(context);
 

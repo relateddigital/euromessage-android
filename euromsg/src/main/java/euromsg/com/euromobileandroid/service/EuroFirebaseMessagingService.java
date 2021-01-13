@@ -27,7 +27,10 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         try {
             EuroLogger.debugLog("On new token : " + token);
-            EuroMobileManager.getInstance().subscribe(token, this);
+            String gooleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+            String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+            EuroMobileManager.init(gooleAppAlias, huaweiAppAlias, this).subscribe(token, this);
+
         } catch (Exception e) {
             EuroLogger.debugLog(e.toString());
             EuroLogger.debugLog("Failed to complete token refresh");

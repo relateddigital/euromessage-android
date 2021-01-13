@@ -43,7 +43,9 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
     public void onNewToken(String token) {
         if (!checkPlayService()) {
             if (!TextUtils.isEmpty(token)) {
-                EuroMobileManager.getInstance().subscribe(token, this);
+                String gooleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+                String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+                EuroMobileManager.init(gooleAppAlias, huaweiAppAlias, this).subscribe(token, this);
                 Log.i(TAG, "Huawei Token refresh token:" + token);
             }
         } else {
