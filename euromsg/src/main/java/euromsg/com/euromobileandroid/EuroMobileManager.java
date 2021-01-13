@@ -268,7 +268,7 @@ public class EuroMobileManager {
         });
     }
 
-    private boolean isSubscriptionAllReadySent(Context context) {
+    private boolean isSubscriptionAlreadySent(Context context) {
 
         boolean value = false;
         if (SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY).equals(SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON))) {
@@ -521,7 +521,7 @@ public class EuroMobileManager {
     public boolean shouldSendSubscription(Context context) throws ParseException {
         boolean value ;
 
-        if (isSubscriptionAllReadySent(context)) {
+        if (isSubscriptionAlreadySent(context)) {
 
             if (!SharedPreference.getString(context, Constants.LAST_SUBSCRIPTION_TIME).equals("")) {
 
