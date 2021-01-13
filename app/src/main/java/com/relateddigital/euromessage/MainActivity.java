@@ -48,20 +48,11 @@ import euromsg.com.euromobileandroid.model.EuromessageCallback;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
-import euromsg.com.euromobileandroid.utils.SharedPreference;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableSource;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.functions.Supplier;
-import io.reactivex.rxjava3.observers.DisposableObserver;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int FIRST_ITEM_CAROUSEL = 0;
-    private final CompositeDisposable disposables = new CompositeDisposable();
 
     AutoCompleteTextView autotext, registeremailAutotext;
     Button btnSync, btnText, btnImage, btnCarousel, btnRegisteremail;
@@ -95,12 +86,6 @@ public class MainActivity extends AppCompatActivity {
         visilabsAdvertisement();
         setUI();
         setPushParamsUI();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        disposables.clear();
     }
 
     private void createSpinners() {
@@ -223,25 +208,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(huaweiToken.equals("")){
-            disposables.add(getHuaweiToken()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeWith(new DisposableObserver<String>() {
-                @Override
-                public void onNext(@NonNull String hToken) {
-                    etHuaweiToken.setText(hToken);
-                }
-
-                @Override
-                public void onError(@NonNull Throwable e) {
-                    Log.e("Huawei Token", "get token failed, " + e);
-                }
-
-                @Override
-                public void onComplete() {
-
-                }
-            }));
+            getHuaweiToken();
         } else {
             etHuaweiToken.setText(huaweiToken);
         }
@@ -391,20 +358,25 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private Observable<String> getHuaweiToken(){
-        return Observable.defer(new Supplier<ObservableSource<? extends String>>() {
+    private void getHuaweiToken(){
+        new Thread() {
             @Override
-            public ObservableSource<? extends String> get() throws Throwable {
-                String token = "";
+            public void run() {
                 try {
                     String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
-                    token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
+                    final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            etHuaweiToken.setText(token);
+                        }
+                    });
 
                 } catch (ApiException e) {
                     Log.e("Huawei Token", "get token failed, " + e);
                 }
-                return Observable.just(token);
             }
-        });
+        }.start();
     }
 }
