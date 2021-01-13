@@ -556,7 +556,7 @@ public class EuroMobileManager {
     public void registerEmail(String email, EmailPermit emailPermit, Boolean isCommercial, Context context, final EuromessageCallback callback){
         setEmail(email, context);
         setEmailPermit(emailPermit, context);
-        Subscription registerEmailSubscription = null;
+        Subscription registerEmailSubscription;
         try {
             registerEmailSubscription = (Subscription) this.subscription.clone();
             registerEmailSubscription.add(Constants.EURO_CONSENT_SOURCE_KEY, Constants.EURO_CONSENT_SOURCE_VALUE);
