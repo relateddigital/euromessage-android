@@ -21,7 +21,6 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
-import euromsg.com.euromobileandroid.R;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;

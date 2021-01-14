@@ -12,12 +12,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
@@ -25,8 +21,6 @@ import android.util.Log;
 
 import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
-
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import euromsg.com.euromobileandroid.model.Message;
 

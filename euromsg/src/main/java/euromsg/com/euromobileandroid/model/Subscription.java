@@ -10,8 +10,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 
-import euromsg.com.euromobileandroid.utils.EuroLogger;
-
 public class Subscription extends BaseRequest implements Cloneable {
 
     @SerializedName("appVersion")
