@@ -144,7 +144,7 @@ public class PushNotificationManager {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    public void createNotificationChannel(NotificationManager notificationManager, String channelId, String sound, Context context) {
+    public static void createNotificationChannel(NotificationManager notificationManager, String channelId, String sound, Context context) {
 
         int importance = android.app.NotificationManager.IMPORTANCE_DEFAULT;
 
@@ -161,11 +161,11 @@ public class PushNotificationManager {
         notificationManager.createNotificationChannel(notificationChannel);
     }
 
-    private String getChannelDescription(Context context) {
+    public static String getChannelDescription(Context context) {
         return AppUtils.getApplicationName(context);
     }
 
-    private String getChannelName(Context context) {
+    public static String getChannelName(Context context) {
         if (!SharedPreference.getString(context, Constants.CHANNEL_NAME).equals("")) {
 
             return SharedPreference.getString(context, Constants.CHANNEL_NAME);
