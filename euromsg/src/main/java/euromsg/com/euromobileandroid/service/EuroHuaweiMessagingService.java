@@ -82,7 +82,7 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                         if (pushMessage.getElements() != null) {
                             pushNotificationManager.generateCarouselNotification(this, pushMessage, notificationId);
                         } else {
-                            pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitmap(pushMessage.getMediaUrl()), notificationId);
+                            pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(pushMessage.getMediaUrl()), notificationId);
                         }
 
                         break;

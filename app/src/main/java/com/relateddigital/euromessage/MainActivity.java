@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
                 int notificationId = new Random().nextInt();
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testImage, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitmap(message.getMediaUrl()),notificationId);
+                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitMapFromUri(message.getMediaUrl()),notificationId);
             }
         });
 

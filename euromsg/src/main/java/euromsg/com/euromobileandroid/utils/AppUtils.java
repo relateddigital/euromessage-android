@@ -137,32 +137,6 @@ public final class AppUtils {
         return image;
     }
 
-    public static Bitmap getBitmap(final String photoUrl) {
-            Bitmap imageBitmap;
-            try {
-                imageBitmap = new AsyncTask<Void, Void, Bitmap>() {
-                    @Override
-                    protected Bitmap doInBackground(Void... params) {
-                        try {
-                            return Picasso.get().load(String.valueOf(photoUrl))
-                                    .get();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return getBitMapFromUri(photoUrl);
-                    }
-                }.execute().get();
-            } catch (InterruptedException e) {
-                imageBitmap = getBitMapFromUri(photoUrl);
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                imageBitmap = getBitMapFromUri(photoUrl);
-                e.printStackTrace();
-            }
-        return imageBitmap;
-
-    }
-
     @SuppressLint("MissingPermission")
     public static String deviceUDID(Context context) {
 
