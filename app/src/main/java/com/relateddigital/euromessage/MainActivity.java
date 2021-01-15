@@ -30,6 +30,7 @@ import com.google.gson.reflect.TypeToken;
 import com.huawei.agconnect.config.AGConnectServicesConfig;
 import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.common.ApiException;
+import com.relateddigital.euromessage.databinding.ActivityMainBinding;
 import com.visilabs.Visilabs;
 
 import java.lang.reflect.Type;
@@ -52,34 +53,14 @@ import euromsg.com.euromobileandroid.utils.AppUtils;
 public class MainActivity extends AppCompatActivity {
 
     private static final int FIRST_ITEM_CAROUSEL = 0;
-
-    AutoCompleteTextView autotext, registeremailAutotext;
-    Button btnSync, btnText, btnImage, btnCarousel, btnRegisteremail;
-    TextView tvRelease, tvLastPushTime;
-    EditText etFirebaseToken, etHuaweiToken;
-    Spinner registeremailCommercialSpinner, registeremailPermitSpinner;
-    TableLayout tlPushParams;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        autotext = findViewById(R.id.autotext);
-        btnSync = findViewById(R.id.btn_sync);
-        btnCarousel = findViewById(R.id.btn_carousel);
-        btnText = findViewById(R.id.btn_text);
-        btnImage = findViewById(R.id.btn_image);
-        tvRelease = findViewById(R.id.tvRelease);
-        etFirebaseToken = findViewById(R.id.et_token);
-        etHuaweiToken = findViewById(R.id.et_huawei_token);
-
-        registeremailAutotext = findViewById(R.id.registeremail_autotext);
-        btnRegisteremail = findViewById(R.id.btn_registeremail);
-        registeremailCommercialSpinner = findViewById(R.id.registeremailcommercial_spinner);
-        registeremailPermitSpinner = findViewById(R.id.registeremailpermit_spinner);
-        tlPushParams = findViewById(R.id.tl_push_params);
-        tvLastPushTime = findViewById(R.id.tv_last_push_time);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         createSpinners();
         visilabsAdvertisement();
@@ -91,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
         String[] registeremailCommercialSpinnerItems = new String[]{ Constants.EURO_RECIPIENT_TYPE_BIREYSEL, Constants.EURO_RECIPIENT_TYPE_TACIR };
         ArrayAdapter aa1 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, registeremailCommercialSpinnerItems);
         aa1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        registeremailCommercialSpinner.setAdapter(aa1);
+        binding.registeremailcommercialSpinner.setAdapter(aa1);
 
         String[] registeremailPermitSpinnerItems = new String[]{ Constants.EMAIL_PERMIT_ACTIVE, Constants.EMAIL_PERMIT_PASSIVE };
         ArrayAdapter aa2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, registeremailPermitSpinnerItems);
         aa2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        registeremailPermitSpinner.setAdapter(aa2);
+        binding.registeremailpermitSpinner.setAdapter(aa2);
 
     }
 
@@ -146,11 +127,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setPushParamsUI() {
-        int rowCount = tlPushParams.getChildCount();
+        int rowCount = binding.tlPushParams.getChildCount();
         if (rowCount > 2) {
-            tlPushParams.removeViews(2, rowCount - 2);
+            binding.tlPushParams.removeViews(2, rowCount - 2);
         }
-        tvLastPushTime.setText(SP.getString(getApplicationContext(), Constants.LAST_PUSH_TIME));
+        binding.tvLastPushTime.setText(SP.getString(getApplicationContext(), Constants.LAST_PUSH_TIME));
         String lastPushParamsString = SP.getString(getApplicationContext(), Constants.LAST_PUSH_PARAMS);
         Gson gson = new Gson();
         Type paramsType = new TypeToken<Map<String, String>>() {}.getType();
@@ -192,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         tr.addView(tvKey);
         tr.addView(tvValue);
 
-        tlPushParams.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        binding.tlPushParams.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
     }
 
 
@@ -205,24 +186,24 @@ public class MainActivity extends AppCompatActivity {
             if(firabaseToken.equals("")){
                 getFirabaseToken();
             } else {
-                etFirebaseToken.setText(firabaseToken);
+                binding.etToken.setText(firabaseToken);
             }
         } else {
             if(huaweiToken.equals("")){
                 getHuaweiToken();
             } else {
-                etHuaweiToken.setText(huaweiToken);
+                binding.etHuaweiToken.setText(huaweiToken);
             }
         }
 
-        tvRelease.setText("Appv : " + com.relateddigital.euromessage.BuildConfig.VERSION_NAME + " " + " EM SDKv: " + euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME);
-        btnSync.setOnClickListener(new View.OnClickListener() {
+        binding.tvRelease.setText("Appv : " + com.relateddigital.euromessage.BuildConfig.VERSION_NAME + " " + " EM SDKv: " + euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME);
+        binding.btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sync();
             }
         });
-        btnRegisteremail.setOnClickListener(new View.OnClickListener() {
+        binding.btnRegisteremail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 registerEmail();
@@ -231,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerEmail() {
-        if (registeremailAutotext.getText().toString().equals("")) {
+        if (binding.registeremailAutotext.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
 
         } else {
@@ -252,30 +233,30 @@ public class MainActivity extends AppCompatActivity {
             };
 
             boolean isCommercial = false;
-            String isCommercialText = String.valueOf(registeremailCommercialSpinner.getSelectedItem());
+            String isCommercialText = String.valueOf(binding.registeremailcommercialSpinner.getSelectedItem());
             if(isCommercialText.equals(Constants.EURO_RECIPIENT_TYPE_TACIR)) {
                 isCommercial = true;
             }
 
             EmailPermit emailPermit = EmailPermit.ACTIVE;
-            String isEmailPermitActiveText = String.valueOf(registeremailPermitSpinner.getSelectedItem());
+            String isEmailPermitActiveText = String.valueOf(binding.registeremailpermitSpinner.getSelectedItem());
             if(isEmailPermitActiveText.equals(Constants.EMAIL_PERMIT_PASSIVE)) {
                 emailPermit = EmailPermit.PASSIVE;
             }
 
-            EuroMobileManager.getInstance().registerEmail(registeremailAutotext.getText().toString().trim(), emailPermit, isCommercial, getApplicationContext(), callback);
+            EuroMobileManager.getInstance().registerEmail(binding.registeremailAutotext.getText().toString().trim(), emailPermit, isCommercial, getApplicationContext(), callback);
             Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
         }
     }
 
     private void sync() {
 
-        if (autotext.getText().toString().equals("")) {
+        if (binding.autotext.getText().toString().equals("")) {
             Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
 
         } else {
             EuroMobileManager.getInstance().setGsmPermit(GsmPermit.ACTIVE, getApplicationContext());
-            EuroMobileManager.getInstance().setEmail(autotext.getText().toString().trim(), getApplicationContext());
+            EuroMobileManager.getInstance().setEmail(binding.autotext.getText().toString().trim(), getApplicationContext());
             EuroMobileManager.getInstance().setEuroUserId("12345", getApplicationContext());
             EuroMobileManager.getInstance().sync(getApplicationContext());
             Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
@@ -284,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendATemplatePush() {
 
-        btnText.setOnClickListener(new View.OnClickListener() {
+        binding.btnText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int notificationId = new Random().nextInt();
@@ -295,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        btnImage.setOnClickListener(new View.OnClickListener() {
+        binding.btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int notificationId = new Random().nextInt();
@@ -305,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnCarousel.setOnClickListener(new View.OnClickListener() {
+        binding.btnCarousel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int notificationId = new Random().nextInt();
@@ -324,8 +305,7 @@ public class MainActivity extends AppCompatActivity {
         Visilabs.CreateAPI(Constants.ORGANIZATION_ID, Constants.SITE_ID, "http://lgr.visilabs.net",
                 Constants.DATASOURCE, "http://rt.visilabs.net", "Android", getApplicationContext(), "http://s.visilabs.net/json", "http://s.visilabs.net/actjson", 30000, "http://s.visilabs.net/geojson", true);
 
-        Button btnInnApp = findViewById(R.id.btn_in_app);
-        btnInnApp.setOnClickListener(new View.OnClickListener() {
+        binding.btnInApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HashMap<String, String> parameters = new HashMap<>();
@@ -335,8 +315,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btnInfo = findViewById(R.id.btn_info);
-        btnInfo.setOnClickListener(new View.OnClickListener() {
+        binding.btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String url = "http://www.visilabs.com";
@@ -355,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             return;
                         }
-                        etFirebaseToken.setText(task.getResult());
+                        binding.etToken.setText(task.getResult());
                     }
                 });
     }
@@ -371,7 +350,7 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            etHuaweiToken.setText(token);
+                            binding.etHuaweiToken.setText(token);
                         }
                     });
 
