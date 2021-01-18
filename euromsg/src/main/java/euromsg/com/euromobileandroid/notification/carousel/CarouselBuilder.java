@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -37,6 +38,7 @@ public class CarouselBuilder implements Serializable {
     private String bigContentTitle, bigContentText; //title and text when it becomes large
     private String leftItemTitle, leftItemDescription;
     private String rightItemTitle, rightItemDescription;
+    private final String channelId = "euroChannel";
 
     Message message;
     private static final String TAG = "Carousel";
@@ -275,6 +277,10 @@ public class CarouselBuilder implements Serializable {
             setPendingIntents(bigView);
 
             NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotifyManager != null) {
+                PushNotificationManager.createNotificationChannel(mNotifyManager, channelId, message.getSound(), context);
+            }
 
             PushNotificationManager pushNotificationManager = new PushNotificationManager();
 

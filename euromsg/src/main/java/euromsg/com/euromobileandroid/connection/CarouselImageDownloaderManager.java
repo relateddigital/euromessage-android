@@ -2,7 +2,6 @@ package euromsg.com.euromobileandroid.connection;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -88,60 +87,39 @@ public class CarouselImageDownloaderManager {
 
     private void downloadImage(@NonNull final String imageUrl) {
 
-        new AsyncTask<Void, Integer, String>() {
-
-            private ImageError error;
-            private long currentTimeInMillis;
-
+        Runnable runnable = new Runnable() {
             @Override
-            protected void onCancelled() {
-                mImageLoaderListener.onError(error);
-            }
-
-            @Override
-            protected String doInBackground(Void... params) {
-                currentTimeInMillis = System.currentTimeMillis();
-                Bitmap bitmap;
+            public void run() {
                 String imagePath = null;
+                long currentTimeInMillis = System.currentTimeMillis();
+                Bitmap bitmap;
 
-                try {
+                bitmap = AppUtils.getBitMapFromUri(imageUrl);
 
-                    bitmap = AppUtils.getBitMapFromUri(imageUrl);
+                if (bitmap != null) {
 
-                    if (bitmap != null) {
-
-                        int sampleSize = ImageUtils.calculateInSampleSize(bitmap.getWidth(), bitmap.getHeight(), 250, 250);
-                        Bitmap bit = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / sampleSize, bitmap.getHeight() / sampleSize, false);
-                        imagePath = ImageUtils.saveBitmapToInternalStorage(context, bit, Constants.CAROUSAL_IMAGE_BEGENNING + currentTimeInMillis);
-                    }
-
-                } catch (Throwable e) {
-                    if (!this.isCancelled()) {
-                        error = new ImageError(e).setErrorCode(ImageError.ERROR_GENERAL_EXCEPTION);
-                        this.cancel(true);
-                    }
+                    int sampleSize = ImageUtils.calculateInSampleSize(bitmap.getWidth(), bitmap.getHeight(), 250, 250);
+                    Bitmap bit = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / sampleSize, bitmap.getHeight() / sampleSize, false);
+                    imagePath = ImageUtils.saveBitmapToInternalStorage(context, bit, Constants.CAROUSAL_IMAGE_BEGENNING + currentTimeInMillis);
                 }
-
-                return imagePath;
-            }
-
-            @Override
-            protected void onPostExecute(String result) {
-                if (result == null) {
+                if (imagePath == null) {
                     Log.e(TAG, "factory returned a null result");
                     mImageLoaderListener.onError(new ImageError("downloaded file could not be decoded as bitmap")
                             .setErrorCode(ImageError.ERROR_DECODE_FAILED));
                 } else {
                     Log.d(TAG, "download complete");
                     if (currentItem != null) {
-                        currentItem.setImageFileLocation(result);
+                        currentItem.setImageFileLocation(imagePath);
                         currentItem.setImageFileName(Constants.CAROUSAL_IMAGE_BEGENNING + currentTimeInMillis);
                     }
-                    mImageLoaderListener.onComplete(result);
+                    mImageLoaderListener.onComplete(imagePath);
                 }
                 System.gc();
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
 

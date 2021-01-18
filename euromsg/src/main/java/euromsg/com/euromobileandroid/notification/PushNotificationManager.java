@@ -21,7 +21,6 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
-import euromsg.com.euromobileandroid.R;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
@@ -81,7 +80,9 @@ public class PushNotificationManager {
                 channelId += pushMessage.getSound();
             }
 
-            mNotificationManager.notify(notificationId, mBuilder.build());
+            if(mNotificationManager != null) {
+                mNotificationManager.notify(notificationId, mBuilder.build());
+            }
 
         } catch (Exception e) {
             EuroLogger.debugLog("Generate notification : " + e.getMessage());
@@ -102,8 +103,8 @@ public class PushNotificationManager {
                 .setLargeIcon(largeIcon)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setAutoCancel(true);
-        mBuilder = setNumber(mBuilder, context);
-        mBuilder = setNotificationSmallIcon(mBuilder, context);
+        setNumber(mBuilder, context);
+        setNotificationSmallIcon(mBuilder, context);
 
         return mBuilder;
     }
@@ -128,9 +129,9 @@ public class PushNotificationManager {
                 .setAutoCancel(true)
                 .setContentText(pushMessage.getMessage());
 
-        mBuilder = setNumber(mBuilder, context);
+        setNumber(mBuilder, context);
 
-        mBuilder = setNotificationSmallIcon(mBuilder, context);
+        setNotificationSmallIcon(mBuilder, context);
 
         if (pushMessage.getSound() != null) {
             mBuilder.setSound(AppUtils.getSound(context, pushMessage.getSound()));
@@ -144,7 +145,7 @@ public class PushNotificationManager {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    public void createNotificationChannel(NotificationManager notificationManager, String channelId, String sound, Context context) {
+    public static void createNotificationChannel(NotificationManager notificationManager, String channelId, String sound, Context context) {
 
         int importance = android.app.NotificationManager.IMPORTANCE_DEFAULT;
 
@@ -161,11 +162,11 @@ public class PushNotificationManager {
         notificationManager.createNotificationChannel(notificationChannel);
     }
 
-    private String getChannelDescription(Context context) {
+    public static String getChannelDescription(Context context) {
         return AppUtils.getApplicationName(context);
     }
 
-    private String getChannelName(Context context) {
+    public static String getChannelName(Context context) {
         if (!SharedPreference.getString(context, Constants.CHANNEL_NAME).equals("")) {
 
             return SharedPreference.getString(context, Constants.CHANNEL_NAME);
@@ -173,14 +174,13 @@ public class PushNotificationManager {
         return AppUtils.getApplicationName(context);
     }
 
-    private NotificationCompat.Builder setNumber(NotificationCompat.Builder mBuilder, Context context) {
+    private void setNumber(NotificationCompat.Builder mBuilder, Context context) {
         if (SharedPreference.getInt(context, Constants.BADGE) == Constants.ACTIVE) {
             mBuilder.setNumber(1).setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
         }
-        return mBuilder;
     }
 
-    private NotificationCompat.Builder setNotificationSmallIcon(NotificationCompat.Builder builder, Context context) {
+    private void setNotificationSmallIcon(NotificationCompat.Builder builder, Context context) {
 
         int transparentSmallIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON);
 
@@ -194,6 +194,5 @@ public class PushNotificationManager {
             String color = SharedPreference.getString(context, Constants.NOTIFICATION_COLOR);
             builder.setColor(Color.parseColor(color));
         }
-        return builder;
     }
 }

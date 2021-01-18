@@ -106,44 +106,6 @@ public class EuroMobileManager {
         return instance;
     }
 
-    public void reportReceived(String pushId) {
-
-        if (pushId != null) {
-            EuroLogger.debugLog("Report Received : " + pushId);
-
-            Retention retention = new Retention();
-            if (checkPlayService(mContext)) {
-                retention.setKey(firebaseAppAlias);
-            } else {
-                retention.setKey(huaweiAppAlias);
-            }
-
-            retention.setPushId(pushId);
-            retention.setStatus(MessageStatus.Received.toString());
-            retention.setToken(subscription.getToken());
-
-            apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
-            Call<Void> call1 = apiInterface.report(retention);
-            call1.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-
-                    if (response.isSuccessful()) {
-                        Log.d("ReportReceived", "Success");
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                    call.cancel();
-                }
-            });
-
-        } else {
-            EuroLogger.debugLog("reportReceived : Push Id cannot be null!");
-        }
-    }
-
     public void registerToFCM(final Context context) {
         FirebaseApp.initializeApp(context);
     }
@@ -189,10 +151,6 @@ public class EuroMobileManager {
                 EuroLogger.debugLog("reportRead : Push Id cannot be null!");
             }
         }
-    }
-
-    public void reportReceived(Message message) throws Exception {
-        reportReceived(message.getPushId());
     }
 
     public void subscribe(String token, Context context) {
@@ -268,7 +226,7 @@ public class EuroMobileManager {
         });
     }
 
-    private boolean isSubscriptionAllReadySent(Context context) {
+    private boolean isSubscriptionAlreadySent(Context context) {
 
         boolean value = false;
         if (SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY).equals(SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON))) {
@@ -521,7 +479,7 @@ public class EuroMobileManager {
     public boolean shouldSendSubscription(Context context) throws ParseException {
         boolean value ;
 
-        if (isSubscriptionAllReadySent(context)) {
+        if (isSubscriptionAlreadySent(context)) {
 
             if (!SharedPreference.getString(context, Constants.LAST_SUBSCRIPTION_TIME).equals("")) {
 
@@ -556,7 +514,7 @@ public class EuroMobileManager {
     public void registerEmail(String email, EmailPermit emailPermit, Boolean isCommercial, Context context, final EuromessageCallback callback){
         setEmail(email, context);
         setEmailPermit(emailPermit, context);
-        Subscription registerEmailSubscription = null;
+        Subscription registerEmailSubscription;
         try {
             registerEmailSubscription = (Subscription) this.subscription.clone();
             registerEmailSubscription.add(Constants.EURO_CONSENT_SOURCE_KEY, Constants.EURO_CONSENT_SOURCE_VALUE);

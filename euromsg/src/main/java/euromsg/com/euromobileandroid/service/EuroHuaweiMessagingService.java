@@ -43,7 +43,9 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
     public void onNewToken(String token) {
         if (!checkPlayService()) {
             if (!TextUtils.isEmpty(token)) {
-                EuroMobileManager.getInstance().subscribe(token, this);
+                String gooleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+                String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+                EuroMobileManager.init(gooleAppAlias, huaweiAppAlias, this).subscribe(token, this);
                 Log.i(TAG, "Huawei Token refresh token:" + token);
             }
         } else {
@@ -80,7 +82,7 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                         if (pushMessage.getElements() != null) {
                             pushNotificationManager.generateCarouselNotification(this, pushMessage, notificationId);
                         } else {
-                            pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitmap(pushMessage.getMediaUrl()), notificationId);
+                            pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(pushMessage.getMediaUrl()), notificationId);
                         }
 
                         break;
@@ -97,11 +99,6 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                         pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
                         break;
                 }
-
-                String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
-                String googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
-
-                EuroMobileManager.init(googleAppAlias,huaweiAppAlias, this).reportReceived(pushMessage.getPushId());
             } else {
                 EuroLogger.debugLog("remoteMessageData transfrom problem");
             }

@@ -12,12 +12,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
@@ -25,8 +21,6 @@ import android.util.Log;
 
 import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
-
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,7 +33,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import euromsg.com.euromobileandroid.model.Message;
 
@@ -137,32 +130,6 @@ public final class AppUtils {
         return image;
     }
 
-    public static Bitmap getBitmap(final String photoUrl) {
-            Bitmap imageBitmap;
-            try {
-                imageBitmap = new AsyncTask<Void, Void, Bitmap>() {
-                    @Override
-                    protected Bitmap doInBackground(Void... params) {
-                        try {
-                            return Picasso.get().load(String.valueOf(photoUrl))
-                                    .get();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return getBitMapFromUri(photoUrl);
-                    }
-                }.execute().get();
-            } catch (InterruptedException e) {
-                imageBitmap = getBitMapFromUri(photoUrl);
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                imageBitmap = getBitMapFromUri(photoUrl);
-                e.printStackTrace();
-            }
-        return imageBitmap;
-
-    }
-
     @SuppressLint("MissingPermission")
     public static String deviceUDID(Context context) {
 
@@ -172,8 +139,14 @@ public final class AppUtils {
                         .getSystemService(Context.TELEPHONY_SERVICE);
                 if (hasReadPhoneStatePermission(context)) {
                     try {
-                        if (tm.getDeviceId() != null) {
-                            return tm.getDeviceId(); // unique identifier from phone
+                        String deviceId = ""; //IMEI
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            deviceId = tm.getImei();
+                        } else {
+                            deviceId = tm.getDeviceId();
+                        }
+                        if (deviceId != null) {
+                            return deviceId; // unique identifier from phone
                         } else {
                             return Secure.getString(context.getContentResolver(),
                                     Secure.ANDROID_ID); // if device id not available get OS
@@ -189,7 +162,7 @@ public final class AppUtils {
                 askForReadPhoneStatePermission(null, 1200);
             }
         } catch (Exception e) {
-            //TODO Log here
+            Log.e("Read Device ID : ", "Could not get device id");
         }
         return id(context);
     }
