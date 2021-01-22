@@ -302,8 +302,8 @@ public class MainActivity extends AppCompatActivity {
 
         final String exVisitorId = "testUser@test.com";
 
-        Visilabs.CreateAPI(Constants.ORGANIZATION_ID, Constants.SITE_ID, "http://lgr.visilabs.net",
-                Constants.DATASOURCE, "http://rt.visilabs.net", "Android", getApplicationContext(), "http://s.visilabs.net/json", "http://s.visilabs.net/actjson", 30000, "http://s.visilabs.net/geojson", true);
+        Visilabs.CreateAPI(Constants.ORGANIZATION_ID, Constants.SITE_ID, "https://lgr.visilabs.net",
+                Constants.DATASOURCE, "https://rt.visilabs.net", "Android", getApplicationContext(), "http://s.visilabs.net/json", "http://s.visilabs.net/actjson", 30000, "http://s.visilabs.net/geojson", true);
 
         binding.btnInApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity {
         binding.btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = "http://www.visilabs.com";
+                String url = "https://www.visilabs.com";
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
                 startActivity(i);
