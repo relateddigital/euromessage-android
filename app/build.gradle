@@ -37,7 +37,7 @@ dependencies {
     implementation project(':euromsg')
 
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation "com.visilabs.android:visilabs-android:5.3.1"
+    implementation 'com.github.relateddigital:visilabs-android:5.5.3'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
