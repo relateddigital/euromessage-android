@@ -38,7 +38,7 @@ public class CarouselBuilder implements Serializable {
     private String bigContentTitle, bigContentText; //title and text when it becomes large
     private String leftItemTitle, leftItemDescription;
     private String rightItemTitle, rightItemDescription;
-    private final String channelId = "euroChannel";
+    private final String channelId = "euro-message";
 
     Message message;
     private static final String TAG = "Carousel";

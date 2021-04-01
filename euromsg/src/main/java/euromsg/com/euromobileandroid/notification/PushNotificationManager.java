@@ -33,7 +33,7 @@ import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class PushNotificationManager {
 
-    private String channelId = "euroChannel";
+    private String channelId = "euro-message";
 
     Intent intent;
 
@@ -112,6 +112,8 @@ public class PushNotificationManager {
                 .setContentText(contentText)
                 .setLargeIcon(largeIconBitmap)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setAutoCancel(true);
         setNumber(mBuilder, context);
         setNotificationSmallIcon(mBuilder, context);
@@ -147,6 +149,8 @@ public class PushNotificationManager {
                 .setContentTitle(title)
                 .setColorized(false)
                 .setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentText(pushMessage.getMessage());
 
         setNumber(mBuilder, context);
@@ -174,11 +178,13 @@ public class PushNotificationManager {
     @TargetApi(Build.VERSION_CODES.O)
     public static void createNotificationChannel(NotificationManager notificationManager, String channelId, String sound, Context context) {
 
-        int importance = android.app.NotificationManager.IMPORTANCE_DEFAULT;
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
         NotificationChannel notificationChannel = new NotificationChannel(channelId, getChannelName(context), importance);
         notificationChannel.setDescription(getChannelDescription(context));
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+        notificationChannel.enableLights(true);
+        notificationChannel.enableVibration(true);
 
         if (sound != null) {
             Uri soundUri = AppUtils.getSound(context, sound);
