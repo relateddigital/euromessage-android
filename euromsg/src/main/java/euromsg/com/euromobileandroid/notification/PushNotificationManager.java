@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
+import euromsg.com.euromobileandroid.R;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
@@ -93,14 +94,23 @@ public class PushNotificationManager {
 
         String title = TextUtils.isEmpty(contentTitle) ? " " : contentTitle;
 
-        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
-                ImageUtils.getAppIcon(context));
+        Bitmap largeIconBitmap;
+
+        int largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
+
+        if (largeIcon == 0) {
+            largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
+                    ImageUtils.getAppIcon(context));
+        } else {
+            largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
+                    largeIcon);
+        }
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, channelId);
         mBuilder.setContentTitle(title)
                 .setContentText(contentText)
-                .setLargeIcon(largeIcon)
+                .setLargeIcon(largeIconBitmap)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setAutoCancel(true);
         setNumber(mBuilder, context);
@@ -113,8 +123,18 @@ public class PushNotificationManager {
                                                                  Bitmap pushImage, Message pushMessage, PendingIntent contentIntent) {
 
         String title = TextUtils.isEmpty(pushMessage.getTitle()) ? AppUtils.getAppLabel(context, "") : pushMessage.getTitle();
-        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
-                ImageUtils.getAppIcon(context));
+
+        Bitmap largeIconBitmap;
+
+        int largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
+
+        if (largeIcon == 0) {
+            largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
+                    ImageUtils.getAppIcon(context));
+        } else {
+            largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
+                    largeIcon);
+        }
 
         NotificationCompat.Style style = pushImage == null ?
                 new NotificationCompat.BigTextStyle().bigText(pushMessage.getMessage()) :
@@ -123,7 +143,7 @@ public class PushNotificationManager {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setStyle(style)
-                .setLargeIcon(largeIcon)
+                .setLargeIcon(largeIconBitmap)
                 .setContentTitle(title)
                 .setColorized(false)
                 .setAutoCancel(true)

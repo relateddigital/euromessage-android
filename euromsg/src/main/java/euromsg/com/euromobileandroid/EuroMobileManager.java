@@ -362,6 +362,14 @@ public class EuroMobileManager {
         }
     }
 
+    public void setNotificationLargeIcon(int largeIcon, Context context) {
+        if (isResource(context, largeIcon)) {
+            SharedPreference.saveInt(mContext, Constants.NOTIFICATION_LARGE_ICON, largeIcon);
+        } else {
+            Log.e("EM : Res Error", largeIcon + "");
+        }
+    }
+
     public void setNotificationColor(String color) {
 
         if (isValidColor(color)) {
@@ -389,6 +397,10 @@ public class EuroMobileManager {
 
     public void removeNotificationTransparentSmallIcon() {
         SharedPreference.saveInt(mContext, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON, 0);
+    }
+
+    public void removeNotificationLargeIcon() {
+        SharedPreference.saveInt(mContext, Constants.NOTIFICATION_LARGE_ICON, 0);
     }
 
     public void removeNotificationColor() {
