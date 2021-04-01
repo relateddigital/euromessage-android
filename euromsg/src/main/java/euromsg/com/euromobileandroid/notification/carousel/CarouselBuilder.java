@@ -286,6 +286,13 @@ public class CarouselBuilder implements Serializable {
 
             mBuilder = pushNotificationManager.createNotificationBuilder(context, contentTitle, contentText);
 
+            // TODO : Check the number of buttons and related
+            // pending intents here when BE gets ready and
+            // set them accordingly.
+            /*
+            mBuilder.addAction(R.drawable.notification_button, "Open" , contentIntent);
+            */
+
             if (isOtherRegionClickable) {
                 setOtherRegionClickable();
             }
