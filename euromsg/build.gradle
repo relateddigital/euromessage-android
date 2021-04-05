@@ -5,7 +5,7 @@ apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.relateddigital'
 
-apply from: 'maven-push.gradle'
+//apply from: 'maven-push.gradle'
 
 ext {
     bintrayRepo = 'euromessage'
