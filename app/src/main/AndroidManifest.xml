@@ -46,6 +46,14 @@
                 <action android:name="com.huawei.push.action.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver
+            android:name="com.relateddigital.euromessage.CarouselItemClickReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="CarouselItemClickIntentFilter" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -62,8 +62,6 @@ public class CarouselBuilder implements Serializable {
     private boolean isOtherRegionClickable = false;
     private boolean isImagesInCarousel = true;
 
-    private static final String CAROUSAL_ITEM_CLICKED_KEY = "CarouselNotificationItemClickedKey";
-
     private CarouselBuilder(Context context, int notificationId) {
         this.context = context;
         this.carouselNotificationId = notificationId;
@@ -622,7 +620,8 @@ public class CarouselBuilder implements Serializable {
         Intent i = new Intent();
         i.setAction(  Constants.CAROUSAL_ITEM_CLICKED_INTENT_FILTER);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(CAROUSAL_ITEM_CLICKED_KEY, cItem);
+        bundle.putParcelable(Constants.CAROUSAL_ITEM_CLICKED_KEY, cItem);
+        bundle.putString(Constants.CAROUSEL_ITEM_CLICKED_URL, message.getElements().get(Integer.parseInt(cItem.getId())-1).getUrl());
         i.putExtras(bundle);
 
         context.getApplicationContext().sendBroadcast(i);

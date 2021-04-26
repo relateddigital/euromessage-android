@@ -46,7 +46,9 @@ public class Constants {
     public static final String EVENT_CAROUSAL_ITEM_CLICKED_KEY = "CarouselItemClicked";
     public static final String CAROUSAL_IMAGE_BEGENNING = "CarouselImage";
     public static final String CAROUSAL_EVENT_FIRED_INTENT_FILTER = "CAROUSALNOTIFICATIONFIRED";
-    public static final String CAROUSAL_ITEM_CLICKED_INTENT_FILTER = "CAROUSALNOTIFICATIONITEMCLICKED";
+    public static final String CAROUSAL_ITEM_CLICKED_INTENT_FILTER = "CarouselItemClickIntentFilter";
+    public static final String CAROUSAL_ITEM_CLICKED_KEY = "CarouselItemClickedKey";
+    public static final String CAROUSEL_ITEM_CLICKED_URL = "CarouselItemClickedUrl";
     public static final String CAROUSAL_SET_UP_KEY = "CAROUSAL_SET_UP_KEY";
     public static final String CAROUSAL_SMALL_ICON_FILE_NAME = "smallIconCarousel";
     public static final String CAROUSAL_LARGE_ICON_FILE_NAME = "largeIconCarousel";

@@ -8,7 +8,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
-        versionName "4.4.0"
+        versionName "4.4.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,7 +37,7 @@ dependencies {
     implementation project(':euromsg')
 
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.github.relateddigital:visilabs-android:5.5.3'
+    implementation 'com.github.relateddigital:visilabs-android:5.5.5'
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
