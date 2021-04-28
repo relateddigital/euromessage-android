@@ -3,6 +3,7 @@ package euromsg.com.euromobileandroid;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
@@ -111,6 +112,10 @@ public class EuroMobileManager {
     }
 
     public void reportRead(Bundle bundle) {
+        if (Build.VERSION.SDK_INT < Constants.UI_FEATURES_MIN_API) {
+            Log.e("Euromessage", "Euromessage SDK requires min API level 21!");
+            return;
+        }
 
         Message message = (Message) bundle.getSerializable("message");
 
@@ -129,7 +134,9 @@ public class EuroMobileManager {
                 retention.setStatus(MessageStatus.Read.toString());
                 retention.setToken(subscription.getToken());
 
-                apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
+                if(RetentionApiClient.getClient() != null) {
+                    apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
+                }
 
                 Call<Void> call1 = apiInterface.report(retention);
                 call1.enqueue(new Callback<Void>() {
@@ -170,6 +177,10 @@ public class EuroMobileManager {
     }
 
     public void sync(Context context) {
+        if (Build.VERSION.SDK_INT < Constants.UI_FEATURES_MIN_API) {
+            Log.e("Euromessage", "Euromessage SDK requires min API level 21!");
+            return;
+        }
 
         EuroLogger.debugLog("Sync started");
 
@@ -203,7 +214,9 @@ public class EuroMobileManager {
 
         setThreadPolicy();
 
-        apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+        if(SubscriptionApiClient.getClient() != null) {
+            apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+        }
 
         Call<Void> call1 = apiInterface.saveSubscription(subscription);
 
@@ -524,6 +537,10 @@ public class EuroMobileManager {
     }
 
     public void registerEmail(String email, EmailPermit emailPermit, Boolean isCommercial, Context context, final EuromessageCallback callback){
+        if (Build.VERSION.SDK_INT < Constants.UI_FEATURES_MIN_API) {
+            Log.e("Euromessage", "Euromessage SDK requires min API level 21!");
+            return;
+        }
         setEmail(email, context);
         setEmailPermit(emailPermit, context);
         Subscription registerEmailSubscription;
@@ -540,7 +557,9 @@ public class EuroMobileManager {
             return;
         }
         setThreadPolicy();
-        apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+        if(SubscriptionApiClient.getClient() != null) {
+            apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+        }
         Call<Void> call = apiInterface.saveSubscription(registerEmailSubscription);
         call.enqueue(new Callback<Void>() {
             @Override

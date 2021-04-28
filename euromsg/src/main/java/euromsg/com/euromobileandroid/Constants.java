@@ -55,5 +55,6 @@ public class Constants {
     public static final String CAROUSAL_PLACEHOLDER_ICON_FILE_NAME = "placeHolderIconCarousel";
 
     public static final String INTENT_NAME = "intent_name";
+    public static final int UI_FEATURES_MIN_API = 21;
 
 }
