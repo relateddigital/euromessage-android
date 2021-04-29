@@ -96,14 +96,19 @@ public class PushNotificationManager {
 
         Bitmap largeIconBitmap;
 
-        int largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
+        boolean willLargeIconBeUsed = SharedPreference.getBoolean(context, Constants.NOTIFICATION_USE_LARGE_ICON);
+        if(willLargeIconBeUsed) {
+            int largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
 
-        if (largeIcon == 0) {
-            largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
-                    ImageUtils.getAppIcon(context));
+            if (largeIcon == 0) {
+                largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
+                        ImageUtils.getAppIcon(context));
+            } else {
+                largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
+                        largeIcon);
+            }
         } else {
-            largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
-                    largeIcon);
+            largeIconBitmap = null;
         }
 
         NotificationCompat.Builder mBuilder =
@@ -128,14 +133,19 @@ public class PushNotificationManager {
 
         Bitmap largeIconBitmap;
 
-        int largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
+        boolean willLargeIconBeUsed = SharedPreference.getBoolean(context, Constants.NOTIFICATION_USE_LARGE_ICON);
+        if(willLargeIconBeUsed) {
+            int largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
 
-        if (largeIcon == 0) {
-            largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
-                    ImageUtils.getAppIcon(context));
+            if (largeIcon == 0) {
+                largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
+                        ImageUtils.getAppIcon(context));
+            } else {
+                largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
+                        largeIcon);
+            }
         } else {
-            largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
-                    largeIcon);
+            largeIconBitmap = null;
         }
 
         NotificationCompat.Style style = pushImage == null ?

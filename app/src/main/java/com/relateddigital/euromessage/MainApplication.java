@@ -32,6 +32,7 @@ public class MainApplication extends Application {
 
         //optional
         euroMobileManager.setNotificationTransparentSmallIcon(android.R.drawable.star_off, getApplicationContext());
+        euroMobileManager.useNotificationLargeIcon(true);
         euroMobileManager.setNotificationLargeIcon(R.drawable.related_digital, getApplicationContext());
         euroMobileManager.setNotificationColor("#d1dbbd");
         euroMobileManager.setChannelName("Demo", getApplicationContext());

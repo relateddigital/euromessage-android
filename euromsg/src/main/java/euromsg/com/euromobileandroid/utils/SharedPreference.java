@@ -47,6 +47,12 @@ public class SharedPreference {
         return sp.contains(key);
     }
 
+    public static boolean getBoolean(Context context, String key) {
+        String appName = context.getPackageName();
+        SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);
+        return sp.getBoolean(key, true);
+    }
+
     public static int getInt(Context context, String key) {
         String appName = context.getPackageName();
         SharedPreferences sp = context.getSharedPreferences(appName, Context.MODE_PRIVATE);

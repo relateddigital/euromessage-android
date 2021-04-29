@@ -383,6 +383,16 @@ public class EuroMobileManager {
         }
     }
 
+    /**
+     * This method is for setting if a large icon
+     * will be used on the notification area.
+     * @param willBeUsed : true to use it; false not to use it.
+     *                     default value is true.
+     */
+    public void useNotificationLargeIcon(boolean willBeUsed) {
+        SharedPreference.saveBoolean(mContext, Constants.NOTIFICATION_USE_LARGE_ICON, willBeUsed);
+    }
+
     public void setNotificationColor(String color) {
 
         if (isValidColor(color)) {
