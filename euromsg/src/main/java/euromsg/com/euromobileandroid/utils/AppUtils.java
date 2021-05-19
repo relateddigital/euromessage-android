@@ -14,17 +14,20 @@ import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.os.StrictMode;
-import android.provider.Settings.Secure;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 
 import java.net.URL;
@@ -44,14 +47,38 @@ public final class AppUtils {
 
     public synchronized static String id(Context context) {
         if (sID == null) {
-            File installation = new File(context.getFilesDir(), INSTALLATION);
-            try {
-                if (!installation.exists()) {
-                    writeInstallationFile(installation);
+            PackageManager pm = context.getPackageManager();
+            if (pm.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context.getPackageName())
+                    == PackageManager.PERMISSION_GRANTED &&
+                    pm.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, context.getPackageName())
+                            == PackageManager.PERMISSION_GRANTED) {
+                try {
+                    sID = getIdFromExternalStorage();
+                } catch (Exception e) {
+                    sID = null;
+                    e.printStackTrace();
                 }
-                sID = readInstallationFile(installation);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+                if(sID == null) {
+                    File installation = new File(context.getFilesDir(), INSTALLATION);
+                    try {
+                        if (!installation.exists()) {
+                            writeInstallationFile(installation);
+                        }
+                        sID = readInstallationFile(installation);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            } else {
+                File installation = new File(context.getFilesDir(), INSTALLATION);
+                try {
+                    if (!installation.exists()) {
+                        writeInstallationFile(installation);
+                    }
+                    sID = readInstallationFile(installation);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
         return sID;
@@ -133,40 +160,7 @@ public final class AppUtils {
         return image;
     }
 
-    @SuppressLint("MissingPermission")
     public static String deviceUDID(Context context) {
-
-        try {
-            if (hasReadPhoneStatePermission(context)) {
-                TelephonyManager tm = (TelephonyManager) context
-                        .getSystemService(Context.TELEPHONY_SERVICE);
-                if (hasReadPhoneStatePermission(context)) {
-                    try {
-                        String deviceId = ""; //IMEI
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            deviceId = tm.getImei();
-                        } else {
-                            deviceId = tm.getDeviceId();
-                        }
-                        if (deviceId != null) {
-                            return deviceId; // unique identifier from phone
-                        } else {
-                            return Secure.getString(context.getContentResolver(),
-                                    Secure.ANDROID_ID); // if device id not available get OS
-                            // id
-                        }
-                    } catch (SecurityException security) {
-                        return "";
-                    }
-                } else {
-                    return "";
-                }
-            } else {
-                askForReadPhoneStatePermission(null, 1200);
-            }
-        } catch (Exception e) {
-            Log.i("Read Device ID : ", "Could not get device id");
-        }
         return id(context);
     }
 
@@ -261,4 +255,60 @@ public final class AppUtils {
         }
     }
 
+    private static String getIdFromExternalStorage() throws Exception {
+        String ID = null;
+        String state = Environment.getExternalStorageState();
+        if(state.equals(Environment.MEDIA_MOUNTED)) {
+            File sdcard = Environment.getExternalStorageDirectory();
+            if (!sdcard.exists()) {
+                sdcard.mkdirs();
+            }
+            File dir = new File(sdcard.getAbsolutePath() + "/Download/");
+            if(!dir.exists()){
+                dir.mkdir();
+            }
+            File file = new File(dir, "Euromessage");
+
+            if(!file.exists()){
+                file.createNewFile();
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(file);
+                    fos.write(UUID.randomUUID().toString().getBytes());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    ID = null;
+                } finally {
+                    fos.close();
+                }
+            }
+
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(file);
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader buff = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line = buff.readLine();
+                while(line!=null){
+                    sb.append(line);
+                    line = buff.readLine();
+                }
+                try {
+                    ID = sb.toString();
+                } catch (Exception e){
+                    e.printStackTrace();
+                    ID = null;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                ID = null;
+            } finally {
+                fis.close();
+            }
+        } else {
+            ID = null;
+        }
+        return ID;
+    }
 }
