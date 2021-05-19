@@ -29,6 +29,7 @@ import java.io.RandomAccessFile;
 
 import java.net.URL;
 
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
@@ -121,8 +122,10 @@ public final class AppUtils {
 
             AppUtils.setThreadPool();
             url = new URL(photoUrl);
+            URLConnection connection = url.openConnection();
+            connection.setReadTimeout(3600000); // 60 minutes
 
-            image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+            image = BitmapFactory.decodeStream(connection.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
