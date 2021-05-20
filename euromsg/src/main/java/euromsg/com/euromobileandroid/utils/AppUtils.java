@@ -53,7 +53,7 @@ public final class AppUtils {
                     pm.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, context.getPackageName())
                             == PackageManager.PERMISSION_GRANTED) {
                 try {
-                    sID = getIdFromExternalStorage();
+                    sID = getIdFromExternalStorage(context);
                 } catch (Exception e) {
                     sID = null;
                     e.printStackTrace();
@@ -255,7 +255,7 @@ public final class AppUtils {
         }
     }
 
-    private static String getIdFromExternalStorage() throws Exception {
+    private static String getIdFromExternalStorage(Context context) throws Exception {
         String ID = null;
         String state = Environment.getExternalStorageState();
         if(state.equals(Environment.MEDIA_MOUNTED)) {
@@ -270,11 +270,23 @@ public final class AppUtils {
             File file = new File(dir, "Euromessage");
 
             if(!file.exists()){
+                File installation = new File(context.getFilesDir(), INSTALLATION);
+                try {
+                    if (installation.exists()) {
+                        sID = readInstallationFile(installation);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
                 file.createNewFile();
                 FileOutputStream fos = null;
                 try {
                     fos = new FileOutputStream(file);
-                    fos.write(UUID.randomUUID().toString().getBytes());
+                    if(sID == null) {
+                        fos.write(UUID.randomUUID().toString().getBytes());
+                    } else {
+                        fos.write(sID.getBytes());
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     ID = null;
