@@ -20,7 +20,7 @@ ext {
     siteUrl = 'https://www.euromsg.com/'
     gitUrl = 'https://www.euromsg.com/'
 
-    libraryVersion = '4.4.3'
+    libraryVersion = '4.4.4'
 
     developerId = 'visilabs'
     developerName = 'Visilabs'
@@ -39,8 +39,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
-        versionName "4.4.3"
-        buildConfigField 'String', 'VERSION_NAME', "\"4.4.3\""
+        versionName "4.4.4"
+        buildConfigField 'String', 'VERSION_NAME', "\"4.4.4\""
     }
     buildTypes {
         release {
