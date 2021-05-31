@@ -67,6 +67,56 @@ public class Subscription extends BaseRequest implements Cloneable {
         return !(TextUtils.isEmpty(getToken()) && TextUtils.isEmpty(appAlias));
     }
 
+    public boolean isEqual(Subscription previousSubscription) {
+        boolean result;
+
+        if(previousSubscription == null) {
+            result = false;
+        } else {
+            if (this.appVersion.equals(previousSubscription.getAppVersion()) &&
+                    this.appAlias.equals(previousSubscription.getAppAlias()) &&
+                    this.os.equals(previousSubscription.getOs()) &&
+                    this.osVersion.equals(previousSubscription.getOsVersion()) &&
+                    this.deviceType.equals(previousSubscription.getDeviceType()) &&
+                    this.deviceName.equals(previousSubscription.getDeviceName()) &&
+                    this.carrier.equals(previousSubscription.getCarrier()) &&
+                    this.local.equals(previousSubscription.getLocal()) &&
+                    this.identifierForVendor.equals(previousSubscription.getIdentifierForVendor()) &&
+                    this.advertisingIdentifier.equals(previousSubscription.getAdvertisingIdentifier()) &&
+                    this.sdkVersion.equals(previousSubscription.getSdkVersion()) &&
+                    this.firstTime == previousSubscription.getFirstTime() &&
+                    this.getToken().equals(previousSubscription.getToken()) &&
+                    this.extra.equals(previousSubscription.getExtra()) ) {
+                result = true;
+            } else {
+                result = false;
+            }
+        }
+
+        return result;
+    }
+
+    public void copyFrom(Subscription fromSubscription) {
+        this.setAppVersion(fromSubscription.getAppVersion());
+        this.setAppAlias(fromSubscription.getAppAlias());
+        this.setOs(fromSubscription.getOs());
+        this.setOsVersion(fromSubscription.getOsVersion());
+        this.setDeviceType(fromSubscription.getDeviceType());
+        this.setDeviceName(fromSubscription.getDeviceName());
+        this.setCarrier(fromSubscription.getCarrier());
+        this.setLocal(fromSubscription.getLocal());
+        this.setIdentifierForVendor(fromSubscription.getIdentifierForVendor());
+        this.setAdvertisingIdentifier(fromSubscription.getAdvertisingIdentifier());
+        this.setSdkVersion(fromSubscription.getSdkVersion());
+        this.setFirstTime(fromSubscription.getFirstTime());
+        this.setToken(fromSubscription.getToken());
+        this.extra = new HashMap<>();
+        for(int i=0 ; i<fromSubscription.getExtra().size(); i++) {
+            String key = (String) fromSubscription.getExtra().keySet().toArray()[i];
+            this.extra.put(key, fromSubscription.getExtra().get(key));
+        }
+    }
+
     public Map<String, Object> getExtra() {
         return extra;
     }

@@ -21,6 +21,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,6 +57,7 @@ public class EuroMobileManager {
     public static String firebaseAppAlias;
 
     private Subscription subscription;
+    private Subscription previousSubscription;
 
     private static Context mContext;
 
@@ -73,12 +76,16 @@ public class EuroMobileManager {
             subscription.setAppAlias(huaweiAppAlias);
         }
 
-        subscription.setFirstTime(1);
+        subscription.setFirstTime(0);
         subscription.setOs(AppUtils.osType());
         subscription.setOsVersion(AppUtils.osVersion());
         subscription.setSdkVersion(Constants.SDK_VERSION);
         subscription.setDeviceName(AppUtils.deviceName());
         subscription.setDeviceType(AppUtils.deviceType());
+        subscription.setCarrier(AppUtils.carrier(context));
+        subscription.setAppVersion(AppUtils.appVersion(context));
+        subscription.setIdentifierForVendor(AppUtils.deviceUDID(context));
+        subscription.setLocal(AppUtils.local(context));
     }
 
     public static EuroMobileManager init(String googleAppAlias, String huwaeiAppAlias, Context context) {
@@ -184,14 +191,14 @@ public class EuroMobileManager {
 
         EuroLogger.debugLog("Sync started");
 
-        if (this.subscription.isValid()) {
+        if (this.subscription.isValid() && !this.subscription.isEqual(previousSubscription)) {
+            previousSubscription = new Subscription();
+            previousSubscription.copyFrom(subscription);
             saveSubscription(context);
             setAppAlias(context);
 
             try {
-                if (shouldSendSubscription(context)) {
-                    callNetworkSubscription(context);
-                }
+                callNetworkSubscription(context);
             } catch (Exception e) {
                 e.printStackTrace();
                 callNetworkSubscription(context);
@@ -239,16 +246,6 @@ public class EuroMobileManager {
         });
     }
 
-    private boolean isSubscriptionAlreadySent(Context context) {
-
-        boolean value = false;
-        if (SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY).equals(SharedPreference.getString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON))) {
-            value = true;
-        }
-
-        return value;
-    }
-
     private void setThreadPolicy() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -285,6 +282,11 @@ public class EuroMobileManager {
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
+    public void setAdvertisingIdentifier(String advertisingIdentifier, Context context) {
+        this.subscription.setAdvertisingIdentifier(advertisingIdentifier);
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+    }
+
     public void setFacebook(String facebookId, Context context) {
         setSubscriptionProperty(Constants.EURO_FACEBOOK_KEY, facebookId, context);
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
@@ -315,18 +317,6 @@ public class EuroMobileManager {
     }
 
     private void saveSubscription(Context context) {
-
-        subscription.setCarrier(AppUtils.carrier(context));
-        subscription.setAppVersion(AppUtils.appVersion(context));
-        subscription.setIdentifierForVendor(AppUtils.deviceUDID(context));
-        subscription.setLocal(AppUtils.local(context));
-
-        if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
-            Subscription oldSubscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
-            subscription.addAll(oldSubscription.getExtra());
-            subscription.setAdvertisingIdentifier(oldSubscription.getAdvertisingIdentifier());
-            subscription.setFirstTime(0);
-        }
         try {
             EuroLogger.debugLog(this.subscription.toJson());
             SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
@@ -338,15 +328,6 @@ public class EuroMobileManager {
 
     private void setSubscriptionProperty(String key, Object value, Context context) {
         this.subscription.add(key, value);
-        /*
-        if (SharedPreference.hasString(context, Constants.EURO_SUBSCRIPTION_KEY)) {
-            this.subscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
-            this.subscription.add(key, value);
-
-        } else {
-            this.subscription.add(key, value);
-        }
-        */
     }
 
     public Message getNotification(Intent intent) {
@@ -509,41 +490,6 @@ public class EuroMobileManager {
         }
 
         return result;
-    }
-
-    public boolean shouldSendSubscription(Context context) throws ParseException {
-        boolean value ;
-
-        if (isSubscriptionAlreadySent(context)) {
-
-            if (!SharedPreference.getString(context, Constants.LAST_SUBSCRIPTION_TIME).equals("")) {
-
-                Date lastSubsDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(SharedPreference.getString(context, Constants.LAST_SUBSCRIPTION_TIME));
-                Date today = new Date();
-                long diff = lastSubsDate.getTime()- today.getTime();
-
-                int min = (int) (diff / (1000 * 60));
-                int seconds = (int) (- diff / (1000));
-                int remaining = 1200 - seconds;
-
-                if (seconds > 1200 || seconds<-1200) {
-                    value = true;
-
-                } else {
-                    Log.i(TAG, "Have to wait " + remaining  +" seconds to send the same subscription" );
-                    value = false;
-                }
-            } else {
-                value = true;
-                Log.i(TAG, "First subscription request has been received");
-
-            }
-        } else {
-
-            value = true;
-        }
-
-        return value;
     }
 
     public void registerEmail(String email, EmailPermit emailPermit, Boolean isCommercial, Context context, final EuromessageCallback callback){
