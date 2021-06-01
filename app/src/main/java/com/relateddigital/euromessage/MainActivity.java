@@ -119,8 +119,10 @@ public class MainActivity extends AppCompatActivity {
         String lastPushTime = dateFormat. format(Calendar.getInstance().getTime());
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_TIME, lastPushTime);
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_PARAMS, new GsonBuilder().create().toJson(message.getParams()));
-        for (Map.Entry<String, String> entry : message.getParams().entrySet()) {
-            Log.d( "Push Params", "Key : " + entry.getKey() + " Value : " + entry.getValue());
+        if(message.getParams()!=null) {
+            for (Map.Entry<String, String> entry : message.getParams().entrySet()) {
+                Log.d("Push Params", "Key : " + entry.getKey() + " Value : " + entry.getValue());
+            }
         }
         EuroMobileManager.getInstance().reportRead(intent.getExtras());
         notificationUrl(intent);
