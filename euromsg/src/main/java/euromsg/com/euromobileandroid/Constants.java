@@ -6,7 +6,7 @@ public class Constants {
     static final String SDK_VERSION = euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME;
 
 
-    static final String EURO_CONSENT_TIME_KEY = "ConsentTime";
+    public static final String EURO_CONSENT_TIME_KEY = "ConsentTime";
     static final String EURO_CONSENT_SOURCE_KEY = "ConsentSource";
     static final String EURO_CONSENT_SOURCE_VALUE = "HS_MOBIL";
     static final String EURO_RECIPIENT_TYPE_KEY = "RecipientType";

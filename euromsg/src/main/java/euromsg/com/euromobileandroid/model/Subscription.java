@@ -10,6 +10,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.HashMap;
 import java.util.Map;
 
+import euromsg.com.euromobileandroid.Constants;
+
 public class Subscription extends BaseRequest implements Cloneable {
 
     @SerializedName("appVersion")
@@ -69,51 +71,97 @@ public class Subscription extends BaseRequest implements Cloneable {
 
     public boolean isEqual(Subscription previousSubscription) {
         boolean result;
-
         if(previousSubscription == null) {
             result = false;
         } else {
-            if (this.appVersion.equals(previousSubscription.getAppVersion()) &&
-                    this.appAlias.equals(previousSubscription.getAppAlias()) &&
-                    this.os.equals(previousSubscription.getOs()) &&
-                    this.osVersion.equals(previousSubscription.getOsVersion()) &&
-                    this.deviceType.equals(previousSubscription.getDeviceType()) &&
-                    this.deviceName.equals(previousSubscription.getDeviceName()) &&
-                    this.carrier.equals(previousSubscription.getCarrier()) &&
-                    this.local.equals(previousSubscription.getLocal()) &&
-                    this.identifierForVendor.equals(previousSubscription.getIdentifierForVendor()) &&
-                    this.advertisingIdentifier.equals(previousSubscription.getAdvertisingIdentifier()) &&
-                    this.sdkVersion.equals(previousSubscription.getSdkVersion()) &&
+            result = isStringEqual(this.appVersion, previousSubscription.getAppVersion()) &&
+                    isStringEqual(this.appAlias, previousSubscription.getAppAlias()) &&
+                    isStringEqual(this.os, previousSubscription.getOs()) &&
+                    isStringEqual(this.osVersion, previousSubscription.getOsVersion()) &&
+                    isStringEqual(this.deviceType, previousSubscription.getDeviceType()) &&
+                    isStringEqual(this.deviceName, previousSubscription.getDeviceName()) &&
+                    isStringEqual(this.carrier, previousSubscription.getCarrier()) &&
+                    isStringEqual(this.local, previousSubscription.getLocal()) &&
+                    isStringEqual(this.identifierForVendor, previousSubscription.getIdentifierForVendor()) &&
+                    isStringEqual(this.advertisingIdentifier, previousSubscription.getAdvertisingIdentifier()) &&
+                    isStringEqual(this.sdkVersion, previousSubscription.getSdkVersion()) &&
+                    isStringEqual(this.getToken(), previousSubscription.getToken()) &&
                     this.firstTime == previousSubscription.getFirstTime() &&
-                    this.getToken().equals(previousSubscription.getToken()) &&
-                    this.extra.equals(previousSubscription.getExtra()) ) {
-                result = true;
-            } else {
-                result = false;
-            }
+                    isMapEqual(this.extra, previousSubscription.getExtra());
         }
-
         return result;
     }
 
     public void copyFrom(Subscription fromSubscription) {
-        this.setAppVersion(fromSubscription.getAppVersion());
-        this.setAppAlias(fromSubscription.getAppAlias());
-        this.setOs(fromSubscription.getOs());
-        this.setOsVersion(fromSubscription.getOsVersion());
-        this.setDeviceType(fromSubscription.getDeviceType());
-        this.setDeviceName(fromSubscription.getDeviceName());
-        this.setCarrier(fromSubscription.getCarrier());
-        this.setLocal(fromSubscription.getLocal());
-        this.setIdentifierForVendor(fromSubscription.getIdentifierForVendor());
-        this.setAdvertisingIdentifier(fromSubscription.getAdvertisingIdentifier());
-        this.setSdkVersion(fromSubscription.getSdkVersion());
+        if(fromSubscription.getAppVersion() == null) {
+            this.setAppVersion(null);
+        } else {
+            this.setAppVersion(fromSubscription.getAppVersion());
+        }
+        if(fromSubscription.getAppAlias() == null) {
+            this.setAppAlias(null);
+        } else {
+            this.setAppAlias(fromSubscription.getAppAlias());
+        }
+        if(fromSubscription.getOs() == null) {
+            this.setOs(null);
+        } else {
+            this.setOs(fromSubscription.getOs());
+        }
+        if(fromSubscription.getOsVersion() == null) {
+            this.setOsVersion(null);
+        } else {
+            this.setOsVersion(fromSubscription.getOsVersion());
+        }
+        if(fromSubscription.getDeviceType() == null) {
+            this.setDeviceType(null);
+        } else {
+            this.setDeviceType(fromSubscription.getDeviceType());
+        }
+        if(fromSubscription.getDeviceName() == null) {
+            this.setDeviceName(null);
+        } else {
+            this.setDeviceName(fromSubscription.getDeviceName());
+        }
+        if(fromSubscription.getCarrier() == null) {
+            this.setCarrier(null);
+        } else {
+            this.setCarrier(fromSubscription.getCarrier());
+        }
+        if(fromSubscription.getLocal() == null) {
+            this.setLocal(null);
+        } else {
+            this.setLocal(fromSubscription.getLocal());
+        }
+        if(fromSubscription.getIdentifierForVendor() == null) {
+            this.setIdentifierForVendor(null);
+        } else {
+            this.setIdentifierForVendor(fromSubscription.getIdentifierForVendor());
+        }
+        if(fromSubscription.getAdvertisingIdentifier() == null) {
+            this.setAdvertisingIdentifier(null);
+        } else {
+            this.setAdvertisingIdentifier(fromSubscription.getAdvertisingIdentifier());
+        }
+        if(fromSubscription.getSdkVersion() == null) {
+            this.setSdkVersion(null);
+        } else {
+            this.setSdkVersion(fromSubscription.getSdkVersion());
+        }
         this.setFirstTime(fromSubscription.getFirstTime());
-        this.setToken(fromSubscription.getToken());
+        if(fromSubscription.getToken() == null) {
+            this.setToken(null);
+        } else {
+            this.setToken(fromSubscription.getToken());
+        }
         this.extra = new HashMap<>();
         for(int i=0 ; i<fromSubscription.getExtra().size(); i++) {
             String key = (String) fromSubscription.getExtra().keySet().toArray()[i];
-            this.extra.put(key, fromSubscription.getExtra().get(key));
+            if(fromSubscription.getExtra().get(key) == null) {
+                this.extra.put(key, null);
+            } else {
+                this.extra.put(key, fromSubscription.getExtra().get(key));
+            }
         }
     }
 
@@ -223,6 +271,49 @@ public class Subscription extends BaseRequest implements Cloneable {
 
     public String toJson() {
         return new Gson().toJson(this);
+    }
+
+    private boolean isStringEqual(String first, String second) {
+        boolean result;
+        if(first == null || second == null) {
+            result = first == null && second == null;
+        } else {
+            result = first.equals(second);
+        }
+        return result;
+    }
+
+    private boolean isMapEqual(Map<String, Object> first, Map<String, Object> second) {
+        boolean result = true;
+        if(first.size() != second.size()) {
+            result = false;
+        } else {
+            for(int i=0 ; i<first.size(); i++) {
+                String key = (String) first.keySet().toArray()[i];
+                if(key.equals(Constants.EURO_CONSENT_TIME_KEY)) {
+                    continue;
+                }
+                if(!second.containsKey(key)) {
+                    result = false;
+                    break;
+                } else {
+                    String value1 = (String) first.get(key);
+                    String value2 = (String) second.get(key);
+                    if(value1 == null || value2 == null) {
+                        if(!(value1 == null && value2 == null)) {
+                            result = false;
+                            break;
+                        }
+                    } else {
+                        if(!value1.equals(value2)) {
+                            result = false;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     @NonNull

@@ -16,13 +16,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -58,6 +52,7 @@ public class EuroMobileManager {
 
     private Subscription subscription;
     private Subscription previousSubscription;
+    private Subscription previousRegisterEmailSubscription;
 
     private static Context mContext;
 
@@ -512,33 +507,41 @@ public class EuroMobileManager {
             }
             return;
         }
-        setThreadPolicy();
-        if(SubscriptionApiClient.getClient() != null) {
-            apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+        if (registerEmailSubscription.isValid() && !registerEmailSubscription.isEqual(previousRegisterEmailSubscription)) {
+            previousRegisterEmailSubscription = new Subscription();
+            previousRegisterEmailSubscription.copyFrom(registerEmailSubscription);
+
+            setThreadPolicy();
+            if (SubscriptionApiClient.getClient() != null) {
+                apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+            }
+            Call<Void> call = apiInterface.saveSubscription(registerEmailSubscription);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.i(TAG, "Register Email Success");
+                        if (callback != null) {
+                            callback.success();
+                        }
+                    } else {
+                        if (callback != null) {
+                            callback.fail(response.message());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                    call.cancel();
+                    t.printStackTrace();
+                    if (callback != null) {
+                        callback.fail(t.getMessage());
+                    }
+                }
+            });
+        } else {
+            Log.i(TAG, "The same email subscription with the previous one!");
         }
-        Call<Void> call = apiInterface.saveSubscription(registerEmailSubscription);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Log.i(TAG, "Register Email Success");
-                    if(callback != null) {
-                        callback.success();
-                    }
-                } else {
-                    if(callback != null) {
-                        callback.fail(response.message());
-                    }
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                call.cancel();
-                t.printStackTrace();
-                if(callback != null) {
-                    callback.fail(t.getMessage());
-                }
-            }
-        });
     }
 }
