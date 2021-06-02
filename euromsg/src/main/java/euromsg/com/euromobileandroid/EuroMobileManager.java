@@ -227,8 +227,6 @@ public class EuroMobileManager {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
-                    SharedPreference.saveString(context, Constants.ALREADY_SENT_SUBSCRIPTION_JSON, subscription.toJson());
-                    SharedPreference.saveString(context, Constants.LAST_SUBSCRIPTION_TIME, AppUtils.getCurrentDateString());
                     Log.i(TAG, "Sync Success");
                 }
             }
@@ -262,8 +260,9 @@ public class EuroMobileManager {
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
-    public void setAppVersion(String appVersion) {
+    public void setAppVersion(String appVersion, Context context) {
         this.subscription.setAppVersion(appVersion);
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
     public void setTwitterId(String twitterId, Context context) {
