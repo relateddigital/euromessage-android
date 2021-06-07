@@ -150,7 +150,7 @@ public final class AppUtils {
             AppUtils.setThreadPool();
             url = new URL(photoUrl);
             URLConnection connection = url.openConnection();
-            connection.setReadTimeout(3600000); // 60 minutes
+            connection.setReadTimeout(30000); // 30 sec
 
             image = BitmapFactory.decodeStream(connection.getInputStream());
         } catch (IOException e) {
