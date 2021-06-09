@@ -114,6 +114,43 @@ public class EuroMobileManager {
         FirebaseApp.initializeApp(context);
     }
 
+    public void reportReceived(String pushId) {
+
+        if (pushId != null) {
+            EuroLogger.debugLog("Report Received : " + pushId);
+
+            Retention retention = new Retention();
+            if (checkPlayService(mContext)) {
+                retention.setKey(firebaseAppAlias);
+            } else {
+                retention.setKey(huaweiAppAlias);
+            }
+
+            retention.setPushId(pushId);
+            retention.setStatus(MessageStatus.Received.toString());
+            retention.setToken(SharedPreference.getString(mContext, Constants.TOKEN_KEY));
+
+            apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
+            Call<Void> call1 = apiInterface.report(retention);
+            call1.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.d("ReportReceived", "Success");
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                    call.cancel();
+                }
+            });
+
+        } else {
+            EuroLogger.debugLog("reportReceived : Push Id cannot be null!");
+        }
+    }
+
     public void reportRead(Bundle bundle) {
         if (Build.VERSION.SDK_INT < Constants.UI_FEATURES_MIN_API) {
             Log.e("Euromessage", "Euromessage SDK requires min API level 21!");
