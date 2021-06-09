@@ -130,24 +130,70 @@ public class EuroMobileManager {
             retention.setStatus(MessageStatus.Received.toString());
             retention.setToken(SharedPreference.getString(mContext, Constants.TOKEN_KEY));
 
-            apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
-            Call<Void> call1 = apiInterface.report(retention);
+
+            if(RetentionApiClient.getClient() != null) {
+                apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
+                reportReceivedRequest(retention, RetryCounterManager.getCounterId());
+            } else {
+                EuroLogger.debugLog("reportReceived : Api service could not be found!");
+            }
+
+        } else {
+            EuroLogger.debugLog("reportReceived : Push Id cannot be null!");
+        }
+    }
+
+    private void reportReceivedRequest(final Retention retention, final int counterId) {
+        Call<Void> call1 = apiInterface.report(retention);
+        if(counterId != -1) {
             call1.enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Log.d("ReportReceived", "Success");
+                        RetryCounterManager.clearCounter(counterId);
+                        Log.i(TAG, "Sending the received report is success");
+                    } else {
+                        if (RetryCounterManager.getCounterValue(counterId) >= 3) {
+                            RetryCounterManager.clearCounter(counterId);
+                            Log.e(TAG, "Sending the received report is failed after 3 attempts!!!");
+                            call.cancel();
+                        } else {
+                            RetryCounterManager.increaseCounter(counterId);
+                            reportReceivedRequest(retention, counterId);
+                        }
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                public void onFailure(Call<Void> call, Throwable t) {
+                    if (RetryCounterManager.getCounterValue(counterId) >= 3) {
+                        RetryCounterManager.clearCounter(counterId);
+                        Log.e(TAG, "Sending the received report is failed after 3 attempts!!!");
+                        call.cancel();
+                    } else {
+                        RetryCounterManager.increaseCounter(counterId);
+                        reportReceivedRequest(retention, counterId);
+                    }
+                }
+            });
+        } else {
+            call1.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.i(TAG, "Sending the received report is success");
+                    } else {
+                        Log.e(TAG, "Attempting to send the received report failed!!!");
+                        call.cancel();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e(TAG, "Attempting to send the received report failed!!!");
                     call.cancel();
                 }
             });
-
-        } else {
-            EuroLogger.debugLog("reportReceived : Push Id cannot be null!");
         }
     }
 
@@ -176,8 +222,10 @@ public class EuroMobileManager {
 
                 if(RetentionApiClient.getClient() != null) {
                     apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
+                    reportReadRequest(retention, RetryCounterManager.getCounterId());
+                } else {
+                    EuroLogger.debugLog("reportRead : Api service could not be found!");
                 }
-                reportReadRequest(retention, RetryCounterManager.getCounterId());
             } else {
                 EuroLogger.debugLog("reportRead : Push Id cannot be null!");
             }
@@ -223,6 +271,9 @@ public class EuroMobileManager {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         Log.i(TAG, "Sending the read report is success");
+                    } else {
+                        Log.e(TAG, "Attempting to send the read report failed!!!");
+                        call.cancel();
                     }
                 }
 
@@ -291,8 +342,10 @@ public class EuroMobileManager {
 
         if(SubscriptionApiClient.getClient() != null) {
             apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+            saveSubscriptionRequest(RetryCounterManager.getCounterId());
+        } else {
+            EuroLogger.debugLog("saveSubs : Api service could not be found!");
         }
-        saveSubscriptionRequest(RetryCounterManager.getCounterId());
     }
 
     private void saveSubscriptionRequest(final int counterId) {
@@ -335,6 +388,9 @@ public class EuroMobileManager {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         Log.i(TAG, "Sending the subscription is success");
+                    } else {
+                        Log.e(TAG, "An attempt to send the subscription failed!!!");
+                        call.cancel();
                     }
                 }
 
@@ -621,8 +677,10 @@ public class EuroMobileManager {
             setThreadPolicy();
             if (SubscriptionApiClient.getClient() != null) {
                 apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+                registerEmailRequest(registerEmailSubscription, RetryCounterManager.getCounterId(), callback);
+            } else {
+                EuroLogger.debugLog("registerEmail : Api service could not be found!");
             }
-            registerEmailRequest(registerEmailSubscription, RetryCounterManager.getCounterId(), callback);
         } else {
             Log.i(TAG, "The same email subscription with the previous one!");
         }
