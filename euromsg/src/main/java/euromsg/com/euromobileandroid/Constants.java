@@ -12,6 +12,7 @@ public class Constants {
     static final String EURO_RECIPIENT_TYPE_KEY = "RecipientType";
     static final String EURO_RECIPIENT_TYPE_BIREYSEL = "BIREYSEL";
     static final String EURO_RECIPIENT_TYPE_TACIR = "TACIR";
+    public static final String TOKEN_KEY = "token-key";
 
     static final String EURO_EMAIL_KEY = "email";
     static final String EURO_TWITTER_KEY = "twitter";
