@@ -35,6 +35,7 @@ import euromsg.com.euromobileandroid.model.Retention;
 import euromsg.com.euromobileandroid.model.Subscription;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
+import euromsg.com.euromobileandroid.utils.RetryCounterManager;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -139,26 +140,61 @@ public class EuroMobileManager {
                 if(RetentionApiClient.getClient() != null) {
                     apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
                 }
-
-                Call<Void> call1 = apiInterface.report(retention);
-                call1.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-
-                        if (response.isSuccessful()) {
-                            Log.d("reportRead", "Success");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        call.cancel();
-                    }
-                });
-
+                reportReadRequest(retention, RetryCounterManager.getCounterId());
             } else {
                 EuroLogger.debugLog("reportRead : Push Id cannot be null!");
             }
+        }
+    }
+
+    private void reportReadRequest(final Retention retention, final int counterId) {
+        Call<Void> call1 = apiInterface.report(retention);
+        if(counterId != -1) {
+            call1.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        RetryCounterManager.clearCounter(counterId);
+                        Log.i(TAG, "Sending the read report is success");
+                    } else {
+                        if (RetryCounterManager.getCounterValue(counterId) >= 3) {
+                            RetryCounterManager.clearCounter(counterId);
+                            Log.e(TAG, "Sending the read report is failed after 3 attempts!!!");
+                            call.cancel();
+                        } else {
+                            RetryCounterManager.increaseCounter(counterId);
+                            reportReadRequest(retention, counterId);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    if (RetryCounterManager.getCounterValue(counterId) >= 3) {
+                        RetryCounterManager.clearCounter(counterId);
+                        Log.e(TAG, "Sending the read report is failed after 3 attempts!!!");
+                        call.cancel();
+                    } else {
+                        RetryCounterManager.increaseCounter(counterId);
+                        reportReadRequest(retention, counterId);
+                    }
+                }
+            });
+        } else {
+            call1.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.i(TAG, "Sending the read report is success");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e(TAG, "Attempting to send the read report failed!!!");
+                    call.cancel();
+                }
+            });
         }
     }
 
@@ -219,24 +255,59 @@ public class EuroMobileManager {
         if(SubscriptionApiClient.getClient() != null) {
             apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
         }
+        saveSubscriptionRequest(RetryCounterManager.getCounterId());
+    }
 
+    private void saveSubscriptionRequest(final int counterId) {
         Call<Void> call1 = apiInterface.saveSubscription(subscription);
-
-
-        call1.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Log.i(TAG, "Sync Success");
+        if(counterId != -1) {
+            call1.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        RetryCounterManager.clearCounter(counterId);
+                        Log.i(TAG, "Sending the subscription is success");
+                    } else {
+                        if (RetryCounterManager.getCounterValue(counterId) >= 3) {
+                            RetryCounterManager.clearCounter(counterId);
+                            Log.e(TAG, "Sending the subscription is failed after 3 attempts!!!");
+                            call.cancel();
+                        } else {
+                            RetryCounterManager.increaseCounter(counterId);
+                            saveSubscriptionRequest(counterId);
+                        }
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                call.cancel();
-                t.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    if (RetryCounterManager.getCounterValue(counterId) >= 3) {
+                        RetryCounterManager.clearCounter(counterId);
+                        Log.e(TAG, "Sending the subscription is failed after 3 attempts!!!");
+                        call.cancel();
+                        t.printStackTrace();
+                    } else {
+                        RetryCounterManager.increaseCounter(counterId);
+                        saveSubscriptionRequest(counterId);
+                    }
+                }
+            });
+        } else {
+            call1.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Log.i(TAG, "Sending the subscription is success");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e(TAG, "An attempt to send the subscription failed!!!");
+                    call.cancel();
+                }
+            });
+        }
     }
 
     private void setThreadPolicy() {
@@ -514,16 +585,68 @@ public class EuroMobileManager {
             if (SubscriptionApiClient.getClient() != null) {
                 apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
             }
-            Call<Void> call = apiInterface.saveSubscription(registerEmailSubscription);
-            call.enqueue(new Callback<Void>() {
+            registerEmailRequest(registerEmailSubscription, RetryCounterManager.getCounterId(), callback);
+        } else {
+            Log.i(TAG, "The same email subscription with the previous one!");
+        }
+    }
+
+    private void registerEmailRequest(final Subscription registerEmailSubscription, final int counterId,
+                                      final EuromessageCallback callback) {
+        Call<Void> call1 = apiInterface.saveSubscription(registerEmailSubscription);
+        if(counterId != -1) {
+            call1.enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        RetryCounterManager.clearCounter(counterId);
+                        Log.i(TAG, "Register Email Success");
+                        if (callback != null) {
+                            callback.success();
+                        }
+                    } else {
+                        if (RetryCounterManager.getCounterValue(counterId) >= 3) {
+                            RetryCounterManager.clearCounter(counterId);
+                            Log.e(TAG, "Registering the email is failed after 3 attempts!!!");
+                            call.cancel();
+                            if (callback != null) {
+                                callback.fail(response.message());
+                            }
+                        } else {
+                            RetryCounterManager.increaseCounter(counterId);
+                            registerEmailRequest(registerEmailSubscription, counterId, callback);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    if (RetryCounterManager.getCounterValue(counterId) >= 3) {
+                        RetryCounterManager.clearCounter(counterId);
+                        Log.e(TAG, "Registering the email is failed after 3 attempts!!!");
+                        call.cancel();
+                        t.printStackTrace();
+                        if (callback != null) {
+                            callback.fail(t.getMessage());
+                        }
+                    } else {
+                        RetryCounterManager.increaseCounter(counterId);
+                        registerEmailRequest(registerEmailSubscription, counterId, callback);
+                    }
+                }
+            });
+        } else {
+            call1.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         Log.i(TAG, "Register Email Success");
                         if (callback != null) {
                             callback.success();
                         }
                     } else {
+                        Log.e(TAG, "An attempt to register the email failed!!!");
+                        call.cancel();
                         if (callback != null) {
                             callback.fail(response.message());
                         }
@@ -531,16 +654,14 @@ public class EuroMobileManager {
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Log.e(TAG, "An attempt to register the email failed!!!");
                     call.cancel();
-                    t.printStackTrace();
                     if (callback != null) {
                         callback.fail(t.getMessage());
                     }
                 }
             });
-        } else {
-            Log.i(TAG, "The same email subscription with the previous one!");
         }
     }
 }
