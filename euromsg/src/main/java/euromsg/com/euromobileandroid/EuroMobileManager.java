@@ -47,6 +47,7 @@ public class EuroMobileManager {
     private static EuroMobileManager instance;
 
     private static EuroApiService apiInterface;
+    private static String mUserAgent;
 
     public static String huaweiAppAlias;
     public static String firebaseAppAlias;
@@ -82,6 +83,8 @@ public class EuroMobileManager {
         subscription.setAppVersion(AppUtils.appVersion(context));
         subscription.setIdentifierForVendor(AppUtils.deviceUDID(context));
         subscription.setLocal(AppUtils.local(context));
+
+        mUserAgent = System.getProperty("http.agent");
     }
 
     public static EuroMobileManager init(String googleAppAlias, String huwaeiAppAlias, Context context) {
@@ -144,7 +147,7 @@ public class EuroMobileManager {
     }
 
     private void reportReceivedRequest(final Retention retention, final int counterId) {
-        Call<Void> call1 = apiInterface.report(retention);
+        Call<Void> call1 = apiInterface.report(mUserAgent, retention);
         if(counterId != -1) {
             call1.enqueue(new Callback<Void>() {
                 @Override
@@ -233,7 +236,7 @@ public class EuroMobileManager {
     }
 
     private void reportReadRequest(final Retention retention, final int counterId) {
-        Call<Void> call1 = apiInterface.report(retention);
+        Call<Void> call1 = apiInterface.report(mUserAgent, retention);
         if(counterId != -1) {
             call1.enqueue(new Callback<Void>() {
                 @Override
@@ -349,7 +352,7 @@ public class EuroMobileManager {
     }
 
     private void saveSubscriptionRequest(final int counterId) {
-        Call<Void> call1 = apiInterface.saveSubscription(subscription);
+        Call<Void> call1 = apiInterface.saveSubscription(mUserAgent, subscription);
         if(counterId != -1) {
             call1.enqueue(new Callback<Void>() {
                 @Override
@@ -688,7 +691,7 @@ public class EuroMobileManager {
 
     private void registerEmailRequest(final Subscription registerEmailSubscription, final int counterId,
                                       final EuromessageCallback callback) {
-        Call<Void> call1 = apiInterface.saveSubscription(registerEmailSubscription);
+        Call<Void> call1 = apiInterface.saveSubscription(mUserAgent, registerEmailSubscription);
         if(counterId != -1) {
             call1.enqueue(new Callback<Void>() {
                 @Override
