@@ -124,7 +124,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Push Params", "Key : " + entry.getKey() + " Value : " + entry.getValue());
             }
         }
-        EuroMobileManager.getInstance().reportRead(intent.getExtras());
         notificationUrl(intent);
     }
 

@@ -7,5 +7,8 @@
     <application>
         <receiver android:name=".notification.carousel.CarouselEventReceiver" android:exported="true" android:enabled="true"/>
 
+        <service
+            android:name=".service.EuroMessageOpenReportService"
+            android:exported="false"/>
     </application>
 </manifest>

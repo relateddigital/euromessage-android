@@ -26,6 +26,7 @@ import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
 import euromsg.com.euromobileandroid.model.Message;
+import euromsg.com.euromobileandroid.service.EuroMessageOpenReportService;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
@@ -63,17 +64,10 @@ public class PushNotificationManager {
                 createNotificationChannel(mNotificationManager, channelId, pushMessage.getSound(), context);
             }
 
-            String intentStr = SharedPreference.getString(context, Constants.INTENT_NAME);
+            intent = new Intent(context, EuroMessageOpenReportService.class);
+            intent.putExtra("message", pushMessage);
 
-            if (!intentStr.isEmpty()) {
-                intent = new Intent(context, Class.forName(intentStr));
-                intent.putExtra("message", pushMessage);
-
-            } else {
-                intent = AppUtils.getLaunchIntent(context, pushMessage);
-            }
-
-            PendingIntent contentIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
 

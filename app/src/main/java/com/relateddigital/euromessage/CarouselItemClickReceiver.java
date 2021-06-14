@@ -26,7 +26,27 @@ public class CarouselItemClickReceiver extends BroadcastReceiver {
                     } catch (Exception e) {
                         Log.e(LOG_TAG, "The link is not formatted properly!");
                     }
+                    context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
                 }
+                /*Message message = (Message) intent.getSerializableExtra("message");
+
+                String intentStr = SharedPreference.getString(context, Constants.INTENT_NAME);
+
+                if (!intentStr.isEmpty()) {
+                    try {
+                        intent = new Intent(context, Class.forName(intentStr));
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    intent.putExtra("message", message);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                } else {
+                    intent = AppUtils.getLaunchIntent(context, message);
+                }
+
+                context.startActivity(intent);
+                context.sendBroadcast(new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));*/
             }
         }
     }
