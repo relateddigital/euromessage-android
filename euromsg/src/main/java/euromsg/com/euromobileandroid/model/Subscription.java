@@ -155,7 +155,7 @@ public class Subscription extends BaseRequest implements Cloneable {
             this.setToken(fromSubscription.getToken());
         }
         this.extra = new HashMap<>();
-        for(int i=0 ; i<fromSubscription.getExtra().size(); i++) {
+        for(int i=0 ; i<fromSubscription.getExtra().keySet().toArray().length; i++) {
             String key = (String) fromSubscription.getExtra().keySet().toArray()[i];
             if(fromSubscription.getExtra().get(key) == null) {
                 this.extra.put(key, null);
@@ -288,7 +288,7 @@ public class Subscription extends BaseRequest implements Cloneable {
         if(first.size() != second.size()) {
             result = false;
         } else {
-            for(int i=0 ; i<first.size(); i++) {
+            for(int i=0 ; i<first.keySet().toArray().length; i++) {
                 String key = (String) first.keySet().toArray()[i];
                 if(key.equals(Constants.EURO_CONSENT_TIME_KEY)) {
                     continue;
