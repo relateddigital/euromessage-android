@@ -339,6 +339,10 @@ public class EuroMobileManager {
         }
     }
 
+    public String getIdentifierForVendor() {
+        return subscription.getIdentifierForVendor();
+    }
+
     private void callNetworkSubscription(final Context context) {
 
         setThreadPolicy();
