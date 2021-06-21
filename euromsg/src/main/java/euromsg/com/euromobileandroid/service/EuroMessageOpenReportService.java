@@ -30,7 +30,7 @@ public class EuroMessageOpenReportService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent.getExtras() != null) {
             Message message = (Message) intent.getExtras().getSerializable("message");
-            sendOpenReport(intent);
+            //sendOpenReport(intent); //TODO : Open this line to enable sending read report from sdk
             startTheRelatedActivity(message);
         } else {
             Log.e("PushClick : ", "The payload is empty. The read report could not be sent!");
