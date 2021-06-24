@@ -153,6 +153,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
+                        android:layout_margin="5dp"
                         android:padding="20dp"
                         android:scaleType="centerCrop" />
 
@@ -165,7 +166,6 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="2dp"
                         android:text=""
-                        android:layout_marginTop="10dp"
                         android:textColor="#000"
                         android:textSize="14sp" />
 
