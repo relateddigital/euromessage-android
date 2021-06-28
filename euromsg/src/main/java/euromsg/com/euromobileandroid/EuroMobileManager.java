@@ -117,7 +117,7 @@ public class EuroMobileManager {
         FirebaseApp.initializeApp(context);
     }
 
-    public void reportReceived(String pushId) {
+    public void reportReceived(String pushId, String rmcData) {
 
         if (pushId != null) {
             EuroLogger.debugLog("Report Received : " + pushId);
@@ -132,6 +132,12 @@ public class EuroMobileManager {
             retention.setPushId(pushId);
             retention.setStatus(MessageStatus.Received.toString());
             retention.setToken(SharedPreference.getString(mContext, Constants.TOKEN_KEY));
+            retention.setActionBtn(0);
+            retention.setDeliver(1);
+            retention.setIsMobile(1);
+            if(rmcData != null) {
+                retention.setRmcData(rmcData);
+            }
 
 
             if(RetentionApiClient.getClient() != null) {
@@ -207,6 +213,14 @@ public class EuroMobileManager {
         }
 
         Message message = (Message) bundle.getSerializable("message");
+        String rmcData;
+
+        try {
+            rmcData = message.getParams().get("emPushSp");
+        } catch (Exception e) {
+            rmcData = null;
+            e.printStackTrace();
+        }
 
         if (message != null) {
             if (message.getPushId() != null) {
@@ -222,6 +236,12 @@ public class EuroMobileManager {
                 retention.setPushId(message.getPushId());
                 retention.setStatus(MessageStatus.Read.toString());
                 retention.setToken(subscription.getToken());
+                retention.setActionBtn(0);
+                retention.setDeliver(0);
+                retention.setIsMobile(1);
+                if(rmcData != null) {
+                    retention.setRmcData(rmcData);
+                }
 
                 if(RetentionApiClient.getClient() != null) {
                     apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
@@ -291,6 +311,8 @@ public class EuroMobileManager {
 
     public void subscribe(String token, Context context) {
         this.subscription.setToken(token);
+
+        SharedPreference.saveString(mContext, Constants.TOKEN_KEY, token);
 
         setDefaultPushPermit(context);
 

@@ -102,7 +102,17 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                 String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
                 String googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
 
-                EuroMobileManager.init(googleAppAlias,huaweiAppAlias, this).reportReceived(pushMessage.getPushId());
+                String emPushSp;
+
+                try {
+                    emPushSp = pushMessage.getParams().get("emPushSp");
+                    EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
+                            emPushSp);
+                } catch (Exception e) {
+                    EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
+                            null);
+                    e.printStackTrace();
+                }
             } else {
                 EuroLogger.debugLog("remoteMessageData transfrom problem");
             }

@@ -13,6 +13,18 @@ public class Retention extends BaseRequest {
     @SerializedName("status")
     private String status;
 
+    @SerializedName("deliver")
+    private int deliver;
+
+    @SerializedName("isMobile")
+    private int isMobile = 1;
+
+    @SerializedName("actionBtn")
+    private int actionBtn = 0;
+
+    @SerializedName("rmcData")
+    private String rmcData;
+
     public String getKey() {
         return key;
     }
@@ -35,5 +47,37 @@ public class Retention extends BaseRequest {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getDeliver() {
+        return deliver;
+    }
+
+    public void setDeliver(int deliver) {
+        this.deliver = deliver;
+    }
+
+    public int getIsMobile() {
+        return isMobile;
+    }
+
+    public void setIsMobile(int isMobile) {
+        this.isMobile = isMobile;
+    }
+
+    public int getActionBtn() {
+        return actionBtn;
+    }
+
+    public void setActionBtn(int actionBtn) {
+        this.actionBtn = actionBtn;
+    }
+
+    public String getRmcData() {
+        return rmcData;
+    }
+
+    public void setRmcData(String rmcData) {
+        this.rmcData = rmcData;
     }
 }
