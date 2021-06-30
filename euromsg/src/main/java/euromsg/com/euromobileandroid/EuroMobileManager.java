@@ -109,6 +109,30 @@ public class EuroMobileManager {
         return instance;
     }
 
+    public static EuroMobileManager init(Context context) {
+
+        String googleAlias = SharedPreference.getString(context, Constants.GOOGLE_APP_ALIAS);
+        String huaweiAlias = SharedPreference.getString(context, Constants.HUAWEI_APP_ALIAS);
+
+        if(googleAlias.isEmpty() && huaweiAlias.isEmpty()) {
+            Log.e(TAG, "Could not create EuroMobileManager instance!!!");
+            return null;
+        }
+
+        if (instance == null) {
+            instance = new EuroMobileManager(context, googleAlias, huaweiAlias);
+        }
+
+        huaweiAppAlias = huaweiAlias;
+        firebaseAppAlias = googleAlias;
+
+        mContext = context;
+
+        EuroLogger.debugLog("App Key : " + instance.subscription.getAppAlias());
+
+        return instance;
+    }
+
     public static EuroMobileManager getInstance() {
         return instance;
     }
