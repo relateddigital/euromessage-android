@@ -1,5 +1,7 @@
 package euromsg.com.euromobileandroid.service;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -41,6 +43,11 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
         Map<String, String> remoteMessageData = remoteMessage.getData();
         Message pushMessage = new Message(remoteMessageData);
+
+        if(pushMessage.getEmPushSp() == null) {
+            Log.i("Push Notification", "The push notification was not coming from Related Digital! Ignoring..");
+            return;
+        }
 
         EuroLogger.debugLog("EM FirebasePayload : " + new Gson().toJson(pushMessage));
 

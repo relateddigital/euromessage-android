@@ -67,6 +67,11 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
 
             Message pushMessage = new Gson().fromJson(remoteMessage.getData(), Message.class);
 
+            if(pushMessage.getEmPushSp() == null) {
+                Log.i("Push Notification", "The push notification was not coming from Related Digital! Ignoring..");
+                return;
+            }
+
             PushNotificationManager pushNotificationManager = new PushNotificationManager();
 
             EuroLogger.debugLog("Message received : " + pushMessage.getMessage());
