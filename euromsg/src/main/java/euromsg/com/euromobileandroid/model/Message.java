@@ -26,6 +26,7 @@ public class Message implements Serializable {
     private String message;
     private String title;
     private String sound;
+    private String emPushSp;
     private PushType pushType;
     private String collapseKey;
     private Map<String, String> params = new HashMap<>();
@@ -48,6 +49,7 @@ public class Message implements Serializable {
         message = bundle.get("message");
         title = bundle.get("title");
         sound = bundle.get("sound");
+        emPushSp = bundle.get("emPushSp");
         campaignId = bundle.get("cId");
         if (bundle.get("pushType") != null) {
             pushType = PushType.valueOf(bundle.get("pushType"));
@@ -99,6 +101,7 @@ public class Message implements Serializable {
         message = bundle.getString("message");
         title = bundle.getString("title");
         sound = bundle.getString("sound");
+        emPushSp = bundle.getString("emPushSp");
         campaignId = bundle.getString("cId");
         if (bundle.getString("pushType") != null) {
             pushType = PushType.valueOf(bundle.getString("pushType"));
@@ -141,6 +144,10 @@ public class Message implements Serializable {
 
     public String getCollapseKey() {
         return collapseKey;
+    }
+
+    public String getEmPushSp() {
+        return emPushSp;
     }
 
     public Map<String, String> getParams() {

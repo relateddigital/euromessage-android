@@ -80,17 +80,8 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
             String appAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
             String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
 
-            String emPushSp;
-
-            try {
-                emPushSp = pushMessage.getParams().get("emPushSp");
-                EuroMobileManager.init(appAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
-                        emPushSp);
-            } catch (Exception e) {
-                EuroMobileManager.init(appAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
-                        null);
-                e.printStackTrace();
-            }
+            EuroMobileManager.init(appAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
+                    pushMessage.getEmPushSp());
         } else {
             EuroLogger.debugLog("remoteMessageData transfrom problem");
         }

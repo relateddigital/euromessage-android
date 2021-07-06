@@ -163,7 +163,6 @@ public class EuroMobileManager {
                 retention.setRmcData(rmcData);
             }
 
-
             if(RetentionApiClient.getClient() != null) {
                 apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
                 reportReceivedRequest(retention, RetryCounterManager.getCounterId());
@@ -237,14 +236,7 @@ public class EuroMobileManager {
         }
 
         Message message = (Message) bundle.getSerializable("message");
-        String rmcData;
-
-        try {
-            rmcData = message.getParams().get("emPushSp");
-        } catch (Exception e) {
-            rmcData = null;
-            e.printStackTrace();
-        }
+        String rmcData = message.getEmPushSp();
 
         if (message != null) {
             if (message.getPushId() != null) {
