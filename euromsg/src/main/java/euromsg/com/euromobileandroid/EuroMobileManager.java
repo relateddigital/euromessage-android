@@ -46,7 +46,8 @@ public class EuroMobileManager {
 
     private static EuroMobileManager instance;
 
-    private static EuroApiService apiInterface;
+    private static EuroApiService retentionApiInterface;
+    private static EuroApiService subscriptionApiInterface;
     private static String mUserAgent;
 
     public static String huaweiAppAlias;
@@ -71,6 +72,14 @@ public class EuroMobileManager {
             subscription.setAppAlias(googleAppAlias);
         } else {
             subscription.setAppAlias(huaweiAppAlias);
+        }
+
+        if(RetentionApiClient.getClient() != null) {
+            retentionApiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
+        }
+
+        if(SubscriptionApiClient.getClient() != null) {
+            subscriptionApiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
         }
 
         subscription.setFirstTime(0);
@@ -164,7 +173,7 @@ public class EuroMobileManager {
             }
 
             if(RetentionApiClient.getClient() != null) {
-                apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
+                retentionApiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
                 reportReceivedRequest(retention, RetryCounterManager.getCounterId());
             } else {
                 EuroLogger.debugLog("reportReceived : Api service could not be found!");
@@ -176,7 +185,7 @@ public class EuroMobileManager {
     }
 
     private void reportReceivedRequest(final Retention retention, final int counterId) {
-        Call<Void> call1 = apiInterface.report(mUserAgent, retention);
+        Call<Void> call1 = retentionApiInterface.report(mUserAgent, retention);
         if(counterId != -1) {
             call1.enqueue(new Callback<Void>() {
                 @Override
@@ -260,7 +269,7 @@ public class EuroMobileManager {
                 }
 
                 if(RetentionApiClient.getClient() != null) {
-                    apiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
+                    retentionApiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
                     reportReadRequest(retention, RetryCounterManager.getCounterId());
                 } else {
                     EuroLogger.debugLog("reportRead : Api service could not be found!");
@@ -272,7 +281,7 @@ public class EuroMobileManager {
     }
 
     private void reportReadRequest(final Retention retention, final int counterId) {
-        Call<Void> call1 = apiInterface.report(mUserAgent, retention);
+        Call<Void> call1 = retentionApiInterface.report(mUserAgent, retention);
         if(counterId != -1) {
             call1.enqueue(new Callback<Void>() {
                 @Override
@@ -386,7 +395,7 @@ public class EuroMobileManager {
         setThreadPolicy();
 
         if(SubscriptionApiClient.getClient() != null) {
-            apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+            subscriptionApiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
             saveSubscriptionRequest(RetryCounterManager.getCounterId());
         } else {
             EuroLogger.debugLog("saveSubs : Api service could not be found!");
@@ -394,7 +403,7 @@ public class EuroMobileManager {
     }
 
     private void saveSubscriptionRequest(final int counterId) {
-        Call<Void> call1 = apiInterface.saveSubscription(mUserAgent, subscription);
+        Call<Void> call1 = subscriptionApiInterface.saveSubscription(mUserAgent, subscription);
         if(counterId != -1) {
             call1.enqueue(new Callback<Void>() {
                 @Override
@@ -721,7 +730,7 @@ public class EuroMobileManager {
 
             setThreadPolicy();
             if (SubscriptionApiClient.getClient() != null) {
-                apiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
+                subscriptionApiInterface = SubscriptionApiClient.getClient().create(EuroApiService.class);
                 registerEmailRequest(registerEmailSubscription, RetryCounterManager.getCounterId(), callback);
             } else {
                 EuroLogger.debugLog("registerEmail : Api service could not be found!");
@@ -733,7 +742,7 @@ public class EuroMobileManager {
 
     private void registerEmailRequest(final Subscription registerEmailSubscription, final int counterId,
                                       final EuromessageCallback callback) {
-        Call<Void> call1 = apiInterface.saveSubscription(mUserAgent, registerEmailSubscription);
+        Call<Void> call1 = subscriptionApiInterface.saveSubscription(mUserAgent, registerEmailSubscription);
         if(counterId != -1) {
             call1.enqueue(new Callback<Void>() {
                 @Override
