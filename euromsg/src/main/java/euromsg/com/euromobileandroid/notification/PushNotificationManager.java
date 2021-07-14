@@ -34,7 +34,7 @@ import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class PushNotificationManager {
 
-    private String channelId = "RelatedDigitalAndroid";
+    private String channelId = "euro-message";
 
     Intent intent;
 
@@ -113,7 +113,6 @@ public class PushNotificationManager {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                //.setNumber(5) TODO : Set the badge count from the payload here
                 .setAutoCancel(true);
         setNumber(mBuilder, context);
         setNotificationSmallIcon(mBuilder, context);
@@ -154,7 +153,6 @@ public class PushNotificationManager {
                 .setContentTitle(title)
                 .setColorized(false)
                 .setAutoCancel(true)
-                //.setNumber(5) TODO : Set the badge count from the payload here
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentText(pushMessage.getMessage());
@@ -191,7 +189,6 @@ public class PushNotificationManager {
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         notificationChannel.enableLights(true);
         notificationChannel.enableVibration(true);
-        notificationChannel.setShowBadge(true);
 
         if (sound != null) {
             Uri soundUri = AppUtils.getSound(context, sound);
