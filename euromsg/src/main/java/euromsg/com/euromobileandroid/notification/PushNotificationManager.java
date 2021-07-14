@@ -113,7 +113,7 @@ public class PushNotificationManager {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setNumber(5)
+                //.setNumber(5) TODO : Set the badge count from the payload here
                 .setAutoCancel(true);
         setNumber(mBuilder, context);
         setNotificationSmallIcon(mBuilder, context);
@@ -154,7 +154,7 @@ public class PushNotificationManager {
                 .setContentTitle(title)
                 .setColorized(false)
                 .setAutoCancel(true)
-                .setNumber(5)
+                //.setNumber(5) TODO : Set the badge count from the payload here
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentText(pushMessage.getMessage());
