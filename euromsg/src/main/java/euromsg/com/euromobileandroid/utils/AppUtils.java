@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
@@ -322,5 +323,15 @@ public final class AppUtils {
             ID = null;
         }
         return ID;
+    }
+
+    public static boolean isResourceAvailable(Context context, int resId) {
+        if (context != null) {
+            try {
+                return context.getResources().getResourceName(resId) != null;
+            } catch (Resources.NotFoundException ignore) {
+            }
+        }
+        return false;
     }
 }

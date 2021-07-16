@@ -94,7 +94,7 @@ public class PushNotificationManager {
         if(willLargeIconBeUsed) {
             int largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
 
-            if (largeIcon == 0) {
+            if (largeIcon == 0 || !AppUtils.isResourceAvailable(context, largeIcon)) {
                 largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
                         ImageUtils.getAppIcon(context));
             } else {
@@ -131,7 +131,7 @@ public class PushNotificationManager {
         if(willLargeIconBeUsed) {
             int largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
 
-            if (largeIcon == 0) {
+            if (largeIcon == 0 || !AppUtils.isResourceAvailable(context, largeIcon)) {
                 largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
                         ImageUtils.getAppIcon(context));
             } else {
@@ -221,7 +221,7 @@ public class PushNotificationManager {
 
         int transparentSmallIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON);
 
-        if (transparentSmallIcon == 0) {
+        if (transparentSmallIcon == 0 || !AppUtils.isResourceAvailable(context, transparentSmallIcon)) {
             transparentSmallIcon = ImageUtils.getAppIcon(context);
         }
 
