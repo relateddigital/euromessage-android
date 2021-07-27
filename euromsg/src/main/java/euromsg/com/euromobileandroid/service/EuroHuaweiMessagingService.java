@@ -16,6 +16,9 @@
 
 package euromsg.com.euromobileandroid.service;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -41,11 +44,34 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
 
     @Override
     public void onNewToken(String token) {
+        String googleAppAlias;
+        String huaweiAppAlias;
         if (!checkPlayService()) {
             if (!TextUtils.isEmpty(token)) {
-                String gooleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
-                String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
-                EuroMobileManager.init(gooleAppAlias, huaweiAppAlias, this).subscribe(token, this);
+                try {
+                    EuroLogger.debugLog("On new token : " + token);
+                    ApplicationInfo appInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+                    if(appInfo!=null){
+                        Bundle bundle = appInfo.metaData;
+                        if(bundle!=null){
+                            googleAppAlias = bundle.getString("GoogleAppAlias", "");
+                            huaweiAppAlias = bundle.getString("HuaweiAppAlias", "");
+                        } else {
+                            googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+                            huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+                        }
+                    } else {
+                        googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+                        huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+                    }
+                    EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).subscribe(token, this);
+
+                } catch (Exception e) {
+                    EuroLogger.debugLog(e.toString());
+                    googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+                    huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+                    EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).subscribe(token, this);
+                }
                 Log.i(TAG, "Huawei Token refresh token:" + token);
             }
         } else {
