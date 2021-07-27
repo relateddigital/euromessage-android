@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data android:name="GoogleAppAlias" android:value="euromessage-android" />
+        <meta-data android:name="HuaweiAppAlias" android:value="euromsg-huawei" />
+
         <activity android:name=".MainActivity"
             android:launchMode="singleTop">
             <intent-filter>

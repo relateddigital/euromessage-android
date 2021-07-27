@@ -1,5 +1,8 @@
 package euromsg.com.euromobileandroid.service;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -25,15 +28,31 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String token) {
+        String googleAppAlias;
+        String huaweiAppAlias;
         try {
             EuroLogger.debugLog("On new token : " + token);
-            String gooleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
-            String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
-            EuroMobileManager.init(gooleAppAlias, huaweiAppAlias, this).subscribe(token, this);
+            ApplicationInfo appInfo = getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            if(appInfo!=null){
+                Bundle bundle = appInfo.metaData;
+                if(bundle!=null){
+                    googleAppAlias = bundle.getString("GoogleAppAlias", "");
+                    huaweiAppAlias = bundle.getString("HuaweiAppAlias", "");
+                } else {
+                    googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+                    huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+                }
+            } else {
+                googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+                huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+            }
+            EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).subscribe(token, this);
 
         } catch (Exception e) {
             EuroLogger.debugLog(e.toString());
-            EuroLogger.debugLog("Failed to complete token refresh");
+            googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+            huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+            EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).subscribe(token, this);
         }
     }
 
