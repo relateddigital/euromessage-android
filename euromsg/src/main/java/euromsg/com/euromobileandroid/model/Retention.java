@@ -22,8 +22,8 @@ public class Retention extends BaseRequest {
     @SerializedName("actionBtn")
     private int actionBtn = 0;
 
-    @SerializedName("rmcData")
-    private String rmcData;
+    @SerializedName("emPushSp")
+    private String emPushSp;
 
     public String getKey() {
         return key;
@@ -73,11 +73,11 @@ public class Retention extends BaseRequest {
         this.actionBtn = actionBtn;
     }
 
-    public String getRmcData() {
-        return rmcData;
+    public String getEmPushSp() {
+        return emPushSp;
     }
 
-    public void setRmcData(String rmcData) {
-        this.rmcData = rmcData;
+    public void setEmPushSp(String emPushSp) {
+        this.emPushSp = emPushSp;
     }
 }

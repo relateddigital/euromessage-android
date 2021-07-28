@@ -150,7 +150,7 @@ public class EuroMobileManager {
         FirebaseApp.initializeApp(context);
     }
 
-    public void reportReceived(String pushId, String rmcData) {
+    public void reportReceived(String pushId, String emPushSp) {
 
         if (pushId != null) {
             EuroLogger.debugLog("Report Received : " + pushId);
@@ -168,8 +168,8 @@ public class EuroMobileManager {
             retention.setActionBtn(0);
             retention.setDeliver(1);
             retention.setIsMobile(1);
-            if(rmcData != null) {
-                retention.setRmcData(rmcData);
+            if(emPushSp != null) {
+                retention.setEmPushSp(emPushSp);
             }
 
             if(RetentionApiClient.getClient() != null) {
@@ -245,7 +245,7 @@ public class EuroMobileManager {
         }
 
         Message message = (Message) bundle.getSerializable("message");
-        String rmcData = message.getEmPushSp();
+        String emPushSp = message.getEmPushSp();
 
         if (message != null) {
             if (message.getPushId() != null) {
@@ -264,8 +264,8 @@ public class EuroMobileManager {
                 retention.setActionBtn(0);
                 retention.setDeliver(0);
                 retention.setIsMobile(1);
-                if(rmcData != null) {
-                    retention.setRmcData(rmcData);
+                if(emPushSp != null) {
+                    retention.setEmPushSp(emPushSp);
                 }
 
                 if(RetentionApiClient.getClient() != null) {
