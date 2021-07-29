@@ -56,6 +56,8 @@ public class EuroMobileManager {
     private Subscription subscription;
     private Subscription previousSubscription;
     private Subscription previousRegisterEmailSubscription;
+    private String latestDeliverPushId = "";
+    private String latestOpenPushId = "";
 
     private static Context mContext;
 
@@ -152,7 +154,8 @@ public class EuroMobileManager {
 
     public void reportReceived(String pushId, String emPushSp) {
 
-        if (pushId != null) {
+        if (pushId != null && !pushId.isEmpty() && !pushId.equals(latestDeliverPushId)) {
+            latestDeliverPushId = pushId;
             EuroLogger.debugLog("Report Received : " + pushId);
 
             Retention retention = new Retention();
@@ -180,7 +183,7 @@ public class EuroMobileManager {
             }
 
         } else {
-            EuroLogger.debugLog("reportReceived : Push Id cannot be null!");
+            EuroLogger.debugLog("reportReceived : Push Id is invalid!");
         }
     }
 
@@ -245,37 +248,43 @@ public class EuroMobileManager {
         }
 
         Message message = (Message) bundle.getSerializable("message");
-        String emPushSp = message.getEmPushSp();
 
-        if (message != null) {
-            if (message.getPushId() != null) {
-                EuroLogger.debugLog("Report Read : " + message.getPushId());
-                Retention retention = new Retention();
+        if (message.getPushId() == null || message.getPushId().isEmpty() || message.getPushId().equals(latestOpenPushId)) {
+            Log.e("Euromessage", "Push Id is invalid!");
+        } else {
+            latestOpenPushId = message.getPushId();
+            String emPushSp = message.getEmPushSp();
 
-                if (checkPlayService(mContext)) {
-                    retention.setKey(firebaseAppAlias);
+            if (message != null) {
+                if (message.getPushId() != null) {
+                    EuroLogger.debugLog("Report Read : " + message.getPushId());
+                    Retention retention = new Retention();
+
+                    if (checkPlayService(mContext)) {
+                        retention.setKey(firebaseAppAlias);
+                    } else {
+                        retention.setKey(huaweiAppAlias);
+                    }
+
+                    retention.setPushId(message.getPushId());
+                    retention.setStatus(MessageStatus.Read.toString());
+                    retention.setToken(subscription.getToken());
+                    retention.setActionBtn(0);
+                    retention.setDeliver(0);
+                    retention.setIsMobile(1);
+                    if (emPushSp != null) {
+                        retention.setEmPushSp(emPushSp);
+                    }
+
+                    if (RetentionApiClient.getClient() != null) {
+                        retentionApiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
+                        reportReadRequest(retention, RetryCounterManager.getCounterId());
+                    } else {
+                        EuroLogger.debugLog("reportRead : Api service could not be found!");
+                    }
                 } else {
-                    retention.setKey(huaweiAppAlias);
+                    EuroLogger.debugLog("reportRead : Push Id cannot be null!");
                 }
-
-                retention.setPushId(message.getPushId());
-                retention.setStatus(MessageStatus.Read.toString());
-                retention.setToken(subscription.getToken());
-                retention.setActionBtn(0);
-                retention.setDeliver(0);
-                retention.setIsMobile(1);
-                if(emPushSp != null) {
-                    retention.setEmPushSp(emPushSp);
-                }
-
-                if(RetentionApiClient.getClient() != null) {
-                    retentionApiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
-                    reportReadRequest(retention, RetryCounterManager.getCounterId());
-                } else {
-                    EuroLogger.debugLog("reportRead : Api service could not be found!");
-                }
-            } else {
-                EuroLogger.debugLog("reportRead : Push Id cannot be null!");
             }
         }
     }
