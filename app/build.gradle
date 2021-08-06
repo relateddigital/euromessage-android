@@ -14,14 +14,14 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('C:\\Users\\emre.eken\\Desktop\\AndroidProjects\\Documents\\keystore.jks')
+            storeFile file('C:/Users/emre.eken/Desktop/AndroidProjects/Documents/keystore.jks')
             storePassword 'RD%asd2'
             keyAlias 'debug-key'
             keyPassword 'RD%asd2'
         }
 
         release {
-            storeFile file('C:\\Users\\emre.eken\\Desktop\\AndroidProjects\\Documents\\keystore.jks')
+            storeFile file('C:/Users/emre.eken/Desktop/AndroidProjects/Documents/keystore.jks')
             storePassword 'RD%asd2'
             keyAlias 'debug-key'
             keyPassword 'RD%asd2'
