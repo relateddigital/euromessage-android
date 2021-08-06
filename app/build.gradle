@@ -14,17 +14,17 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file(KEYSTORE_FILE)
-            storePassword KEYSTORE_PASSWORD
-            keyAlias KEY_ALIAS
-            keyPassword KEY_PASSWORD
+            storeFile file('keystore.jks')
+            storePassword 'RD%asd2'
+            keyAlias 'debug-key'
+            keyPassword 'RD%asd2'
         }
 
         release {
-            storeFile file(KEYSTORE_FILE)
-            storePassword KEYSTORE_PASSWORD
-            keyAlias KEY_ALIAS
-            keyPassword KEY_PASSWORD
+            storeFile file('keystore.jks')
+            storePassword 'RD%asd2'
+            keyAlias 'debug-key'
+            keyPassword 'RD%asd2'
         }
     }
     buildTypes {
