@@ -3,7 +3,7 @@
 buildscript {
         repositories {
             google()
-            jcenter()
+            mavenCentral()
             maven {url 'http://developer.huawei.com/repo/'}
         }
 
@@ -11,7 +11,6 @@ buildscript {
         classpath 'com.android.tools.build:gradle:4.1.2'
         classpath 'com.google.gms:google-services:4.3.4'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
         classpath 'com.huawei.agconnect:agcp:1.4.1.300'
 
@@ -21,7 +20,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
         maven {url 'http://developer.huawei.com/repo/'}
         maven { url 'https://jitpack.io' }
     }

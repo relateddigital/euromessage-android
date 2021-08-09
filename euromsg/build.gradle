@@ -1,35 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 group = 'com.github.relateddigital'
 
 //apply from: 'maven-push.gradle'
-
-ext {
-    bintrayRepo = 'euromessage'
-    bintrayName = 'euromessage'
-
-    publishedGroupId = 'com.euromsg'
-    libraryName = 'Euromessage Android'
-    artifact = 'euromsg'
-
-    libraryDescription = 'SDK for Euromsg\'.'
-
-    siteUrl = 'https://www.euromsg.com/'
-    gitUrl = 'https://www.euromsg.com/'
-
-    libraryVersion = '4.5.6'
-
-    developerId = 'visilabs'
-    developerName = 'Visilabs'
-    developerEmail = 'mobiledevelopers@euromsg.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
 
 android {
     compileSdkVersion 30
@@ -39,17 +14,14 @@ android {
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
-        versionName "4.5.6"
-        buildConfigField 'String', 'VERSION_NAME', "\"4.5.6\""
+        versionName "4.5.7"
+        buildConfigField 'String', 'VERSION_NAME', "\"4.5.7\""
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-    repositories {
-        mavenCentral()
     }
 }
 
@@ -73,10 +45,4 @@ allprojects {
     tasks.withType(Javadoc) {
         enabled = false
     }
-}
-
-apply from: 'bintray-install.gradle'
-apply from: 'bintray-upload.gradle'
-repositories {
-    mavenCentral()
 }
