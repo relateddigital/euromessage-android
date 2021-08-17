@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;
 
+import java.util.Map;
 import java.util.Random;
 
 import euromsg.com.euromobileandroid.Constants;
@@ -91,7 +92,8 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
 
             Log.i("Euromessage HPayload", remoteMessage.getData());
 
-            Message pushMessage = new Gson().fromJson(remoteMessage.getData(), Message.class);
+            Map<String, String> remoteMessageData = remoteMessage.getDataOfMap();
+            Message pushMessage = new Message(remoteMessageData);
 
             if(pushMessage.getEmPushSp() == null) {
                 Log.i("Push Notification", "The push notification was not coming from Related Digital! Ignoring..");
