@@ -18,9 +18,12 @@ package euromsg.com.euromobileandroid.service;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -37,6 +40,7 @@ import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
+import euromsg.com.euromobileandroid.utils.PayloadUtils;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class EuroHuaweiMessagingService extends HmsMessageService {
@@ -80,6 +84,7 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
@@ -137,8 +142,10 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
 
                 EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
                         pushMessage.getEmPushSp());
+
+                PayloadUtils.addPushMessage(this, pushMessage);
             } else {
-                EuroLogger.debugLog("remoteMessageData transfrom problem");
+                EuroLogger.debugLog("remoteMessageData transform problem");
             }
         } else {
             Log.i(TAG, "Google Services are enable");

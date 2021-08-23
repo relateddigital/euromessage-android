@@ -17,6 +17,7 @@ import euromsg.com.euromobileandroid.enums.PushType;
 
 public class Message implements Serializable {
 
+    private String date;
     private String mediaUrl;
     private String altUrl;
     private String pushId;
@@ -41,6 +42,7 @@ public class Message implements Serializable {
                 params.put(key, value.toString());
             }
         }
+        date = bundle.get("date");
         mediaUrl = bundle.get("mediaUrl");
         pushId = bundle.get("pushId");
         url = bundle.get("url");
@@ -93,6 +95,7 @@ public class Message implements Serializable {
             Object value = bundle.get(key);
             params.put(key, value.toString());
         }
+        date = bundle.getString("date");
         mediaUrl = bundle.getString("mediaUrl");
         pushId = bundle.getString("pushId");
         url = bundle.getString("url");
@@ -110,12 +113,20 @@ public class Message implements Serializable {
         elements = bundle.getParcelable("elements");
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     public String getAltUrl() {
         return altUrl;
     }
 
     public String getCampaignId() {
         return campaignId;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public String getMediaUrl() {
