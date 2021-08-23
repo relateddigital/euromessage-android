@@ -2,10 +2,12 @@ package euromsg.com.euromobileandroid.service;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -22,6 +24,7 @@ import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
+import euromsg.com.euromobileandroid.utils.PayloadUtils;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class EuroFirebaseMessagingService extends FirebaseMessagingService {
@@ -56,6 +59,7 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -108,6 +112,8 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
             EuroMobileManager.init(appAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
                     pushMessage.getEmPushSp());
+
+            PayloadUtils.addPushMessage(this, pushMessage);
         } else {
             EuroLogger.debugLog("remoteMessageData transfrom problem");
         }

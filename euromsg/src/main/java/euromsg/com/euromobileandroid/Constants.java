@@ -59,4 +59,7 @@ public class Constants {
     public static final String INTENT_NAME = "intent_name";
     public static final int UI_FEATURES_MIN_API = 21;
 
+    public static final String PAYLOAD_SP_KEY = "payload_sp";
+    public static final String PAYLOAD_SP_ARRAY_KEY = "messages";
+
 }
