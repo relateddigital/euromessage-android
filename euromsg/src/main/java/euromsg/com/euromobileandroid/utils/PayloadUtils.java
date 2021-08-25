@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import euromsg.com.euromobileandroid.Constants;
@@ -47,6 +48,19 @@ public final class PayloadUtils {
         } else {
             createAndSaveNewOne(context, message);
         }
+    }
+
+    public static List<Message> orderPushMessages(List<Message> messages) {
+        for (int i = 0; i < messages.size(); i++) {
+            for (int j = 0; j < messages.size() - 1 - i; j++) {
+                if(compareDates(messages.get(j).getDate(), messages.get(j+1).getDate())) {
+                    Message temp = messages.get(j);
+                    messages.set(j, messages.get(j+1));
+                    messages.set(j+1, temp);
+                }
+            }
+        }
+        return messages;
     }
 
     private static boolean isPushIdAvailable(JSONArray jsonArray, Message message) {
@@ -120,5 +134,21 @@ public final class PayloadUtils {
             Log.e(LOG_TAG, "Could not save the push message!");
             Log.e(LOG_TAG, e.getMessage());
         }
+    }
+
+    private static boolean compareDates(String str1, String str2) {
+        boolean res = false;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        try {
+            Date date1 = dateFormat.parse(str1);
+            Date date2 = dateFormat.parse(str2);
+            if((date1.getTime()-date2.getTime()) < 0) {
+                res = true;
+            }
+        } catch (Exception e) {
+            Log.e(LOG_TAG, "Could not parse date!");
+            Log.e(LOG_TAG, e.getMessage());
+        }
+        return res;
     }
 }

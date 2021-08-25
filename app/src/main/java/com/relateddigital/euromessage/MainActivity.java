@@ -3,6 +3,7 @@ package com.relateddigital.euromessage;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 
 import android.graphics.Color;
@@ -38,10 +39,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
+import euromsg.com.euromobileandroid.callback.PushMessageInterface;
 import euromsg.com.euromobileandroid.enums.EmailPermit;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.model.EuromessageCallback;
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int FIRST_ITEM_CAROUSEL = 0;
     private ActivityMainBinding binding;
+    private Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
+        activity = this;
         createSpinners();
         visilabsAdvertisement();
         setUI();
@@ -69,13 +74,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createSpinners() {
-        String[] registeremailCommercialSpinnerItems = new String[]{ Constants.EURO_RECIPIENT_TYPE_BIREYSEL, Constants.EURO_RECIPIENT_TYPE_TACIR };
-        ArrayAdapter aa1 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, registeremailCommercialSpinnerItems);
+        String[] registeremailCommercialSpinnerItems = new String[]{Constants.EURO_RECIPIENT_TYPE_BIREYSEL, Constants.EURO_RECIPIENT_TYPE_TACIR};
+        ArrayAdapter aa1 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, registeremailCommercialSpinnerItems);
         aa1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.registeremailcommercialSpinner.setAdapter(aa1);
 
-        String[] registeremailPermitSpinnerItems = new String[]{ Constants.EMAIL_PERMIT_ACTIVE, Constants.EMAIL_PERMIT_PASSIVE };
-        ArrayAdapter aa2 = new ArrayAdapter(this,android.R.layout.simple_spinner_item, registeremailPermitSpinnerItems);
+        String[] registeremailPermitSpinnerItems = new String[]{Constants.EMAIL_PERMIT_ACTIVE, Constants.EMAIL_PERMIT_PASSIVE};
+        ArrayAdapter aa2 = new ArrayAdapter(this, android.R.layout.simple_spinner_item, registeremailPermitSpinnerItems);
         aa2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.registeremailpermitSpinner.setAdapter(aa2);
 
@@ -116,10 +121,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void handlePush(Message message, Intent intent) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String lastPushTime = dateFormat. format(Calendar.getInstance().getTime());
+        String lastPushTime = dateFormat.format(Calendar.getInstance().getTime());
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_TIME, lastPushTime);
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_PARAMS, new GsonBuilder().create().toJson(message.getParams()));
-        if(message.getParams()!=null) {
+        if (message.getParams() != null) {
             for (Map.Entry<String, String> entry : message.getParams().entrySet()) {
                 Log.d("Push Params", "Key : " + entry.getKey() + " Value : " + entry.getValue());
             }
@@ -135,19 +140,20 @@ public class MainActivity extends AppCompatActivity {
         binding.tvLastPushTime.setText(SP.getString(getApplicationContext(), Constants.LAST_PUSH_TIME));
         String lastPushParamsString = SP.getString(getApplicationContext(), Constants.LAST_PUSH_PARAMS);
         Gson gson = new Gson();
-        Type paramsType = new TypeToken<Map<String, String>>() {}.getType();
+        Type paramsType = new TypeToken<Map<String, String>>() {
+        }.getType();
         Map<String, String> params = gson.fromJson(lastPushParamsString, paramsType);
-        if(params == null)
+        if (params == null)
             return;
         int index = 0;
-        for(Map.Entry<String, String> param : params.entrySet()){
+        for (Map.Entry<String, String> param : params.entrySet()) {
             setTableRowUI(index, param);
             index++;
         }
     }
 
     private void setTableRowUI(int index, Map.Entry<String, String> param) {
-        int backgroundColor =  (index %2 ==0) ? R.color.colorLight : R.color.colorBackground;
+        int backgroundColor = (index % 2 == 0) ? R.color.colorLight : R.color.colorBackground;
         TableRow tr = new TableRow(this);
         String key = param.getKey().length() > 30 ? param.getKey().substring(0, 30) : param.getKey();
         String value = param.getValue().length() > 30 ? param.getValue().substring(0, 30) : param.getValue();
@@ -182,15 +188,15 @@ public class MainActivity extends AppCompatActivity {
         sendATemplatePush();
         String huaweiToken = SP.getString(getApplicationContext(), "HuaweiToken");
         String firabaseToken = SP.getString(getApplicationContext(), "FirebaseToken");
-        
+
         if (EuroMobileManager.checkPlayService(getApplicationContext())) {
-            if(firabaseToken.equals("")){
+            if (firabaseToken.equals("")) {
                 getFirabaseToken();
             } else {
                 binding.etToken.setText(firabaseToken);
             }
         } else {
-            if(huaweiToken.equals("")){
+            if (huaweiToken.equals("")) {
                 getHuaweiToken();
             } else {
                 binding.etHuaweiToken.setText(huaweiToken);
@@ -198,6 +204,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         binding.tvRelease.setText("Appv : " + com.relateddigital.euromessage.BuildConfig.VERSION_NAME + " " + " EM SDKv: " + euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME);
+
+        binding.btnPayload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PushMessageInterface pushMessageInterface = new PushMessageInterface() {
+                    @Override
+                    public void success(List<Message> pushMessages) {
+                        Toast.makeText(getApplicationContext(), "Payloads are gotten successfully!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void fail(String errorMessage) {
+                        Toast.makeText(getApplicationContext(), "Trying to get the payloads failed!", Toast.LENGTH_SHORT).show();
+                    }
+                };
+                EuroMobileManager.getInstance().getPushMessages(activity, pushMessageInterface);
+            }
+        });
         binding.btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -226,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void fail(String errorMessage) {
                     String message = "REGISTER EMAIL ERROR";
-                    if(errorMessage != null) {
+                    if (errorMessage != null) {
                         message = message + errorMessage;
                     }
                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
@@ -235,13 +259,13 @@ public class MainActivity extends AppCompatActivity {
 
             boolean isCommercial = false;
             String isCommercialText = String.valueOf(binding.registeremailcommercialSpinner.getSelectedItem());
-            if(isCommercialText.equals(Constants.EURO_RECIPIENT_TYPE_TACIR)) {
+            if (isCommercialText.equals(Constants.EURO_RECIPIENT_TYPE_TACIR)) {
                 isCommercial = true;
             }
 
             EmailPermit emailPermit = EmailPermit.ACTIVE;
             String isEmailPermitActiveText = String.valueOf(binding.registeremailpermitSpinner.getSelectedItem());
-            if(isEmailPermitActiveText.equals(Constants.EMAIL_PERMIT_PASSIVE)) {
+            if (isEmailPermitActiveText.equals(Constants.EMAIL_PERMIT_PASSIVE)) {
                 emailPermit = EmailPermit.PASSIVE;
             }
 
@@ -283,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
                 int notificationId = new Random().nextInt();
                 PushNotificationManager pushNotificationManager = new PushNotificationManager();
                 Message message = new Gson().fromJson(TestPush.testImage, Message.class);
-                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitMapFromUri(message.getMediaUrl()),notificationId);
+                pushNotificationManager.generateNotification(getApplicationContext(), message, AppUtils.getBitMapFromUri(message.getMediaUrl()), notificationId);
             }
         });
 
@@ -327,7 +351,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getFirabaseToken(){
+    private void getFirabaseToken() {
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
@@ -340,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void getHuaweiToken(){
+    private void getHuaweiToken() {
         new Thread() {
             @Override
             public void run() {

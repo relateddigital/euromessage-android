@@ -1,8 +1,10 @@
 package euromsg.com.euromobileandroid;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -16,10 +18,17 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.BuildConfig;
 import com.google.firebase.FirebaseApp;
 import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import euromsg.com.euromobileandroid.callback.PushMessageInterface;
+import euromsg.com.euromobileandroid.connection.CarouselImageDownloaderManager;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
 import euromsg.com.euromobileandroid.connection.RetentionApiClient;
 import euromsg.com.euromobileandroid.connection.SubscriptionApiClient;
@@ -35,6 +44,8 @@ import euromsg.com.euromobileandroid.model.Retention;
 import euromsg.com.euromobileandroid.model.Subscription;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
+import euromsg.com.euromobileandroid.utils.ImageUtils;
+import euromsg.com.euromobileandroid.utils.PayloadUtils;
 import euromsg.com.euromobileandroid.utils.RetryCounterManager;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 import retrofit2.Call;
@@ -821,5 +832,59 @@ public class EuroMobileManager {
                 }
             });
         }
+    }
+
+    /**
+     * This method returns the list of push messages sent in the last 30 days.
+     * The messages are ordered in terms of their timestamps e.g. most recent one is at index 0.
+     * activity : Activity
+     * callback : PushMessageInterface
+     */
+    public void getPushMessages(final Activity activity, final PushMessageInterface callback) {
+        if(callback == null || activity == null) {
+            Log.w("EM-getPushMessages() : ", "callback or activity cannot be null!");
+            return;
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String payloads = SharedPreference.getString(mContext, Constants.PAYLOAD_SP_KEY);
+                if(!payloads.isEmpty()) {
+                    try {
+                        final List<Message> pushMessages = new ArrayList<Message>();
+                        JSONObject jsonObject = new JSONObject(payloads);
+                        JSONArray jsonArray = jsonObject.getJSONArray(Constants.PAYLOAD_SP_ARRAY_KEY);
+                        for(int i = 0 ; i < jsonArray.length() ; i++) {
+                            JSONObject currentObject = jsonArray.getJSONObject(i);
+                            Message currentMessage = new Gson().fromJson(currentObject.toString(), Message.class);
+                            pushMessages.add(currentMessage);
+                        }
+                        final List<Message> orderedPushMessages = PayloadUtils.orderPushMessages(pushMessages);
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.success(orderedPushMessages);
+                            }
+                        });
+                    } catch (final Exception e) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.fail(e.getMessage());
+                            }
+                        });
+                    }
+                } else {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.fail("There is not any push notification sent " +
+                                    "(or saved) in the last 30 days");
+                        }
+                    });
+                }
+            }
+        }) {
+        }.start();
     }
 }
