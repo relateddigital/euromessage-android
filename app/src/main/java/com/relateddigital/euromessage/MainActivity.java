@@ -212,11 +212,13 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void success(List<Message> pushMessages) {
                         Toast.makeText(getApplicationContext(), "Payloads are gotten successfully!", Toast.LENGTH_SHORT).show();
+                        // Make your implementation by using pushMessages here:
                     }
 
                     @Override
                     public void fail(String errorMessage) {
                         Toast.makeText(getApplicationContext(), "Trying to get the payloads failed!", Toast.LENGTH_SHORT).show();
+                        // Something went wrong. You may consider warning the user:
                     }
                 };
                 EuroMobileManager.getInstance().getPushMessages(activity, pushMessageInterface);
