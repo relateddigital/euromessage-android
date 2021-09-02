@@ -29,7 +29,7 @@ public class SubscriptionApiClient {
                 new OkHttpClient.Builder()
                         .addInterceptor(new RawResponseInterceptor())
                         .addInterceptor(interceptor).connectTimeout(5, TimeUnit.MINUTES)
-                .readTimeout(10, TimeUnit.SECONDS);
+                .readTimeout(45, TimeUnit.SECONDS);
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
