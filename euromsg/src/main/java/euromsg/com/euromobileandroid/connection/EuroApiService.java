@@ -1,5 +1,6 @@
 package euromsg.com.euromobileandroid.connection;
 
+import euromsg.com.euromobileandroid.model.GraylogModel;
 import euromsg.com.euromobileandroid.model.Retention;
 import euromsg.com.euromobileandroid.model.Subscription;
 import retrofit2.Call;
@@ -17,4 +18,8 @@ public interface EuroApiService {
     @Headers({ "Content-Type: application/json;charset=utf-8"})
     @POST("/retention")
     Call<Void> report(@Header("User-Agent") String userAgent, @Body Retention retention);
+
+    @Headers({ "Content-Type: application/json;charset=utf-8"})
+    @POST("/log/mobileSdk/")
+    Call<Void> sendLogToGraylog(@Body GraylogModel graylogModel);
 }

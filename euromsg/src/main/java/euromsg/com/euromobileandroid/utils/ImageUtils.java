@@ -60,6 +60,13 @@ public class ImageUtils {
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fileSaved = true;
         } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Saving bitmap to storage : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             e.printStackTrace();
         } finally {
             try {
@@ -67,6 +74,13 @@ public class ImageUtils {
                     fos.close();
                 }
             } catch (IOException e) {
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        context,
+                        "e",
+                        "Closing a file : " + e.getMessage(),
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
                 e.printStackTrace();
             }
         }
@@ -76,13 +90,20 @@ public class ImageUtils {
             return null;
     }
 
-    public static Bitmap loadImageFromStorage(String path, String fileName) {
+    public static Bitmap loadImageFromStorage(Context context, String path, String fileName) {
         Bitmap b = null;
 
         try {
             File f = new File(path, fileName + ".jpg");
             b = BitmapFactory.decodeStream(new FileInputStream(f));
         } catch (FileNotFoundException e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Loading image from file : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             e.printStackTrace();
         }
         return b;
@@ -117,6 +138,13 @@ public class ImageUtils {
 
 
         } catch (PackageManager.NameNotFoundException e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Getting app icon : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             e.printStackTrace();
         }
 
