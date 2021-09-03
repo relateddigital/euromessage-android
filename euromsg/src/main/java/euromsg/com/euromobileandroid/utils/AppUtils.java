@@ -72,8 +72,15 @@ public final class AppUtils {
                         if (!installation.exists()) {
                             writeInstallationFile(installation);
                         }
-                        sID = readInstallationFile(installation);
+                        sID = readInstallationFile(context, installation);
                     } catch (Exception e) {
+                        StackTraceElement element = new Throwable().getStackTrace()[0];
+                        LogUtils.formGraylogModel(
+                                context,
+                                "e",
+                                "Writing and reading identifierForVendor to/from a file : " + e.getMessage(),
+                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                        );
                         throw new RuntimeException(e);
                     }
                 }
@@ -83,8 +90,15 @@ public final class AppUtils {
                     if (!installation.exists()) {
                         writeInstallationFile(installation);
                     }
-                    sID = readInstallationFile(installation);
+                    sID = readInstallationFile(context, installation);
                 } catch (Exception e) {
+                    StackTraceElement element = new Throwable().getStackTrace()[0];
+                    LogUtils.formGraylogModel(
+                            context,
+                            "e",
+                            "Writing and reading identifierForVendor to/from a file : " + e.getMessage(),
+                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                    );
                     throw new RuntimeException(e);
                 }
             }
@@ -92,7 +106,7 @@ public final class AppUtils {
         return sID;
     }
 
-    private static String readInstallationFile(File installation) throws IOException {
+    private static String readInstallationFile(Context context, File installation) throws IOException {
         RandomAccessFile f = null;
         try {
             f = new RandomAccessFile(installation, "r");
@@ -104,6 +118,13 @@ public final class AppUtils {
                 try {
                     f.close();
                 } catch (IOException e) {
+                    StackTraceElement element = new Throwable().getStackTrace()[0];
+                    LogUtils.formGraylogModel(
+                            context,
+                            "e",
+                            "Closing a file : " + e.getMessage(),
+                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                    );
                     Log.e("Error", e.toString());
                 }
             }
@@ -123,6 +144,13 @@ public final class AppUtils {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return pInfo.versionName;
         } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Getting package info : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             EuroLogger.debugLog("Version Name Error : " + e.toString());
 
         }
@@ -148,7 +176,7 @@ public final class AppUtils {
         }
     }
 
-    public static Bitmap getBitMapFromUri(String photoUrl) {
+    public static Bitmap getBitMapFromUri(Context context, String photoUrl) {
 
         URL url;
 
@@ -162,6 +190,13 @@ public final class AppUtils {
 
             image = BitmapFactory.decodeStream(connection.getInputStream());
         } catch (IOException e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Getting bitmap from uri : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             e.printStackTrace();
         }
 
@@ -210,6 +245,13 @@ public final class AppUtils {
         try {
             lApplicationInfo = lPackageManager.getApplicationInfo(pContext.getApplicationInfo().packageName, 0);
         } catch (final PackageManager.NameNotFoundException e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    pContext,
+                    "e",
+                    "Getting application info : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             e.printStackTrace();
         }
         return (String) (lApplicationInfo != null ? lPackageManager.getApplicationLabel(lApplicationInfo) : defaultText);
@@ -251,13 +293,20 @@ public final class AppUtils {
         return dateFormat.format(new Date());
     }
 
-    public static String getCurrentTurkeyDateString() {
+    public static String getCurrentTurkeyDateString(Context context) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             TimeZone tzTurkey = TimeZone.getTimeZone("Turkey");
             dateFormat.setTimeZone(tzTurkey);
             return dateFormat.format(new Date());
         } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Getting current date string : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             EuroLogger.debugLog("Turkey timezone error : " + e.toString());
             return getCurrentDateString();
         }
@@ -281,9 +330,16 @@ public final class AppUtils {
                 File installation = new File(context.getFilesDir(), INSTALLATION);
                 try {
                     if (installation.exists()) {
-                        sID = readInstallationFile(installation);
+                        sID = readInstallationFile(context, installation);
                     }
                 } catch (Exception e) {
+                    StackTraceElement element = new Throwable().getStackTrace()[0];
+                    LogUtils.formGraylogModel(
+                            context,
+                            "e",
+                            "Reading identifierForVendor from file : " + e.getMessage(),
+                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                    );
                     throw new RuntimeException(e);
                 }
                 file.createNewFile();
@@ -296,6 +352,13 @@ public final class AppUtils {
                         fos.write(sID.getBytes());
                     }
                 } catch (Exception e) {
+                    StackTraceElement element = new Throwable().getStackTrace()[0];
+                    LogUtils.formGraylogModel(
+                            context,
+                            "e",
+                            "Writing identifierForVendor to file : " + e.getMessage(),
+                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                    );
                     e.printStackTrace();
                     ID = null;
                 } finally {
@@ -317,10 +380,24 @@ public final class AppUtils {
                 try {
                     ID = sb.toString();
                 } catch (Exception e){
+                    StackTraceElement element = new Throwable().getStackTrace()[0];
+                    LogUtils.formGraylogModel(
+                            context,
+                            "e",
+                            "Forming identifierForVendor from string builder : " + e.getMessage(),
+                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                    );
                     e.printStackTrace();
                     ID = null;
                 }
             } catch (Exception e) {
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        context,
+                        "e",
+                        "Reading identifierForVendor from file : " + e.getMessage(),
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
                 e.printStackTrace();
                 ID = null;
             } finally {
@@ -337,6 +414,13 @@ public final class AppUtils {
             try {
                 return context.getResources().getResourceName(resId) != null;
             } catch (Resources.NotFoundException ignore) {
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        context,
+                        "e",
+                        "Checking if a resource is available : " + ignore.getMessage(),
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
             }
         }
         return false;

@@ -10,6 +10,7 @@ import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.utils.AppUtils;
+import euromsg.com.euromobileandroid.utils.LogUtils;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class EuroMessageOpenReportService extends IntentService {
@@ -56,6 +57,13 @@ public class EuroMessageOpenReportService extends IntentService {
                 intent = new Intent(getApplicationContext(), Class.forName(intentStr));
                 intent.putExtra("message", pushMessage);
             } catch (Exception e) {
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        this,
+                        "e",
+                        "Navigating to the activity of the customer : " + e.getMessage(),
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
                 Log.e("PushClick : ", "The class could not be found!");
                 intent = AppUtils.getLaunchIntent(getApplicationContext(), pushMessage);
             }

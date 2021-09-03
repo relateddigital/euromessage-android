@@ -106,7 +106,7 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
             Log.i("Euromessage HPayload", remoteMessage.getData());
 
             Map<String, String> remoteMessageData = remoteMessage.getDataOfMap();
-            Message pushMessage = new Message(remoteMessageData);
+            Message pushMessage = new Message(this, remoteMessageData);
 
             if(pushMessage.getEmPushSp() == null) {
                 Log.i("Push Notification", "The push notification was not coming from Related Digital! Ignoring..");
@@ -128,7 +128,7 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                         if (pushMessage.getElements() != null) {
                             pushNotificationManager.generateCarouselNotification(this, pushMessage, notificationId);
                         } else {
-                            pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(pushMessage.getMediaUrl()), notificationId);
+                            pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(this, pushMessage.getMediaUrl()), notificationId);
                         }
 
                         break;

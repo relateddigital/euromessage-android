@@ -94,7 +94,7 @@ public class CarouselImageDownloaderManager {
                 long currentTimeInMillis = System.currentTimeMillis();
                 Bitmap bitmap;
 
-                bitmap = AppUtils.getBitMapFromUri(imageUrl);
+                bitmap = AppUtils.getBitMapFromUri(context, imageUrl);
 
                 if (bitmap != null) {
 

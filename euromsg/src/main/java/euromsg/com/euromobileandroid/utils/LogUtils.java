@@ -9,6 +9,7 @@ import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
 import euromsg.com.euromobileandroid.connection.GraylogApiClient;
+import euromsg.com.euromobileandroid.connection.RetentionApiClient;
 import euromsg.com.euromobileandroid.model.GraylogModel;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,6 +19,10 @@ public final class LogUtils {
     private static final String LOG_TAG = "LogUtils";
 
     public static void sendGraylogMessage(GraylogModel graylogModel) {
+        if(GraylogApiClient.getClient() == null) {
+            Log.e(LOG_TAG, "Euromessage SDK requires min API level 21!");
+            return;
+        }
         EuroApiService apiService = GraylogApiClient.getClient().create(EuroApiService.class);
         Call<Void> call = apiService.sendLogToGraylog(graylogModel);
         call.enqueue(new Callback<Void>() {
