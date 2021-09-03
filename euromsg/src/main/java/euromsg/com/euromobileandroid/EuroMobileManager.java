@@ -760,8 +760,15 @@ public class EuroMobileManager {
             registerEmailSubscription.add(Constants.EURO_CONSENT_SOURCE_KEY, Constants.EURO_CONSENT_SOURCE_VALUE);
             registerEmailSubscription.add(Constants.EURO_RECIPIENT_TYPE_KEY
                     , isCommercial ? Constants.EURO_RECIPIENT_TYPE_TACIR : Constants.EURO_RECIPIENT_TYPE_BIREYSEL);
-            registerEmailSubscription.add(Constants.EURO_CONSENT_TIME_KEY, AppUtils.getCurrentTurkeyDateString());
+            registerEmailSubscription.add(Constants.EURO_CONSENT_TIME_KEY, AppUtils.getCurrentTurkeyDateString(mContext));
         } catch (Exception ex) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Cloning subscription object : " + ex.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             if(callback != null) {
                 callback.fail(ex.getMessage());
             }
@@ -882,7 +889,7 @@ public class EuroMobileManager {
                             Message currentMessage = new Gson().fromJson(currentObject.toString(), Message.class);
                             pushMessages.add(currentMessage);
                         }
-                        final List<Message> orderedPushMessages = PayloadUtils.orderPushMessages(pushMessages);
+                        final List<Message> orderedPushMessages = PayloadUtils.orderPushMessages(mContext, pushMessages);
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -890,6 +897,13 @@ public class EuroMobileManager {
                             }
                         });
                     } catch (final Exception e) {
+                        StackTraceElement element = new Throwable().getStackTrace()[0];
+                        LogUtils.formGraylogModel(
+                                mContext,
+                                "e",
+                                "De-serializing JSON string of push message : " + e.getMessage(),
+                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                        );
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

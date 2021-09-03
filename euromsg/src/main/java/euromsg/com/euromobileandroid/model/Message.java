@@ -1,5 +1,6 @@
 package euromsg.com.euromobileandroid.model;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import euromsg.com.euromobileandroid.enums.PushType;
+import euromsg.com.euromobileandroid.utils.LogUtils;
 
 public class Message implements Serializable {
 
@@ -33,7 +35,7 @@ public class Message implements Serializable {
     private Map<String, String> params = new HashMap<>();
     private ArrayList<Element> elements;
 
-    public Message(@NonNull Map<String, String> bundle) {
+    public Message(Context context, @NonNull Map<String, String> bundle) {
 
         for (String key : bundle.keySet()) {
 
@@ -61,11 +63,11 @@ public class Message implements Serializable {
         collapseKey = bundle.get("collapse_key");
 
         if (bundle.get("elements") != null) {
-            convertJsonStrToElementsArray(bundle.get("elements"));
+            convertJsonStrToElementsArray(context, bundle.get("elements"));
         }
     }
 
-    private void convertJsonStrToElementsArray(String elementJsonStr) {
+    private void convertJsonStrToElementsArray(Context context, String elementJsonStr) {
 
         JSONArray jsonArr;
 
@@ -86,6 +88,13 @@ public class Message implements Serializable {
                 elements.add(element);
             }
         } catch (JSONException e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Converting JSON string to array list : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             e.printStackTrace();
         }
     }

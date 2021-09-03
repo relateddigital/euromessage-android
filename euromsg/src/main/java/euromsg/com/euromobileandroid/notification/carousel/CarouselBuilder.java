@@ -28,6 +28,7 @@ import euromsg.com.euromobileandroid.model.Carousel;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
+import euromsg.com.euromobileandroid.utils.LogUtils;
 
 public class CarouselBuilder implements Serializable {
 
@@ -77,6 +78,13 @@ public class CarouselBuilder implements Serializable {
                     try {
                         appIcon = ImageUtils.drawableToBitmap(context.getPackageManager().getApplicationIcon(context.getPackageName()));
                     } catch (PackageManager.NameNotFoundException e) {
+                        StackTraceElement element = new Throwable().getStackTrace()[0];
+                        LogUtils.formGraylogModel(
+                                context,
+                                "e",
+                                "Getting carousel app icon bitmap : " + e.getMessage(),
+                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                        );
                         appIcon = null;
                         Log.e(TAG, "Unable to retrieve app Icon");
                     }
@@ -147,6 +155,13 @@ public class CarouselBuilder implements Serializable {
         try {
             smallIcon = BitmapFactory.decodeResource(context.getResources(), resourceId);
         } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Getting carousel small icon bitmap : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             smallIcon = null;
             Log.e(TAG, "Unable to decode resource");
         }
@@ -161,6 +176,13 @@ public class CarouselBuilder implements Serializable {
         try {
             largeIcon = BitmapFactory.decodeResource(context.getResources(), resourceId);
         } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Getting carousel large icon bitmap : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             Log.e(TAG, "Unable to decode resource");
         }
         return this;
@@ -180,6 +202,13 @@ public class CarouselBuilder implements Serializable {
         try {
             caraousalPlaceholder = BitmapFactory.decodeResource(context.getResources(), resourceId);
         } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Getting carousel place holder bitmap : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             caraousalPlaceholder = null;
             Log.e(TAG, "Unable to decode resource");
         }
@@ -610,6 +639,13 @@ public class CarouselBuilder implements Serializable {
             try {
                 clearCarouselIfExists();
             } catch (Exception e) {
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        context,
+                        "e",
+                        "Clearing carousel : " + e.getMessage(),
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
                 e.printStackTrace();
                 Log.e(TAG, "Unable To send notification's pendingIntent");
             }
@@ -630,6 +666,13 @@ public class CarouselBuilder implements Serializable {
         try {
             clearCarouselIfExists();
         } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Clearing carousel : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             e.printStackTrace();
             Log.e(TAG, "Unable To send notification's pendingIntent");
         }

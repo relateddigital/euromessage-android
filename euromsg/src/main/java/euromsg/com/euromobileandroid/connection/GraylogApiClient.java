@@ -6,7 +6,6 @@ import android.util.Log;
 import java.util.concurrent.TimeUnit;
 
 import euromsg.com.euromobileandroid.Constants;
-import euromsg.com.euromobileandroid.connection.interceptor.RawResponseInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -22,19 +21,20 @@ public class GraylogApiClient {
             return null;
         }
 
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder httpClient =
-                new OkHttpClient.Builder()
-                        .addInterceptor(new RawResponseInterceptor())
-                        .addInterceptor(interceptor).connectTimeout(5, TimeUnit.MINUTES)
-                        .readTimeout(45, TimeUnit.SECONDS);
-
         if (retrofit == null) {
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .addInterceptor(interceptor)
+                    .connectTimeout(45, TimeUnit.SECONDS)
+                    .readTimeout(45, TimeUnit.SECONDS)
+                    .writeTimeout(45, TimeUnit.SECONDS)
+                    .build();
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://test-rd-gt/")
-                    .addConverterFactory(GsonConverterFactory.create()).client(httpClient.build())
+                    .baseUrl("https://gt.relateddigital.com/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(okHttpClient)
                     .build();
         }
 
