@@ -20,6 +20,6 @@ public interface EuroApiService {
     Call<Void> report(@Header("User-Agent") String userAgent, @Body Retention retention);
 
     @Headers({ "Content-Type: application/json;charset=utf-8"})
-    @POST("/log/mobileSdk/")
+    @POST("/log/mobileSdk")
     Call<Void> sendLogToGraylog(@Body GraylogModel graylogModel);
 }
