@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -28,7 +26,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import euromsg.com.euromobileandroid.callback.PushMessageInterface;
-import euromsg.com.euromobileandroid.connection.CarouselImageDownloaderManager;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
 import euromsg.com.euromobileandroid.connection.RetentionApiClient;
 import euromsg.com.euromobileandroid.connection.SubscriptionApiClient;
@@ -38,13 +35,14 @@ import euromsg.com.euromobileandroid.enums.MessageStatus;
 import euromsg.com.euromobileandroid.enums.PushPermit;
 import euromsg.com.euromobileandroid.model.Element;
 import euromsg.com.euromobileandroid.model.EuromessageCallback;
+import euromsg.com.euromobileandroid.model.GraylogModel;
 import euromsg.com.euromobileandroid.model.Location;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.model.Retention;
 import euromsg.com.euromobileandroid.model.Subscription;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
-import euromsg.com.euromobileandroid.utils.ImageUtils;
+import euromsg.com.euromobileandroid.utils.LogUtils;
 import euromsg.com.euromobileandroid.utils.PayloadUtils;
 import euromsg.com.euromobileandroid.utils.RetryCounterManager;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
@@ -71,6 +69,8 @@ public class EuroMobileManager {
     private String latestOpenPushId = "";
 
     private static Context mContext;
+
+    private GraylogModel graylogModel = null;
 
     static String TAG = "EuroMobileManager";
 
@@ -107,9 +107,13 @@ public class EuroMobileManager {
         subscription.setLocal(AppUtils.local(context));
 
         mUserAgent = System.getProperty("http.agent");
+
+        fillGraylogModel();
     }
 
     public static EuroMobileManager init(String googleAppAlias, String huwaeiAppAlias, Context context) {
+
+        mContext = context;
 
         if (instance == null) {
             instance = new EuroMobileManager(context, googleAppAlias, huwaeiAppAlias);
@@ -117,8 +121,6 @@ public class EuroMobileManager {
 
         huaweiAppAlias = huwaeiAppAlias;
         firebaseAppAlias = googleAppAlias;
-
-        mContext = context;
 
         if (checkPlayService(context)) {
             SharedPreference.saveString(context, Constants.GOOGLE_APP_ALIAS, instance.subscription.getAppAlias());
@@ -389,6 +391,13 @@ public class EuroMobileManager {
             try {
                 callNetworkSubscription(context);
             } catch (Exception e) {
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        context,
+                        "e",
+                        "Sending subscription : " + e.getMessage(),
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
                 e.printStackTrace();
                 callNetworkSubscription(context);
             }
@@ -553,6 +562,13 @@ public class EuroMobileManager {
             EuroLogger.debugLog(this.subscription.toJson());
             SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
         } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Saving subscription object to shared pref : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
             if (BuildConfig.DEBUG) e.printStackTrace();
 
         }
@@ -620,6 +636,13 @@ public class EuroMobileManager {
             try {
                 return context.getResources().getResourceName(resId) != null;
             } catch (Resources.NotFoundException ignore) {
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        context,
+                        "e",
+                        "Checking if a resource is available : " + ignore.getMessage(),
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
             }
         }
         return false;
@@ -886,5 +909,31 @@ public class EuroMobileManager {
             }
         }) {
         }.start();
+    }
+
+    private void fillGraylogModel() {
+        graylogModel = new GraylogModel();
+        if (checkPlayService(mContext)) {
+            graylogModel.setGoogleAppAlias(subscription.getAppAlias());
+        } else {
+            graylogModel.setHuaweiAppAlias(subscription.getAppAlias());
+        }
+        graylogModel.setToken(subscription.getToken());
+        graylogModel.setAppVersion(subscription.getAppVersion());
+        graylogModel.setSdkVersion(subscription.getSdkVersion());
+        graylogModel.setOsType(subscription.getOs());
+        graylogModel.setOsVersion(subscription.getOsVersion());
+        graylogModel.setDeviceName(subscription.getDeviceName());
+        graylogModel.setUserAgent(mUserAgent);
+        graylogModel.setIdentifierForVendor(subscription.getIdentifierForVendor());
+        graylogModel.setExtra(subscription.getExtra());
+    }
+
+    public void sendLogToGraylog(String logLevel, String logMessage, String logPlace) {
+        GraylogModel graylogModel = this.graylogModel;
+        graylogModel.setLogLevel(logLevel);
+        graylogModel.setLogMessage(logMessage);
+        graylogModel.setLogPlace(logPlace);
+        LogUtils.sendGraylogMessage(graylogModel);
     }
 }

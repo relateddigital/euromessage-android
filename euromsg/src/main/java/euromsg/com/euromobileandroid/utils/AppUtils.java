@@ -57,6 +57,13 @@ public final class AppUtils {
                     sID = getIdFromExternalStorage(context);
                 } catch (Exception e) {
                     sID = null;
+                    StackTraceElement element = new Throwable().getStackTrace()[0];
+                    LogUtils.formGraylogModel(
+                            context,
+                            "e",
+                            "Reading identifierForVendor from the file : " + e.getMessage(),
+                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                    );
                     e.printStackTrace();
                 }
                 if(sID == null) {

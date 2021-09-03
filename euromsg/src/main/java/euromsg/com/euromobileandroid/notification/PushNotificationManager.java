@@ -21,7 +21,9 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
+import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.R;
+import euromsg.com.euromobileandroid.model.GraylogModel;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
@@ -30,6 +32,7 @@ import euromsg.com.euromobileandroid.service.EuroMessageOpenReportService;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
+import euromsg.com.euromobileandroid.utils.LogUtils;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class PushNotificationManager {
@@ -81,6 +84,13 @@ public class PushNotificationManager {
 
         } catch (Exception e) {
             EuroLogger.debugLog("Generate notification : " + e.getMessage());
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Creating notification : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
         }
     }
 

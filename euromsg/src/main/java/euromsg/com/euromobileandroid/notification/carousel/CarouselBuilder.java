@@ -322,7 +322,7 @@ public class CarouselBuilder implements Serializable {
         Bitmap bitmap = null;
         if (item != null) {
             if (!TextUtils.isEmpty(item.getImageFileName()) && !TextUtils.isEmpty(item.getImageFileLocation())) {
-                bitmap = ImageUtils.loadImageFromStorage(item.getImageFileLocation(), item.getImageFileName());
+                bitmap = ImageUtils.loadImageFromStorage(context, item.getImageFileLocation(), item.getImageFileName());
                 if (bitmap != null)
                     return bitmap;
             }
@@ -580,13 +580,13 @@ public class CarouselBuilder implements Serializable {
      */
     private void setUpBitCarouselBitmapsFromSetUp() {
         if (smallIconPath != null) {
-            smallIcon = ImageUtils.loadImageFromStorage(smallIconPath,   Constants.CAROUSAL_SMALL_ICON_FILE_NAME);
+            smallIcon = ImageUtils.loadImageFromStorage(context, smallIconPath,   Constants.CAROUSAL_SMALL_ICON_FILE_NAME);
         }
         if (largeIconPath != null) {
-            largeIcon = ImageUtils.loadImageFromStorage(largeIconPath,   Constants.CAROUSAL_LARGE_ICON_FILE_NAME);
+            largeIcon = ImageUtils.loadImageFromStorage(context, largeIconPath,   Constants.CAROUSAL_LARGE_ICON_FILE_NAME);
         }
         if (placeHolderImagePath != null) {
-            caraousalPlaceholder = ImageUtils.loadImageFromStorage(placeHolderImagePath,   Constants.CAROUSAL_PLACEHOLDER_ICON_FILE_NAME);
+            caraousalPlaceholder = ImageUtils.loadImageFromStorage(context, placeHolderImagePath,   Constants.CAROUSAL_PLACEHOLDER_ICON_FILE_NAME);
         }
     }
 
