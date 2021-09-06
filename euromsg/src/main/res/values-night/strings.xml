@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">EuroMobileAndroid</string>
-    <string name="mode">Day</string>
+    <string name="mode">Night</string>
 </resources>

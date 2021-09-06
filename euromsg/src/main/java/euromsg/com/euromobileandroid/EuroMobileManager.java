@@ -604,11 +604,27 @@ public class EuroMobileManager {
         }
     }
 
+    public void setNotificationTransparentSmallIconDarkMode(int transparentSmallIconDarkMode, Context context) {
+        if (isResource(context, transparentSmallIconDarkMode)) {
+            SharedPreference.saveInt(mContext, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON_DARK_MODE, transparentSmallIconDarkMode);
+        } else {
+            Log.e("EM : Res Error", transparentSmallIconDarkMode + "");
+        }
+    }
+
     public void setNotificationLargeIcon(int largeIcon, Context context) {
         if (isResource(context, largeIcon)) {
             SharedPreference.saveInt(mContext, Constants.NOTIFICATION_LARGE_ICON, largeIcon);
         } else {
             Log.e("EM : Res Error", largeIcon + "");
+        }
+    }
+
+    public void setNotificationLargeIconDarkMode(int largeIconDarkMode, Context context) {
+        if (isResource(context, largeIconDarkMode)) {
+            SharedPreference.saveInt(mContext, Constants.NOTIFICATION_LARGE_ICON_DARK_MODE, largeIconDarkMode);
+        } else {
+            Log.e("EM : Res Error", largeIconDarkMode + "");
         }
     }
 
