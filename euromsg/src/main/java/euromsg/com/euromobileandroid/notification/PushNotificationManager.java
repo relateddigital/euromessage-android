@@ -102,7 +102,16 @@ public class PushNotificationManager {
 
         boolean willLargeIconBeUsed = SharedPreference.getBoolean(context, Constants.NOTIFICATION_USE_LARGE_ICON);
         if(willLargeIconBeUsed) {
-            int largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
+            int largeIcon;
+
+            if(isInDarkMode(context)) {
+                largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON_DARK_MODE);
+                if (largeIcon == 0 || !AppUtils.isResourceAvailable(context, largeIcon)) {
+                    largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
+                }
+            } else {
+                largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
+            }
 
             if (largeIcon == 0 || !AppUtils.isResourceAvailable(context, largeIcon)) {
                 largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
@@ -139,7 +148,16 @@ public class PushNotificationManager {
 
         boolean willLargeIconBeUsed = SharedPreference.getBoolean(context, Constants.NOTIFICATION_USE_LARGE_ICON);
         if(willLargeIconBeUsed) {
-            int largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
+            int largeIcon;
+
+            if(isInDarkMode(context)) {
+                largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON_DARK_MODE);
+                if (largeIcon == 0 || !AppUtils.isResourceAvailable(context, largeIcon)) {
+                    largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
+                }
+            } else {
+                largeIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_LARGE_ICON);
+            }
 
             if (largeIcon == 0 || !AppUtils.isResourceAvailable(context, largeIcon)) {
                 largeIconBitmap = BitmapFactory.decodeResource(context.getResources(),
@@ -229,7 +247,16 @@ public class PushNotificationManager {
 
     private void setNotificationSmallIcon(NotificationCompat.Builder builder, Context context) {
 
-        int transparentSmallIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON);
+        int transparentSmallIcon;
+
+        if(isInDarkMode(context)) {
+            transparentSmallIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON_DARK_MODE);
+            if (transparentSmallIcon == 0 || !AppUtils.isResourceAvailable(context, transparentSmallIcon)) {
+                transparentSmallIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON);
+            }
+        } else {
+            transparentSmallIcon = SharedPreference.getInt(context, Constants.NOTIFICATION_TRANSPARENT_SMALL_ICON);
+        }
 
         if (transparentSmallIcon == 0 || !AppUtils.isResourceAvailable(context, transparentSmallIcon)) {
             transparentSmallIcon = ImageUtils.getAppIcon(context);
@@ -241,5 +268,9 @@ public class PushNotificationManager {
             String color = SharedPreference.getString(context, Constants.NOTIFICATION_COLOR);
             builder.setColor(Color.parseColor(color));
         }
+    }
+
+    private Boolean isInDarkMode(Context context) {
+        return context.getResources().getString(R.string.mode).equals("Night");
     }
 }

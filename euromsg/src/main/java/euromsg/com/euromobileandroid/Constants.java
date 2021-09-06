@@ -29,7 +29,9 @@ public class Constants {
     public static final String GOOGLE_APP_ALIAS = "AppKeyGoogle";
 
     public static final String  NOTIFICATION_TRANSPARENT_SMALL_ICON = "small_icon";
+    public static final String  NOTIFICATION_TRANSPARENT_SMALL_ICON_DARK_MODE = "small_icon_dark_mode";
     public static final String  NOTIFICATION_LARGE_ICON = "large_icon";
+    public static final String  NOTIFICATION_LARGE_ICON_DARK_MODE = "large_icon_dark_mode";
     public static final String  NOTIFICATION_USE_LARGE_ICON = "use_large_icon";
     public static final String  NOTIFICATION_COLOR = "notification_color";
     public static final String CHANNEL_NAME = "channel_name";
