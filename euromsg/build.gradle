@@ -14,8 +14,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 30
         versionCode 1
-        versionName "4.6.0"
-        buildConfigField 'String', 'VERSION_NAME', "\"4.6.0\""
+        versionName "4.6.1"
+        buildConfigField 'String', 'VERSION_NAME', "\"4.6.1\""
     }
     buildTypes {
         release {
