@@ -117,9 +117,16 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
             }
             String appAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
             String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
+            String token =   SharedPreference.getString(this, Constants.TOKEN_KEY);
 
-            EuroMobileManager.init(appAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
-                    pushMessage.getEmPushSp());
+            if(!token.isEmpty() && !token.equals("")) {
+                EuroMobileManager.init(appAlias, huaweiAppAlias, this).subscribe(token, this);
+                EuroMobileManager.getInstance().reportReceived(pushMessage.getPushId(),
+                        pushMessage.getEmPushSp());
+            } else {
+                EuroMobileManager.init(appAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
+                        pushMessage.getEmPushSp());
+            }
 
             PayloadUtils.addPushMessage(this, pushMessage);
         } else {

@@ -147,9 +147,16 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                 }
                 String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
                 String googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+                String token =   SharedPreference.getString(this, Constants.TOKEN_KEY);
 
-                EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
-                        pushMessage.getEmPushSp());
+                if(!token.isEmpty() && !token.equals("")) {
+                    EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).subscribe(token, this);
+                    EuroMobileManager.getInstance().reportReceived(pushMessage.getPushId(),
+                            pushMessage.getEmPushSp());
+                } else {
+                    EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
+                            pushMessage.getEmPushSp());
+                }
 
                 PayloadUtils.addPushMessage(this, pushMessage);
             } else {
