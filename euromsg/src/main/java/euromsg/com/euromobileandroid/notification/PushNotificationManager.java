@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.R;
+import euromsg.com.euromobileandroid.notification.badge.ShortcutBadger;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
@@ -79,6 +80,11 @@ public class PushNotificationManager {
                 mNotificationManager.notify(notificationId, mBuilder.build());
             }
 
+
+            ShortcutBadger.applyCount(context, pushMessage.getBadgeCount());
+
+
+
         } catch (Exception e) {
             EuroLogger.debugLog("Generate notification : " + e.getMessage());
         }
@@ -113,7 +119,7 @@ public class PushNotificationManager {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setNumber(5) // TODO : put the badge_count in the payload here
+                //.setNumber(5) // TODO : put the badge_count in the payload here
                 .setAutoCancel(true);
         setNumber(mBuilder, context);
         setNotificationSmallIcon(mBuilder, context);

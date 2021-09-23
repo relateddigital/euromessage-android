@@ -31,6 +31,7 @@ public class Message implements Serializable {
     private String collapseKey;
     private Map<String, String> params = new HashMap<>();
     private ArrayList<Element> elements;
+    private int badgeCount;
 
     public Message(@NonNull Map<String, String> bundle) {
 
@@ -60,6 +61,15 @@ public class Message implements Serializable {
 
         if (bundle.get("elements") != null) {
             convertJsonStrToElementsArray(bundle.get("elements"));
+        }
+
+        if (bundle.get("badgeCount") != null) {
+            try {
+                badgeCount = Integer.parseInt(bundle.get("badgeCount"));
+            } catch (NumberFormatException e) {
+                badgeCount = 0;
+            }
+
         }
     }
 
@@ -108,6 +118,7 @@ public class Message implements Serializable {
         }
         collapseKey = bundle.getString("collapse_key");
         elements = bundle.getParcelable("elements");
+        badgeCount = bundle.getInt("badgeCount");
     }
 
     public String getAltUrl() {
@@ -164,5 +175,9 @@ public class Message implements Serializable {
 
     public ArrayList<Element> getElements() {
         return elements;
+    }
+
+    public int getBadgeCount() {
+        return badgeCount;
     }
 }
