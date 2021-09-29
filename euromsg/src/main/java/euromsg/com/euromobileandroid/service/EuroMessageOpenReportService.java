@@ -14,6 +14,7 @@ import euromsg.com.euromobileandroid.utils.LogUtils;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class EuroMessageOpenReportService extends IntentService {
+    private static final String LOG_TAG = "OpenReportService";
     /**
      * Creates an IntentService.  Invoked by your subclass's constructor.
      *
@@ -31,20 +32,25 @@ public class EuroMessageOpenReportService extends IntentService {
     protected void onHandleIntent(@Nullable Intent intent) {
         if (intent.getExtras() != null) {
             Message message = (Message) intent.getExtras().getSerializable("message");
-            //sendOpenReport(intent); //TODO : Open this line to enable sending read report from sdk
-            startTheRelatedActivity(message);
+            if(message != null) {
+                sendOpenReport(message);
+                startTheRelatedActivity(message);
+            } else {
+                Log.e(LOG_TAG, "Could not send the open report since the payload is empty!!");
+            }
         } else {
             Log.e("PushClick : ", "The payload is empty. The read report could not be sent!");
         }
     }
 
-    private void sendOpenReport(Intent intent) {
+    private void sendOpenReport(Message message) {
+
         if(EuroMobileManager.getInstance() == null) {
             String appAlias = SharedPreference.getString(getApplicationContext(), Constants.GOOGLE_APP_ALIAS);
             String huaweiAppAlias = SharedPreference.getString(getApplicationContext(), Constants.HUAWEI_APP_ALIAS);
-            EuroMobileManager.init(appAlias, huaweiAppAlias, getApplicationContext()).reportRead(intent.getExtras());
+            EuroMobileManager.init(appAlias, huaweiAppAlias, getApplicationContext()).sendOpenRequest(message);
         } else {
-            EuroMobileManager.getInstance().reportRead(intent.getExtras());
+            EuroMobileManager.getInstance().sendOpenRequest(message);
         }
     }
 

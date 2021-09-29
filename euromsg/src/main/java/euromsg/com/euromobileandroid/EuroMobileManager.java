@@ -254,13 +254,11 @@ public class EuroMobileManager {
         }
     }
 
-    public void reportRead(Bundle bundle) {
+    public void sendOpenRequest(Message message) {
         if (Build.VERSION.SDK_INT < Constants.UI_FEATURES_MIN_API) {
             Log.e("Euromessage", "Euromessage SDK requires min API level 21!");
             return;
         }
-
-        Message message = (Message) bundle.getSerializable("message");
 
         if (message.getPushId() == null || message.getPushId().isEmpty() || message.getPushId().equals(latestOpenPushId)) {
             Log.e("Euromessage", "Push Id is invalid!");
@@ -268,36 +266,34 @@ public class EuroMobileManager {
             latestOpenPushId = message.getPushId();
             String emPushSp = message.getEmPushSp();
 
-            if (message != null) {
-                if (message.getPushId() != null) {
-                    EuroLogger.debugLog("Report Read : " + message.getPushId());
-                    Retention retention = new Retention();
+            if (message.getPushId() != null) {
+                EuroLogger.debugLog("Report Read : " + message.getPushId());
+                Retention retention = new Retention();
 
-                    if (checkPlayService(mContext)) {
-                        retention.setKey(firebaseAppAlias);
-                    } else {
-                        retention.setKey(huaweiAppAlias);
-                    }
-
-                    retention.setPushId(message.getPushId());
-                    retention.setStatus(MessageStatus.Read.toString());
-                    retention.setToken(subscription.getToken());
-                    retention.setActionBtn(0);
-                    retention.setDeliver(0);
-                    retention.setIsMobile(1);
-                    if (emPushSp != null) {
-                        retention.setEmPushSp(emPushSp);
-                    }
-
-                    if (RetentionApiClient.getClient() != null) {
-                        retentionApiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
-                        reportReadRequest(retention, RetryCounterManager.getCounterId());
-                    } else {
-                        EuroLogger.debugLog("reportRead : Api service could not be found!");
-                    }
+                if (checkPlayService(mContext)) {
+                    retention.setKey(firebaseAppAlias);
                 } else {
-                    EuroLogger.debugLog("reportRead : Push Id cannot be null!");
+                    retention.setKey(huaweiAppAlias);
                 }
+
+                retention.setPushId(message.getPushId());
+                retention.setStatus(MessageStatus.Read.toString());
+                retention.setToken(subscription.getToken());
+                retention.setActionBtn(0);
+                retention.setDeliver(0);
+                retention.setIsMobile(1);
+                if (emPushSp != null) {
+                    retention.setEmPushSp(emPushSp);
+                }
+
+                if (RetentionApiClient.getClient() != null) {
+                    retentionApiInterface = RetentionApiClient.getClient().create(EuroApiService.class);
+                    reportReadRequest(retention, RetryCounterManager.getCounterId());
+                } else {
+                    EuroLogger.debugLog("reportRead : Api service could not be found!");
+                }
+            } else {
+                EuroLogger.debugLog("reportRead : Push Id cannot be null!");
             }
         }
     }
