@@ -22,14 +22,13 @@ public class Carousel implements Parcelable {
     public String caraousalPlaceholder;
     public CarouselItem leftItem;
     public CarouselItem rightItem;
-    public boolean isOtherRegionClickable;
     public boolean isImagesInCarousel;
 
     public Carousel(ArrayList<CarouselItem> carouselItems, String contentTitle, String contentText,
                     String bigContentTitle, String bigContentText, int carouselNotificationId,
                     int currentStartIndex, String smallIcon, int smallIconResourceId,
                     String largeIcon, String caraousalPlaceholder, CarouselItem leftItem,
-                    CarouselItem rightItem, boolean isOtherRegionClickable, boolean isImagesInCarousel) {
+                    CarouselItem rightItem, boolean isImagesInCarousel) {
         this.carouselItems = carouselItems;
         this.contentTitle = contentTitle;
         this.contentText = contentText;
@@ -44,7 +43,6 @@ public class Carousel implements Parcelable {
         this.caraousalPlaceholder = caraousalPlaceholder;
         this.leftItem = leftItem;
         this.rightItem = rightItem;
-        this.isOtherRegionClickable = isOtherRegionClickable;
         this.isImagesInCarousel = isImagesInCarousel;
     }
 
@@ -68,7 +66,6 @@ public class Carousel implements Parcelable {
         caraousalPlaceholder = in.readString();
         leftItem = (CarouselItem) in.readValue(CarouselItem.class.getClassLoader());
         rightItem = (CarouselItem) in.readValue(CarouselItem.class.getClassLoader());
-        isOtherRegionClickable = in.readByte() != 0x00;
         isImagesInCarousel = in.readByte() != 0x00;
     }
 
@@ -97,7 +94,6 @@ public class Carousel implements Parcelable {
         dest.writeString(caraousalPlaceholder);
         dest.writeValue(leftItem);
         dest.writeValue(rightItem);
-        dest.writeByte((byte) (isOtherRegionClickable ? 0x01 : 0x00));
         dest.writeByte((byte) (isImagesInCarousel ? 0x01 : 0x00));
     }
 

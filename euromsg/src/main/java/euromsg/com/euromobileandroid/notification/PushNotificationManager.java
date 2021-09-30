@@ -53,7 +53,6 @@ public class PushNotificationManager {
             CarouselItem cItem = new CarouselItem(item.getId(), item.getTitle(), item.getContent(), item.getPicture());
             carouselBuilder.addCarouselItem(cItem);
         }
-        carouselBuilder.setOtherRegionClickable(true);
         carouselBuilder.buildCarousel(pushMessage);
     }
 
@@ -94,7 +93,9 @@ public class PushNotificationManager {
         }
     }
 
-    public NotificationCompat.Builder createNotificationBuilder(Context context, String contentTitle, String contentText) {
+    public NotificationCompat.Builder createNotificationBuilder(Context context, String contentTitle,
+                                                                String contentText, Message pushMessage,
+                                                                int notificationId) {
 
         String title = TextUtils.isEmpty(contentTitle) ? " " : contentTitle;
 
@@ -124,6 +125,11 @@ public class PushNotificationManager {
             largeIconBitmap = null;
         }
 
+        intent = new Intent(context, EuroMessageOpenReportService.class);
+        intent.putExtra("message", pushMessage);
+
+        PendingIntent contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, channelId);
         mBuilder.setContentTitle(title)
@@ -132,7 +138,8 @@ public class PushNotificationManager {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setContentIntent(contentIntent);
         setNumber(mBuilder, context);
         setNotificationSmallIcon(mBuilder, context);
 

@@ -43,7 +43,6 @@ public class Constants {
     public static final int EVENT_RIGHT_ARROW_CLICKED = 2;
     public static final int EVENT_LEFT_ITEM_CLICKED = 3;
     public static final int EVENT_RIGHT_ITEM_CLICKED = 4;
-    public static final int EVENT_OTHER_REGION_CLICKED = 5;
 
     public static final String NOTIFICATION_ID = "NotificationId";
 
