@@ -60,7 +60,6 @@ public class CarouselBuilder implements Serializable {
     private Carousel carousel;
     private String smallIconPath, largeIconPath, placeHolderImagePath; //Stores path of these images if set by user
 
-    private boolean isOtherRegionClickable = false;
     private boolean isImagesInCarousel = true;
 
     private CarouselBuilder(Context context, int notificationId) {
@@ -214,10 +213,6 @@ public class CarouselBuilder implements Serializable {
         }
     }
 
-    public void setOtherRegionClickable(boolean isOtherRegionClickable) {
-        this.isOtherRegionClickable = isOtherRegionClickable;
-    }
-
     public void buildCarousel(Message message) {
 
         this.message = message;
@@ -311,7 +306,7 @@ public class CarouselBuilder implements Serializable {
 
             PushNotificationManager pushNotificationManager = new PushNotificationManager();
 
-            mBuilder = pushNotificationManager.createNotificationBuilder(context, contentTitle, contentText);
+            mBuilder = pushNotificationManager.createNotificationBuilder(context, contentTitle, contentText, message, carouselNotificationId);
 
             // TODO : Check the number of buttons and related
             // pending intents here when BE gets ready and
@@ -319,10 +314,6 @@ public class CarouselBuilder implements Serializable {
             /*
             mBuilder.addAction(R.drawable.notification_button, "Open" , contentIntent);
             */
-
-            if (isOtherRegionClickable) {
-                setOtherRegionClickable();
-            }
 
             Notification foregroundNote = mBuilder.build();
             foregroundNote.bigContentView = bigView;
@@ -334,17 +325,6 @@ public class CarouselBuilder implements Serializable {
             Log.e(TAG, "Empty item array or of length less than 2");
         }
 
-    }
-
-    private void setOtherRegionClickable() {
-
-        Intent carouselIntent = new Intent( Constants.CAROUSAL_EVENT_FIRED_INTENT_FILTER);
-        Bundle bundle = new Bundle();
-        bundle.putInt(  Constants.EVENT_CAROUSAL_ITEM_CLICKED_KEY,   Constants.EVENT_OTHER_REGION_CLICKED);
-        bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carousel);
-        carouselIntent.putExtras(bundle);
-        PendingIntent pIntent = PendingIntent.getBroadcast(context,   Constants.EVENT_OTHER_REGION_CLICKED, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mBuilder.setContentIntent(pIntent);
     }
 
     private Bitmap getCarouselBitmap(CarouselItem item) {
@@ -502,7 +482,7 @@ public class CarouselBuilder implements Serializable {
         return new Carousel(carouselItems, contentTitle, contentText,
                 bigContentTitle, bigContentText, carouselNotificationId,
                 currentStartIndex, smallIconPath, smallIconResourceId, largeIconPath,
-                placeHolderImagePath, leftItem, rightItem, isOtherRegionClickable, isImagesInCarousel);
+                placeHolderImagePath, leftItem, rightItem, isImagesInCarousel);
     }
 
     private void setUpfilePathOfImages() {
@@ -530,7 +510,6 @@ public class CarouselBuilder implements Serializable {
             carouselItems.clear();
 
             smallIconResourceId = -1;
-            isOtherRegionClickable = false;
             isImagesInCarousel = true;
             smallIcon = null;
             smallIconPath = null;
@@ -568,9 +547,6 @@ public class CarouselBuilder implements Serializable {
             case   Constants.EVENT_RIGHT_ITEM_CLICKED:
                 onRightItemClicked();
                 break;
-            case   Constants.EVENT_OTHER_REGION_CLICKED:
-                onOtherRegionClicked ();
-                break;
             default:
                 break;
         }
@@ -592,7 +568,6 @@ public class CarouselBuilder implements Serializable {
             placeHolderImagePath = setUp.caraousalPlaceholder;
             leftItem = setUp.leftItem;
             rightItem = setUp.rightItem;
-            isOtherRegionClickable = setUp.isOtherRegionClickable;
             isImagesInCarousel = setUp.isImagesInCarousel;
 
 
@@ -626,30 +601,6 @@ public class CarouselBuilder implements Serializable {
     private void onLeftItemClicked() {
         sendItemClickedBroadcast(leftItem);
 
-    }
-
-    private void onOtherRegionClicked() {
-        if (isOtherRegionClickable) {
-            //We will send the broadcast and finish the carousel
-            Intent i = new Intent();
-            i.setAction(  Constants.CAROUSAL_ITEM_CLICKED_INTENT_FILTER);
-            Bundle bundle = new Bundle();
-            i.putExtras(bundle);
-            context.getApplicationContext().sendBroadcast(i);
-            try {
-                clearCarouselIfExists();
-            } catch (Exception e) {
-                StackTraceElement element = new Throwable().getStackTrace()[0];
-                LogUtils.formGraylogModel(
-                        context,
-                        "e",
-                        "Clearing carousel : " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                );
-                e.printStackTrace();
-                Log.e(TAG, "Unable To send notification's pendingIntent");
-            }
-        }
     }
 
     private void sendItemClickedBroadcast(CarouselItem cItem) {
