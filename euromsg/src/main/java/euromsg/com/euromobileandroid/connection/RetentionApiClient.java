@@ -6,7 +6,6 @@ import android.util.Log;
 import java.util.concurrent.TimeUnit;
 
 import euromsg.com.euromobileandroid.Constants;
-import euromsg.com.euromobileandroid.connection.interceptor.RawResponseInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
