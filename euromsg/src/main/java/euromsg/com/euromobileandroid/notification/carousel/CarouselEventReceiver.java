@@ -28,7 +28,7 @@ public class CarouselEventReceiver extends BroadcastReceiver {
 
             if (carouselEvent > Constants.EVENT_RIGHT_ARROW_CLICKED) {
                 if(message != null) {
-                    sendOpenReport(message, context);
+                    //sendOpenReport(message, context); TODO enable sending open report from SDK
                 } else {
                     Log.e(LOG_TAG, "Could not send the open report since the payload is empty!!");
                 }
