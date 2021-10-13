@@ -3,6 +3,7 @@ package euromsg.com.euromobileandroid.notification.carousel;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,8 +28,10 @@ import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Carousel;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
+import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
 import euromsg.com.euromobileandroid.utils.LogUtils;
+import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class CarouselBuilder implements Serializable {
 
@@ -604,14 +607,45 @@ public class CarouselBuilder implements Serializable {
     }
 
     private void sendItemClickedBroadcast(CarouselItem cItem) {
-        Intent i = new Intent();
-        i.setAction(  Constants.CAROUSAL_ITEM_CLICKED_INTENT_FILTER);
+        Intent intent;
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.CAROUSAL_ITEM_CLICKED_KEY, cItem);
         bundle.putString(Constants.CAROUSEL_ITEM_CLICKED_URL, message.getElements().get(Integer.parseInt(cItem.getId())-1).getUrl());
-        i.putExtras(bundle);
 
-        context.getApplicationContext().sendBroadcast(i);
+        String intentStr = SharedPreference.getString(context.getApplicationContext(), Constants.INTENT_NAME);
+
+        if (!intentStr.isEmpty()) {
+            try {
+                intent = new Intent(context.getApplicationContext(), Class.forName(intentStr));
+                intent.putExtras(bundle);
+            } catch (Exception e) {
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        context,
+                        "e",
+                        "Navigating to the activity of the customer : " + e.getMessage(),
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
+                Log.e("PushClick : ", "The class could not be found!");
+                PackageManager packageManager = context.getPackageManager();
+                intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+                ComponentName componentName = intent.getComponent();
+                Intent notificationIntent = Intent.makeRestartActivityTask(componentName);
+                notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                notificationIntent.putExtras(bundle);
+            }
+
+        } else {
+            PackageManager packageManager = context.getPackageManager();
+            intent = packageManager.getLaunchIntentForPackage(context.getPackageName());
+            ComponentName componentName = intent.getComponent();
+            Intent notificationIntent = Intent.makeRestartActivityTask(componentName);
+            notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            notificationIntent.putExtras(bundle);
+        }
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.getApplicationContext().startActivity(intent);
 
 
         try {
