@@ -43,6 +43,7 @@ import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.callback.PushMessageInterface;
 import euromsg.com.euromobileandroid.enums.EmailPermit;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
+import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.EuromessageCallback;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
@@ -85,9 +86,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        if (intent.getExtras() != null) {
-            Message message = (Message) intent.getExtras().getSerializable("message");
-            handlePush(message, intent);
+        if(intent != null) {
+            Bundle bundle = intent.getExtras();
+            if (bundle != null) {
+                Message message = (Message) intent.getExtras().getSerializable("message");
+                if(message != null) {
+                    handlePush(message, intent);
+                } else {
+                    // Carousel push notification : an item was clicked
+                    String itemClickedUrl = bundle.getString("CarouselItemClickedUrl");
+                    if(itemClickedUrl != null && !itemClickedUrl.equals("")) {
+                        try {
+                            Intent viewIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(itemClickedUrl));
+                            viewIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(viewIntent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
         }
         setPushParamsUI();
     }
