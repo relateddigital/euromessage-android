@@ -425,4 +425,21 @@ public final class AppUtils {
         }
         return false;
     }
+
+    public static boolean isDateDifferenceGreaterThan(String date1, String date2, int thresholdDay) {
+        boolean result = true;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date dateRecent = dateFormat.parse(date1);
+            Date dateFar = dateFormat.parse(date2);
+            if((dateRecent.getTime() - dateFar.getTime()) <= thresholdDay*24*60*60*1000) {
+                result = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
+
+        return result;
+    }
 }

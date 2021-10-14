@@ -20,7 +20,10 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -378,7 +381,7 @@ public class EuroMobileManager {
 
         EuroLogger.debugLog("Sync started");
 
-        if (this.subscription.isValid() && !this.subscription.isEqual(previousSubscription)) {
+        if (this.subscription.isValid(context) && !this.subscription.isEqual(previousSubscription)) {
             previousSubscription = new Subscription();
             previousSubscription.copyFrom(subscription);
             saveSubscription(context);
@@ -435,6 +438,8 @@ public class EuroMobileManager {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         RetryCounterManager.clearCounter(counterId);
+                        saveSubscriptionNoEmail(mContext);
+                        saveSubscriptionDateNoEmail(mContext);
                         Log.i(TAG, "Sending the subscription is success");
                     } else {
                         if (RetryCounterManager.getCounterValue(counterId) >= 3) {
@@ -567,6 +572,70 @@ public class EuroMobileManager {
             );
             if (BuildConfig.DEBUG) e.printStackTrace();
 
+        }
+    }
+
+    private void saveSubscriptionNoEmail(Context context) {
+        try {
+            SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_NO_EMAIL_KEY, this.subscription.toJson());
+        } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Saving subscription object to shared pref : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+            if (BuildConfig.DEBUG) e.printStackTrace();
+
+        }
+    }
+
+    private void saveSubscriptionWithEmail(Context context, Subscription subscriptionObject) {
+        try {
+            SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_WITH_EMAIL_KEY, subscriptionObject.toJson());
+        } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Saving subscription object to shared pref : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+            if (BuildConfig.DEBUG) e.printStackTrace();
+
+        }
+    }
+
+    private void saveSubscriptionDateNoEmail(Context context) {
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String lastSubsDate = dateFormat.format(Calendar.getInstance().getTime());
+            SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_DATE_KEY, lastSubsDate);
+        } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Saving last subscription date to shared pref : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+        }
+    }
+
+    private void saveSubscriptionDateWithEmail(Context context) {
+        try {
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            String lastSubsDate = dateFormat.format(Calendar.getInstance().getTime());
+            SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_DATE_WITH_EMAIL_KEY, lastSubsDate);
+        } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Saving last subscription date to shared pref : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
         }
     }
 
@@ -786,7 +855,7 @@ public class EuroMobileManager {
             }
             return;
         }
-        if (registerEmailSubscription.isValid() && !registerEmailSubscription.isEqual(previousRegisterEmailSubscription)) {
+        if (registerEmailSubscription.isValidWithEmail(context) && !registerEmailSubscription.isEqual(previousRegisterEmailSubscription)) {
             previousRegisterEmailSubscription = new Subscription();
             previousRegisterEmailSubscription.copyFrom(registerEmailSubscription);
 
@@ -811,6 +880,8 @@ public class EuroMobileManager {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         RetryCounterManager.clearCounter(counterId);
+                        saveSubscriptionWithEmail(mContext, registerEmailSubscription);
+                        saveSubscriptionDateWithEmail(mContext);
                         Log.i(TAG, "Register Email Success");
                         if (callback != null) {
                             callback.success();
