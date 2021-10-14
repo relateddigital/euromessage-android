@@ -1,5 +1,6 @@
 package euromsg.com.euromobileandroid.model;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -7,10 +8,15 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
 import euromsg.com.euromobileandroid.Constants;
+import euromsg.com.euromobileandroid.utils.AppUtils;
+import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class Subscription extends BaseRequest implements Cloneable {
 
@@ -65,8 +71,45 @@ public class Subscription extends BaseRequest implements Cloneable {
         this.extra.clear();
     }
 
-    public boolean isValid() {
-        return !(TextUtils.isEmpty(getToken()) && TextUtils.isEmpty(appAlias));
+    public boolean isValid(Context context) {
+        boolean res1 = !(TextUtils.isEmpty(getToken()) && TextUtils.isEmpty(appAlias));
+        boolean res2 = true;
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String dateNow = dateFormat.format(Calendar.getInstance().getTime());
+        String lastSubsTime = SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_DATE_KEY);
+        if(lastSubsTime != null && !lastSubsTime.equals("")) {
+            if(!AppUtils.isDateDifferenceGreaterThan(dateNow, lastSubsTime, 3)) {
+                String lastSubStr = SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_NO_EMAIL_KEY);
+                if(lastSubStr != null && !lastSubStr.equals("")) {
+                    Subscription lastSubscription = new Gson().fromJson(lastSubStr, Subscription.class);
+                    if (isEqual(lastSubscription)) {
+                        res2 = false;
+                    }
+                }
+            }
+        }
+        return (res1 & res2);
+    }
+
+    public boolean isValidWithEmail(Context context) {
+        boolean res1 = !(TextUtils.isEmpty(getToken()) && TextUtils.isEmpty(appAlias));
+        boolean res2 = true;
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String dateNow = dateFormat.format(Calendar.getInstance().getTime());
+        String lastSubsWithEmailTime = SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_DATE_WITH_EMAIL_KEY);
+        if(lastSubsWithEmailTime != null && !lastSubsWithEmailTime.equals("")) {
+            if(!AppUtils.isDateDifferenceGreaterThan(dateNow, lastSubsWithEmailTime, 3)) {
+                Subscription lastSubscriptionWithEmail = new Gson().fromJson(SharedPreference.
+                                getString(context, Constants.EURO_SUBSCRIPTION_WITH_EMAIL_KEY),
+                        Subscription.class);
+                if(isEqual(lastSubscriptionWithEmail)) {
+                    res2 = false;
+                }
+            }
+        }
+        return (res1 & res2);
     }
 
     public boolean isEqual(Subscription previousSubscription) {

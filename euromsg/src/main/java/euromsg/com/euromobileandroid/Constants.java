@@ -57,6 +57,11 @@ public class Constants {
     public static final String CAROUSAL_LARGE_ICON_FILE_NAME = "largeIconCarousel";
     public static final String CAROUSAL_PLACEHOLDER_ICON_FILE_NAME = "placeHolderIconCarousel";
 
+    public static final String EURO_SUBSCRIPTION_NO_EMAIL_KEY = "subscription_no_email";
+    public static final String EURO_SUBSCRIPTION_DATE_KEY = "subscription_date";
+    public static final String EURO_SUBSCRIPTION_WITH_EMAIL_KEY = "subscription_with_email";
+    public static final String EURO_SUBSCRIPTION_DATE_WITH_EMAIL_KEY = "subscription_date_with_email";
+
     public static final String INTENT_NAME = "intent_name";
     public static final int UI_FEATURES_MIN_API = 21;
 
