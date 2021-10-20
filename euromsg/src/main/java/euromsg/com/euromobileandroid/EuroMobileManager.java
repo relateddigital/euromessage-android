@@ -263,6 +263,18 @@ public class EuroMobileManager {
             return;
         }
 
+        if(message == null) {
+            Log.e("Sending open report", "Push message is null!");
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    mContext,
+                    "e",
+                    "Sending open report : " + "Push message is null!",
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+            return;
+        }
+
         if (message.getPushId() == null || message.getPushId().isEmpty() || message.getPushId().equals(latestOpenPushId)) {
             Log.e("Euromessage", "Push Id is invalid!");
         } else {
