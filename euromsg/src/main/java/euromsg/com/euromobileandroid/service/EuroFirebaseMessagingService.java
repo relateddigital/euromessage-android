@@ -73,6 +73,17 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         Map<String, String> remoteMessageData = remoteMessage.getData();
+        if(remoteMessageData.isEmpty()) {
+            Log.e("FMessagingService", "Push message is empty!");
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    this,
+                    "e",
+                    "FMessagingService : " + "Push message is empty!",
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+            return;
+        }
         Message pushMessage = new Message(this, remoteMessageData);
 
         if(pushMessage.getEmPushSp() == null) {

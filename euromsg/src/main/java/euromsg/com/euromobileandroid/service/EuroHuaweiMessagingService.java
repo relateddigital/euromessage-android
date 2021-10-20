@@ -106,6 +106,17 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
             Log.i("Euromessage HPayload", remoteMessage.getData());
 
             Map<String, String> remoteMessageData = remoteMessage.getDataOfMap();
+            if(remoteMessageData.isEmpty()) {
+                Log.e("HMessagingService", "Push message is empty!");
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        this,
+                        "e",
+                        "HMessagingService : " + "Push message is empty!",
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
+                return;
+            }
             Message pushMessage = new Message(this, remoteMessageData);
 
             if(pushMessage.getEmPushSp() == null) {
