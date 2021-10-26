@@ -62,6 +62,8 @@ public class MainApplication extends Application {
                         euroMobileManager.subscribe(token, getApplicationContext());
 
                         SP.saveString(getApplicationContext(), "FirebaseToken", token);
+
+                        Log.e("Firebase Token : ", token);
                     }
                 });
     }

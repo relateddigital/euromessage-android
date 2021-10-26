@@ -1,10 +1,14 @@
 package euromsg.com.euromobileandroid.service;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -73,75 +77,10 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         Map<String, String> remoteMessageData = remoteMessage.getData();
-        if(remoteMessageData.isEmpty()) {
-            Log.e("FMessagingService", "Push message is empty!");
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    this,
-                    "e",
-                    "FMessagingService : " + "Push message is empty!",
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
-            return;
-        }
         Message pushMessage = new Message(this, remoteMessageData);
-
-        if(pushMessage.getEmPushSp() == null) {
-            Log.i("Push Notification", "The push notification was not coming from Related Digital! Ignoring..");
-            return;
-        }
-
         EuroLogger.debugLog("EM FirebasePayload : " + new Gson().toJson(pushMessage));
-
-        PushNotificationManager pushNotificationManager = new PushNotificationManager();
-
-        EuroLogger.debugLog("Message received : " + pushMessage.getMessage());
-
-        if (pushMessage.getPushType() != null && pushMessage.getPushId() != null) {
-
-
-            int notificationId = new Random().nextInt();
-
-            switch (pushMessage.getPushType()) {
-
-                case Image:
-
-                    if (pushMessage.getElements() != null) {
-                        pushNotificationManager.generateCarouselNotification(this, pushMessage, notificationId);
-                    } else {
-                        pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(this, pushMessage.getMediaUrl()),notificationId);
-                    }
-
-                    break;
-
-                case Text:
-                    pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
-
-                    break;
-
-                case Video:
-                    break;
-
-                default:
-                    pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
-                    break;
-            }
-            String appAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
-            String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
-            String token =   SharedPreference.getString(this, Constants.TOKEN_KEY);
-
-            if(!token.isEmpty() && !token.equals("")) {
-                EuroMobileManager.init(appAlias, huaweiAppAlias, this).subscribe(token, this);
-                EuroMobileManager.getInstance().reportReceived(pushMessage.getPushId(),
-                        pushMessage.getEmPushSp());
-            } else {
-                EuroMobileManager.init(appAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
-                        pushMessage.getEmPushSp());
-            }
-
-            PayloadUtils.addPushMessage(this, pushMessage);
-        } else {
-            EuroLogger.debugLog("remoteMessageData transfrom problem");
-        }
+        Intent intent = AppUtils.getLaunchIntent(getApplicationContext(), pushMessage);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
