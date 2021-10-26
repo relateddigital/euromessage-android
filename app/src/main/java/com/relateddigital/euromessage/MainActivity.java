@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,6 +29,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
+import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.model.Message;
 
 
@@ -81,6 +83,13 @@ public class MainActivity extends AppCompatActivity {
                 binding.payload.setText(sb.toString());
             }
         }
+
+        binding.btnSync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sync();
+            }
+        });
     }
 
     @Override
@@ -92,6 +101,20 @@ public class MainActivity extends AppCompatActivity {
                 Message message = (Message) intent.getExtras().getSerializable("message");
                 handlePush(message);
             }
+        }
+    }
+
+    private void sync() {
+
+        if (binding.autotext.getText().toString().equals("")) {
+            Toast.makeText(getApplicationContext(), "Please Enter Email", Toast.LENGTH_LONG).show();
+
+        } else {
+            EuroMobileManager.getInstance().setGsmPermit(GsmPermit.ACTIVE, getApplicationContext());
+            EuroMobileManager.getInstance().setEmail(binding.autotext.getText().toString().trim(), getApplicationContext());
+            EuroMobileManager.getInstance().setEuroUserId("12345", getApplicationContext());
+            EuroMobileManager.getInstance().sync(getApplicationContext());
+            Toast.makeText(getApplicationContext(), "Check RMC", Toast.LENGTH_LONG).show();
         }
     }
 

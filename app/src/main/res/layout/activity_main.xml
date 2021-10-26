@@ -98,5 +98,45 @@
             android:layout_margin="20dp"
             android:textColor="@color/black"
             android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorLight"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBackground"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/test_sync"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold|italic" />
+
+
+            <AutoCompleteTextView
+                android:id="@+id/autotext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:background="@android:drawable/edit_text"
+                android:hint="@string/please_enter_email_address"
+                android:inputType="textEmailAddress"
+                android:nextFocusLeft="@id/autotext"
+                android:nextFocusUp="@id/autotext" />
+
+            <Button
+                android:id="@+id/btn_sync"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/colorButton"
+                android:text="@string/add"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
