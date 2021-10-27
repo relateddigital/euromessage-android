@@ -123,6 +123,25 @@ public class MainActivity extends AppCompatActivity {
         String lastPushTime = dateFormat.format(Calendar.getInstance().getTime());
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_TIME, lastPushTime);
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_PARAMS, new GsonBuilder().create().toJson(message.getParams()));
+        binding.date.setText(SP.getString(getApplicationContext(), Constants.LAST_PUSH_TIME));
+        String lastPushParamsString = SP.getString(getApplicationContext(), Constants.LAST_PUSH_PARAMS);
+        if(lastPushParamsString.isEmpty() || lastPushParamsString.equals("{}")) {
+            binding.payload.setText("empty payload!!");
+        } else {
+            Gson gson = new Gson();
+            Type paramsType = new TypeToken<Map<String, String>>() {
+            }.getType();
+            Map<String, String> params = gson.fromJson(lastPushParamsString, paramsType);
+            if (params == null) {
+                binding.payload.setText("empty payload!!");
+            } else {
+                StringBuilder sb = new StringBuilder();
+                for (Map.Entry<String, String> param : params.entrySet()) {
+                    sb.append(param.getKey()).append(" : ").append(param.getValue()).append("\n\n");
+                }
+                binding.payload.setText(sb.toString());
+            }
+        }
     }
 
     private void getFirabaseToken() {
