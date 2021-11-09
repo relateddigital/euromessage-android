@@ -12,7 +12,7 @@ project.afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                artifact androidSourcesJar // optional sources
+                artifact androidSourcesJar
             }
         }
     }
@@ -25,8 +25,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 31
         versionCode 1
-        versionName "5.0.4"
-        buildConfigField 'String', 'VERSION_NAME', "\"5.0.4\""
+        versionName "5.0.5"
+        buildConfigField 'String', 'VERSION_NAME', "\"5.0.5\""
     }
     buildTypes {
         release {
