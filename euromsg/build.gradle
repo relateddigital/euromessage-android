@@ -1,5 +1,22 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 group = 'com.github.relateddigital'
+
+task androidSourcesJar(type: Jar) {
+    classifier 'sources'
+    from android.sourceSets.main.java.srcDirs
+}
+
+project.afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                artifact androidSourcesJar // optional sources
+            }
+        }
+    }
+}
 
 android {
     compileSdkVersion 31
@@ -8,8 +25,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 31
         versionCode 1
-        versionName "5.0.3"
-        buildConfigField 'String', 'VERSION_NAME', "\"5.0.3\""
+        versionName "5.0.4"
+        buildConfigField 'String', 'VERSION_NAME', "\"5.0.4\""
     }
     buildTypes {
         release {
