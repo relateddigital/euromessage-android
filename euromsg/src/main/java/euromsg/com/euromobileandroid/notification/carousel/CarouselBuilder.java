@@ -477,7 +477,11 @@ public class CarouselBuilder implements Serializable {
         bundle.putParcelable(  Constants.CAROUSAL_SET_UP_KEY, carousel);
         bundle.putSerializable("message", message);
         carouselIntent.putExtras(bundle);
-        return PendingIntent.getBroadcast(context, eventClicked, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
+            return PendingIntent.getBroadcast(context, eventClicked, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            return PendingIntent.getBroadcast(context, eventClicked, carouselIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
     }
 
     private Carousel saveCarouselSetUp() {
