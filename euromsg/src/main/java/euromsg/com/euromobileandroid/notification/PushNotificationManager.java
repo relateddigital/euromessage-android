@@ -69,7 +69,13 @@ public class PushNotificationManager {
             intent = new Intent(context, EuroMessageOpenReportService.class);
             intent.putExtra("message", pushMessage);
 
-            PendingIntent contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent contentIntent;
+
+            if(Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
+                contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            } else {
+                contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
 
@@ -128,7 +134,13 @@ public class PushNotificationManager {
         intent = new Intent(context, EuroMessageOpenReportService.class);
         intent.putExtra("message", pushMessage);
 
-        PendingIntent contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent;
+
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
+            contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, channelId);
