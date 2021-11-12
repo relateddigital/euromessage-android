@@ -68,4 +68,10 @@ public class Constants {
     public static final String PAYLOAD_SP_KEY = "payload_sp";
     public static final String PAYLOAD_SP_ARRAY_KEY = "messages";
 
+    public static final String NOTIFICATION_CHANNEL_ID_KEY = "not_channel_id_key";
+    public static final String NOTIFICATION_CHANNEL_NAME_KEY = "not_channel_name_key";
+    public static final String NOTIFICATION_CHANNEL_DESCRIPTION_KEY = "not_channel_description_key";
+    public static final String NOTIFICATION_CHANNEL_SOUND_KEY = "not_channel_sound_key";
+
+    public static final String DEFAULT_ANDROID_SOUND = "default_android_sound";
 }

@@ -16,6 +16,8 @@
 
 package euromsg.com.euromobileandroid.service;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -131,6 +133,28 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
             if (pushMessage.getPushType() != null && pushMessage.getPushId() != null) {
 
                 int notificationId = new Random().nextInt();
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && notificationManager != null) {
+                    String channelName = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_NAME_KEY);
+                    String channelDescription = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_DESCRIPTION_KEY);
+                    String channelSound = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_SOUND_KEY);
+
+                    if (!channelName.equals(PushNotificationManager.getChannelName(this)) ||
+                            !channelDescription.equals(PushNotificationManager.getChannelDescription(this)) ||
+                            !channelSound.equals(pushMessage.getSound())) {
+                        String oldChannelId = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_ID_KEY);
+                        if (!oldChannelId.isEmpty()) {
+                            notificationManager.deleteNotificationChannel(oldChannelId);
+                        }
+                        AppUtils.getNotificationChannelId(this, true);
+                    } else {
+                        AppUtils.getNotificationChannelId(this, false);
+                    }
+                    SharedPreference.saveString(this, Constants.NOTIFICATION_CHANNEL_NAME_KEY, PushNotificationManager.getChannelName(this));
+                    SharedPreference.saveString(this, Constants.NOTIFICATION_CHANNEL_DESCRIPTION_KEY, PushNotificationManager.getChannelDescription(this));
+                    SharedPreference.saveString(this, Constants.NOTIFICATION_CHANNEL_SOUND_KEY, pushMessage.getSound());
+                }
 
                 switch (pushMessage.getPushType()) {
 
