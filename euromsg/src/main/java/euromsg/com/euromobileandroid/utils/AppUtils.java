@@ -36,9 +36,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.model.Message;
 
 public final class AppUtils {
@@ -441,5 +443,23 @@ public final class AppUtils {
         }
 
         return result;
+    }
+
+    public static String getNotificationChannelId(Context context, boolean isNew) {
+        String oldChannelId = SharedPreference.getString(context, Constants.NOTIFICATION_CHANNEL_ID_KEY);
+        String newChannelId = oldChannelId;
+        if(isNew) {
+            while(newChannelId.equals(oldChannelId)) {
+                newChannelId = String.valueOf(new Random().nextInt(100000));
+            }
+        }
+
+        if(newChannelId.isEmpty()) {
+            newChannelId = String.valueOf(new Random().nextInt(100000));
+        }
+
+        SharedPreference.saveString(context, Constants.NOTIFICATION_CHANNEL_ID_KEY, newChannelId);
+
+        return newChannelId;
     }
 }

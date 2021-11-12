@@ -42,7 +42,6 @@ public class CarouselBuilder implements Serializable {
     private String bigContentTitle, bigContentText; //title and text when it becomes large
     private String leftItemTitle, leftItemDescription;
     private String rightItemTitle, rightItemDescription;
-    private final String channelId = "euro-message";
 
     Message message;
     private static final String TAG = "Carousel";
@@ -68,8 +67,7 @@ public class CarouselBuilder implements Serializable {
     private CarouselBuilder(Context context, int notificationId) {
         this.context = context;
         this.carouselNotificationId = notificationId;
-        String channelId = "euroChannel";
-        mBuilder = new NotificationCompat.Builder(context, channelId);
+        mBuilder = new NotificationCompat.Builder(context, AppUtils.getNotificationChannelId(context, false));
     }
 
     public static CarouselBuilder with(Context context, int notificationId) {
@@ -304,7 +302,7 @@ public class CarouselBuilder implements Serializable {
             NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotifyManager != null) {
-                PushNotificationManager.createNotificationChannel(mNotifyManager, channelId, message.getSound(), context);
+                PushNotificationManager.createNotificationChannel(mNotifyManager, message.getSound(), context);
             }
 
             PushNotificationManager pushNotificationManager = new PushNotificationManager();

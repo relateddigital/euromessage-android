@@ -37,8 +37,6 @@ import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class PushNotificationManager {
 
-    private String channelId = "euro-message";
-
     Intent intent;
 
 
@@ -63,7 +61,7 @@ public class PushNotificationManager {
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mNotificationManager != null) {
-                createNotificationChannel(mNotificationManager, channelId, pushMessage.getSound(), context);
+                createNotificationChannel(mNotificationManager, pushMessage.getSound(), context);
             }
 
             intent = new Intent(context, EuroMessageOpenReportService.class);
@@ -78,10 +76,6 @@ public class PushNotificationManager {
             }
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
-
-            if (pushMessage.getSound() != null) {
-                channelId += pushMessage.getSound();
-            }
 
             if(mNotificationManager != null) {
                 mNotificationManager.notify(notificationId, mBuilder.build());
@@ -143,7 +137,7 @@ public class PushNotificationManager {
         }
 
         NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context, channelId);
+                new NotificationCompat.Builder(context, AppUtils.getNotificationChannelId(context, false));
         mBuilder.setContentTitle(title)
                 .setContentText(contentText)
                 .setLargeIcon(largeIconBitmap)
@@ -193,7 +187,7 @@ public class PushNotificationManager {
                 new NotificationCompat.BigTextStyle().bigText(pushMessage.getMessage()) :
                 new NotificationCompat.BigPictureStyle().bigPicture(pushImage).setSummaryText(pushMessage.getMessage());
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, AppUtils.getNotificationChannelId(context, false))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setStyle(style)
                 .setLargeIcon(largeIconBitmap)
@@ -227,11 +221,11 @@ public class PushNotificationManager {
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    public static void createNotificationChannel(NotificationManager notificationManager, String channelId, String sound, Context context) {
+    public static void createNotificationChannel(NotificationManager notificationManager, String sound, Context context) {
 
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
 
-        NotificationChannel notificationChannel = new NotificationChannel(channelId, getChannelName(context), importance);
+        NotificationChannel notificationChannel = new NotificationChannel(AppUtils.getNotificationChannelId(context, false), getChannelName(context), importance);
         notificationChannel.setDescription(getChannelDescription(context));
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
         notificationChannel.enableLights(true);
