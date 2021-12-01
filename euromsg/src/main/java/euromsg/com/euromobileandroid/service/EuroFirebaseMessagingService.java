@@ -16,6 +16,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -151,14 +152,12 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
             }
             String appAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
             String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
-            String token =   SharedPreference.getString(this, Constants.TOKEN_KEY);
 
-            if(!token.isEmpty() && !token.equals("")) {
-                EuroMobileManager.init(appAlias, huaweiAppAlias, this).subscribe(token, this);
-                EuroMobileManager.getInstance().reportReceived(pushMessage.getPushId(),
-                        pushMessage.getEmPushSp());
-            } else {
-                EuroMobileManager.init(appAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
+            EuroMobileManager euroMobileManager = EuroMobileManager.init(appAlias, huaweiAppAlias, this);
+
+            if(pushMessage.getDeliver()!=null &&
+                    pushMessage.getDeliver().toLowerCase(Locale.ROOT).equals("true")) {
+                euroMobileManager.reportReceived(pushMessage.getPushId(),
                         pushMessage.getEmPushSp());
             }
 
