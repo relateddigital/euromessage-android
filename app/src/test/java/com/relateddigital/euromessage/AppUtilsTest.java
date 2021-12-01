@@ -22,16 +22,6 @@ public class AppUtilsTest {
     }
 
     @Test
-    public void testGetCurrentTurkeyDateString() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        TimeZone tzTurkey = TimeZone.getTimeZone("Turkey");
-        dateFormat.setTimeZone(tzTurkey);
-        String result1 = dateFormat.format(new Date());
-        String result2 = AppUtils.getCurrentTurkeyDateString(null);
-        assert(result1.equals(result2));
-    }
-
-    @Test
     public void testIsDateDifferenceGreaterThan() {
         boolean result;
         String date1_1 = "2021-11-30 11:21:26";
