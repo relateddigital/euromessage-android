@@ -27,6 +27,11 @@ public class RetryCounterManagerTest {
     @Test
     public void testCounter() {
         boolean result;
+        RetryCounterManager.clearCounter(1);
+        RetryCounterManager.clearCounter(2);
+        RetryCounterManager.clearCounter(3);
+        RetryCounterManager.clearCounter(4);
+        RetryCounterManager.clearCounter(5);
         RetryCounterManager.increaseCounter(1);
         RetryCounterManager.increaseCounter(1);
         RetryCounterManager.increaseCounter(3);
