@@ -293,7 +293,7 @@ public class EuroMobileManager {
 
                 retention.setPushId(message.getPushId());
                 retention.setStatus(MessageStatus.Read.toString());
-                retention.setToken(subscription.getToken());
+                retention.setToken(SharedPreference.getString(mContext, Constants.TOKEN_KEY));
                 retention.setActionBtn(0);
                 retention.setDeliver(0);
                 retention.setIsMobile(1);

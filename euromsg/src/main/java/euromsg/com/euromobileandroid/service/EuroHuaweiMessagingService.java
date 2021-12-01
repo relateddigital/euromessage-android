@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 import com.huawei.hms.push.HmsMessageService;
 import com.huawei.hms.push.RemoteMessage;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -182,14 +183,12 @@ public class EuroHuaweiMessagingService extends HmsMessageService {
                 }
                 String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
                 String googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
-                String token =   SharedPreference.getString(this, Constants.TOKEN_KEY);
 
-                if(!token.isEmpty() && !token.equals("")) {
-                    EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).subscribe(token, this);
-                    EuroMobileManager.getInstance().reportReceived(pushMessage.getPushId(),
-                            pushMessage.getEmPushSp());
-                } else {
-                    EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).reportReceived(pushMessage.getPushId(),
+                EuroMobileManager euroMobileManager = EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this);
+
+                if(pushMessage.getDeliver()!=null &&
+                        pushMessage.getDeliver().toLowerCase(Locale.ROOT).equals("true")) {
+                    euroMobileManager.reportReceived(pushMessage.getPushId(),
                             pushMessage.getEmPushSp());
                 }
 
