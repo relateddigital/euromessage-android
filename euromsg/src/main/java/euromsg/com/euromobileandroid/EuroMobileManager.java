@@ -82,6 +82,7 @@ public class EuroMobileManager {
         try {
             subscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
         } catch (Exception e) {
+            SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, "");
             subscription = null;
         }
 
