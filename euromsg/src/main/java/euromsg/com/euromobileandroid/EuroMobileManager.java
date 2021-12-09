@@ -79,7 +79,12 @@ public class EuroMobileManager {
 
     private EuroMobileManager(Context context, String googleAppAlias, String huaweiAppAlias) {
 
-        subscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
+        try {
+            subscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
+        } catch (Exception e) {
+            subscription = null;
+        }
+
         if(subscription == null) {
             subscription = new Subscription();
         }
