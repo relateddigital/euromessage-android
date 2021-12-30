@@ -25,8 +25,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 31
         versionCode 1
-        versionName "5.0.8"
-        buildConfigField 'String', 'VERSION_NAME', "\"5.0.8\""
+        versionName "5.0.9"
+        buildConfigField 'String', 'VERSION_NAME', "\"5.0.9\""
     }
     buildTypes {
         release {
