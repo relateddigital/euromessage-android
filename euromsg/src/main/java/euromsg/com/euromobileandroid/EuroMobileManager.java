@@ -80,7 +80,10 @@ public class EuroMobileManager {
     private EuroMobileManager(Context context, String googleAppAlias, String huaweiAppAlias) {
 
         try {
-            subscription = new Gson().fromJson(SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY), Subscription.class);
+            String subsStr = SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_KEY);
+            if(!subsStr.isEmpty()) {
+                subscription = new Gson().fromJson(subsStr, Subscription.class);
+            }
         } catch (Exception e) {
             SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, "");
             subscription = null;
@@ -998,6 +1001,7 @@ public class EuroMobileManager {
                             }
                         });
                     } catch (final Exception e) {
+                        SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, "");
                         StackTraceElement element = new Throwable().getStackTrace()[0];
                         LogUtils.formGraylogModel(
                                 mContext,

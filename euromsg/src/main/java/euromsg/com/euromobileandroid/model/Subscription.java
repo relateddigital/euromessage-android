@@ -16,6 +16,7 @@ import java.util.Map;
 
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.utils.AppUtils;
+import euromsg.com.euromobileandroid.utils.LogUtils;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class Subscription extends BaseRequest implements Cloneable {
@@ -81,10 +82,15 @@ public class Subscription extends BaseRequest implements Cloneable {
         if(lastSubsTime != null && !lastSubsTime.equals("")) {
             if(!AppUtils.isDateDifferenceGreaterThan(dateNow, lastSubsTime, 3)) {
                 String lastSubStr = SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_NO_EMAIL_KEY);
-                if(lastSubStr != null && !lastSubStr.equals("")) {
-                    Subscription lastSubscription = new Gson().fromJson(lastSubStr, Subscription.class);
-                    if (isEqual(lastSubscription)) {
-                        res2 = false;
+                if(lastSubStr != null && !lastSubStr.isEmpty()) {
+                    try {
+                        Subscription lastSubscription = new Gson().fromJson(lastSubStr, Subscription.class);
+                        if (isEqual(lastSubscription)) {
+                            res2 = false;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_NO_EMAIL_KEY, "");
                     }
                 }
             }
@@ -101,11 +107,19 @@ public class Subscription extends BaseRequest implements Cloneable {
         String lastSubsWithEmailTime = SharedPreference.getString(context, Constants.EURO_SUBSCRIPTION_DATE_WITH_EMAIL_KEY);
         if(lastSubsWithEmailTime != null && !lastSubsWithEmailTime.equals("")) {
             if(!AppUtils.isDateDifferenceGreaterThan(dateNow, lastSubsWithEmailTime, 3)) {
-                Subscription lastSubscriptionWithEmail = new Gson().fromJson(SharedPreference.
-                                getString(context, Constants.EURO_SUBSCRIPTION_WITH_EMAIL_KEY),
-                        Subscription.class);
-                if(isEqual(lastSubscriptionWithEmail)) {
-                    res2 = false;
+                String lastSubsWithEmailStr = SharedPreference.
+                        getString(context, Constants.EURO_SUBSCRIPTION_WITH_EMAIL_KEY);
+                if(lastSubsWithEmailStr != null && !lastSubsWithEmailStr.isEmpty()) {
+                    try {
+                        Subscription lastSubscriptionWithEmail = new Gson().fromJson(lastSubsWithEmailStr,
+                                Subscription.class);
+                        if (isEqual(lastSubscriptionWithEmail)) {
+                            res2 = false;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_WITH_EMAIL_KEY, "");
+                    }
                 }
             }
         }
