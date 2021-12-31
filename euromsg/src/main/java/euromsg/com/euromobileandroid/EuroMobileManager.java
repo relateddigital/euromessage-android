@@ -841,8 +841,6 @@ public class EuroMobileManager {
             case ConnectionResult.SUCCESS:
                 result = true;
 
-                Log.i(TAG, "Google Service is enable");
-
                 break;
         }
 
