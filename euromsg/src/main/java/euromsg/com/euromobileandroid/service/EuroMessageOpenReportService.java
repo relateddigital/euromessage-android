@@ -78,6 +78,7 @@ public class EuroMessageOpenReportService extends IntentService {
             intent = AppUtils.getLaunchIntent(getApplicationContext(), pushMessage);
         }
 
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }

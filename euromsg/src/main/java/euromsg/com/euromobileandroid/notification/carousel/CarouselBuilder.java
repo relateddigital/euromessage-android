@@ -646,6 +646,7 @@ public class CarouselBuilder implements Serializable {
             notificationIntent.putExtras(bundle);
         }
 
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.getApplicationContext().startActivity(intent);
 
