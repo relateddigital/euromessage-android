@@ -50,25 +50,40 @@ public final class AppUtils {
 
     public synchronized static String id(Context context) {
         if (sID == null) {
-            PackageManager pm = context.getPackageManager();
-            if (pm.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context.getPackageName())
-                    == PackageManager.PERMISSION_GRANTED &&
-                    pm.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, context.getPackageName())
-                            == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    sID = getIdFromExternalStorage(context);
-                } catch (Exception e) {
-                    sID = null;
-                    StackTraceElement element = new Throwable().getStackTrace()[0];
-                    LogUtils.formGraylogModel(
-                            context,
-                            "e",
-                            "Reading identifierForVendor from the file : " + e.getMessage(),
-                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                    );
-                    e.printStackTrace();
-                }
-                if(sID == null) {
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+                    try {
+                        sID = getIdFromExternalStorage(context);
+                    } catch (Exception e) {
+                        sID = null;
+                        StackTraceElement element = new Throwable().getStackTrace()[0];
+                        LogUtils.formGraylogModel(
+                                context,
+                                "e",
+                                "Reading identifierForVendor from the file : " + e.getMessage(),
+                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                        );
+                        e.printStackTrace();
+                    }
+                    if (sID == null) {
+                        File installation = new File(context.getFilesDir(), INSTALLATION);
+                        try {
+                            if (!installation.exists()) {
+                                writeInstallationFile(installation);
+                            }
+                            sID = readInstallationFile(context, installation);
+                        } catch (Exception e) {
+                            StackTraceElement element = new Throwable().getStackTrace()[0];
+                            LogUtils.formGraylogModel(
+                                    context,
+                                    "e",
+                                    "Writing and reading identifierForVendor to/from a file : " + e.getMessage(),
+                                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                            );
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
                     File installation = new File(context.getFilesDir(), INSTALLATION);
                     try {
                         if (!installation.exists()) {
@@ -87,21 +102,59 @@ public final class AppUtils {
                     }
                 }
             } else {
-                File installation = new File(context.getFilesDir(), INSTALLATION);
-                try {
-                    if (!installation.exists()) {
-                        writeInstallationFile(installation);
+                PackageManager pm = context.getPackageManager();
+                if (pm.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, context.getPackageName())
+                        == PackageManager.PERMISSION_GRANTED &&
+                        pm.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, context.getPackageName())
+                                == PackageManager.PERMISSION_GRANTED) {
+                    try {
+                        sID = getIdFromExternalStorage(context);
+                    } catch (Exception e) {
+                        sID = null;
+                        StackTraceElement element = new Throwable().getStackTrace()[0];
+                        LogUtils.formGraylogModel(
+                                context,
+                                "e",
+                                "Reading identifierForVendor from the file : " + e.getMessage(),
+                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                        );
+                        e.printStackTrace();
                     }
-                    sID = readInstallationFile(context, installation);
-                } catch (Exception e) {
-                    StackTraceElement element = new Throwable().getStackTrace()[0];
-                    LogUtils.formGraylogModel(
-                            context,
-                            "e",
-                            "Writing and reading identifierForVendor to/from a file : " + e.getMessage(),
-                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                    );
-                    throw new RuntimeException(e);
+                    if (sID == null) {
+                        File installation = new File(context.getFilesDir(), INSTALLATION);
+                        try {
+                            if (!installation.exists()) {
+                                writeInstallationFile(installation);
+                            }
+                            sID = readInstallationFile(context, installation);
+                        } catch (Exception e) {
+                            StackTraceElement element = new Throwable().getStackTrace()[0];
+                            LogUtils.formGraylogModel(
+                                    context,
+                                    "e",
+                                    "Writing and reading identifierForVendor to/from a file : " + e.getMessage(),
+                                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                            );
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
+                    File installation = new File(context.getFilesDir(), INSTALLATION);
+                    try {
+                        if (!installation.exists()) {
+                            writeInstallationFile(installation);
+                        }
+                        sID = readInstallationFile(context, installation);
+                    } catch (Exception e) {
+                        StackTraceElement element = new Throwable().getStackTrace()[0];
+                        LogUtils.formGraylogModel(
+                                context,
+                                "e",
+                                "Writing and reading identifierForVendor to/from a file : " + e.getMessage(),
+                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                        );
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }
