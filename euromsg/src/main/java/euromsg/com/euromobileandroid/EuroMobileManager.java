@@ -574,6 +574,11 @@ public class EuroMobileManager {
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
+    public void removeUserProperty(Context context, String key) {
+        this.subscription.remove(key);
+        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+    }
+
     public void removeUserProperties(Context context) {
         this.subscription.removeAll();
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
