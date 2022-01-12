@@ -2,6 +2,7 @@ package euromsg.com.euromobileandroid.model;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -70,6 +71,16 @@ public class Subscription extends BaseRequest implements Cloneable {
 
     public void removeAll() {
         this.extra.clear();
+    }
+
+    public void remove(String key) {
+        try {
+            if(key != null && !key.isEmpty()) {
+                extra.remove(key);
+            }
+        } catch (Exception e) {
+            Log.w("remove user property", "something went wrong!");
+        }
     }
 
     public boolean isValid(Context context) {
