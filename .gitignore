@@ -16,3 +16,5 @@
 local.properties
 .cxx
 /.idea/.name
+/app/google-services.json
+/app/agconnect-services.json
