@@ -18,3 +18,4 @@ local.properties
 /.idea/.name
 /app/google-services.json
 /app/agconnect-services.json
+/app/keystore.jks
