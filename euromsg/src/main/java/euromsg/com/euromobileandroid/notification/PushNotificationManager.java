@@ -21,14 +21,11 @@ import androidx.core.app.NotificationCompat;
 import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
-import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.R;
-import euromsg.com.euromobileandroid.model.GraylogModel;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
 import euromsg.com.euromobileandroid.model.Message;
-import euromsg.com.euromobileandroid.service.EuroMessageOpenReportService;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
@@ -64,15 +61,14 @@ public class PushNotificationManager {
                 createNotificationChannel(mNotificationManager, pushMessage.getSound(), context);
             }
 
-            intent = new Intent(context, EuroMessageOpenReportService.class);
-            intent.putExtra("message", pushMessage);
+            intent = AppUtils.getStartActivityIntent(context, pushMessage);
 
             PendingIntent contentIntent;
 
             if(Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
-                contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                contentIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
             } else {
-                contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                contentIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             }
 
             NotificationCompat.Builder mBuilder = createNotificationBuilder(context, image, pushMessage, contentIntent);
@@ -125,15 +121,14 @@ public class PushNotificationManager {
             largeIconBitmap = null;
         }
 
-        intent = new Intent(context, EuroMessageOpenReportService.class);
-        intent.putExtra("message", pushMessage);
+        intent = AppUtils.getStartActivityIntent(context, pushMessage);
 
         PendingIntent contentIntent;
 
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.R) {
-            contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            contentIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         } else {
-            contentIntent = PendingIntent.getService(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            contentIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
         NotificationCompat.Builder mBuilder =

@@ -43,11 +43,11 @@ import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.callback.PushMessageInterface;
 import euromsg.com.euromobileandroid.enums.EmailPermit;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
-import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.EuromessageCallback;
 import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
+import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -134,6 +134,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void handlePush(Message message, Intent intent) {
+        // Send open report
+        if(EuroMobileManager.getInstance() == null) {
+            String appAlias = SharedPreference.getString(getApplicationContext(), euromsg.com.euromobileandroid.Constants.GOOGLE_APP_ALIAS);
+            String huaweiAppAlias = SharedPreference.getString(getApplicationContext(), euromsg.com.euromobileandroid.Constants.HUAWEI_APP_ALIAS);
+            EuroMobileManager.init(appAlias, huaweiAppAlias, getApplicationContext()).sendOpenRequest(message);
+        } else {
+            EuroMobileManager.getInstance().sendOpenRequest(message);
+        }
+
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String lastPushTime = dateFormat.format(Calendar.getInstance().getTime());
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_TIME, lastPushTime);
