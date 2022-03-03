@@ -515,4 +515,34 @@ public final class AppUtils {
 
         return newChannelId;
     }
+
+    public static Intent getStartActivityIntent(Context context, Message pushMessage) {
+        String intentStr = SharedPreference.getString(context, Constants.INTENT_NAME);
+
+        Intent intent;
+        if (!intentStr.isEmpty()) {
+            try {
+                intent = new Intent(context, Class.forName(intentStr));
+                intent.putExtra("message", pushMessage);
+            } catch (Exception e) {
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        context,
+                        "e",
+                        "Navigating to the activity of the customer : " + e.getMessage(),
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
+                Log.e("PushClick : ", "The class could not be found!");
+                intent = AppUtils.getLaunchIntent(context, pushMessage);
+            }
+
+        } else {
+            intent = getLaunchIntent(context, pushMessage);
+        }
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        return intent;
+    }
 }

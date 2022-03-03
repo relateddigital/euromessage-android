@@ -9,9 +9,5 @@
             android:name=".notification.carousel.CarouselEventReceiver"
             android:exported="false"
             android:enabled="true"/>
-
-        <service
-            android:name=".service.EuroMessageOpenReportService"
-            android:exported="false"/>
     </application>
 </manifest>
