@@ -147,11 +147,15 @@ public class MainActivity extends AppCompatActivity {
         String lastPushTime = dateFormat.format(Calendar.getInstance().getTime());
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_TIME, lastPushTime);
         SP.saveString(getApplicationContext(), Constants.LAST_PUSH_PARAMS, new GsonBuilder().create().toJson(message.getParams()));
+        StringBuilder sb = new StringBuilder();
+        sb.append("\n\n");
         if (message.getParams() != null) {
             for (Map.Entry<String, String> entry : message.getParams().entrySet()) {
                 Log.d("Push Params", "Key : " + entry.getKey() + " Value : " + entry.getValue());
+                sb.append(entry.getKey()).append(" : ").append(entry.getValue()).append("\n\n");
             }
         }
+        binding.payloadTextView.setText(sb.toString());
         notificationUrl(intent);
     }
 

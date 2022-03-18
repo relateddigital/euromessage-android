@@ -176,7 +176,7 @@ public class EuroMobileManager {
         FirebaseApp.initializeApp(context);
     }
 
-    public void reportReceived(String pushId, String emPushSp) {
+    public void reportReceived(String pushId, String emPushSp, Boolean isSilent) {
 
         if (pushId != null && !pushId.isEmpty() && !pushId.equals(latestDeliverPushId)) {
             latestDeliverPushId = pushId;
@@ -190,7 +190,11 @@ public class EuroMobileManager {
             }
 
             retention.setPushId(pushId);
-            retention.setStatus(MessageStatus.Received.toString());
+            if(isSilent) {
+                retention.setStatus(MessageStatus.Silent.toString());
+            } else {
+                retention.setStatus(MessageStatus.Received.toString());
+            }
             retention.setToken(SharedPreference.getString(mContext, Constants.TOKEN_KEY));
             retention.setActionBtn(0);
             retention.setDeliver(1);

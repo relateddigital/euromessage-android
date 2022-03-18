@@ -1,7 +1,7 @@
 package euromsg.com.euromobileandroid.enums;
 
 public enum MessageStatus {
-    Read("O"), Received("D");
+    Read("O"), Received("D"), Silent("S");
 
     private final String name;
 
