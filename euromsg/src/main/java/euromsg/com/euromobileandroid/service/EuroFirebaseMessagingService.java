@@ -100,70 +100,78 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
         EuroLogger.debugLog("Message received : " + pushMessage.getMessage());
 
-        if (pushMessage.getPushType() != null && pushMessage.getPushId() != null) {
+        String appAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
+        String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
 
-            int notificationId = new Random().nextInt();
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        EuroMobileManager euroMobileManager = EuroMobileManager.init(appAlias, huaweiAppAlias, this);
 
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && notificationManager != null) {
-                String channelName = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_NAME_KEY);
-                String channelDescription = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_DESCRIPTION_KEY);
-                String channelSound = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_SOUND_KEY);
-
-                if (!channelName.equals(PushNotificationManager.getChannelName(this)) ||
-                        !channelDescription.equals(PushNotificationManager.getChannelDescription(this)) ||
-                        !channelSound.equals(pushMessage.getSound())) {
-                    String oldChannelId = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_ID_KEY);
-                    if (!oldChannelId.isEmpty()) {
-                        notificationManager.deleteNotificationChannel(oldChannelId);
-                    }
-                    AppUtils.getNotificationChannelId(this, true);
-                } else {
-                    AppUtils.getNotificationChannelId(this, false);
-                }
-                SharedPreference.saveString(this, Constants.NOTIFICATION_CHANNEL_NAME_KEY, PushNotificationManager.getChannelName(this));
-                SharedPreference.saveString(this, Constants.NOTIFICATION_CHANNEL_DESCRIPTION_KEY, PushNotificationManager.getChannelDescription(this));
-                SharedPreference.saveString(this, Constants.NOTIFICATION_CHANNEL_SOUND_KEY, pushMessage.getSound());
-            }
-
-            switch (pushMessage.getPushType()) {
-
-                case Image:
-
-                    if (pushMessage.getElements() != null) {
-                        pushNotificationManager.generateCarouselNotification(this, pushMessage, notificationId);
-                    } else {
-                        pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(this, pushMessage.getMediaUrl()),notificationId);
-                    }
-
-                    break;
-
-                case Text:
-                    pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
-
-                    break;
-
-                case Video:
-                    break;
-
-                default:
-                    pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
-                    break;
-            }
-            String appAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
-            String huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);
-
-            EuroMobileManager euroMobileManager = EuroMobileManager.init(appAlias, huaweiAppAlias, this);
-
-            if(pushMessage.getDeliver()!=null &&
-                    pushMessage.getDeliver().toLowerCase(Locale.ROOT).equals("true")) {
-                euroMobileManager.reportReceived(pushMessage.getPushId(),
-                        pushMessage.getEmPushSp());
-            }
-
-            PayloadUtils.addPushMessage(this, pushMessage);
+        if(pushMessage.getSilent() != null && pushMessage.getSilent().equals("true")) {
+            Log.i("EuroFirabase", "Silent Push");
+            euroMobileManager.reportReceived(pushMessage.getPushId(),
+                    pushMessage.getEmPushSp(), true);
         } else {
-            EuroLogger.debugLog("remoteMessageData transfrom problem");
+
+            if (pushMessage.getPushType() != null && pushMessage.getPushId() != null) {
+
+                int notificationId = new Random().nextInt();
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && notificationManager != null) {
+                    String channelName = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_NAME_KEY);
+                    String channelDescription = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_DESCRIPTION_KEY);
+                    String channelSound = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_SOUND_KEY);
+
+                    if (!channelName.equals(PushNotificationManager.getChannelName(this)) ||
+                            !channelDescription.equals(PushNotificationManager.getChannelDescription(this)) ||
+                            !channelSound.equals(pushMessage.getSound())) {
+                        String oldChannelId = SharedPreference.getString(this, Constants.NOTIFICATION_CHANNEL_ID_KEY);
+                        if (!oldChannelId.isEmpty()) {
+                            notificationManager.deleteNotificationChannel(oldChannelId);
+                        }
+                        AppUtils.getNotificationChannelId(this, true);
+                    } else {
+                        AppUtils.getNotificationChannelId(this, false);
+                    }
+                    SharedPreference.saveString(this, Constants.NOTIFICATION_CHANNEL_NAME_KEY, PushNotificationManager.getChannelName(this));
+                    SharedPreference.saveString(this, Constants.NOTIFICATION_CHANNEL_DESCRIPTION_KEY, PushNotificationManager.getChannelDescription(this));
+                    SharedPreference.saveString(this, Constants.NOTIFICATION_CHANNEL_SOUND_KEY, pushMessage.getSound());
+                }
+
+                switch (pushMessage.getPushType()) {
+
+                    case Image:
+
+                        if (pushMessage.getElements() != null) {
+                            pushNotificationManager.generateCarouselNotification(this, pushMessage, notificationId);
+                        } else {
+                            pushNotificationManager.generateNotification(this, pushMessage, AppUtils.getBitMapFromUri(this, pushMessage.getMediaUrl()), notificationId);
+                        }
+
+                        break;
+
+                    case Text:
+                        pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
+
+                        break;
+
+                    case Video:
+                        break;
+
+                    default:
+                        pushNotificationManager.generateNotification(this, pushMessage, null, notificationId);
+                        break;
+                }
+
+                if (pushMessage.getDeliver() != null &&
+                        pushMessage.getDeliver().toLowerCase(Locale.ROOT).equals("true")) {
+                    euroMobileManager.reportReceived(pushMessage.getPushId(),
+                            pushMessage.getEmPushSp(), false);
+                }
+
+                PayloadUtils.addPushMessage(this, pushMessage);
+            } else {
+                EuroLogger.debugLog("remoteMessageData transfrom problem");
+            }
         }
     }
 }
