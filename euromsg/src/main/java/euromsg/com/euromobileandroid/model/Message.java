@@ -2,6 +2,7 @@ package euromsg.com.euromobileandroid.model;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -38,36 +39,40 @@ public class Message implements Serializable {
     private ArrayList<Element> elements;
 
     public Message(Context context, @NonNull Map<String, String> bundle) {
+        try {
+            for (String key : bundle.keySet()) {
 
-        for (String key : bundle.keySet()) {
-
-            Object value = bundle.get(key);
-            if (value != null) {
-                params.put(key, value.toString());
+                Object value = bundle.get(key);
+                if (value != null) {
+                    params.put(key, value.toString());
+                }
             }
-        }
-        date = bundle.get("date");
-        mediaUrl = bundle.get("mediaUrl");
-        pushId = bundle.get("pushId");
-        url = bundle.get("url");
-        altUrl = bundle.get("altUrl");
-        from = bundle.get("from");
-        message = bundle.get("message");
-        title = bundle.get("title");
-        sound = bundle.get("sound");
-        emPushSp = bundle.get("emPushSp");
-        deliver = bundle.get("deliver");
-        silent = bundle.get("silent");
-        campaignId = bundle.get("cId");
-        if (bundle.get("pushType") != null) {
-            pushType = PushType.valueOf(bundle.get("pushType"));
-        }else {
-            pushType = PushType.Text;
-        }
-        collapseKey = bundle.get("collapse_key");
+            date = bundle.get("date");
+            mediaUrl = bundle.get("mediaUrl");
+            pushId = bundle.get("pushId");
+            url = bundle.get("url");
+            altUrl = bundle.get("altUrl");
+            from = bundle.get("from");
+            message = bundle.get("message");
+            title = bundle.get("title");
+            sound = bundle.get("sound");
+            emPushSp = bundle.get("emPushSp");
+            deliver = bundle.get("deliver");
+            silent = bundle.get("silent");
+            campaignId = bundle.get("cId");
+            if (bundle.get("pushType") != null) {
+                pushType = PushType.valueOf(bundle.get("pushType"));
+            } else {
+                pushType = PushType.Text;
+            }
+            collapseKey = bundle.get("collapse_key");
 
-        if (bundle.get("elements") != null) {
-            convertJsonStrToElementsArray(context, bundle.get("elements"));
+            if (bundle.get("elements") != null) {
+                convertJsonStrToElementsArray(context, bundle.get("elements"));
+            }
+        } catch (Exception e) {
+            Log.e("Message", "Could not model the message!");
+            e.printStackTrace();
         }
     }
 
