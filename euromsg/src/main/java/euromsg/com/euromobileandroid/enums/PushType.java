@@ -1,6 +1,8 @@
 package euromsg.com.euromobileandroid.enums;
 
-public enum PushType {
+import java.io.Serializable;
+
+public enum PushType implements Serializable {
     Text("Text"), Image("Image"), Carousel("Carousel"), Video("Video");
 
     private final String name;
