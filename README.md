@@ -4,7 +4,7 @@
 </p>
 
 
-***April 14, 2022*** - [Euromessage v5.1.5](https://github.com/relateddigital/euromessage-android/releases/tag/5.1.5)
+***April 20, 2022*** - [Euromessage v5.1.6](https://github.com/relateddigital/euromessage-android/releases/tag/5.1.6
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
