@@ -56,13 +56,6 @@ public final class AppUtils {
                         sID = getIdFromExternalStorage(context);
                     } catch (Exception e) {
                         sID = null;
-                        StackTraceElement element = new Throwable().getStackTrace()[0];
-                        LogUtils.formGraylogModel(
-                                context,
-                                "e",
-                                "Reading identifierForVendor from the file : " + e.getMessage(),
-                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                        );
                         e.printStackTrace();
                     }
                     if (sID == null) {
@@ -73,13 +66,6 @@ public final class AppUtils {
                             }
                             sID = readInstallationFile(context, installation);
                         } catch (Exception e) {
-                            StackTraceElement element = new Throwable().getStackTrace()[0];
-                            LogUtils.formGraylogModel(
-                                    context,
-                                    "e",
-                                    "Writing and reading identifierForVendor to/from a file : " + e.getMessage(),
-                                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                            );
                             throw new RuntimeException(e);
                         }
                     }
@@ -91,13 +77,6 @@ public final class AppUtils {
                         }
                         sID = readInstallationFile(context, installation);
                     } catch (Exception e) {
-                        StackTraceElement element = new Throwable().getStackTrace()[0];
-                        LogUtils.formGraylogModel(
-                                context,
-                                "e",
-                                "Writing and reading identifierForVendor to/from a file : " + e.getMessage(),
-                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                        );
                         throw new RuntimeException(e);
                     }
                 }
@@ -111,13 +90,6 @@ public final class AppUtils {
                         sID = getIdFromExternalStorage(context);
                     } catch (Exception e) {
                         sID = null;
-                        StackTraceElement element = new Throwable().getStackTrace()[0];
-                        LogUtils.formGraylogModel(
-                                context,
-                                "e",
-                                "Reading identifierForVendor from the file : " + e.getMessage(),
-                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                        );
                         e.printStackTrace();
                     }
                     if (sID == null) {
@@ -128,13 +100,6 @@ public final class AppUtils {
                             }
                             sID = readInstallationFile(context, installation);
                         } catch (Exception e) {
-                            StackTraceElement element = new Throwable().getStackTrace()[0];
-                            LogUtils.formGraylogModel(
-                                    context,
-                                    "e",
-                                    "Writing and reading identifierForVendor to/from a file : " + e.getMessage(),
-                                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                            );
                             throw new RuntimeException(e);
                         }
                     }
@@ -146,13 +111,6 @@ public final class AppUtils {
                         }
                         sID = readInstallationFile(context, installation);
                     } catch (Exception e) {
-                        StackTraceElement element = new Throwable().getStackTrace()[0];
-                        LogUtils.formGraylogModel(
-                                context,
-                                "e",
-                                "Writing and reading identifierForVendor to/from a file : " + e.getMessage(),
-                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                        );
                         throw new RuntimeException(e);
                     }
                 }
@@ -173,13 +131,6 @@ public final class AppUtils {
                 try {
                     f.close();
                 } catch (IOException e) {
-                    StackTraceElement element = new Throwable().getStackTrace()[0];
-                    LogUtils.formGraylogModel(
-                            context,
-                            "e",
-                            "Closing a file : " + e.getMessage(),
-                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                    );
                     Log.e("Error", e.toString());
                 }
             }
@@ -199,13 +150,6 @@ public final class AppUtils {
             PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return pInfo.versionName;
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Getting package info : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             EuroLogger.debugLog("Version Name Error : " + e.toString());
 
         }
@@ -245,13 +189,6 @@ public final class AppUtils {
 
             image = BitmapFactory.decodeStream(connection.getInputStream());
         } catch (IOException e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Getting bitmap from uri : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             e.printStackTrace();
         }
 
@@ -300,13 +237,6 @@ public final class AppUtils {
         try {
             lApplicationInfo = lPackageManager.getApplicationInfo(pContext.getApplicationInfo().packageName, 0);
         } catch (final PackageManager.NameNotFoundException e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    pContext,
-                    "e",
-                    "Getting application info : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             e.printStackTrace();
         }
         return (String) (lApplicationInfo != null ? lPackageManager.getApplicationLabel(lApplicationInfo) : defaultText);
@@ -355,13 +285,6 @@ public final class AppUtils {
             dateFormat.setTimeZone(tzTurkey);
             return dateFormat.format(new Date());
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Getting current date string : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             EuroLogger.debugLog("Turkey timezone error : " + e.toString());
             return getCurrentDateString();
         }
@@ -388,13 +311,6 @@ public final class AppUtils {
                         sID = readInstallationFile(context, installation);
                     }
                 } catch (Exception e) {
-                    StackTraceElement element = new Throwable().getStackTrace()[0];
-                    LogUtils.formGraylogModel(
-                            context,
-                            "e",
-                            "Reading identifierForVendor from file : " + e.getMessage(),
-                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                    );
                     throw new RuntimeException(e);
                 }
                 file.createNewFile();
@@ -407,13 +323,6 @@ public final class AppUtils {
                         fos.write(sID.getBytes());
                     }
                 } catch (Exception e) {
-                    StackTraceElement element = new Throwable().getStackTrace()[0];
-                    LogUtils.formGraylogModel(
-                            context,
-                            "e",
-                            "Writing identifierForVendor to file : " + e.getMessage(),
-                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                    );
                     e.printStackTrace();
                     ID = null;
                 } finally {
@@ -435,24 +344,10 @@ public final class AppUtils {
                 try {
                     ID = sb.toString();
                 } catch (Exception e){
-                    StackTraceElement element = new Throwable().getStackTrace()[0];
-                    LogUtils.formGraylogModel(
-                            context,
-                            "e",
-                            "Forming identifierForVendor from string builder : " + e.getMessage(),
-                            element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                    );
                     e.printStackTrace();
                     ID = null;
                 }
             } catch (Exception e) {
-                StackTraceElement element = new Throwable().getStackTrace()[0];
-                LogUtils.formGraylogModel(
-                        context,
-                        "e",
-                        "Reading identifierForVendor from file : " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                );
                 e.printStackTrace();
                 ID = null;
             } finally {
@@ -469,13 +364,7 @@ public final class AppUtils {
             try {
                 return context.getResources().getResourceName(resId) != null;
             } catch (Resources.NotFoundException ignore) {
-                StackTraceElement element = new Throwable().getStackTrace()[0];
-                LogUtils.formGraylogModel(
-                        context,
-                        "e",
-                        "Checking if a resource is available : " + ignore.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                );
+                ignore.printStackTrace();
             }
         }
         return false;
@@ -525,13 +414,6 @@ public final class AppUtils {
                 intent = new Intent(context, Class.forName(intentStr));
                 intent.putExtra("message", pushMessage);
             } catch (Exception e) {
-                StackTraceElement element = new Throwable().getStackTrace()[0];
-                LogUtils.formGraylogModel(
-                        context,
-                        "e",
-                        "Navigating to the activity of the customer : " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                );
                 Log.e("PushClick : ", "The class could not be found!");
                 intent = AppUtils.getLaunchIntent(context, pushMessage);
             }
