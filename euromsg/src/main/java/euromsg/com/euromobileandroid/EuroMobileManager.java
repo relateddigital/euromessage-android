@@ -61,9 +61,6 @@ public class EuroMobileManager {
     private static EuroApiService subscriptionApiInterface;
     private static String mUserAgent;
 
-    public static String huaweiAppAlias;
-    public static String firebaseAppAlias;
-
     private Subscription subscription;
     private Subscription previousSubscription;
     private Subscription previousRegisterEmailSubscription;
@@ -130,9 +127,6 @@ public class EuroMobileManager {
             instance = new EuroMobileManager(context, googleAppAlias, huwaeiAppAlias);
         }
 
-        huaweiAppAlias = huwaeiAppAlias;
-        firebaseAppAlias = googleAppAlias;
-
         if (checkPlayService(context)) {
             SharedPreference.saveString(context, Constants.GOOGLE_APP_ALIAS, instance.subscription.getAppAlias());
         } else {
@@ -158,9 +152,6 @@ public class EuroMobileManager {
             instance = new EuroMobileManager(context, googleAlias, huaweiAlias);
         }
 
-        huaweiAppAlias = huaweiAlias;
-        firebaseAppAlias = googleAlias;
-
         mContext = context;
 
         EuroLogger.debugLog("App Key : " + instance.subscription.getAppAlias());
@@ -183,11 +174,7 @@ public class EuroMobileManager {
             EuroLogger.debugLog("Report Received : " + pushId);
 
             Retention retention = new Retention();
-            if (checkPlayService(mContext)) {
-                retention.setKey(firebaseAppAlias);
-            } else {
-                retention.setKey(huaweiAppAlias);
-            }
+            retention.setKey(subscription.getAppAlias());
 
             retention.setPushId(pushId);
             if(isSilent) {
@@ -297,11 +284,7 @@ public class EuroMobileManager {
                 EuroLogger.debugLog("Report Read : " + message.getPushId());
                 Retention retention = new Retention();
 
-                if (checkPlayService(mContext)) {
-                    retention.setKey(firebaseAppAlias);
-                } else {
-                    retention.setKey(huaweiAppAlias);
-                }
+                retention.setKey(subscription.getAppAlias());
 
                 retention.setPushId(message.getPushId());
                 retention.setStatus(MessageStatus.Read.toString());
@@ -409,7 +392,6 @@ public class EuroMobileManager {
             previousSubscription = new Subscription();
             previousSubscription.copyFrom(subscription);
             saveSubscription(context);
-            setAppAlias(context);
 
             try {
                 callNetworkSubscription(context);
@@ -427,14 +409,6 @@ public class EuroMobileManager {
 
         } else {
             Log.i(TAG, "Not Valid Subs");
-        }
-    }
-
-    private void setAppAlias(Context context) {
-        if (checkPlayService(context)) {
-            subscription.setAppAlias(firebaseAppAlias);
-        } else {
-            subscription.setAppAlias(huaweiAppAlias);
         }
     }
 
