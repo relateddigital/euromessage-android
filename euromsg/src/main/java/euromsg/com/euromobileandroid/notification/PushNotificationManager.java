@@ -131,6 +131,17 @@ public class PushNotificationManager {
             contentIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
+        String priority = SharedPreference.getString(context, Constants.NOTIFICATION_PRIORITY_KEY);
+        int importance;
+
+        if(priority.equals("high")) {
+            importance = NotificationCompat.PRIORITY_HIGH;
+        } else if(priority.equals("low")){
+            importance = NotificationCompat.PRIORITY_LOW;
+        } else {
+            importance = NotificationCompat.PRIORITY_DEFAULT;
+        }
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, AppUtils.getNotificationChannelId(context, false));
         mBuilder.setContentTitle(title)
@@ -138,7 +149,7 @@ public class PushNotificationManager {
                 .setLargeIcon(largeIconBitmap)
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(importance)
                 .setAutoCancel(true)
                 .setContentIntent(contentIntent);
         setNumber(mBuilder, context);
@@ -178,6 +189,17 @@ public class PushNotificationManager {
             largeIconBitmap = null;
         }
 
+        String priority = SharedPreference.getString(context, Constants.NOTIFICATION_PRIORITY_KEY);
+        int importance;
+
+        if(priority.equals("high")) {
+            importance = NotificationCompat.PRIORITY_HIGH;
+        } else if(priority.equals("low")){
+            importance = NotificationCompat.PRIORITY_LOW;
+        } else {
+            importance = NotificationCompat.PRIORITY_DEFAULT;
+        }
+
         NotificationCompat.Style style = pushImage == null ?
                 new NotificationCompat.BigTextStyle().bigText(pushMessage.getMessage()) :
                 new NotificationCompat.BigPictureStyle().bigPicture(pushImage).setSummaryText(pushMessage.getMessage());
@@ -190,7 +212,7 @@ public class PushNotificationManager {
                 .setColorized(false)
                 .setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(importance)
                 .setContentText(pushMessage.getMessage());
 
         setNumber(mBuilder, context);
@@ -218,7 +240,16 @@ public class PushNotificationManager {
     @TargetApi(Build.VERSION_CODES.O)
     public static void createNotificationChannel(NotificationManager notificationManager, String sound, Context context) {
 
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        String priority = SharedPreference.getString(context, Constants.NOTIFICATION_PRIORITY_KEY);
+        int importance;
+
+        if(priority.equals("high")) {
+            importance = NotificationManager.IMPORTANCE_HIGH;
+        } else if(priority.equals("low")){
+            importance = NotificationManager.IMPORTANCE_LOW;
+        } else {
+            importance = NotificationManager.IMPORTANCE_DEFAULT;
+        }
 
         NotificationChannel notificationChannel = new NotificationChannel(AppUtils.getNotificationChannelId(context, false), getChannelName(context), importance);
         notificationChannel.setDescription(getChannelDescription(context));
