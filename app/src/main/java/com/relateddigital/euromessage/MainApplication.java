@@ -13,6 +13,7 @@ import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.common.ApiException;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
+import euromsg.com.euromobileandroid.enums.RDNotificationPriority;
 
 public class MainApplication extends Application {
 
@@ -39,6 +40,7 @@ public class MainApplication extends Application {
         euroMobileManager.setNotificationColor("#d1dbbd");
         euroMobileManager.setChannelName("Demo", getApplicationContext());
         euroMobileManager.setPushIntent("com.relateddigital.euromessage.MainActivity", getApplicationContext());
+        euroMobileManager.setNotificationPriority(RDNotificationPriority.NORMAL, getApplicationContext());
 
         setExistingFirebaseTokenToEuroMessage();
 

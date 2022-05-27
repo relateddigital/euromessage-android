@@ -1,6 +1,7 @@
 package euromsg.com.euromobileandroid;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -35,6 +36,7 @@ import euromsg.com.euromobileandroid.enums.EmailPermit;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
 import euromsg.com.euromobileandroid.enums.MessageStatus;
 import euromsg.com.euromobileandroid.enums.PushPermit;
+import euromsg.com.euromobileandroid.enums.RDNotificationPriority;
 import euromsg.com.euromobileandroid.model.Element;
 import euromsg.com.euromobileandroid.model.EuromessageCallback;
 import euromsg.com.euromobileandroid.model.GraylogModel;
@@ -768,6 +770,28 @@ public class EuroMobileManager {
 
     public void setPushIntent(String intentStr, Context context) {
         SharedPreference.saveString(context, Constants.INTENT_NAME, intentStr);
+    }
+
+    public void setNotificationPriority(RDNotificationPriority priority, Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && notificationManager != null) {
+            String oldChannelId = SharedPreference.getString(context, Constants.NOTIFICATION_CHANNEL_ID_KEY);
+            if (!oldChannelId.isEmpty()) {
+                notificationManager.deleteNotificationChannel(oldChannelId);
+            }
+            AppUtils.getNotificationChannelId(context, true);
+        }
+
+        String importance = "";
+        if(priority == RDNotificationPriority.HIGH) {
+            importance = "high";
+        } else if(priority == RDNotificationPriority.LOW) {
+            importance = "low";
+        } else {
+            importance = "normal";
+        }
+
+        SharedPreference.saveString(context, Constants.NOTIFICATION_PRIORITY_KEY, importance);
     }
 
     public void removePushIntent(Context context) {
