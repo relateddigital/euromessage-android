@@ -56,6 +56,9 @@ public class Message implements Serializable {
             message = bundle.get("message");
             title = bundle.get("title");
             sound = bundle.get("sound");
+            if(sound == null) {
+                sound = "";
+            }
             emPushSp = bundle.get("emPushSp");
             deliver = bundle.get("deliver");
             silent = bundle.get("silent");
@@ -122,6 +125,9 @@ public class Message implements Serializable {
         message = bundle.getString("message");
         title = bundle.getString("title");
         sound = bundle.getString("sound");
+        if(sound == null) {
+            sound = "";
+        }
         emPushSp = bundle.getString("emPushSp");
         deliver = bundle.getString("deliver");
         silent = bundle.getString("silent");
