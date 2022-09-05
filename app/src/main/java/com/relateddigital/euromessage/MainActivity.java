@@ -248,7 +248,12 @@ public class MainActivity extends AppCompatActivity {
                         // Something went wrong. You may consider warning the user:
                     }
                 };
-                EuroMobileManager.getInstance().getPushMessages(activity, pushMessageInterface);
+                String loginID = SharedPreference.getString(activity, euromsg.com.euromobileandroid.Constants.NOTIFICATION_LOGIN_ID_KEY);
+                if(loginID.isEmpty()) {
+                    EuroMobileManager.getInstance().getPushMessages(activity, pushMessageInterface);
+                } else {
+                    EuroMobileManager.getInstance().getPushMessagesWithID(activity, pushMessageInterface);
+                }
             }
         });
         binding.btnSync.setOnClickListener(new View.OnClickListener() {

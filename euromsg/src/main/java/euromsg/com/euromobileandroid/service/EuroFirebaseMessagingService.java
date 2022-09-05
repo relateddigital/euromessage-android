@@ -168,7 +168,13 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
                             pushMessage.getEmPushSp(), false);
                 }
 
-                PayloadUtils.addPushMessage(this, pushMessage);
+                String notificationLoginId = SharedPreference.getString(this, Constants.NOTIFICATION_LOGIN_ID_KEY);
+
+                if(notificationLoginId.isEmpty()) {
+                    PayloadUtils.addPushMessage(this, pushMessage);
+                } else {
+                    PayloadUtils.addPushMessageWithId(this, pushMessage, notificationLoginId);
+                }
             } else {
                 EuroLogger.debugLog("remoteMessageData transfrom problem");
             }

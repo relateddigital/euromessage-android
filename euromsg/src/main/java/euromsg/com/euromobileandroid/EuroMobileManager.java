@@ -543,6 +543,14 @@ public class EuroMobileManager {
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
+    /**
+     * This method sets an ID to store the last 30-days notifications for a user.
+     * To get historical notifications with respect to a specific user
+     */
+    public void setNotificationLoginID(String notificationLoginId, Context context) {
+        SharedPreference.saveString(context, Constants.NOTIFICATION_LOGIN_ID_KEY, notificationLoginId);
+    }
+
     public void setPhoneNumber(String msisdn, Context context) {
         setSubscriptionProperty(Constants.EURO_MSISDN_KEY, msisdn, context);
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
@@ -996,6 +1004,77 @@ public class EuroMobileManager {
                             JSONObject currentObject = jsonArray.getJSONObject(i);
                             Message currentMessage = new Gson().fromJson(currentObject.toString(), Message.class);
                             pushMessages.add(currentMessage);
+                        }
+                        final List<Message> orderedPushMessages = PayloadUtils.orderPushMessages(mContext, pushMessages);
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.success(orderedPushMessages);
+                            }
+                        });
+                    } catch (final Exception e) {
+                        SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, "");
+                        StackTraceElement element = new Throwable().getStackTrace()[0];
+                        LogUtils.formGraylogModel(
+                                mContext,
+                                "e",
+                                "De-serializing JSON string of push message : " + e.getMessage(),
+                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                        );
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                callback.fail(e.getMessage());
+                            }
+                        });
+                    }
+                } else {
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.fail("There is not any push notification sent " +
+                                    "(or saved) in the last 30 days");
+                        }
+                    });
+                }
+            }
+        }) {
+        }.start();
+    }
+
+    /**
+     * This method returns the list of push messages sent to the user logged-in in the last 30 days.
+     * The messages are ordered in terms of their timestamps e.g. most recent one is at index 0.
+     * activity : Activity
+     * callback : PushMessageInterface
+     */
+    public void getPushMessagesWithID(final Activity activity, final PushMessageInterface callback) {
+        if(callback == null || activity == null) {
+            Log.e("EM-getPushMessages() : ", "callback or activity cannot be null!");
+            return;
+        }
+        String loginID = SharedPreference.getString(mContext, Constants.NOTIFICATION_LOGIN_ID_KEY);
+        if(loginID.isEmpty()) {
+            Log.e("EM-getPushMessages() : ", "login ID is empty!");
+            return;
+        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String payloads = SharedPreference.getString(mContext, Constants.PAYLOAD_SP_ID_KEY);
+                if(!payloads.isEmpty()) {
+                    try {
+                        final List<Message> pushMessages = new ArrayList<Message>();
+                        JSONObject jsonObject = new JSONObject(payloads);
+                        JSONArray jsonArray = jsonObject.getJSONArray(Constants.PAYLOAD_SP_ARRAY_ID_KEY);
+                        for(int i = 0 ; i < jsonArray.length() ; i++) {
+                            JSONObject currentObject = jsonArray.getJSONObject(i);
+                            Message currentMessage = new Gson().fromJson(currentObject.toString(), Message.class);
+                            if(currentMessage.getLoginID() != null && !currentMessage.getLoginID().isEmpty()) {
+                                if(loginID.equals(currentMessage.getLoginID())) {
+                                    pushMessages.add(currentMessage);
+                                }
+                            }
                         }
                         final List<Message> orderedPushMessages = PayloadUtils.orderPushMessages(mContext, pushMessages);
                         activity.runOnUiThread(new Runnable() {
