@@ -57,6 +57,40 @@ public final class PayloadUtils {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public static void addPushMessageWithId(Context context, Message message, String loginID) {
+        String payloads = SharedPreference.getString(context, Constants.PAYLOAD_SP_ID_KEY);
+        if(!payloads.isEmpty()) {
+            try {
+                JSONObject jsonObject = new JSONObject(payloads);
+                JSONArray jsonArray = jsonObject.getJSONArray(Constants.PAYLOAD_SP_ARRAY_ID_KEY);
+                if(isPushIdAvailable(context, jsonArray, message)) {
+                    return;
+                }
+                jsonArray = addNewOneWithID(context, jsonArray, message, loginID);
+                if(jsonArray == null) {
+                    return;
+                }
+                jsonArray = removeOldOnes(context, jsonArray);
+                JSONObject finalObject = new JSONObject();
+                finalObject.put(Constants.PAYLOAD_SP_ARRAY_ID_KEY, jsonArray);
+                SharedPreference.saveString(context, Constants.PAYLOAD_SP_ID_KEY, finalObject.toString());
+            } catch (Exception e) {
+                StackTraceElement element = new Throwable().getStackTrace()[0];
+                LogUtils.formGraylogModel(
+                        context,
+                        "e",
+                        "Serializing push message : " + e.getMessage(),
+                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+                );
+                Log.e(LOG_TAG, "Something went wrong when adding the push message to shared preferences!");
+                Log.e(LOG_TAG, e.getMessage());
+            }
+        } else {
+            createAndSaveNewOneWithID(context, message, loginID);
+        }
+    }
+
     public static List<Message> orderPushMessages(Context context, List<Message> messages) {
         for (int i = 0; i < messages.size(); i++) {
             for (int j = 0; j < messages.size() - 1 - i; j++) {
@@ -94,6 +128,27 @@ public final class PayloadUtils {
 
     private static JSONArray addNewOne(Context context, JSONArray jsonArray, Message message){
         try {
+            message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+            jsonArray.put(new JSONObject(new Gson().toJson(message)));
+            return jsonArray;
+        } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Serializing push message : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+            Log.e(LOG_TAG, "Could not save the push message!");
+            Log.e(LOG_TAG, e.getMessage());
+            return null;
+        }
+    }
+
+    private static JSONArray addNewOneWithID(Context context, JSONArray jsonArray, Message message,
+                                             String loginID){
+        try {
+            message.setLoginID(loginID);
             message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             return jsonArray;
@@ -165,6 +220,28 @@ public final class PayloadUtils {
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, jsonArray);
             SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+        } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Forming and serializing push message string : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+            Log.e(LOG_TAG, "Could not save the push message!");
+            Log.e(LOG_TAG, e.getMessage());
+        }
+    }
+
+    private static void createAndSaveNewOneWithID(Context context, Message message, String loginID) {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            message.setLoginID(loginID);
+            message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+            jsonArray.put(new JSONObject(new Gson().toJson(message)));
+            jsonObject.put(Constants.PAYLOAD_SP_ARRAY_ID_KEY, jsonArray);
+            SharedPreference.saveString(context, Constants.PAYLOAD_SP_ID_KEY, jsonObject.toString());
         } catch (Exception e) {
             StackTraceElement element = new Throwable().getStackTrace()[0];
             LogUtils.formGraylogModel(

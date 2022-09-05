@@ -37,6 +37,7 @@ public class Message implements Serializable {
     private String collapseKey;
     private Map<String, String> params = new HashMap<>();
     private ArrayList<Element> elements;
+    private String loginID;
 
     public Message(Context context, @NonNull Map<String, String> bundle) {
         try {
@@ -181,6 +182,14 @@ public class Message implements Serializable {
 
     public String getCollapseKey() {
         return collapseKey;
+    }
+
+    public void setLoginID(String loginID) {
+        this.loginID = loginID;
+    }
+
+    public String getLoginID() {
+        return loginID;
     }
 
     public String getEmPushSp() {
