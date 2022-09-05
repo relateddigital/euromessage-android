@@ -1084,7 +1084,7 @@ public class EuroMobileManager {
                             }
                         });
                     } catch (final Exception e) {
-                        SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, "");
+                        SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_ID_KEY, "");
                         StackTraceElement element = new Throwable().getStackTrace()[0];
                         LogUtils.formGraylogModel(
                                 mContext,
