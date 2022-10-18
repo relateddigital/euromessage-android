@@ -9,7 +9,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 32
         versionCode 1
-        versionName "5.2.1"
+        versionName "5.2.2"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,7 +39,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation project(':euromsg')
-    implementation 'com.github.relateddigital:visilabs-android:6.0.3'
+    implementation 'com.github.relateddigital:visilabs-android:6.0.4'
     implementation "androidx.multidex:multidex:2.0.1"
 
     testImplementation 'junit:junit:4.13.2'
