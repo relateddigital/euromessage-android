@@ -390,6 +390,12 @@ public class EuroMobileManager {
 
         EuroLogger.debugLog("Sync started");
 
+        if(this.subscription.getAppAlias() == null || this.subscription.getAppAlias().isEmpty() ||
+                this.subscription.getToken() == null || this.subscription.getToken().isEmpty()) {
+            Log.e(TAG, "token or appKey cannot be null!");
+            return;
+        }
+
         if (this.subscription.isValid(context) && !this.subscription.isEqual(previousSubscription)) {
             previousSubscription = new Subscription();
             previousSubscription.copyFrom(subscription);
@@ -866,6 +872,7 @@ public class EuroMobileManager {
             Log.e("Euromessage", "Euromessage SDK requires min API level 21!");
             return;
         }
+
         setEmail(email, context);
         setEmailPermit(emailPermit, context);
         Subscription registerEmailSubscription;
@@ -888,6 +895,13 @@ public class EuroMobileManager {
             }
             return;
         }
+
+        if(registerEmailSubscription.getAppAlias() == null || registerEmailSubscription.getAppAlias().isEmpty() ||
+                registerEmailSubscription.getToken() == null || registerEmailSubscription.getToken().isEmpty()) {
+            Log.e(TAG, "token or appKey cannot be null!");
+            return;
+        }
+
         if (registerEmailSubscription.isValidWithEmail(context) && !registerEmailSubscription.isEqual(previousRegisterEmailSubscription)) {
             previousRegisterEmailSubscription = new Subscription();
             previousRegisterEmailSubscription.copyFrom(registerEmailSubscription);
