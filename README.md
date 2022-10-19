@@ -4,7 +4,7 @@
 </p>
 
 
-***October 18, 2022*** - [Euromessage v5.2.2](https://github.com/relateddigital/euromessage-android/releases/tag/5.2.2
+***October 19, 2022*** - [Euromessage v5.2.3](https://github.com/relateddigital/euromessage-android/releases/tag/5.2.3
 
  **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
 
@@ -44,7 +44,7 @@ Add maven jitpack repository to your project/build.gradle file
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.github.relateddigital:euromessage-android:5.2.2'
+implementation 'com.github.relateddigital:euromessage-android:5.2.3'
 ```
 
 ## 2. Usage of SDK 
