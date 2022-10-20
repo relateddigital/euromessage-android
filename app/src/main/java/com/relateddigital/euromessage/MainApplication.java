@@ -1,17 +1,7 @@
 package com.relateddigital.euromessage;
-
 import android.app.Application;
 import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.huawei.agconnect.config.AGConnectServicesConfig;
-import com.huawei.hms.aaid.HmsInstanceId;
-import com.huawei.hms.common.ApiException;
-
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.enums.RDNotificationPriority;
 
@@ -43,46 +33,19 @@ public class MainApplication extends Application {
         euroMobileManager.setNotificationPriority(RDNotificationPriority.NORMAL, getApplicationContext());
 
         setExistingFirebaseTokenToEuroMessage();
-
-        if (!EuroMobileManager.checkPlayService(getApplicationContext())) {
-            setHuaweiTokenToEuromessage();
-        }
     }
 
     private void setExistingFirebaseTokenToEuroMessage() {
         FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            return;
-                        }
-                        String token = task.getResult();
-                        euroMobileManager.subscribe(token, getApplicationContext());
-
-                        SP.saveString(getApplicationContext(), "FirebaseToken", token);
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.e("Firebase Token : ", "Getting the token failed!!!");
+                        return;
                     }
-                });
-    }
-
-    private void setHuaweiTokenToEuromessage() {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
-                    final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
-
+                    String token = task.getResult();
                     euroMobileManager.subscribe(token, getApplicationContext());
 
-                    SP.saveString(getApplicationContext(), "HuaweiToken", token);
-
-                    Log.i("Huawei Token", "" + token);
-
-                } catch (ApiException e) {
-                    Log.e("Huawei Token", "get token failed, " + e);
-                }
-            }
-        }.start();
+                    SP.saveString(getApplicationContext(), "FirebaseToken", token);
+                });
     }
 }
