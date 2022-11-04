@@ -24,6 +24,9 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.hms.aaid.HmsInstanceId;
+import com.huawei.hms.common.ApiException;
 import com.relateddigital.euromessage.databinding.ActivityMainBinding;
 import com.visilabs.Visilabs;
 
@@ -213,10 +216,18 @@ public class MainActivity extends AppCompatActivity {
         String huaweiToken = SP.getString(getApplicationContext(), "HuaweiToken");
         String firabaseToken = SP.getString(getApplicationContext(), "FirebaseToken");
 
-        if (firabaseToken.equals("")) {
-            getFirabaseToken();
+        if (EuroMobileManager.checkPlayService(getApplicationContext())) {
+            if (firabaseToken.equals("")) {
+                getFirabaseToken();
+            } else {
+                binding.etToken.setText(firabaseToken);
+            }
         } else {
-            binding.etToken.setText(firabaseToken);
+            if (huaweiToken.equals("")) {
+                getHuaweiToken();
+            } else {
+                binding.etHuaweiToken.setText(huaweiToken);
+            }
         }
 
         binding.tvRelease.setText("Appv : " + com.relateddigital.euromessage.BuildConfig.VERSION_NAME + " " + " EM SDKv: " + euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME);
@@ -385,5 +396,27 @@ public class MainActivity extends AppCompatActivity {
                         binding.etToken.setText(task.getResult());
                     }
                 });
+    }
+
+    private void getHuaweiToken() {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
+                    final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            binding.etHuaweiToken.setText(token);
+                        }
+                    });
+
+                } catch (ApiException e) {
+                    Log.e("Huawei Token", "get token failed, " + e);
+                }
+            }
+        }.start();
     }
 }
