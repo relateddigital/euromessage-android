@@ -16,8 +16,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 32
         versionCode 1
-        versionName "5.2.3-google"
-        buildConfigField 'String', 'VERSION_NAME', "\"5.2.3-google\""
+        versionName "0.9.9"
+        buildConfigField 'String', 'VERSION_NAME', "\"0.9.9\""
     }
     buildTypes {
         release {
@@ -41,8 +41,6 @@ dependencies {
     api "com.squareup.retrofit2:converter-gson:2.9.0"
     api "com.squareup.okhttp3:okhttp:4.9.0"
     api "com.squareup.okhttp3:logging-interceptor:4.9.0"
-    api 'com.huawei.agconnect:agconnect-core:1.7.2.300'
-    api 'com.huawei.hms:push:6.7.0.300'
     testImplementation 'junit:junit:4.13.2'
 }
 
