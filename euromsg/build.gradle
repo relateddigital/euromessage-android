@@ -16,8 +16,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 32
         versionCode 1
-        versionName "0.9.9"
-        buildConfigField 'String', 'VERSION_NAME', "\"0.9.9\""
+        versionName "0.9.8"
+        buildConfigField 'String', 'VERSION_NAME', "\"0.9.8\""
     }
     buildTypes {
         release {
@@ -50,4 +50,4 @@ allprojects {
     }
 }
 
-apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
+//apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
