@@ -24,6 +24,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -575,6 +576,13 @@ public class EuroMobileManager {
     public void removeUserProperties(Context context) {
         this.subscription.removeAll();
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+    }
+
+    public void logout(Context context) {
+        subscription.setToken(null);
+        subscription.setExtra(new HashMap<>());
+        SharedPreference.saveString(mContext, Constants.TOKEN_KEY, "");
+        saveSubscription(context);
     }
 
     private void saveSubscription(Context context) {
