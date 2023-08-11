@@ -304,6 +304,7 @@ public class EuroMobileManager {
                 } else {
                     EuroLogger.debugLog("reportRead : Api service could not be found!");
                 }
+                PayloadUtils.updatePayload(mContext, message.getPushId());
             } else {
                 EuroLogger.debugLog("reportRead : Push Id cannot be null!");
             }
