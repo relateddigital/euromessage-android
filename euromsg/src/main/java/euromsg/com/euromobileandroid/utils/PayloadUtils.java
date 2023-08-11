@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -129,6 +130,8 @@ public final class PayloadUtils {
     private static JSONArray addNewOne(Context context, JSONArray jsonArray, Message message){
         try {
             message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+            message.setStatus("D");
+            message.setOpenDate("");
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             return jsonArray;
         } catch (Exception e) {
@@ -150,6 +153,8 @@ public final class PayloadUtils {
         try {
             message.setLoginID(loginID);
             message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+            message.setStatus("D");
+            message.setOpenDate("");
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             return jsonArray;
         } catch (Exception e) {
@@ -217,6 +222,8 @@ public final class PayloadUtils {
             JSONObject jsonObject = new JSONObject();
             JSONArray jsonArray = new JSONArray();
             message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+            message.setStatus("D");
+            message.setOpenDate("");
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, jsonArray);
             SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
@@ -239,6 +246,8 @@ public final class PayloadUtils {
             JSONArray jsonArray = new JSONArray();
             message.setLoginID(loginID);
             message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+            message.setStatus("D");
+            message.setOpenDate("");
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             jsonObject.put(Constants.PAYLOAD_SP_ARRAY_ID_KEY, jsonArray);
             SharedPreference.saveString(context, Constants.PAYLOAD_SP_ID_KEY, jsonObject.toString());
@@ -254,6 +263,49 @@ public final class PayloadUtils {
             Log.e(LOG_TAG, e.getMessage());
         }
     }
+
+    public static void updatePayload(Context context, String pushId) {
+        try {
+            String jsonString = SharedPreference.getString(context, Constants.PAYLOAD_SP_KEY);
+            JSONObject jsonObject = new JSONObject(jsonString);
+
+            JSONArray payloadsArray = jsonObject.optJSONArray(Constants.PAYLOAD_SP_ARRAY_KEY);
+
+            if (payloadsArray != null) {
+                for (int i = 0; i < payloadsArray.length(); i++) {
+                    JSONObject payloadObject = payloadsArray.getJSONObject(i);
+                    String existingPushId = payloadObject.optString("pushId", "");
+
+                    if (existingPushId.equals(pushId)) {
+                        // Güncelleme işlemlerini yap
+                        payloadObject.put("status", "O");
+                        payloadObject.put("openDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+
+                        // Güncellenmiş JSON'ı kaydet
+                        SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                        return; // Güncelleme işlemi tamamlandı, fonksiyondan çık
+                    }
+                }
+
+                // Eğer bu noktaya gelinirse, belirtilen pushId ile bir payload bulunamamıştır.
+                Log.e(LOG_TAG, "Payload with pushId " + pushId + " not found!");
+            } else {
+                Log.e(LOG_TAG, "Payload array is null or empty!");
+            }
+        } catch (JSONException e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Updating push message string : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+            Log.e(LOG_TAG, "Could not update the push message!");
+            Log.e(LOG_TAG, e.getMessage());
+        }
+    }
+
+
 
     private static boolean compareDates(Context context, String str1, String str2) {
         boolean res = false;

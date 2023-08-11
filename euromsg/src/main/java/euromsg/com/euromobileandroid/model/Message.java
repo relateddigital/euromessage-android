@@ -21,6 +21,8 @@ import euromsg.com.euromobileandroid.utils.LogUtils;
 public class Message implements Serializable {
 
     private String date;
+    private String openDate;
+    private String status;
     private String mediaUrl;
     private String altUrl;
     private String pushId;
@@ -49,6 +51,8 @@ public class Message implements Serializable {
                 }
             }
             date = bundle.get("date");
+            openDate = bundle.get("openDate");
+            status = bundle.get("status");
             mediaUrl = bundle.get("mediaUrl");
             pushId = bundle.get("pushId");
             url = bundle.get("url");
@@ -118,6 +122,8 @@ public class Message implements Serializable {
             params.put(key, value.toString());
         }
         date = bundle.getString("date");
+        openDate = bundle.getString("openDate");
+        status = bundle.getString("status");
         mediaUrl = bundle.getString("mediaUrl");
         pushId = bundle.getString("pushId");
         url = bundle.getString("url");
@@ -144,6 +150,14 @@ public class Message implements Serializable {
         this.date = date;
     }
 
+    public void setOpenDate(String openDate) {
+        this.openDate = openDate;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getAltUrl() {
         return altUrl;
     }
@@ -154,6 +168,14 @@ public class Message implements Serializable {
 
     public String getDate() {
         return date;
+    }
+
+    public String getOpenDate() {
+        return openDate;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public String getMediaUrl() {
