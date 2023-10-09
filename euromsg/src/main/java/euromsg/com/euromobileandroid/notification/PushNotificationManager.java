@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.R;
+import euromsg.com.euromobileandroid.model.Actions;
 import euromsg.com.euromobileandroid.notification.carousel.CarouselBuilder;
 import euromsg.com.euromobileandroid.model.CarouselItem;
 import euromsg.com.euromobileandroid.model.Element;
@@ -141,7 +142,6 @@ public class PushNotificationManager {
         } else {
             importance = NotificationCompat.PRIORITY_DEFAULT;
         }
-
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, AppUtils.getNotificationChannelId(context, false));
         mBuilder.setContentTitle(title)
@@ -199,7 +199,37 @@ public class PushNotificationManager {
         } else {
             importance = NotificationCompat.PRIORITY_DEFAULT;
         }
+        ArrayList<NotificationCompat.Action> actionList = new ArrayList<>();
+        ArrayList<Actions> actions = pushMessage.getActions();
 
+        if (actions != null && !actions.isEmpty()) {
+            for (Actions actionItem : actions) {
+                Uri linkUri = Uri.parse(actionItem != null ? actionItem.getUrl() : "");
+                PendingIntent actionIntent = PendingIntent.getActivity(
+                        context,
+                        0,
+                        new Intent(Intent.ACTION_VIEW, linkUri),
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+                int actionIcon = R.drawable.ic_carousel_icon;
+                if (actionItem != null && !actionItem.getIcon().isEmpty()) {
+                    actionIcon = Integer.parseInt(actionItem.getIcon());
+                }
+
+                String actionTitle = actionItem != null && !actionItem.getTitle().isEmpty()
+                        ? actionItem.getTitle()
+                        : "Default Title";
+
+                NotificationCompat.Action action = new NotificationCompat.Action.Builder(
+                        actionIcon,
+                        actionTitle,
+                        actionIntent
+                ).build();
+
+                actionList.add(action);
+            }
+        }
         NotificationCompat.Style style = pushImage == null ?
                 new NotificationCompat.BigTextStyle().bigText(pushMessage.getMessage()) :
                 new NotificationCompat.BigPictureStyle().bigPicture(pushImage).setSummaryText(pushMessage.getMessage());
@@ -214,6 +244,11 @@ public class PushNotificationManager {
                 .setDefaults(Notification.DEFAULT_VIBRATE | Notification.FLAG_SHOW_LIGHTS)
                 .setPriority(importance)
                 .setContentText(pushMessage.getMessage());
+        if (actions != null && !actions.isEmpty()) {
+            for (NotificationCompat.Action action : actionList) {
+                mBuilder.addAction(action);
+            }
+        }
 
         setNumber(mBuilder, context);
 
