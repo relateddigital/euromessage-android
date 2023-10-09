@@ -39,6 +39,7 @@ public class Message implements Serializable {
     private String collapseKey;
     private Map<String, String> params = new HashMap<>();
     private ArrayList<Element> elements;
+    private ArrayList<Actions> actions;
     private String loginID;
 
     public Message(Context context, @NonNull Map<String, String> bundle) {
@@ -78,6 +79,9 @@ public class Message implements Serializable {
             if (bundle.get("elements") != null) {
                 convertJsonStrToElementsArray(context, bundle.get("elements"));
             }
+            if (bundle.get("actions") != null) {
+                convertJsonStrToActionsArray(context, bundle.get("actions"));
+            }
         } catch (Exception e) {
             Log.e("Message", "Could not model the message!");
             e.printStackTrace();
@@ -111,6 +115,32 @@ public class Message implements Serializable {
                     "e",
                     "Converting JSON string to array list : " + e.getMessage(),
                     element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+            e.printStackTrace();
+        }
+    }
+
+    private void convertJsonStrToActionsArray(Context context, String actionsJsonStr) {
+        JSONArray jsonArr;
+        try {
+            jsonArr = new JSONArray(actionsJsonStr);
+            actions = new ArrayList<>();
+            for (int i = 0; i < jsonArr.length(); i++) {
+                JSONObject jsonObj = jsonArr.getJSONObject(i);
+                Actions action = new Actions();
+                action.setAction(jsonObj.getString("action"));
+                action.setTitle(jsonObj.getString("title"));
+                action.setIcon(jsonObj.getString("icon"));
+                action.setUrl(jsonObj.getString("url"));
+                actions.add(action);
+            }
+        } catch (JSONException e) {
+            StackTraceElement action = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Converting JSON string to array list : " + e.getMessage(),
+                    action.getClassName() + "/" + action.getMethodName() + "/" + action.getLineNumber()
             );
             e.printStackTrace();
         }
@@ -240,5 +270,9 @@ public class Message implements Serializable {
 
     public ArrayList<Element> getElements() {
         return elements;
+    }
+
+    public ArrayList<Actions> getActions() {
+        return actions;
     }
 }
