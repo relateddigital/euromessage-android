@@ -4,9 +4,7 @@
 </p>
 
 
-***October 20, 2022*** - [Euromessage v5.2.3-google](https://github.com/relateddigital/euromessage-android/releases/tag/5.2.3-google
-
- **Bintray** [ ![Bintray Maven Download](https://api.bintray.com/packages/visilabs/euromessage/euromessage/images/download.svg) ](https://bintray.com/visilabs/euromessage/euromessage/_latestVersion)
+***April 6, 2023*** - [Euromessage 0.9.7](https://github.com/relateddigital/euromessage-android/releases/tag/0.9.7)
 
 # Table of Contents
 
