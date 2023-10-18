@@ -3,11 +3,11 @@ apply plugin: 'com.google.gms.google-services'
 
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.relateddigital.euromessage"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 1
         versionName "5.2.4-google"
         multiDexEnabled true
