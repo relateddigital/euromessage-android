@@ -3,7 +3,9 @@ import android.app.Application;
 import android.text.TextUtils;
 import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessaging;
-
+import com.huawei.agconnect.AGConnectOptionsBuilder;
+import com.huawei.hms.aaid.HmsInstanceId;
+import com.huawei.hms.common.ApiException;
 
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.enums.RDNotificationPriority;
@@ -35,7 +37,12 @@ public class MainApplication extends Application {
         euroMobileManager.setPushIntent("com.relateddigital.euromessage.MainActivity", getApplicationContext());
         euroMobileManager.setNotificationPriority(RDNotificationPriority.NORMAL, getApplicationContext());
 
-        setExistingFirebaseTokenToEuroMessage();
+        if (EuroMobileManager.checkPlayService(getApplicationContext())) {
+            setExistingFirebaseTokenToEuroMessage();
+        } else {
+            setHuaweiTokenToEuromessage();
+        }
+
 
 
     }
@@ -53,5 +60,29 @@ public class MainApplication extends Application {
                     SP.saveString(getApplicationContext(), "FirebaseToken", token);
                 });
     }
-    
+    private void setHuaweiTokenToEuromessage() {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    String appId = new AGConnectOptionsBuilder().build(getApplicationContext()).getString("client/app_id");
+                    final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
+
+                    if(TextUtils.isEmpty(token) || token == null) {
+                        Log.e("Huawei Token : ", "Empty token!!!");
+                        return;
+                    }
+
+                    euroMobileManager.subscribe(token, getApplicationContext());
+
+                    SP.saveString(getApplicationContext(), "HuaweiToken", token);
+
+                    Log.i("Huawei Token", "" + token);
+
+                } catch (ApiException e) {
+                    Log.e("Huawei Token", "Getting the token failed! " + e);
+                }
+            }
+        }.start();
+    }
 }
