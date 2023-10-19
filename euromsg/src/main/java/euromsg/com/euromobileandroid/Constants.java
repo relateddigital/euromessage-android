@@ -15,6 +15,7 @@ public class Constants {
     public static final String TOKEN_KEY = "token-key";
 
     static final String EURO_EMAIL_KEY = "email";
+    static final String EURO_SET_ANONYMOUS_KEY = "setAnonymous";
     static final String EURO_TWITTER_KEY = "twitter";
     static final String EURO_FACEBOOK_KEY = "facebook";
     static final String EURO_MSISDN_KEY = "msisdn";
