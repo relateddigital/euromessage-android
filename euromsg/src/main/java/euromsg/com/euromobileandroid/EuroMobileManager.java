@@ -531,6 +531,17 @@ public class EuroMobileManager {
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
     }
 
+    public void setAnonymous(Boolean permission, Context context) {
+        if (permission) {
+            setSubscriptionProperty(Constants.EURO_SET_ANONYMOUS_KEY, "true", context);
+            SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        } else {
+            setSubscriptionProperty(Constants.EURO_SET_ANONYMOUS_KEY, "false", context);
+            SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        }
+        sync(context);
+    }
+
     public void setAdvertisingIdentifier(String advertisingIdentifier, Context context) {
         this.subscription.setAdvertisingIdentifier(advertisingIdentifier);
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
