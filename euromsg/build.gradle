@@ -49,16 +49,14 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    api 'com.google.code.gson:gson:2.8.6'
-    api 'com.google.firebase:firebase-messaging:23.0.5'
-    api 'com.google.android.gms:play-services-base:18.0.1'
+    api 'com.google.code.gson:gson:2.9.0'
+    api 'com.google.firebase:firebase-messaging:23.3.0'
+    api 'com.google.android.gms:play-services-base:18.2.0'
     api "com.squareup.retrofit2:retrofit:2.9.0"
     api "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
     api "com.squareup.retrofit2:converter-gson:2.9.0"
     api "com.squareup.okhttp3:okhttp:4.9.0"
     api "com.squareup.okhttp3:logging-interceptor:4.9.0"
-    api 'com.huawei.agconnect:agconnect-core:1.7.2.300'
-    api 'com.huawei.hms:push:6.7.0.300'
     testImplementation 'junit:junit:4.13.2'
 }
 
