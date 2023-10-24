@@ -239,7 +239,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void success(List<Message> pushMessages) {
                         Toast.makeText(getApplicationContext(), "Payloads are gotten successfully!", Toast.LENGTH_SHORT).show();
-                        // Make your implementation by using pushMessages here:
+
+                        for (Message pushMessage : pushMessages) {
+                            Log.d("pushMessage", pushMessage.getParams().toString());
+                        }
                     }
 
                     @Override

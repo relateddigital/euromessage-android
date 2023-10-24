@@ -42,6 +42,8 @@ public class Message implements Serializable {
     private ArrayList<Actions> actions;
     private String loginID;
 
+    private String pushCategory;
+
     public Message(Context context, @NonNull Map<String, String> bundle) {
         try {
             for (String key : bundle.keySet()) {
@@ -82,6 +84,7 @@ public class Message implements Serializable {
             if (bundle.get("actions") != null) {
                 convertJsonStrToActionsArray(context, bundle.get("actions"));
             }
+            pushCategory = bundle.get("pushCategory");
         } catch (Exception e) {
             Log.e("Message", "Could not model the message!");
             e.printStackTrace();
@@ -174,6 +177,7 @@ public class Message implements Serializable {
         }
         collapseKey = bundle.getString("collapse_key");
         elements = bundle.getParcelable("elements");
+        pushCategory = bundle.getString("pushCategory");
     }
 
     public void setDate(String date) {
@@ -274,5 +278,9 @@ public class Message implements Serializable {
 
     public ArrayList<Actions> getActions() {
         return actions;
+    }
+
+    public String getPushCategory() {
+        return pushCategory;
     }
 }
