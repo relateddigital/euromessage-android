@@ -37,13 +37,12 @@ public class MainApplication extends Application {
         euroMobileManager.setPushIntent("com.relateddigital.euromessage.MainActivity", getApplicationContext());
         euroMobileManager.setNotificationPriority(RDNotificationPriority.NORMAL, getApplicationContext());
 
+
         if (EuroMobileManager.checkPlayService(getApplicationContext())) {
             setExistingFirebaseTokenToEuroMessage();
         } else {
             setHuaweiTokenToEuromessage();
         }
-
-
 
     }
 
