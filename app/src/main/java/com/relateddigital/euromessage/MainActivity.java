@@ -222,6 +222,14 @@ public class MainActivity extends AppCompatActivity {
 
         binding.tvRelease.setText("Appv : " + com.relateddigital.euromessage.BuildConfig.VERSION_NAME + " " + " EM SDKv: " + euromsg.com.euromobileandroid.BuildConfig.VERSION_NAME);
 
+        binding.btnPermission.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                EuroMobileManager.getInstance().requestNotificationPermission(activity);
+            }
+        });
+
         binding.btnPayload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

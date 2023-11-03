@@ -49,6 +49,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.activity:activity:1.6.1'
     api 'com.google.code.gson:gson:2.9.0'
     api 'com.google.firebase:firebase-messaging:23.3.0'
     api 'com.google.android.gms:play-services-base:18.2.0'

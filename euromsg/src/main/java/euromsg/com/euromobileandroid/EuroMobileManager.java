@@ -47,6 +47,8 @@ import euromsg.com.euromobileandroid.model.Subscription;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.LogUtils;
+import euromsg.com.euromobileandroid.utils.NotificationPermissionActivity;
+import euromsg.com.euromobileandroid.utils.NotificationPermissionCallback;
 import euromsg.com.euromobileandroid.utils.PayloadUtils;
 import euromsg.com.euromobileandroid.utils.RetryCounterManager;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
@@ -1138,6 +1140,18 @@ public class EuroMobileManager {
         }) {
         }.start();
     }
+
+    public void requestNotificationPermission(Context context) {
+        if (Build.VERSION.SDK_INT >= 33) {
+            NotificationPermissionActivity.callback = granted -> {
+                setPushPermit(granted ? PushPermit.ACTIVE : PushPermit.PASSIVE, context);
+                sync(context);
+            };
+            Intent intent = new Intent(context, NotificationPermissionActivity.class);
+            context.startActivity(intent);
+        }
+    }
+
 
     private void fillGraylogModel() {
         graylogModel = new GraylogModel();
