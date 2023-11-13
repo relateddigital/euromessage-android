@@ -105,7 +105,7 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
         EuroMobileManager euroMobileManager = EuroMobileManager.init(appAlias, huaweiAppAlias, this);
 
-        if(pushMessage.getSilent() != null && pushMessage.getSilent().equals("true")) {
+        if(pushMessage.getSilent() != null && pushMessage.getSilent().equalsIgnoreCase("true")) {
             Log.i("EuroFirabase", "Silent Push");
             euroMobileManager.reportReceived(pushMessage.getPushId(),
                     pushMessage.getEmPushSp(), true);
