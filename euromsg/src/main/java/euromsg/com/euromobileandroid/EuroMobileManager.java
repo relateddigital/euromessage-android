@@ -30,6 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import euromsg.com.euromobileandroid.callback.PushMessageInterface;
+import euromsg.com.euromobileandroid.callback.PushNotificationPermissionInterface;
 import euromsg.com.euromobileandroid.connection.EuroApiService;
 import euromsg.com.euromobileandroid.connection.RetentionApiClient;
 import euromsg.com.euromobileandroid.connection.SubscriptionApiClient;
@@ -49,7 +50,6 @@ import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.LogUtils;
 import euromsg.com.euromobileandroid.utils.NotificationPermissionActivity;
-import euromsg.com.euromobileandroid.utils.NotificationPermissionCallback;
 import euromsg.com.euromobileandroid.utils.PayloadUtils;
 import euromsg.com.euromobileandroid.utils.RetryCounterManager;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
@@ -1147,6 +1147,18 @@ public class EuroMobileManager {
             }
         }) {
         }.start();
+    }
+
+    public void requestNotificationPermission(Context context, PushNotificationPermissionInterface callback) {
+        if (Build.VERSION.SDK_INT >= 33) {
+            NotificationPermissionActivity.callback = granted -> {
+                setPushPermit(granted ? PushPermit.ACTIVE : PushPermit.PASSIVE, context);
+                sync(context);
+                callback.success(granted);
+            };
+            Intent intent = new Intent(context, NotificationPermissionActivity.class);
+            context.startActivity(intent);
+        }
     }
 
     public void requestNotificationPermission(Context context) {
