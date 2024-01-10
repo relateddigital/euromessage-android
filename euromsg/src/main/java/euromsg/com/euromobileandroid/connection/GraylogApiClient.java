@@ -32,7 +32,7 @@ public class GraylogApiClient {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .build();
             retrofit = new Retrofit.Builder()
-                    .baseUrl("https://gt.relateddigital.com/")
+                    .baseUrl("https://rd-gateway.relateddigital.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(okHttpClient)
                     .build();
