@@ -205,12 +205,22 @@ public class PushNotificationManager {
         if (actions != null && !actions.isEmpty()) {
             for (Actions actionItem : actions) {
                 Uri linkUri = Uri.parse(actionItem != null ? actionItem.getUrl() : "");
-                PendingIntent actionIntent = PendingIntent.getActivity(
-                        context,
-                        0,
-                        new Intent(Intent.ACTION_VIEW, linkUri),
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
+                PendingIntent actionIntent ;
+                if(Build.VERSION.SDK_INT > Build.VERSION_CODES.R){
+                    actionIntent =(PendingIntent.getActivity(
+                            context,
+                            0,
+                            new Intent(Intent.ACTION_VIEW, linkUri),
+                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE));
+                }
+                else {
+                    actionIntent = (PendingIntent.getActivity(
+                            context,
+                            0,
+                            new Intent(Intent.ACTION_VIEW, linkUri),
+                            PendingIntent.FLAG_UPDATE_CURRENT ));
+                }
+
 
                 int actionIcon = R.drawable.ic_carousel_icon;
                 if (actionItem != null && !actionItem.getIcon().isEmpty()) {
