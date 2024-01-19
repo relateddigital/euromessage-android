@@ -66,7 +66,7 @@ public class EuroMobileManager {
     private static EuroApiService subscriptionApiInterface;
     private static String mUserAgent;
 
-    private Subscription subscription;
+    public Subscription subscription;
     private Subscription previousSubscription;
     private Subscription previousRegisterEmailSubscription;
     private String latestDeliverPushId = "";
@@ -562,6 +562,7 @@ public class EuroMobileManager {
     public void setEuroUserId(String userKey, Context context) {
         setSubscriptionProperty(Constants.EURO_USER_KEY, userKey, context);
         SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+
     }
 
     /**

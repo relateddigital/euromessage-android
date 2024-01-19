@@ -44,6 +44,9 @@ public class Message implements Serializable {
 
     private String pushCategory;
 
+    private String keyID;
+    private String email;
+
     public Message(Context context, @NonNull Map<String, String> bundle) {
         try {
             for (String key : bundle.keySet()) {
@@ -85,6 +88,8 @@ public class Message implements Serializable {
                 convertJsonStrToActionsArray(context, bundle.get("actions"));
             }
             pushCategory = bundle.get("pushCategory");
+            keyID = bundle.get("keyID");
+            email = bundle.get("email");
         } catch (Exception e) {
             Log.e("Message", "Could not model the message!");
             e.printStackTrace();
@@ -178,6 +183,8 @@ public class Message implements Serializable {
         collapseKey = bundle.getString("collapse_key");
         elements = bundle.getParcelable("elements");
         pushCategory = bundle.getString("pushCategory");
+        keyID = bundle.getString("keyID");
+        email = bundle.getString("email");
     }
 
     public void setDate(String date) {
@@ -186,6 +193,14 @@ public class Message implements Serializable {
 
     public void setOpenDate(String openDate) {
         this.openDate = openDate;
+    }
+
+    public void setKeyID(String keyID) {
+        this.keyID = keyID;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setStatus(String status) {
@@ -283,4 +298,8 @@ public class Message implements Serializable {
     public String getPushCategory() {
         return pushCategory;
     }
+
+    public String getKeyID() { return keyID; }
+
+    public String getEmail() { return email; }
 }
