@@ -207,18 +207,18 @@ public class PushNotificationManager {
                 Uri linkUri = Uri.parse(actionItem != null ? actionItem.getUrl() : "");
                 PendingIntent actionIntent ;
                 if(Build.VERSION.SDK_INT > Build.VERSION_CODES.R){
-                    actionIntent =(PendingIntent.getActivity(
+                    actionIntent =(PendingIntent.getBroadcast(
                             context,
                             0,
-                            new Intent(Intent.ACTION_VIEW, linkUri),
+                            new Intent(context,NotificationActionBroadcastReceiver.class).setAction("ACTION_CLICK").putExtra("KEY_ACTION_ITEM", linkUri),
                             PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE));
                 }
                 else {
                     actionIntent = (PendingIntent.getActivity(
                             context,
                             0,
-                            new Intent(Intent.ACTION_VIEW, linkUri),
-                            PendingIntent.FLAG_UPDATE_CURRENT ));
+                            new Intent(context,NotificationActionBroadcastReceiver.class).setAction("ACTION_CLICK").putExtra("KEY_ACTION_ITEM", linkUri),
+                            PendingIntent.FLAG_UPDATE_CURRENT));
                 }
 
 
