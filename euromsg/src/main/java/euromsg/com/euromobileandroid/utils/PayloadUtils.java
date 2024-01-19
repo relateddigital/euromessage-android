@@ -14,10 +14,14 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 import euromsg.com.euromobileandroid.Constants;
+import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.model.Message;
 
 public final class PayloadUtils {
@@ -132,6 +136,19 @@ public final class PayloadUtils {
             message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
             message.setStatus("D");
             message.setOpenDate("");
+            Map<String, Object> userExVid = EuroMobileManager.getInstance().subscription.getExtra();
+            if (userExVid.containsKey(Constants.EURO_USER_KEY) && userExVid.get(Constants.EURO_USER_KEY) != null) {
+                Object keyID = userExVid.get(Constants.EURO_USER_KEY);
+                if(keyID instanceof String) {
+                    message.setKeyID(keyID.toString());
+                }
+            }
+            if (userExVid.containsKey(Constants.EURO_EMAIL_KEY) && userExVid.get(Constants.EURO_EMAIL_KEY) != null) {
+                Object email = userExVid.get(Constants.EURO_EMAIL_KEY);
+                if(email instanceof String) {
+                    message.setEmail(email.toString());
+                }
+            }
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             return jsonArray;
         } catch (Exception e) {
@@ -155,6 +172,19 @@ public final class PayloadUtils {
             message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
             message.setStatus("D");
             message.setOpenDate("");
+            Map<String, Object> userExVid = EuroMobileManager.getInstance().subscription.getExtra();
+            if (userExVid.containsKey(Constants.EURO_USER_KEY) && userExVid.get(Constants.EURO_USER_KEY) != null) {
+                Object keyID = userExVid.get(Constants.EURO_USER_KEY);
+                if(keyID instanceof String) {
+                    message.setKeyID(keyID.toString());
+                }
+            }
+            if (userExVid.containsKey(Constants.EURO_EMAIL_KEY) && userExVid.get(Constants.EURO_EMAIL_KEY) != null) {
+                Object email = userExVid.get(Constants.EURO_EMAIL_KEY);
+                if(email instanceof String) {
+                    message.setEmail(email.toString());
+                }
+            }
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             return jsonArray;
         } catch (Exception e) {
@@ -224,6 +254,19 @@ public final class PayloadUtils {
             message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
             message.setStatus("D");
             message.setOpenDate("");
+            Map<String, Object> userExVid = EuroMobileManager.getInstance().subscription.getExtra();
+            if (userExVid.containsKey(Constants.EURO_USER_KEY) && userExVid.get(Constants.EURO_USER_KEY) != null) {
+                Object keyID = userExVid.get(Constants.EURO_USER_KEY);
+                if(keyID instanceof String) {
+                    message.setKeyID(keyID.toString());
+                }
+            }
+            if (userExVid.containsKey(Constants.EURO_EMAIL_KEY) && userExVid.get(Constants.EURO_EMAIL_KEY) != null) {
+                Object email = userExVid.get(Constants.EURO_EMAIL_KEY);
+                if(email instanceof String) {
+                    message.setEmail(email.toString());
+                }
+            }
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, jsonArray);
             SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
@@ -248,6 +291,19 @@ public final class PayloadUtils {
             message.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
             message.setStatus("D");
             message.setOpenDate("");
+            Map<String, Object> userExVid = EuroMobileManager.getInstance().subscription.getExtra();
+            if (userExVid.containsKey(Constants.EURO_USER_KEY) && userExVid.get(Constants.EURO_USER_KEY) != null) {
+                Object keyID = userExVid.get(Constants.EURO_USER_KEY);
+                if(keyID instanceof String) {
+                    message.setKeyID(keyID.toString());
+                }
+            }
+            if (userExVid.containsKey(Constants.EURO_EMAIL_KEY) && userExVid.get(Constants.EURO_EMAIL_KEY) != null) {
+                Object email = userExVid.get(Constants.EURO_EMAIL_KEY);
+                if(email instanceof String) {
+                    message.setEmail(email.toString());
+                }
+            }
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             jsonObject.put(Constants.PAYLOAD_SP_ARRAY_ID_KEY, jsonArray);
             SharedPreference.saveString(context, Constants.PAYLOAD_SP_ID_KEY, jsonObject.toString());

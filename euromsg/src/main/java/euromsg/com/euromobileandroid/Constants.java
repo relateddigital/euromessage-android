@@ -14,12 +14,12 @@ public class Constants {
     static final String EURO_RECIPIENT_TYPE_TACIR = "TACIR";
     public static final String TOKEN_KEY = "token-key";
 
-    static final String EURO_EMAIL_KEY = "email";
+    public static final String EURO_EMAIL_KEY = "email";
     static final String EURO_SET_ANONYMOUS_KEY = "setAnonymous";
     static final String EURO_TWITTER_KEY = "twitter";
     static final String EURO_FACEBOOK_KEY = "facebook";
     static final String EURO_MSISDN_KEY = "msisdn";
-    static final String EURO_USER_KEY = "keyID";
+    public static final String EURO_USER_KEY = "keyID";
     static final String EURO_LOCATION_KEY = "location";
     static final String EURO_SUBSCRIPTION_KEY = "subscription";
     static final String ALREADY_SENT_SUBSCRIPTION_JSON = "sent_subscription";
