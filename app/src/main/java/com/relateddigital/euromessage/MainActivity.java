@@ -211,7 +211,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUI() {
         sendATemplatePush();
-        String huaweiToken = SP.getString(getApplicationContext(), "HuaweiToken");
+        setupDeletePushWithIdButton();
+            String huaweiToken = SP.getString(getApplicationContext(), "HuaweiToken");
         String firabaseToken = SP.getString(getApplicationContext(), "FirebaseToken");
 
         if (firabaseToken.equals("")) {
@@ -261,6 +262,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sync();
+            }
+        });
+        binding.btnTextDeleteAllPush.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EuroMobileManager.deleteAllPushNotifications(getApplicationContext());
+            }
+        });
+
+        binding.btnTextDeletePushWithId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EuroMobileManager.deletePushNotificationWithId(getApplicationContext(),123);
             }
         });
         binding.btnRegisteremail.setOnClickListener(new View.OnClickListener() {
@@ -398,6 +412,14 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+
+    public void setupDeletePushWithIdButton() {
+
+
+    }
+
 
 
 
