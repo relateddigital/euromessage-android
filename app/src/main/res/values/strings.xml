@@ -10,6 +10,8 @@
     <string name="send_a_template_text_push">SEND A TEMPLATE TEXT PUSH</string>
     <string name="request_permission">REQUEST PERMISSION</string>
     <string name="get_payload">GET PAYLOADS</string>
+    <string name="delete_push_with_id">DELETE PUSH WITH ID</string>
+    <string name="delete_all_push">DELETE All PUSH</string>
     <string name="please_enter_email_address">Please Enter Email Address</string>
     <string name="add">Add</string>
     <string name="other_related_digital_products">Other Related Digital Products:</string>

@@ -1017,6 +1017,22 @@ public class EuroMobileManager {
         }
     }
 
+    public static void deleteAllPushNotifications(Context context) {
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.cancelAll();
+        }
+    }
+
+    public static void deletePushNotificationWithId(Context context, Integer notificationId) {
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null && notificationId != null) {
+            notificationManager.cancel(notificationId);
+        }
+    }
+
     /**
      * This method returns the list of push messages sent in the last 30 days.
      * The messages are ordered in terms of their timestamps e.g. most recent one is at index 0.
