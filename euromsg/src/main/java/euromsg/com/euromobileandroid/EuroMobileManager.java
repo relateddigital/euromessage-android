@@ -1017,20 +1017,24 @@ public class EuroMobileManager {
         }
     }
 
-    public static void deleteAllPushNotifications(Context context) {
+    public static boolean deleteAllPushNotifications(Context context) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null) {
             notificationManager.cancelAll();
+            return true;
         }
+        return false;
     }
 
-    public static void deletePushNotificationWithId(Context context, Integer notificationId) {
+    public static boolean deletePushNotificationWithId(Context context, Integer notificationId) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (notificationManager != null && notificationId != null) {
             notificationManager.cancel(notificationId);
+            return true;
         }
+        return false;
     }
 
     /**
