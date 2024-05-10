@@ -14,11 +14,9 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.EuroMobileManager;
@@ -360,7 +358,7 @@ public final class PayloadUtils {
             Log.e(LOG_TAG, e.getMessage());
         }
     }
-    public static void readAllPushMessages(Context context, String pushId) {
+    public static boolean readAllPushMessages(Context context) {
         try {
             String jsonString = SharedPreference.getString(context, Constants.PAYLOAD_SP_KEY);
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -370,28 +368,17 @@ public final class PayloadUtils {
             if (payloadsArray != null) {
                 for (int i = 0; i < payloadsArray.length(); i++) {
                     JSONObject payloadObject = payloadsArray.getJSONObject(i);
-                    String existingPushId = payloadObject.optString("pushId", "");
 
-                    if (pushId != null && !pushId.isEmpty()) {
-                        if (existingPushId.equals(pushId)) {
-                            payloadObject.put("status", "O");
-                            payloadObject.put("openDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
-
-                            SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
-                            return;
-                        }
-                    } else {
                         payloadObject.put("status", "O");
                         payloadObject.put("openDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
-
-                        SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
-                        return;
-                    }
                 }
+                        jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, payloadsArray);
+                        SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                        return true;
 
-                Log.e(LOG_TAG, "Payload with pushId " + pushId + " not found!");
             } else {
                 Log.e(LOG_TAG, "Payload array is null or empty!");
+                return false;
             }
         } catch (Exception e) {
             StackTraceElement element = new Throwable().getStackTrace()[0];
@@ -404,9 +391,11 @@ public final class PayloadUtils {
             Log.e(LOG_TAG, "Could not update the push message!");
             Log.e(LOG_TAG, e.getMessage());
         }
+        return false;
     }
 
-    public static void readPushMessagesWithPushId(Context context, String pushId) {
+    public boolean readPushMessagesWithPushId(Context context, String pushId) {
+        boolean isUpdated = false;
         try {
             String jsonString = SharedPreference.getString(context, Constants.PAYLOAD_SP_KEY);
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -417,20 +406,20 @@ public final class PayloadUtils {
                 for (int i = 0; i < payloadsArray.length(); i++) {
                     JSONObject payloadObject = payloadsArray.getJSONObject(i);
                     String existingPushId = payloadObject.optString("pushId", "");
-                    if (pushId != null && !pushId.isEmpty()) {
-                        if (existingPushId.equals(pushId)) {
-                            payloadObject.put("status", "O");
-                            payloadObject.put("openDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
-
-                            SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
-                            return;
-                        }
+                    if (pushId != null && !pushId.isEmpty() && existingPushId.equals(pushId)) {
+                        payloadObject.put("status", "O");
+                        payloadObject.put("openDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+                        isUpdated = true;
                     }
                 }
-
-                Log.e(LOG_TAG, "Payload with pushId " + pushId + " not found!");
+                if (isUpdated) {
+                    jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, payloadsArray);
+                    SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                }
+                return isUpdated;
             } else {
                 Log.e(LOG_TAG, "Payload array is null or empty!");
+                return false;
             }
         } catch (Exception e) {
             StackTraceElement element = new Throwable().getStackTrace()[0];
@@ -442,6 +431,7 @@ public final class PayloadUtils {
             );
             Log.e(LOG_TAG, "Could not update the push message!");
             Log.e(LOG_TAG, e.getMessage());
+            return false;
         }
     }
 
