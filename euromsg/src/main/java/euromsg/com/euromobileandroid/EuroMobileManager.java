@@ -1,5 +1,7 @@
 package euromsg.com.euromobileandroid;
 
+import static euromsg.com.euromobileandroid.Constants.LOG_TAG;
+
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -24,8 +26,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -1035,6 +1039,83 @@ public class EuroMobileManager {
             return true;
         }
         return false;
+    }
+
+    public static boolean readAllPushMessages(Context context) {
+        try {
+            String jsonString = SharedPreference.getString(context, Constants.PAYLOAD_SP_KEY);
+            JSONObject jsonObject = new JSONObject(jsonString);
+
+            JSONArray payloadsArray = jsonObject.optJSONArray(Constants.PAYLOAD_SP_ARRAY_KEY);
+
+            if (payloadsArray != null) {
+                for (int i = 0; i < payloadsArray.length(); i++) {
+                    JSONObject payloadObject = payloadsArray.getJSONObject(i);
+
+                    payloadObject.put("status", "O");
+                    payloadObject.put("openDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+                }
+                jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, payloadsArray);
+                SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                return true;
+
+            } else {
+                Log.e(LOG_TAG, "Payload array is null or empty!");
+                return false;
+            }
+        } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Updating push message string : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+            Log.e(LOG_TAG, "Could not update the push message!");
+            Log.e(LOG_TAG, e.getMessage());
+        }
+        return false;
+    }
+
+    public boolean readPushMessagesWithPushId(Context context, String pushId) {
+        boolean isUpdated = false;
+        try {
+            String jsonString = SharedPreference.getString(context, Constants.PAYLOAD_SP_KEY);
+            JSONObject jsonObject = new JSONObject(jsonString);
+
+            JSONArray payloadsArray = jsonObject.optJSONArray(Constants.PAYLOAD_SP_ARRAY_KEY);
+
+            if (payloadsArray != null) {
+                for (int i = 0; i < payloadsArray.length(); i++) {
+                    JSONObject payloadObject = payloadsArray.getJSONObject(i);
+                    String existingPushId = payloadObject.optString("pushId", "");
+                    if (pushId != null && !pushId.isEmpty() && existingPushId.equals(pushId)) {
+                        payloadObject.put("status", "O");
+                        payloadObject.put("openDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
+                        isUpdated = true;
+                    }
+                }
+                if (isUpdated) {
+                    jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, payloadsArray);
+                    SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                }
+                return isUpdated;
+            } else {
+                Log.e(LOG_TAG, "Payload array is null or empty!");
+                return false;
+            }
+        } catch (Exception e) {
+            StackTraceElement element = new Throwable().getStackTrace()[0];
+            LogUtils.formGraylogModel(
+                    context,
+                    "e",
+                    "Updating push message string : " + e.getMessage(),
+                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
+            );
+            Log.e(LOG_TAG, "Could not update the push message!");
+            Log.e(LOG_TAG, e.getMessage());
+            return false;
+        }
     }
 
     /**

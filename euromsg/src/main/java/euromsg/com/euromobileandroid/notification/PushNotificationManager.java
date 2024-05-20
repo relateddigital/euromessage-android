@@ -31,12 +31,13 @@ import euromsg.com.euromobileandroid.utils.EuroLogger;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.ImageUtils;
 import euromsg.com.euromobileandroid.utils.LogUtils;
+import euromsg.com.euromobileandroid.utils.PayloadUtils;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
 
 public class PushNotificationManager {
 
     Intent intent;
-
+    public Integer lastNotificationId;
 
     public void generateCarouselNotification(Context context, Message pushMessage, int notificationId) {
 
@@ -76,6 +77,7 @@ public class PushNotificationManager {
 
             if(mNotificationManager != null) {
                 mNotificationManager.notify(notificationId, mBuilder.build());
+                PayloadUtils.updatePayloadWithId(context,pushMessage.getPushId(),notificationId);
             }
 
         } catch (Exception e) {
