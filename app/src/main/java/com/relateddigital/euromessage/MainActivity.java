@@ -30,6 +30,7 @@ import com.visilabs.Visilabs;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -274,8 +275,24 @@ public class MainActivity extends AppCompatActivity {
         binding.btnTextDeletePushWithId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EuroMobileManager.deletePushNotificationWithId(getApplicationContext(),123);
+            PushMessageInterface pushMessageInterface = new PushMessageInterface() {
+                @Override
+                public void success(List<Message> pushMessages) {
+                    for (Message pushMessage : pushMessages) {
+                        EuroMobileManager.deletePushNotificationWithId(getApplicationContext(), pushMessage.getNotificationId());
+                    }
+
+                }
+
+                @Override
+                public void fail(String errorMessage) {
+
+
+                }
+            };
+
             }
+
         });
         binding.btnRegisteremail.setOnClickListener(new View.OnClickListener() {
             @Override

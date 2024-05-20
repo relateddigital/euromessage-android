@@ -21,6 +21,7 @@ import java.util.Map;
 import euromsg.com.euromobileandroid.Constants;
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.model.Message;
+import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 
 public final class PayloadUtils {
     private static final String LOG_TAG = "PayloadUtils";
@@ -358,44 +359,8 @@ public final class PayloadUtils {
             Log.e(LOG_TAG, e.getMessage());
         }
     }
-    public static boolean readAllPushMessages(Context context) {
-        try {
-            String jsonString = SharedPreference.getString(context, Constants.PAYLOAD_SP_KEY);
-            JSONObject jsonObject = new JSONObject(jsonString);
 
-            JSONArray payloadsArray = jsonObject.optJSONArray(Constants.PAYLOAD_SP_ARRAY_KEY);
-
-            if (payloadsArray != null) {
-                for (int i = 0; i < payloadsArray.length(); i++) {
-                    JSONObject payloadObject = payloadsArray.getJSONObject(i);
-
-                        payloadObject.put("status", "O");
-                        payloadObject.put("openDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
-                }
-                        jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, payloadsArray);
-                        SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
-                        return true;
-
-            } else {
-                Log.e(LOG_TAG, "Payload array is null or empty!");
-                return false;
-            }
-        } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Updating push message string : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
-            Log.e(LOG_TAG, "Could not update the push message!");
-            Log.e(LOG_TAG, e.getMessage());
-        }
-        return false;
-    }
-
-    public boolean readPushMessagesWithPushId(Context context, String pushId) {
-        boolean isUpdated = false;
+    public static void updatePayloadWithId(Context context, String pushId, Integer notificationId) {
         try {
             String jsonString = SharedPreference.getString(context, Constants.PAYLOAD_SP_KEY);
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -406,22 +371,23 @@ public final class PayloadUtils {
                 for (int i = 0; i < payloadsArray.length(); i++) {
                     JSONObject payloadObject = payloadsArray.getJSONObject(i);
                     String existingPushId = payloadObject.optString("pushId", "");
-                    if (pushId != null && !pushId.isEmpty() && existingPushId.equals(pushId)) {
-                        payloadObject.put("status", "O");
-                        payloadObject.put("openDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
-                        isUpdated = true;
+
+                    if (existingPushId.equals(pushId)) {
+                        // Güncelleme işlemlerini yap
+                        payloadObject.put("notificationId", notificationId);
+
+                        // Güncellenmiş JSON'ı kaydet
+                        SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                        return; // Güncelleme işlemi tamamlandı, fonksiyondan çık
                     }
                 }
-                if (isUpdated) {
-                    jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, payloadsArray);
-                    SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
-                }
-                return isUpdated;
+
+                // Eğer bu noktaya gelinirse, belirtilen pushId ile bir payload bulunamamıştır.
+                Log.e(LOG_TAG, "Payload with pushId " + pushId + " not found!");
             } else {
                 Log.e(LOG_TAG, "Payload array is null or empty!");
-                return false;
             }
-        } catch (Exception e) {
+        } catch (JSONException e) {
             StackTraceElement element = new Throwable().getStackTrace()[0];
             LogUtils.formGraylogModel(
                     context,
@@ -431,9 +397,9 @@ public final class PayloadUtils {
             );
             Log.e(LOG_TAG, "Could not update the push message!");
             Log.e(LOG_TAG, e.getMessage());
-            return false;
         }
     }
+
 
 
     private static boolean compareDates(Context context, String str1, String str2) {

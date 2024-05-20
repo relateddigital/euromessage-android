@@ -36,6 +36,7 @@ public class Message implements Serializable {
     private String deliver;
     private String silent;
     private PushType pushType;
+    private Integer notificationId;
     private String collapseKey;
     private Map<String, String> params = new HashMap<>();
     private ArrayList<Element> elements;
@@ -205,6 +206,14 @@ public class Message implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer setNotifiactionId() {
+        return notificationId;
+    }
+
+    public Integer getNotificationId() {
+        return notificationId;
     }
 
     public String getAltUrl() {
