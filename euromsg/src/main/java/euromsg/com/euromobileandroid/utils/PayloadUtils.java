@@ -373,7 +373,6 @@ public final class PayloadUtils {
                     String existingPushId = payloadObject.optString("pushId", "");
 
                     if (existingPushId.equals(pushId)) {
-                        // Güncelleme işlemlerini yap
                         payloadObject.put("notificationId", notificationId);
 
                         // Güncellenmiş JSON'ı kaydet
