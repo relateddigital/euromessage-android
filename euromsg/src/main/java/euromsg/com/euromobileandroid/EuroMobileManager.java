@@ -1077,7 +1077,7 @@ public class EuroMobileManager {
         return false;
     }
 
-    public boolean readPushMessagesWithPushId(Context context, String pushId) {
+    public static boolean readPushMessagesWithPushId(Context context, String pushId) {
         boolean isUpdated = false;
         try {
             String jsonString = SharedPreference.getString(context, Constants.PAYLOAD_SP_KEY);

@@ -77,7 +77,6 @@ public class PushNotificationManager {
 
             if(mNotificationManager != null) {
                 mNotificationManager.notify(notificationId, mBuilder.build());
-                PayloadUtils.updatePayloadWithId(context,pushMessage.getPushId(),notificationId);
             }
 
         } catch (Exception e) {
@@ -274,12 +273,6 @@ public class PushNotificationManager {
 
         mBuilder.setContentIntent(contentIntent);
 
-        // TODO : Check the number of buttons and related
-        // pending intents here when BE gets ready and
-        // set them accordingly.
-        /*
-        mBuilder.addAction(R.drawable.notification_button, "Open" , contentIntent);
-        */
 
         return mBuilder;
     }
