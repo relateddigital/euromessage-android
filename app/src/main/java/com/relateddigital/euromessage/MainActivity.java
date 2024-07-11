@@ -294,6 +294,20 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        binding.btnTextDeletePushWithIdFromGpm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EuroMobileManager.getInstance().deletePushMessageByIdFromLSPM("75d7ed18-0bac-433d-a1ff-21395a5c5679");
+            }
+        });
+
+        binding.btnTextDeleteAllPushFromGpm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EuroMobileManager.getInstance().deleteAllPushMessagesFromLSPM();
+            }
+        });
         binding.btnRegisteremail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

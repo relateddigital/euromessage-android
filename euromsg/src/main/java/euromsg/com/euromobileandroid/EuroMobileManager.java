@@ -1251,6 +1251,59 @@ public class EuroMobileManager {
         }.start();
     }
 
+    public boolean deletePushMessageByIdFromLSPM(String messageId) {
+        String payloads = SharedPreference.getString(mContext, Constants.PAYLOAD_SP_KEY);
+        if (!payloads.isEmpty()) {
+            try {
+                JSONObject jsonObject = new JSONObject(payloads);
+                JSONArray jsonArray = jsonObject.getJSONArray(Constants.PAYLOAD_SP_ARRAY_KEY);
+                JSONArray newJsonArray = new JSONArray();
+
+                boolean messageFound = false;
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject currentObject = jsonArray.getJSONObject(i);
+                    Message currentMessage = new Gson().fromJson(currentObject.toString(), Message.class);
+                    if (!currentMessage.getPushId().equals(messageId)) {
+                        newJsonArray.put(currentObject);
+                    } else {
+                        messageFound = true;
+                    }
+                }
+
+                if (messageFound) {
+                    jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, newJsonArray);
+                    SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public boolean deleteAllPushMessagesFromLSPM() {
+        String payloads = SharedPreference.getString(mContext, Constants.PAYLOAD_SP_KEY);
+        if (!payloads.isEmpty()) {
+            try {
+                JSONObject jsonObject = new JSONObject(payloads);
+                jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, new JSONArray());
+
+                SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public void requestNotificationPermission(Context context, PushNotificationPermissionInterface callback) {
         if (Build.VERSION.SDK_INT >= 33) {
             NotificationPermissionActivity.callback = granted -> {
