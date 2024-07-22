@@ -26,7 +26,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.relateddigital.euromessage.databinding.ActivityMainBinding;
 import com.visilabs.Visilabs;
-
+import com.huawei.agconnect.config.AGConnectServicesConfig;
+import com.huawei.hms.aaid.HmsInstanceId;
+import com.huawei.hms.common.ApiException;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -216,8 +218,17 @@ public class MainActivity extends AppCompatActivity {
             String huaweiToken = SP.getString(getApplicationContext(), "HuaweiToken");
         String firabaseToken = SP.getString(getApplicationContext(), "FirebaseToken");
 
-        if (firabaseToken.equals("")) {
-            getFirabaseToken();
+
+            if (EuroMobileManager.checkPlayService(getApplicationContext())) {
+                if (firabaseToken.equals("")) {
+                    getFirabaseToken();
+                } else {
+                    if (huaweiToken.equals("")) {
+                        getHuaweiToken();
+                    } else {
+                        binding.etHuaweiToken.setText(huaweiToken);
+                    }
+                }
         } else {
             binding.etToken.setText(firabaseToken);
         }
@@ -451,8 +462,31 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+        private void getHuaweiToken() {
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
+                        final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                binding.etHuaweiToken.setText(token);
+                            }
+                        });
+
+                    } catch (ApiException e) {
+                        Log.e("Huawei Token", "get token failed, " + e);
+                    }
+                }
+            }.start();
+        }
 
 
 
 
-}
+
+
+    }

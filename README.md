@@ -4,7 +4,7 @@
 </p>
 
 
-***July 22, 2023*** - [Euromessage v5.2.7-google](https://github.com/relateddigital/euromessage-android/releases/tag/5.2.6)
+***July 22, 2023*** - [Euromessage v5.2.7](https://github.com/relateddigital/euromessage-android/releases/tag/5.2.6)
 
 # Table of Contents
 
@@ -42,7 +42,7 @@ Add maven jitpack repository to your project/build.gradle file
 Add Euromessage to the ```dependencies``` in app/build.gradle.
 
 ```java
-implementation 'com.github.relateddigital:euromessage-android:5.2.7-google'
+implementation 'com.github.relateddigital:euromessage-android:5.2.7'
 ```
 
 ## 2. Usage of SDK 
