@@ -76,7 +76,7 @@ public class EuroMsgFCMHelper {
 
             if (pushMessage.getPushType() != null && pushMessage.getPushId() != null) {
 
-                int notificationId = new Random().nextInt();
+                int notificationId = new Random().nextInt(Integer.MAX_VALUE);
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && notificationManager != null) {
