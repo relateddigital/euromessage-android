@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 34
     defaultConfig {
         applicationId "com.relateddigital.euromessage"
-        minSdkVersion 21
-        targetSdkVersion 33
+        minSdkVersion 23
+        targetSdkVersion 34
         versionCode 1
         versionName "5.2.7"
         multiDexEnabled true
@@ -40,6 +40,7 @@ dependencies {
     implementation project(':euromsg')
     implementation 'com.github.relateddigital:visilabs-android:6.0.4'
     implementation "androidx.multidex:multidex:2.0.1"
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

@@ -375,13 +375,13 @@ public final class PayloadUtils {
                     if (existingPushId.equals(pushId)) {
                         payloadObject.put("notificationId", notificationId);
 
-                        // Güncellenmiş JSON'ı kaydet
+
                         SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
-                        return; // Güncelleme işlemi tamamlandı, fonksiyondan çık
+                        return;
                     }
                 }
 
-                // Eğer bu noktaya gelinirse, belirtilen pushId ile bir payload bulunamamıştır.
+
                 Log.e(LOG_TAG, "Payload with pushId " + pushId + " not found!");
             } else {
                 Log.e(LOG_TAG, "Payload array is null or empty!");

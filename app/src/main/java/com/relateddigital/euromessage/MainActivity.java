@@ -287,9 +287,14 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void fail(String errorMessage) {
 
-
                 }
             };
+                String loginID = SharedPreference.getString(activity, euromsg.com.euromobileandroid.Constants.NOTIFICATION_LOGIN_ID_KEY);
+                if(loginID.isEmpty()) {
+                    EuroMobileManager.getInstance().getPushMessages(activity, pushMessageInterface);
+                } else {
+                    EuroMobileManager.getInstance().getPushMessagesWithID(activity, pushMessageInterface);
+                }
 
             }
 
