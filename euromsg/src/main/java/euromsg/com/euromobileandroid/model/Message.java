@@ -12,7 +12,9 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import euromsg.com.euromobileandroid.enums.PushType;
@@ -48,13 +50,18 @@ public class Message implements Serializable {
     private String keyID;
     private String email;
 
+    private Map<String, Object> extraData = new HashMap<>();
+
     public Message(Context context, @NonNull Map<String, String> bundle) {
         try {
             for (String key : bundle.keySet()) {
-
                 Object value = bundle.get(key);
                 if (value != null) {
+                    if (isKnownKey(key)) {
                     params.put(key, value.toString());
+                    } else {
+                        extraData.put(key, value);
+                    }
                 }
             }
             date = bundle.get("date");
@@ -95,6 +102,16 @@ public class Message implements Serializable {
             Log.e("Message", "Could not model the message!");
             e.printStackTrace();
         }
+    }
+
+    private boolean isKnownKey(String key) {
+        List<String> knownKeys = Arrays.asList(
+                "date", "openDate", "status", "mediaUrl", "pushId",
+                "campaignId", "url", "from", "message", "title",
+                "sound", "emPushSp", "deliver", "silent", "pushCategory",
+                "keyID", "email"
+        );
+        return knownKeys.contains(key);
     }
 
     private void convertJsonStrToElementsArray(Context context, String elementJsonStr) {
@@ -306,6 +323,10 @@ public class Message implements Serializable {
 
     public String getPushCategory() {
         return pushCategory;
+    }
+
+    public Map<String, Object> getExtraData() {
+        return extraData;
     }
 
     public String getKeyID() { return keyID; }
