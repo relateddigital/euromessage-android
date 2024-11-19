@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -1251,31 +1252,44 @@ public class EuroMobileManager {
         }.start();
     }
 
-    public boolean deletePushMessageByIdFromLSPM(String messageId) {
-        String payloads = SharedPreference.getString(mContext, Constants.PAYLOAD_SP_KEY);
+    public boolean deletePushMessagesWithId(@Nullable String messageId) {
+        String payloads = SharedPreference.getString(mContext, Constants.PAYLOAD_SP_ID_KEY);
         if (!payloads.isEmpty()) {
             try {
                 JSONObject jsonObject = new JSONObject(payloads);
-                JSONArray jsonArray = jsonObject.getJSONArray(Constants.PAYLOAD_SP_ARRAY_KEY);
+                JSONArray jsonArray = jsonObject.getJSONArray(Constants.PAYLOAD_SP_ARRAY_ID_KEY);
                 JSONArray newJsonArray = new JSONArray();
 
                 boolean messageFound = false;
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject currentObject = jsonArray.getJSONObject(i);
-                    Message currentMessage = new Gson().fromJson(currentObject.toString(), Message.class);
-                    if (!currentMessage.getPushId().equals(messageId)) {
-                        newJsonArray.put(currentObject);
-                    } else {
-                        messageFound = true;
-                    }
-                }
 
-                if (messageFound) {
-                    jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, newJsonArray);
-                    SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
-                    return true;
+                if (messageId != null && !messageId.isEmpty()) {
+                    // messageId sağlanmışsa, sadece ilgili mesajı silmeye çalış
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject currentObject = jsonArray.getJSONObject(i);
+                        Message currentMessage = new Gson().fromJson(currentObject.toString(), Message.class);
+                        if (!currentMessage.getPushId().equals(messageId)) {
+                            newJsonArray.put(currentObject);
+                        } else {
+                            messageFound = true;
+                        }
+                    }
+
+                    if (messageFound) {
+                        // Sadece ilgili mesaj silindi, güncellenmiş array'i kaydet
+                        jsonObject.put(Constants.PAYLOAD_SP_ARRAY_ID_KEY, newJsonArray);
+                        SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_ID_KEY, jsonObject.toString());
+                        return true;
+                    } else {
+                        // messageId bulunamadı, tüm mesajları sil
+                        jsonObject.put(Constants.PAYLOAD_SP_ARRAY_ID_KEY, newJsonArray);
+                        SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_ID_KEY, jsonObject.toString());
+                        return true;
+                    }
                 } else {
-                    return false;
+                    // messageId sağlanmamışsa, tüm mesajları sil
+                    jsonObject.put(Constants.PAYLOAD_SP_ARRAY_ID_KEY, newJsonArray);
+                    SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_ID_KEY, jsonObject.toString());
+                    return true;
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1286,15 +1300,45 @@ public class EuroMobileManager {
         }
     }
 
-    public boolean deleteAllPushMessagesFromLSPM() {
+    public boolean deletePushMessages(@Nullable String messageId) {
         String payloads = SharedPreference.getString(mContext, Constants.PAYLOAD_SP_KEY);
         if (!payloads.isEmpty()) {
             try {
                 JSONObject jsonObject = new JSONObject(payloads);
-                jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, new JSONArray());
+                JSONArray jsonArray = jsonObject.getJSONArray(Constants.PAYLOAD_SP_ARRAY_KEY);
+                JSONArray newJsonArray = new JSONArray();
 
-                SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
-                return true;
+                boolean messageFound = false;
+
+                if (messageId != null && !messageId.isEmpty()) {
+                    // messageId sağlanmışsa, sadece ilgili mesajı silmeye çalış
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject currentObject = jsonArray.getJSONObject(i);
+                        Message currentMessage = new Gson().fromJson(currentObject.toString(), Message.class);
+                        if (!currentMessage.getPushId().equals(messageId)) {
+                            newJsonArray.put(currentObject);
+                        } else {
+                            messageFound = true;
+                        }
+                    }
+
+                    if (messageFound) {
+                        // Sadece ilgili mesaj silindi, güncellenmiş array'i kaydet
+                        jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, newJsonArray);
+                        SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                        return true;
+                    } else {
+                        // messageId bulunamadı, tüm mesajları sil
+                        jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, newJsonArray);
+                        SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                        return true;
+                    }
+                } else {
+                    // messageId sağlanmamışsa, tüm mesajları sil
+                    jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, newJsonArray);
+                    SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
+                    return true;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
