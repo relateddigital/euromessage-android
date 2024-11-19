@@ -241,7 +241,9 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Payloads are gotten successfully!", Toast.LENGTH_SHORT).show();
 
                         for (Message pushMessage : pushMessages) {
-                            Log.d("pushMessage", pushMessage.getParams().toString());
+                            Log.d("pushMessage pushId", pushMessage.getPushId());
+                            Log.d("pushMessage params", pushMessage.getParams().toString());
+                            Log.d("pushMessage status", pushMessage.getStatus());
                         }
                     }
 
@@ -303,14 +305,14 @@ public class MainActivity extends AppCompatActivity {
         binding.btnTextDeletePushWithIdFromGpm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EuroMobileManager.getInstance().deletePushMessageByIdFromLSPM("75d7ed18-0bac-433d-a1ff-21395a5c5679");
+                EuroMobileManager.getInstance().deletePushMessagesWithId("");
             }
         });
 
         binding.btnTextDeleteAllPushFromGpm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EuroMobileManager.getInstance().deleteAllPushMessagesFromLSPM();
+                EuroMobileManager.getInstance().deletePushMessages("");
             }
         });
         binding.btnRegisteremail.setOnClickListener(new View.OnClickListener() {
