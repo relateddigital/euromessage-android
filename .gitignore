@@ -21,15 +21,3 @@ local.properties
 /app/agconnect-services.json
 /app/keystore.jks
 /scripts/publish-root.gradle
-app/agconnect-services_BACKUP_98529.json
-app/agconnect-services_BACKUP_98633.json
-app/agconnect-services_BASE_98529.json
-app/agconnect-services_BASE_98633.json
-app/agconnect-services_LOCAL_98529.json
-app/agconnect-services_LOCAL_98633.json
-app/agconnect-services_REMOTE_98529.json
-app/agconnect-services_REMOTE_98633.json
-app/build_BACKUP_98097.gradle
-app/build_BASE_98097.gradle
-app/build_LOCAL_98097.gradle
-app/build_REMOTE_98097.gradle
