@@ -50,7 +50,7 @@ public class Message implements Serializable {
     private String keyID;
     private String email;
 
-    private Map<String, Object> extraData = new HashMap<>();
+    private SerializableMap extraData = new SerializableMap();
 
     public Message(Context context, @NonNull Map<String, String> bundle) {
         try {
@@ -325,7 +325,7 @@ public class Message implements Serializable {
         return pushCategory;
     }
 
-    public Map<String, Object> getExtraData() {
+    public SerializableMap getExtraData() {
         return extraData;
     }
 
