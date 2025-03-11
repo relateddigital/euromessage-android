@@ -59,8 +59,7 @@ dependencies {
     api "com.squareup.okhttp3:okhttp:4.9.0"
     api "com.squareup.okhttp3:logging-interceptor:4.9.0"
     testImplementation 'junit:junit:4.13.2'
-    api 'com.huawei.agconnect:agconnect-core:1.7.2.300'
-    api 'com.huawei.hms:push:6.7.0.300'
+
 }
 
 allprojects {

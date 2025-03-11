@@ -45,9 +45,7 @@ import euromsg.com.euromobileandroid.model.Message;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
-import com.huawei.agconnect.config.AGConnectServicesConfig;
-import com.huawei.hms.aaid.HmsInstanceId;
-import com.huawei.hms.common.ApiException;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -218,16 +216,8 @@ public class MainActivity extends AppCompatActivity {
         String firabaseToken = SP.getString(getApplicationContext(), "FirebaseToken");
 
 
-        if (EuroMobileManager.checkPlayService(getApplicationContext())) {
-            if (firabaseToken.equals("")) {
-                getFirabaseToken();
-            } else {
-                if (huaweiToken.equals("")) {
-                    getHuaweiToken();
-                } else {
-                    binding.etHuaweiToken.setText(huaweiToken);
-                }
-            }
+        if (firabaseToken.equals("")) {
+            getFirabaseToken();
         } else {
             binding.etToken.setText(firabaseToken);
         }
@@ -468,25 +458,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getHuaweiToken() {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    String appId = AGConnectServicesConfig.fromContext(getApplicationContext()).getString("client/app_id");
-                    final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            binding.etHuaweiToken.setText(token);
-                        }
-                    });
-                } catch (ApiException e) {
-                    Log.e("Huawei Token", "get token failed, " + e);
-                }
-            }
-        }.start();
-    }
 
 
 
