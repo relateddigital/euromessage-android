@@ -113,7 +113,7 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
 
             if (pushMessage.getPushType() != null && pushMessage.getPushId() != null) {
 
-                int notificationId = new Random().nextInt();
+                int notificationId = new Random().nextInt(Integer.MAX_VALUE);
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && notificationManager != null) {
