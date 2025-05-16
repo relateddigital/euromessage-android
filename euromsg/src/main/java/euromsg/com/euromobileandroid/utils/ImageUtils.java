@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.util.TypedValue;
 
 import androidx.annotation.AttrRes;
@@ -60,13 +61,7 @@ public class ImageUtils {
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
             fileSaved = true;
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Saving bitmap to storage : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
+            Log.e("Exception", "Error accessing file: " + e.getMessage());
             e.printStackTrace();
         } finally {
             try {
@@ -74,13 +69,8 @@ public class ImageUtils {
                     fos.close();
                 }
             } catch (IOException e) {
-                StackTraceElement element = new Throwable().getStackTrace()[0];
-                LogUtils.formGraylogModel(
-                        context,
-                        "e",
-                        "Closing a file : " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                );
+                Log.e("Exception", "Error accessing file: " + e.getMessage());
+
                 e.printStackTrace();
             }
         }
@@ -97,13 +87,8 @@ public class ImageUtils {
             File f = new File(path, fileName + ".jpg");
             b = BitmapFactory.decodeStream(new FileInputStream(f));
         } catch (FileNotFoundException e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Loading image from file : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
+            Log.e("Exception", "File not found: " + e.getMessage());
+
             e.printStackTrace();
         }
         return b;
@@ -138,13 +123,8 @@ public class ImageUtils {
 
 
         } catch (PackageManager.NameNotFoundException e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Getting app icon : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
+            Log.e("Exception", "Error accessing file: " + e.getMessage());
+
             e.printStackTrace();
         }
 

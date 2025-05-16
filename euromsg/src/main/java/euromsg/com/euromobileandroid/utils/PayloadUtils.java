@@ -46,13 +46,6 @@ public final class PayloadUtils {
                 finalObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, jsonArray);
                 SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, finalObject.toString());
             } catch (Exception e) {
-                StackTraceElement element = new Throwable().getStackTrace()[0];
-                LogUtils.formGraylogModel(
-                        context,
-                        "e",
-                        "Serializing push message : " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                );
                 Log.e(LOG_TAG, "Something went wrong when adding the push message to shared preferences!");
                 Log.e(LOG_TAG, e.getMessage());
             }
@@ -80,13 +73,6 @@ public final class PayloadUtils {
                 finalObject.put(Constants.PAYLOAD_SP_ARRAY_ID_KEY, jsonArray);
                 SharedPreference.saveString(context, Constants.PAYLOAD_SP_ID_KEY, finalObject.toString());
             } catch (Exception e) {
-                StackTraceElement element = new Throwable().getStackTrace()[0];
-                LogUtils.formGraylogModel(
-                        context,
-                        "e",
-                        "Serializing push message : " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                );
                 Log.e(LOG_TAG, "Something went wrong when adding the push message to shared preferences!");
                 Log.e(LOG_TAG, e.getMessage());
             }
@@ -117,13 +103,6 @@ public final class PayloadUtils {
                     break;
                 }
             } catch (Exception e) {
-                StackTraceElement element = new Throwable().getStackTrace()[0];
-                LogUtils.formGraylogModel(
-                        context,
-                        "e",
-                        "Getting pushId from JSONArray : " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                );
                 Log.e(LOG_TAG, e.getMessage());
             }
         }
@@ -151,13 +130,6 @@ public final class PayloadUtils {
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             return jsonArray;
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Serializing push message : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             Log.e(LOG_TAG, "Could not save the push message!");
             Log.e(LOG_TAG, e.getMessage());
             return null;
@@ -187,13 +159,6 @@ public final class PayloadUtils {
             jsonArray.put(new JSONObject(new Gson().toJson(message)));
             return jsonArray;
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Serializing push message : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             Log.e(LOG_TAG, "Could not save the push message!");
             Log.e(LOG_TAG, e.getMessage());
             return null;
@@ -209,13 +174,6 @@ public final class PayloadUtils {
                     i--;
                 }
             } catch (Exception e) {
-                StackTraceElement element = new Throwable().getStackTrace()[0];
-                LogUtils.formGraylogModel(
-                        context,
-                        "e",
-                        "Removing push message from JSONArray : " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                );
                 Log.e(LOG_TAG, e.getMessage());
             }
         }
@@ -233,13 +191,6 @@ public final class PayloadUtils {
                 res = true;
             }
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Comparing 2 dates : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             Log.e(LOG_TAG, "Could not parse date!");
             Log.e(LOG_TAG, e.getMessage());
         }
@@ -270,13 +221,6 @@ public final class PayloadUtils {
             jsonObject.put(Constants.PAYLOAD_SP_ARRAY_KEY, jsonArray);
             SharedPreference.saveString(context, Constants.PAYLOAD_SP_KEY, jsonObject.toString());
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Forming and serializing push message string : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             Log.e(LOG_TAG, "Could not save the push message!");
             Log.e(LOG_TAG, e.getMessage());
         }
@@ -307,13 +251,6 @@ public final class PayloadUtils {
             jsonObject.put(Constants.PAYLOAD_SP_ARRAY_ID_KEY, jsonArray);
             SharedPreference.saveString(context, Constants.PAYLOAD_SP_ID_KEY, jsonObject.toString());
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Forming and serializing push message string : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             Log.e(LOG_TAG, "Could not save the push message!");
             Log.e(LOG_TAG, e.getMessage());
         }
@@ -348,13 +285,6 @@ public final class PayloadUtils {
                 Log.e(LOG_TAG, "Payload array is null or empty!");
             }
         } catch (JSONException e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Updating push message string : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             Log.e(LOG_TAG, "Could not update the push message!");
             Log.e(LOG_TAG, e.getMessage());
         }
@@ -387,13 +317,6 @@ public final class PayloadUtils {
                 Log.e(LOG_TAG, "Payload array is null or empty!");
             }
         } catch (JSONException e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Updating push message string : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             Log.e(LOG_TAG, "Could not update the push message!");
             Log.e(LOG_TAG, e.getMessage());
         }
@@ -411,13 +334,6 @@ public final class PayloadUtils {
                 res = true;
             }
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Comparing 2 dates : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
             Log.e(LOG_TAG, "Could not parse date!");
             Log.e(LOG_TAG, e.getMessage());
         }

@@ -56,13 +56,7 @@ public class EuroFirebaseMessagingService extends FirebaseMessagingService {
             EuroMobileManager.init(googleAppAlias, huaweiAppAlias, this).subscribe(token, this);
 
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    this,
-                    "e",
-                    "Reading app alias from manifest file : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
+
             EuroLogger.debugLog(e.toString());
             googleAppAlias = SharedPreference.getString(this, Constants.GOOGLE_APP_ALIAS);
             huaweiAppAlias = SharedPreference.getString(this, Constants.HUAWEI_APP_ALIAS);

@@ -611,13 +611,7 @@ public class EuroMobileManager {
             EuroLogger.debugLog(this.subscription.toJson());
             SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Saving subscription object to shared pref : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
+            Log.e("Exception", "Saving subscription object to shared pref : " + e.getMessage());
             if (BuildConfig.DEBUG) e.printStackTrace();
 
         }
@@ -627,13 +621,7 @@ public class EuroMobileManager {
         try {
             SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_NO_EMAIL_KEY, this.subscription.toJson());
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Saving subscription object to shared pref : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
+            Log.e("Exception", "Saving subscription object to shared pref : " + e.getMessage());
             if (BuildConfig.DEBUG) e.printStackTrace();
 
         }
@@ -643,13 +631,7 @@ public class EuroMobileManager {
         try {
             SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_WITH_EMAIL_KEY, subscriptionObject.toJson());
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Saving subscription object to shared pref : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
+            Log.e("Exception", "Saving subscription object to shared pref : " + e.getMessage());
             if (BuildConfig.DEBUG) e.printStackTrace();
 
         }
@@ -661,13 +643,7 @@ public class EuroMobileManager {
             String lastSubsDate = dateFormat.format(Calendar.getInstance().getTime());
             SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_DATE_KEY, lastSubsDate);
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Saving last subscription date to shared pref : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
+            Log.e("Exception", "Saving subscription object to shared pref : " + e.getMessage());
         }
     }
 
@@ -677,13 +653,7 @@ public class EuroMobileManager {
             String lastSubsDate = dateFormat.format(Calendar.getInstance().getTime());
             SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_DATE_WITH_EMAIL_KEY, lastSubsDate);
         } catch (Exception e) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Saving last subscription date to shared pref : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
+            Log.e("Exception", "Saving subscription object to shared pref : " + e.getMessage());
         }
     }
 
@@ -765,13 +735,8 @@ public class EuroMobileManager {
             try {
                 return context.getResources().getResourceName(resId) != null;
             } catch (Resources.NotFoundException ignore) {
-                StackTraceElement element = new Throwable().getStackTrace()[0];
-                LogUtils.formGraylogModel(
-                        context,
-                        "e",
-                        "Checking if a resource is available : " + ignore.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                );
+                Log.e("EM : Res Error", resId + "");
+
             }
         }
         return false;
@@ -912,13 +877,8 @@ public class EuroMobileManager {
                     , isCommercial ? Constants.EURO_RECIPIENT_TYPE_TACIR : Constants.EURO_RECIPIENT_TYPE_BIREYSEL);
             registerEmailSubscription.add(Constants.EURO_CONSENT_TIME_KEY, AppUtils.getCurrentTurkeyDateString(mContext));
         } catch (Exception ex) {
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Cloning subscription object : " + ex.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
+            Log.e(TAG, "Cloning subscription object : " + ex.getMessage());
+
             if(callback != null) {
                 callback.fail(ex.getMessage());
             }
@@ -1109,22 +1069,18 @@ public class EuroMobileManager {
             return false;
         } catch (JSONException e) {
             if (e.getStackTrace().length > 0) {
-                StackTraceElement element = e.getStackTrace()[0];
-                LogUtils.formGraylogModel(mContext, "e", "JSONException: " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber());
+                Log.e(LOG_TAG, "JSONException: " + e.getMessage() + " e.getStackTrace().length > 0");
             } else {
-                LogUtils.formGraylogModel(mContext, "e", "JSONException: " + e.getMessage(), "Unknown/Unknown/Unknown");
+                Log.e(LOG_TAG, "JSONException: " + e.getMessage());
             }
             Log.e(LOG_TAG, "Could not update the push messages!");
             Log.e(LOG_TAG, e.getMessage());
             return false;
         } catch (Exception e) {
             if (e.getStackTrace().length > 0) {
-                StackTraceElement element = e.getStackTrace()[0];
-                LogUtils.formGraylogModel(mContext, "e", "Exception: " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber());
+                Log.e(LOG_TAG, "JSONException: " + e.getMessage() + " e.getStackTrace().length > 0");
             } else {
-                LogUtils.formGraylogModel(mContext, "e", "Exception: " + e.getMessage(), "Unknown/Unknown/Unknown");
+                Log.e(LOG_TAG, "JSONException: " + e.getMessage());
             }
             Log.e(LOG_TAG, "Could not update the push messages!");
             Log.e(LOG_TAG, e.getMessage());
@@ -1197,22 +1153,18 @@ public class EuroMobileManager {
             return false;
         } catch (JSONException e) {
             if (e.getStackTrace().length > 0) {
-                StackTraceElement element = e.getStackTrace()[0];
-                LogUtils.formGraylogModel(mContext, "e", "JSONException: " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber());
+                Log.e(LOG_TAG, "JSONException: " + e.getMessage() + " e.getStackTrace().length > 0");
             } else {
-                LogUtils.formGraylogModel(mContext, "e", "JSONException: " + e.getMessage(), "Unknown/Unknown/Unknown");
+                Log.e(LOG_TAG, "JSONException: " + e.getMessage());
             }
             Log.e(LOG_TAG, "Could not update the push messages!");
             Log.e(LOG_TAG, e.getMessage());
             return false;
         } catch (Exception e) {
             if (e.getStackTrace().length > 0) {
-                StackTraceElement element = e.getStackTrace()[0];
-                LogUtils.formGraylogModel(mContext, "e", "Exception: " + e.getMessage(),
-                        element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber());
+                Log.e(LOG_TAG, "JSONException: " + e.getMessage() + " e.getStackTrace().length > 0");
             } else {
-                LogUtils.formGraylogModel(mContext, "e", "Exception: " + e.getMessage(), "Unknown/Unknown/Unknown");
+                Log.e(LOG_TAG, "JSONException: " + e.getMessage());
             }
             Log.e(LOG_TAG, "Could not update the push messages!");
             Log.e(LOG_TAG, e.getMessage());
@@ -1254,13 +1206,7 @@ public class EuroMobileManager {
                         });
                     } catch (final Exception e) {
                         SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_KEY, "");
-                        StackTraceElement element = new Throwable().getStackTrace()[0];
-                        LogUtils.formGraylogModel(
-                                mContext,
-                                "e",
-                                "De-serializing JSON string of push message : " + e.getMessage(),
-                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                        );
+                        Log.e(LOG_TAG, "De-serializing JSON string of push message : " + e.getMessage());
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -1325,13 +1271,7 @@ public class EuroMobileManager {
                         });
                     } catch (final Exception e) {
                         SharedPreference.saveString(mContext, Constants.PAYLOAD_SP_ID_KEY, "");
-                        StackTraceElement element = new Throwable().getStackTrace()[0];
-                        LogUtils.formGraylogModel(
-                                mContext,
-                                "e",
-                                "De-serializing JSON string of push message : " + e.getMessage(),
-                                element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-                        );
+                        Log.e(LOG_TAG, "De-serializing JSON string of push message : " + e.getMessage());
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

@@ -81,13 +81,6 @@ public class PushNotificationManager {
 
         } catch (Exception e) {
             EuroLogger.debugLog("Generate notification : " + e.getMessage());
-            StackTraceElement element = new Throwable().getStackTrace()[0];
-            LogUtils.formGraylogModel(
-                    context,
-                    "e",
-                    "Creating notification : " + e.getMessage(),
-                    element.getClassName() + "/" + element.getMethodName() + "/" + element.getLineNumber()
-            );
         }
     }
 
