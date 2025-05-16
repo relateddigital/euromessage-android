@@ -1043,7 +1043,7 @@ public class EuroMobileManager {
         return false;
     }
 
-    public boolean readPushMessages(@Nullable String pushId) {
+    public static boolean readPushMessages(@Nullable String pushId) {
         if (mContext == null) {
             Log.e(LOG_TAG, "Context cannot be null!");
             return false;
@@ -1065,7 +1065,7 @@ public class EuroMobileManager {
             }
 
             boolean isUpdated = false;
-            boolean shouldUpdateAll = (pushId == null || pushId.trim().isEmpty());
+            boolean shouldUpdateAll = (pushId == null || pushId.isEmpty() || pushId.trim().isEmpty());
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             String currentDate = dateFormat.format(new Date());
 
