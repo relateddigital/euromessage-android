@@ -6,9 +6,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.enums.RDNotificationPriority;
 
-import com.huawei.agconnect.AGConnectOptionsBuilder;
-import com.huawei.hms.aaid.HmsInstanceId;
-import com.huawei.hms.common.ApiException;
 
 
 public class MainApplication extends Application {
@@ -41,14 +38,8 @@ public class MainApplication extends Application {
 
 
 
+        setExistingFirebaseTokenToEuroMessage();
 
-        if (EuroMobileManager.checkPlayService(getApplicationContext())) {
-
-
-            setExistingFirebaseTokenToEuroMessage();
-        } else {
-            setHuaweiTokenToEuromessage();
-        }
 
 
 
@@ -68,26 +59,6 @@ public class MainApplication extends Application {
                 });
     }
 
-    private void setHuaweiTokenToEuromessage() {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    String appId = new AGConnectOptionsBuilder().build(getApplicationContext()).getString("client/app_id");
-                    final String token = HmsInstanceId.getInstance(getApplicationContext()).getToken(appId, "HCM");
-                    if(TextUtils.isEmpty(token) || token == null) {
-                        Log.e("Huawei Token : ", "Empty token!!!");
-                        return;
-                    }
-                    euroMobileManager.subscribe(token, getApplicationContext());
-                    SP.saveString(getApplicationContext(), "HuaweiToken", token);
-                    Log.i("Huawei Token", "" + token);
-                } catch (ApiException e) {
-                    Log.e("Huawei Token", "Getting the token failed! " + e);
-                }
-            }
-        }.start();
-    }
 
 
 }
