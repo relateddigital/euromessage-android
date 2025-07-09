@@ -20,7 +20,7 @@ project.afterEvaluate {
 
 ext {
     PUBLISH_GROUP_ID = 'com.github.relateddigital'
-    PUBLISH_VERSION = "5.3.3"
+    PUBLISH_VERSION = "5.3.4"
     PUBLISH_VERSION_CODE = "50"
     PUBLISH_ARTIFACT_ID = 'euromessage-android'
 }
@@ -32,8 +32,8 @@ android {
         minSdkVersion 23
         targetSdkVersion 34
         versionCode 1
-        versionName "5.3.3"
-        buildConfigField 'String', 'VERSION_NAME', "\"5.3.3\""
+        versionName "5.3.4"
+        buildConfigField 'String', 'VERSION_NAME', "\"5.3.4\""
     }
     buildTypes {
         release {

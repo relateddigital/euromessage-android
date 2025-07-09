@@ -30,7 +30,6 @@ allprojects {
             url 'http://developer.huawei.com/repo/'
             allowInsecureProtocol(true)
         }
-
     }
 }
 

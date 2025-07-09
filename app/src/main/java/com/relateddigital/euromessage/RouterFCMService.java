@@ -16,6 +16,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 
 import euromsg.com.euromobileandroid.service.EuroMsgFCMHelper;
+import euromsg.com.euromobileandroid.utils.LogUtils;
 
 public class RouterFCMService extends FirebaseMessagingService {
 
@@ -23,10 +24,12 @@ public class RouterFCMService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+
         Map<String, String> data = remoteMessage.getData();
 
         String emPushSp = data.get("emPushSp");
         if(emPushSp != null) {
+            Log.d(TAG, "RMC Message received: " + remoteMessage.getData());
             EuroMsgFCMHelper.onMessageReceived(this,remoteMessage);
         }
         else {
@@ -44,6 +47,7 @@ public class RouterFCMService extends FirebaseMessagingService {
     }
 
     private void dispatchNonRMCMessage(RemoteMessage remoteMessage) {
+        Log.d(TAG, "Non-RMC Message received: " + remoteMessage.getData());
        /*  String notificationTitle = remoteMessage.getNotification().getTitle();
         String notificationBody = remoteMessage.getNotification().getBody();
 

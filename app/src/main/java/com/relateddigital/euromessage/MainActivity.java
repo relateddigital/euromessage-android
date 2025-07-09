@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -40,8 +42,10 @@ import euromsg.com.euromobileandroid.EuroMobileManager;
 import euromsg.com.euromobileandroid.callback.PushMessageInterface;
 import euromsg.com.euromobileandroid.enums.EmailPermit;
 import euromsg.com.euromobileandroid.enums.GsmPermit;
+import euromsg.com.euromobileandroid.model.Actions;
 import euromsg.com.euromobileandroid.model.EuromessageCallback;
 import euromsg.com.euromobileandroid.model.Message;
+import euromsg.com.euromobileandroid.notification.NotificationActionBroadcastReceiver;
 import euromsg.com.euromobileandroid.notification.PushNotificationManager;
 import euromsg.com.euromobileandroid.utils.AppUtils;
 import euromsg.com.euromobileandroid.utils.SharedPreference;
@@ -49,6 +53,7 @@ import com.huawei.agconnect.config.AGConnectServicesConfig;
 import com.huawei.hms.aaid.HmsInstanceId;
 import com.huawei.hms.common.ApiException;
 
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -56,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int FIRST_ITEM_CAROUSEL = 0;
     private ActivityMainBinding binding;
     private Activity activity;
+    private static final String TAG = "PushPayloadJSON";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,10 +257,17 @@ public class MainActivity extends AppCompatActivity {
                     public void success(List<Message> pushMessages) {
                         Toast.makeText(getApplicationContext(), "Payloads are gotten successfully!", Toast.LENGTH_SHORT).show();
 
+                        // 1. JSON'u okunaklı (pretty print) formatta oluşturmak için bir Gson nesnesi yarat.
+                        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+                        // Gelen her bir push mesajı için döngü başlat
                         for (Message pushMessage : pushMessages) {
-                            Log.d("pushMessage pushId", pushMessage.getPushId());
-                            Log.d("pushMessage params", pushMessage.getParams().toString());
-                            Log.d("pushMessage status", pushMessage.getStatus());
+
+                            // 2. pushMessage nesnesinin tamamını JSON formatında bir String'e çevir.
+                            String jsonOutput = gson.toJson(pushMessage);
+
+                            // 3. Oluşturulan tam JSON çıktısını Logcat'e yazdır.
+                            Log.d("FullPushMessageJSON", jsonOutput);
                         }
                     }
 
@@ -308,7 +321,6 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     EuroMobileManager.getInstance().getPushMessagesWithID(activity, pushMessageInterface);
                 }
-
             }
 
         });
@@ -488,11 +500,4 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
-
-
-
     }
