@@ -223,5 +223,4 @@ public class Message implements Serializable {
     public String getKeyID() { return keyID; }
     public String getEmail() { return email; }
 
-    // getExtraData metodu artık gerekli olmadığı için kaldırıldı.
 }

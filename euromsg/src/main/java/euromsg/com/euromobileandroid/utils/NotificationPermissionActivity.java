@@ -13,7 +13,10 @@ public class NotificationPermissionActivity extends ComponentActivity {
     private final ActivityResultLauncher<String> requestPermissionLauncher = registerForActivityResult(
             new ActivityResultContracts.RequestPermission(),
             isGranted -> {
-                callback.onPermissionResult(isGranted);
+
+                if (callback != null) {
+                    callback.onPermissionResult(isGranted);
+                }
                 finish();
             }
     );
@@ -21,6 +24,10 @@ public class NotificationPermissionActivity extends ComponentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (callback == null) {
+            finish();
+            return;
+        }
         requestNotificationPermission();
     }
 
@@ -30,9 +37,15 @@ public class NotificationPermissionActivity extends ComponentActivity {
         if (!granted) {
             requestPermissionLauncher.launch(permission);
         } else {
-            callback.onPermissionResult(granted);
+
+            if (callback != null) {
+                callback.onPermissionResult(granted);
+            }
             finish();
         }
     }
-}
 
+    public interface NotificationPermissionCallback {
+        void onPermissionResult(boolean isGranted);
+    }
+}
