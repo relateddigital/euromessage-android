@@ -4,12 +4,16 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-
+        maven {
+            url 'http://developer.huawei.com/repo/'
+            allowInsecureProtocol(true)
+        }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.2'
         classpath 'com.google.gms:google-services:4.3.14'
+        classpath 'com.huawei.agconnect:agcp:1.7.2.300'
     }
 }
 
@@ -22,6 +26,10 @@ allprojects {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven {
+            url 'http://developer.huawei.com/repo/'
+            allowInsecureProtocol(true)
+        }
 
     }
 }
