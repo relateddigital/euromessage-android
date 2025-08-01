@@ -1,2 +1,22 @@
-include ':app', 'euromsg'
-rootProject.name='euromessage-android'
+// settings.gradle
+
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal() // Nexus plugin'i için gerekli
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+rootProject.name = "euromessage-android"
+include ':app'
+include ':euromsg'

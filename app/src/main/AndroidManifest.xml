@@ -34,7 +34,7 @@
         </activity>
 
         <service
-            android:name=".RouterFCMService"
+            android:name="euromsg.com.euromobileandroid.service.EuroFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

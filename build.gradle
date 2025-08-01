@@ -1,34 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
-        classpath 'com.google.gms:google-services:4.3.14'
-    }
-}
-
+// Artık plugin'leri bu şekilde tanımlıyoruz.
+// "alias" kullanarak `libs.versions.toml` dosyasından alıyoruz.
 plugins {
-    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-
-
-    }
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.nexus.publish) apply false
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-//apply from: "${rootDir}/scripts/publish-root.gradle"

@@ -1,39 +1,25 @@
-apply plugin: 'com.android.library'
-apply plugin: 'maven-publish'
+plugins {
+    alias(libs.plugins.android.library)
+    id 'maven-publish' // Bu plugin'i doğrudan uyguluyoruz
+}
+
 group = 'com.github.relateddigital'
-
-task androidSourcesJar(type: Jar) {
-    classifier 'sources'
-    from android.sourceSets.main.java.srcDirs
-}
-
-project.afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
-                from components.release
-                artifact androidSourcesJar
-            }
-        }
-    }
-}
+version = "5.3.7"
 
 ext {
     PUBLISH_GROUP_ID = 'com.github.relateddigital'
-    PUBLISH_VERSION = "5.3.6"
+    PUBLISH_VERSION = "5.3.7"
     PUBLISH_VERSION_CODE = "50"
     PUBLISH_ARTIFACT_ID = 'euromessage-android'
 }
 
 android {
-    compileSdkVersion 34
-
+    compileSdkVersion 35
+    namespace "euromsg.com.euromobileandroid" // Kütüphaneler için zorunlu
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 34
-        versionCode 1
-        versionName "5.3.6"
-        buildConfigField 'String', 'VERSION_NAME', "\"5.3.6\""
+        consumerProguardFiles "consumer-rules.pro"
+        buildConfigField 'String', 'VERSION_NAME', "\"5.3.7\""
     }
     buildTypes {
         release {
@@ -41,30 +27,52 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildFeatures {
+        buildConfig true // <-- DOĞRU YER BURASI
+    }
     lint {
         abortOnError false
     }
 
+    // Modern AGP'de kaynak ve javadoc JAR'larını yayınlamak için en iyi yöntem
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.activity:activity:1.6.1'
-    api 'com.google.code.gson:gson:2.9.0'
-    api 'com.google.firebase:firebase-messaging:23.3.0'
-    api 'com.google.android.gms:play-services-base:18.6.0'
-    api "com.squareup.retrofit2:retrofit:2.9.0"
-    api "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
-    api "com.squareup.retrofit2:converter-gson:2.9.0"
-    api "com.squareup.okhttp3:okhttp:4.9.0"
-    api "com.squareup.okhttp3:logging-interceptor:4.9.0"
-    testImplementation 'junit:junit:4.13.2'
+
+    // Bağımlılıklar `libs.versions.toml`'dan geliyor
+    implementation libs.androidx.activity
+    api libs.google.gson
+    api libs.firebase.messaging
+    api libs.google.play.services.base
+    api libs.retrofit.core
+    api libs.retrofit.adapter.rxjava2
+    api libs.retrofit.converter.gson
+    api libs.okhttp.core
+    api libs.okhttp.logging.interceptor
+
+    testImplementation libs.junit
 }
 
-allprojects {
-    tasks.withType(Javadoc) {
-        enabled = false
+// maven-publish ayarları
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = group
+            artifactId = 'euromessage-android'
+            version = version
+
+            // 'release' build tipinden gelen AAR dosyasını ve
+            // yukarıda `publishing` bloğunda belirttiğimiz kaynak/javadoc JAR'larını otomatik olarak alır
+            afterEvaluate {
+                from components.release
+            }
+        }
     }
 }
-
-//apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
