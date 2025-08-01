@@ -39,7 +39,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':euromsg')
 
-    // Bağımlılıklar artık `libs.versions.toml` dosyasından geliyor
     implementation libs.androidx.appcompat
     implementation libs.androidx.constraintlayout
     implementation libs.visilabs.android
