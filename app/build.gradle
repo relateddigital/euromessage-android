@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.google.services)
 }
 
+apply plugin: 'com.huawei.agconnect'
+
 android {
     compileSdkVersion 35
     namespace "com.relateddigital.euromessage" // targetSdk > 32 için zorunlu
@@ -43,6 +45,9 @@ dependencies {
     implementation libs.androidx.constraintlayout
     implementation libs.visilabs.android
     implementation libs.androidx.multidex
+
+    implementation libs.huawei.agconnect.core
+    implementation libs.huawei.hms.push
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.test.junit

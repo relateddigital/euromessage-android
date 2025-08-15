@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://developer.huawei.com/repo/' }
+    }
+    dependencies {
+        // Huawei plugin'inin çalışması için bunlar gerekli
+        classpath 'com.android.tools.build:gradle:8.11.1' // AGP versiyonunuz
+        classpath 'com.huawei.agconnect:agcp:1.9.1.300'
+    }
+}
+
 plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false

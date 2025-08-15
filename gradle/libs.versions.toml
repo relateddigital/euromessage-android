@@ -3,6 +3,8 @@
 agp = "8.11.1" # Kullandığınız sürüm
 googleServices = "4.3.14"
 nexusPublish = "1.1.0"
+huaweiAgconnect = "1.9.1.300"
+huaweiHmsPush = "6.11.0.300"
 
 # AndroidX
 appcompat = "1.6.1"
@@ -37,6 +39,11 @@ androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-co
 google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 google-play-services-base = { group = "com.google.android.gms", name = "play-services-base", version.ref = "playServicesBase" }
+
+# Huawei Kütüphaneleri
+huawei-agconnect-core = { group = "com.huawei.agconnect", name = "agconnect-core", version.ref = "huaweiAgconnect" }
+huawei-hms-push = { group = "com.huawei.hms", name = "push", version.ref = "huaweiHmsPush" }
+
 
 # Diğer Kütüphaneler
 visilabs-android = { group = "com.github.relateddigital", name = "visilabs-android", version.ref = "visilabs" }

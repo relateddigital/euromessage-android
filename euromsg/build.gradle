@@ -55,6 +55,8 @@ dependencies {
     api libs.retrofit.converter.gson
     api libs.okhttp.core
     api libs.okhttp.logging.interceptor
+    api libs.huawei.agconnect.core
+    api libs.huawei.hms.push
 
     testImplementation libs.junit
 }
