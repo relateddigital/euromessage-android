@@ -18,6 +18,7 @@ android {
     namespace "euromsg.com.euromobileandroid" // Kütüphaneler için zorunlu
     defaultConfig {
         minSdkVersion 23
+        targetSdkVersion 35
         consumerProguardFiles "consumer-rules.pro"
         buildConfigField 'String', 'VERSION_NAME', "\"5.3.7\""
     }
@@ -34,7 +35,6 @@ android {
         abortOnError false
     }
 
-    // Modern AGP'de kaynak ve javadoc JAR'larını yayınlamak için en iyi yöntem
     publishing {
         singleVariant("release") {
             withSourcesJar()
@@ -46,7 +46,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    // Bağımlılıklar `libs.versions.toml`'dan geliyor
     implementation libs.androidx.activity
     api libs.google.gson
     api libs.firebase.messaging
@@ -68,8 +67,6 @@ publishing {
             artifactId = 'euromessage-android'
             version = version
 
-            // 'release' build tipinden gelen AAR dosyasını ve
-            // yukarıda `publishing` bloğunda belirttiğimiz kaynak/javadoc JAR'larını otomatik olarak alır
             afterEvaluate {
                 from components.release
             }

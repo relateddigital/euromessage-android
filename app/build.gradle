@@ -14,7 +14,7 @@ android {
         versionName "5.3.7"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField 'String', 'VERSION_NAME', "\"1.0.0\""
+        buildConfigField 'String', 'VERSION_NAME', "\"5.3.7\""
     }
     buildTypes {
         release {

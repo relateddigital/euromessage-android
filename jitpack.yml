@@ -1,4 +1,4 @@
 jdk:
-  - openjdk11
+  - openjdk17
 install:
-  - ./gradlew build publishToMavenLocal -x processDebugGoogleServices -x processReleaseGoogleServices
+  - ./gradlew :euromsg:publishToMavenLocal
