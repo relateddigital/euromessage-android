@@ -4,11 +4,11 @@ plugins {
 }
 
 group = 'com.github.relateddigital'
-version = "5.3.7"
+version = "5.3.8"
 
 ext {
     PUBLISH_GROUP_ID = 'com.github.relateddigital'
-    PUBLISH_VERSION = "5.3.7"
+    PUBLISH_VERSION = "5.3.8"
     PUBLISH_VERSION_CODE = "50"
     PUBLISH_ARTIFACT_ID = 'euromessage-android'
 }
@@ -20,7 +20,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 35
         consumerProguardFiles "consumer-rules.pro"
-        buildConfigField 'String', 'VERSION_NAME', "\"5.3.7\""
+        buildConfigField 'String', 'VERSION_NAME', "\"5.3.8\""
     }
     buildTypes {
         release {

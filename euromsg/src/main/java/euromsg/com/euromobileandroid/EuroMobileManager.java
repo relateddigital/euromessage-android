@@ -585,8 +585,10 @@ public class EuroMobileManager {
     }
 
     public void setUserProperty(String key, String value, Context context) {
-        setSubscriptionProperty(key, value, context);
-        SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        if (key != null && !key.trim().isEmpty()) {
+            setSubscriptionProperty(key, value, context);
+            SharedPreference.saveString(context, Constants.EURO_SUBSCRIPTION_KEY, this.subscription.toJson());
+        }
     }
 
     public void removeUserProperty(Context context, String key) {
@@ -658,7 +660,9 @@ public class EuroMobileManager {
     }
 
     private void setSubscriptionProperty(String key, Object value, Context context) {
-        this.subscription.add(key, value);
+        if (key != null && !key.trim().isEmpty()) {
+            this.subscription.add(key, value);
+        }
     }
 
     public Message getNotification(Intent intent) {

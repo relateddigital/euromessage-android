@@ -62,11 +62,19 @@ public class Subscription extends BaseRequest implements Cloneable {
     private Map<String, Object> extra = new HashMap<>();
 
     public void add(String key, Object value) {
-        extra.put(key, value);
+        if (key != null && !key.trim().isEmpty()) {
+            extra.put(key, value);
+        }
     }
 
     public void addAll(Map<String, Object> extras) {
-        extra.putAll(extras);
+        if (extras != null) {
+            for (Map.Entry<String, Object> entry : extras.entrySet()) {
+                if (entry.getKey() != null && !entry.getKey().trim().isEmpty()) {
+                    extra.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
     }
 
     public void removeAll() {
@@ -223,17 +231,19 @@ public class Subscription extends BaseRequest implements Cloneable {
             this.setToken(fromSubscription.getToken());
         }
         this.extra = new HashMap<>();
-        for(int i=0 ; i<fromSubscription.getExtra().keySet().toArray().length; i++) {
-            String key = (String) fromSubscription.getExtra().keySet().toArray()[i];
-            if(fromSubscription.getExtra().get(key) == null) {
-                this.extra.put(key, null);
-            } else {
-                this.extra.put(key, fromSubscription.getExtra().get(key));
+        if (fromSubscription.getExtra() != null) {
+            for (Map.Entry<String, Object> entry : fromSubscription.getExtra().entrySet()) {
+                if (entry.getKey() != null && !entry.getKey().trim().isEmpty()) {
+                    this.extra.put(entry.getKey(), entry.getValue());
+                }
             }
         }
     }
 
     public Map<String, Object> getExtra() {
+        if (extra == null) {
+            extra = new HashMap<>();
+        }
         return extra;
     }
 
@@ -330,7 +340,7 @@ public class Subscription extends BaseRequest implements Cloneable {
     }
 
     public void setExtra(Map<String, Object> extra) {
-        this.extra = extra;
+        this.extra = extra != null ? extra : new HashMap<>();
     }
 
     public void setAppVersion(String appVersion) {
@@ -352,45 +362,63 @@ public class Subscription extends BaseRequest implements Cloneable {
     }
 
     private boolean isMapEqual(Map<String, Object> first, Map<String, Object> second) {
-        boolean result = true;
-        if(first.size() != second.size()) {
-            result = false;
-        } else {
-            for(int i=0 ; i<first.keySet().toArray().length; i++) {
-                String key = (String) first.keySet().toArray()[i];
-                if(key.equals(Constants.EURO_CONSENT_TIME_KEY)) {
-                    continue;
-                }
-                if(!second.containsKey(key)) {
-                    result = false;
-                    break;
+        if (first == second) {
+            return true;
+        }
+        if (first == null && second == null) {
+            return true;
+        }
+        if (first == null || second == null) {
+            return false;
+        }
+
+        Map<String, Object> firstClean = new HashMap<>();
+        for (Map.Entry<String, Object> entry : first.entrySet()) {
+            if (entry.getKey() != null && !Constants.EURO_CONSENT_TIME_KEY.equals(entry.getKey())) {
+                firstClean.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        Map<String, Object> secondClean = new HashMap<>();
+        for (Map.Entry<String, Object> entry : second.entrySet()) {
+            if (entry.getKey() != null && !Constants.EURO_CONSENT_TIME_KEY.equals(entry.getKey())) {
+                secondClean.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        if (firstClean.size() != secondClean.size()) {
+            return false;
+        }
+
+        for (Map.Entry<String, Object> entry : firstClean.entrySet()) {
+            String key = entry.getKey();
+            if (!secondClean.containsKey(key)) {
+                return false;
+            } else {
+                Object value1 = entry.getValue();
+                Object value2 = secondClean.get(key);
+                if (value1 == null || value2 == null) {
+                    if (value1 != value2) {
+                        return false;
+                    }
                 } else {
-                    String value1 = (String) first.get(key);
-                    String value2 = (String) second.get(key);
-                    if(value1 == null || value2 == null) {
-                        if(!(value1 == null && value2 == null)) {
-                            result = false;
-                            break;
-                        }
-                    } else {
-                        if(!value1.equals(value2)) {
-                            result = false;
-                            break;
-                        }
+                    if (!String.valueOf(value1).equals(String.valueOf(value2))) {
+                        return false;
                     }
                 }
             }
         }
-        return result;
+        return true;
     }
 
     @NonNull
     public Object clone() throws CloneNotSupportedException {
         Subscription s = (Subscription)super.clone();
-        s.extra  = new HashMap<>();
-        s.extra.putAll(this.extra);
+        s.extra = new HashMap<>();
+        if (this.extra != null) {
+            s.extra.putAll(this.extra);
+        }
 
-        //s.extra  = (Map<String, Object>) ((HashMap<String, Object>) this.extra).clone();
         return s;
     }
 }
